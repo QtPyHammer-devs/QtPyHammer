@@ -1,0 +1,3 @@
+If you click on any of the logos listed at https://wiki.teamfortress.com/wiki/List_of_companies, each image has a source, which is it's name in the hammer texture browser
+
+Check https://teamwork.tf/community/map-stats to see if someone came up with the same awesome map name as you!

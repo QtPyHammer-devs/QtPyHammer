@@ -1,0 +1,142 @@
+Move to github.com/snake-biscuits/vmf_tool/projects
+
+See Also: https://developer.valvesoftware.com/wiki/Hammer_Feature_Requests
+
+--==Must Have Features==--
+Lighting preview
+    Shadows, room darkness & lightmap errors
+Transparent materials proper draw order
+Viewport render modes
+    Wireframe, flat, texture, shaded, shaded & textured
+Settings Menu
+    Keybinds, game config, render limits, default texture, default point & brush entities
+Load from VPK
+I/O Autocomplete
+    Use .fgd
+    Know type of !self
+    Allow users to choose expected !activator (but expect player & check flags)
+Realtime skybox & sun preview
+Multiple viewports
+    See blender subwindows
+Process .vmt & .vtf
+    Material flags & texture compression
+    Thumbnails
+    Material sounds & impact particles
+    Proxies (scrolling etc.)
+Compile Through Compilepal
+    pyHammer file -> .vmf -> Compilepal -> Release Quality .bsp
+Auto-save
+Custom pyHammer WIP format (.pyh, .pyh.backup)
+    Convert to .vmf for compile (or a button for changing devices)
+Inner angle more visible when adjusting light_spot
+    Brightest patch should be instantly clear
+Save appearance settings to file
+    Presets (Lightmode / Blender 2.49, darkmode)
+    Layouts Tab (detail, blocking, texturing, logic)
+    Custom Icons
+    Share with .zip
+Undo & Redo
+
+    
+--==Nice To Have Features==--
+Forest fill (prop family, density, falloff side, sort by tricount)
+    for blocking out
+    should be fast & intuitive
+Model Copy & Edit
+    flip prop along axis
+Brushwork to Model (.smd / .obj export)
+Preview I/O Sequence
+    Payload gates
+    Timed Logic
+    Scrub Timeline
+Ghost players
+    Record like SFM
+    Can shoot recordings (dummy bots)
+    Rewind & re-take
+    Think co-Op TAS speedrun
+    Sentry nest previews
+Packed .bsp peek
+    Updated Crafty equivalent (Nem's Tools)
+    Detail / scale reference
+    Copy entities & I/O from packed .bsp / .bsp.bz2
+    Cubemap / lightmap editing
+    Copy to locked visgroup (will not compile by default)
+MvM Tools
+    Load Bots from MvM popfile
+        Scale, Cosmetics, Weapons, Buff Indicators
+        Visual Popfile Editor?
+    Sweep tank along track
+    Wave March
+    Edit .nav in pyHammer
+I/O flowcharts and/or nodes
+Fast overlay copy
+    Keep dimensions & orientation
+    Assign to nearby faces
+Copy displacements to other faces / brushes
+Generate Asset Zoo from map(s)
+Import sky/sun/fog from map
+Export to obj (one object per solid)
+.obj import (each object is a solid)
+Suggest Version Numbers (Alpha, Beta & RC)
+Entity render effects preview
+Displacement blend modulate preview
+    Render as close to in-game as possible
+Output <-> AddOutput Converter
+Scaled prop_dynamic preview
+Particle previews
+Displacement Tools
+    Quick Hydro sattelite dish
+    Quick spiral staircase
+    Cylinder
+    Multi-res sculpt
+    ANT Terrain Generator (Skybox / Inspiration)
+    Sew with 3D Skybox
+Rulers
+    Jump Arcs (Double, Detonator, Scorch Shot, Pill, Trimp, C-Tap / No C-Tap)
+    Rocket Jump Chains
+Load Rollouts / Ghosts from Demo File
+Load Heatmap (heatmaps.tf)
+Ragdoll Preview (for that perfect deathpit / finale)
+Stair Tools
+    Rise / run
+    Random texture offset
+    Scale to fit
+Sightline spotter
+    Point out the longest and narrowest sightlines to a given point
+    Hardest to spot (lighting or size) should be prioritised
+    Anti-Ghost sniper aimbot
+Quick gamemode (Ctrl+N Menu)
+    NEW 5CP, NEW PLR (MULTI-STAGE) etc.
+    Boojum Snark's Gamemode Prefabs / Zoo
+Mirror map (Invert team logic & colours)
+    Texture palette to replace many textures at once
+    Mirror Line, Mirror Rotationally (Ignore skybox)
+    Allow for assymetrical detail (but warns when balance is effected)
+Per file diff (utilise Undo List)
+    Remove redundant changes
+    Auto Changelog (with screenshot suggestions)
+    Green Yellow Red: New, Changed Removed
+Selecting an entire group (or part of) in object or solids mode, copies of the selection will group parts of groups
+Meaningful sub-grouping
+per entity output organisation (group lines of outputs)
+copied objects retain the visgroup of origonal object (optional)
+https://tf2maps.net/threads/3-most-wanted-features-for-hammer.37807/
+carve that just extrudes smoothly
+browse for sprites / hud materials in texture browser (context aware)
+edit vmf in cinema4d / blender (would take years you absolute madman, stop doing this to yourself)
+Action History Text Log
+Plain English IO Debugging
+    Identify Keywords, Contexts and Discern what should be examined
+Demo playback tools
+    Swap to killer (killcam)
+    Rewind
+    Choose target (scoreboard, click in 3d, name in chat)
+    Chokemap (mark rough owned territories & front lines)
+    As close to player HUD as possible
+Snap to vertex
+3D Skybox Background
+    Skybox Browser
+    Skybox Editor
+Set Background Colour
+Preview map in 3D skybox & vice-versa
+    Optional Tint / Transparency
