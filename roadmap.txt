@@ -140,3 +140,7 @@ Snap to vertex
 Set Background Colour
 Preview map in 3D skybox & vice-versa
     Optional Tint / Transparency
+Quick Instance
+    Duplicate a brush model while working on it
+Mirror edit
+    Texture / vert changes etc
