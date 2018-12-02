@@ -1,5 +1,4 @@
 # TODO: Free mouse when window is in background / on keypress
-import camera
 import colorsys
 import ctypes
 import enum
@@ -9,7 +8,6 @@ from OpenGL.GL import * # Installed via pip (PyOpenGl 3.1.0)
 from OpenGL.GL.shaders import compileShader, compileProgram
 from OpenGL.GLU import * # PyOpenGL-accelerate 3.1.0 requires MSVC 2015
 # get precompiled binaries if you can, it's much less work
-import physics
 from sdl2 import * #Installed via pip (PySDL2 0.9.5)
 # requires SDL2.dll (steam has a copy in it's main directory)
 # and an Environment Variable (PYSDL2_DLL_PATH)
@@ -20,6 +18,8 @@ import time
 import sys
 sys.path.insert(0, 'utilities')
 # there has to be a better way to load these
+import camera
+import physics
 import vmf_tool
 import vector
 import solid_tool # must be loaded AFTER vmf_tool (how do dependencies work?)
@@ -172,7 +172,7 @@ def main(vmf_path, width=1024, height=576):
     # Editor Props (playerspawn, lights, sprite, path_track)
 
     CAMERA = camera.freecam(None, None, 128)
-    render_solids = [s for s in solids if (s.center - CAMERA.position).sqrmagnitude() < 5120]
+    render_solids = [s for s in solids if (s.center - CAMERA.position).sqrmagnitude() < 1024]
     rendered_ray = []
 
     SDL_SetRelativeMouseMode(SDL_TRUE)
@@ -212,7 +212,7 @@ def main(vmf_path, width=1024, height=576):
         while dt >= 1 / tickrate:
             # use keytime to delay input repeat
             CAMERA.update(mousepos, keys, 1 / tickrate)
-##            render_solids = [s for s in solids if (s.center - CAMERA.position).magnitude() < 2048]
+            render_solids = [s for s in solids if (s.center - CAMERA.position).magnitude() < 2048]
             if SDLK_r in keys:
                 CAMERA = camera.freecam(None, None, 128)
             if SDLK_BACKQUOTE in keys:
@@ -335,10 +335,9 @@ def main(vmf_path, width=1024, height=576):
 
 if __name__ == '__main__':
     try:
-##        main('../../mapsrc/test2.vmf')
-        main('../../mapsrc/sdk_pl_goldrush.vmf')
-##        main('../vmfs/hemisphere.vmf')
-##        main('../../mapsrc/test_disp.vmf')
+        main('tests/vmfs/test2.vmf')
+##        main('tests/vmfs/sdk_pl_goldrush.vmf')
+##        main('tests/vmfs/pl_upward_d.vmf')
     except Exception as exc:
         SDL_Quit()
         raise exc
