@@ -1,5 +1,11 @@
 """Per .vmf vertex / index buffer manager for PyHammer"""
 
+# Zip-it-Yourself Vertex Assembley
+# -- Vertex Format can be whatever
+# -- Specs need to be known for pointers & shaders
+# -- specs = (size, attributes, order, types)
+# Should allow for easy performance tuning
+
 class BufferManager:
     # MANAGE BRUSHES AND UNDO MEMORY
     # what do we need to render from buffers
