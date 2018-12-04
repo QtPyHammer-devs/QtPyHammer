@@ -1,2 +1,2 @@
 # PyHammer
-A python alternative to Valve's "Hammer World Editor"
+A Python alternative to Valve's Hammer Editor (4.X in particular)
