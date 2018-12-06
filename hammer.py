@@ -181,6 +181,23 @@ def main(vmf_path, width=1024, height=576):
     mousepos = vector.vec2()
     keys = []
 
+    fake_info = SDL_SysWMinfo()
+    SDL_GetWindowWMInfo(window, fake_info)
+    print(fake_info.subsystem)
+
+##  SDL_SYSWM_ANDROID (Linux Mobile)
+##  SDL_SYSWM_COCOA (OSX)
+##  SDL_SYSWM_DIRECTFB (Linux)
+##  SDL_SYSWM_MIR (Linux)
+##  SDL_SYSWM_OS2 (IBM / ArcaOS)
+##  SDL_SYSWM_UIKIT (iOS with special GL handles)
+##  SDL_SYSWM_UNKNOWN
+##  SDL_SYSWM_VIVANTE (Chinese Embedded GPU)
+##  SDL_SYSWM_WAYLAND (Linux)
+##  SDL_SYSWM_WINDOWS
+##  SDL_SYSWM_WINRT (Windows for ARM)
+##  SDL_SYSWM_X11 (Linux)
+
     tickrate = 1 / 0.015
     old_time = time.time()
     event = SDL_Event()
@@ -207,6 +224,11 @@ def main(vmf_path, width=1024, height=576):
                 SDL_WarpMouseInWindow(window, width // 2, height // 2)
             if event.type == SDL_MOUSEWHEEL:
                 CAMERA.speed += event.wheel.y * 32
+            if event.type == SDL_DROPFILE:
+                # load event.drop.file
+                # .vmf -> new tab
+                # .lin / .prt -> match to vmf
+                pass
 
         dt = time.time() - old_time
         while dt >= 1 / tickrate:
@@ -222,7 +244,7 @@ def main(vmf_path, width=1024, height=576):
                 ray_start = CAMERA.position
                 ray_dir = vector.vec3(0, 1, 0).rotate(*-CAMERA.rotation)
                 rendered_ray = [ray_start, ray_start + (ray_dir * 4096)]
-                #calculate collisions
+                # calculate collisions
             dt -= 1 / tickrate
             old_time = time.time()
 
