@@ -181,22 +181,24 @@ def main(vmf_path, width=1024, height=576):
     mousepos = vector.vec2()
     keys = []
 
+    window_managers = {9: 'ANDROID',   # Linux Mobile
+                       4: 'COCOA',     # OSX
+                       3: 'DIRECTFB',  # Linux
+                       7: 'MIR',       # Linux
+                       11: 'OS2',      # OS/2, PS/2, ArcaOS
+                       5: 'UIKIT',     # iOS (special GL requirements)
+                       0: 'UNKNOWN',
+                       10: 'VIVANTE',  # Some Embedded GPUs
+                       6: 'WAYLAND',   # Linux
+                       1: 'WINDOWS',
+                       8: 'WINRT',     # Windows ARM / Embedded
+                       2: 'X11'}       # Linux
+
     fake_info = SDL_SysWMinfo()
     SDL_GetWindowWMInfo(window, fake_info)
-    print(fake_info.subsystem)
-
-##  SDL_SYSWM_ANDROID (Linux Mobile)
-##  SDL_SYSWM_COCOA (OSX)
-##  SDL_SYSWM_DIRECTFB (Linux)
-##  SDL_SYSWM_MIR (Linux)
-##  SDL_SYSWM_OS2 (IBM / ArcaOS)
-##  SDL_SYSWM_UIKIT (iOS with special GL handles)
-##  SDL_SYSWM_UNKNOWN
-##  SDL_SYSWM_VIVANTE (Chinese Embedded GPU)
-##  SDL_SYSWM_WAYLAND (Linux)
-##  SDL_SYSWM_WINDOWS
-##  SDL_SYSWM_WINRT (Windows for ARM)
-##  SDL_SYSWM_X11 (Linux)
+    for key, manager in window_managers.items():
+        if key == fake_info.subsystem:
+            print(f'Window Manager: {manager}')
 
     tickrate = 1 / 0.015
     old_time = time.time()
@@ -223,7 +225,8 @@ def main(vmf_path, width=1024, height=576):
                 mousepos += vector.vec2(event.motion.xrel, event.motion.yrel)
                 SDL_WarpMouseInWindow(window, width // 2, height // 2)
             if event.type == SDL_MOUSEWHEEL:
-                CAMERA.speed += event.wheel.y * 32
+                if CAMERA.speed + event.wheel.y * 32 > 0: # speed limits
+                    CAMERA.speed += event.wheel.y * 32
             if event.type == SDL_DROPFILE:
                 # load event.drop.file
                 # .vmf -> new tab
