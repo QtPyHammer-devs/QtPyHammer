@@ -194,6 +194,9 @@ def main(vmf_path, width=1024, height=576):
                        8: 'WINRT',     # Windows ARM / Embedded
                        2: 'X11'}       # Linux
 
+    # Ubuntu 16.04: UNKNOWN
+    # Windows 10:   WINDOWS
+
     fake_info = SDL_SysWMinfo()
     SDL_GetWindowWMInfo(window, fake_info)
     for key, manager in window_managers.items():
