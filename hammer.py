@@ -1,4 +1,3 @@
-# TODO: Free mouse when window is in background / on keypress
 import colorsys
 import ctypes
 import enum
@@ -203,6 +202,8 @@ def main(vmf_path, width=1024, height=576):
         if key == fake_info.subsystem:
             print(f'Window Manager: {manager}')
 
+    print('=' * 80)
+            
     tickrate = 1 / 0.015
     old_time = time.time()
     event = SDL_Event()
@@ -238,14 +239,28 @@ def main(vmf_path, width=1024, height=576):
 
         dt = time.time() - old_time
         while dt >= 1 / tickrate:
-            # use keytime to delay input repeat
+            # use KEYTIME to delay input repeat
+            # KEYTIME
             CAMERA.update(mousepos, keys, 1 / tickrate)
             render_solids = [s for s in solids if (s.center - CAMERA.position).magnitude() < 2048]
             if SDLK_r in keys:
                 CAMERA = camera.freecam(None, None, 128)
             if SDLK_BACKQUOTE in keys:
-                print(f'{CAMERA.position:.3f}')
-                print(len(render_solids))
+                print(f'CAMERA @ {CAMERA.position:.3f}')
+                print(f'Currently rendering {len(render_solids)} brushes')
+                
+                console_loop = True
+                while console_loop:
+                    console_input = input('>>> ')
+                    if console_input == 'exit':
+                        print('Exited Console')
+                        console_loop = False
+                        break
+                    try:
+                        print(eval(console_input))
+                    except Exception as exc:
+                        print(f'{exc.__class__.__name__}: {exc}')
+                        
             if SDL_BUTTON_LEFT in keys:
                 ray_start = CAMERA.position
                 ray_dir = vector.vec3(0, 1, 0).rotate(*-CAMERA.rotation)
