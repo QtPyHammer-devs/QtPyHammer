@@ -144,3 +144,5 @@ Quick Instance
     Duplicate a brush model while working on it
 Mirror edit
     Texture / vert changes etc
+Vertex Edit (when moving large selection) can also move point entity centres & overlays
+Cylinder texture wrap
