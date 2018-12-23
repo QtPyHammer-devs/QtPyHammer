@@ -1,5 +1,6 @@
 import sys
-from PyQt5.QtWidgets import *
+from PyQt5 import QtWidgets
+from PyQt5 import QtCore
 
 
 def print_methods(obj, filter_lambda=lambda x: True, joiner='\n'):
@@ -12,23 +13,23 @@ def print_methods(obj, filter_lambda=lambda x: True, joiner='\n'):
 
 # keybinds menu
 
-app = QApplication(sys.argv)
-window = QMainWindow()
+app = QtWidgets.QApplication(sys.argv)
+window = QtWidgets.QMainWindow()
 window.setWindowTitle('QtPyHammer')
 window.setGeometry(640, 400, 640, 480)
 
-menu = QMenuBar()
+### MAIN MENU ###
+menu = QtWidgets.QMenuBar()
+
 file_menu = menu.addMenu('&File')
 file_menu.addAction('&New').setShortcut('Ctrl+N')
+# load a new workspace tab
 f_open = file_menu.addAction('&Open')
 f_open.setShortcut('Ctrl+O')
+open_browser = QtWidgets.QFileDialog()
+# set to open file and filter for .vmf
+f_open.triggered.connect(open_browser.show)
 
-file_browser = QFileDialog() #???
-
-connect(f_open, file_browser.show())
-##print(dir(f_open))
-##print('=' * 80)
-##f_open.connect.
 file_menu.addAction('&Save').setShortcut('Ctrl+S')
 file_menu.addAction('Save &As').setShortcut('Ctrl+Shift+S')
 file_menu.addSeparator()
@@ -154,12 +155,15 @@ help_sites.addAction('Valve Developer Community')
 help_sites.addAction('TF2Maps.net')
 help_menu.addAction('Offline Help').setShortcut('F1')
 
-file_act = QAction()
+file_act = QtWidgets.QAction()
 menu.addAction(file_act) # ???
 
-# Tabs
-##window.addDockWidget(1, QDockWidget())
-##window.addDockWidget(2, QDockWidget())
+# Workspace Tabs
+tab_1 = QtWidgets.QDockWidget()
+window.addDockWidget(1, tab_1)
+tab_2 = QtWidgets.QDockWidget()
+window.addDockWidget(2, tab_2)
+print([a for a in dir(tab_1) if 'add' in a])
 
 window.setMenuBar(menu)
 
