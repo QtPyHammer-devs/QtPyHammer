@@ -6,8 +6,10 @@ def print_methods(obj, filter_lambda=lambda x: True, joiner='\n'):
     methods = [a for a in dir(obj) if hasattr(getattr(obj, a), '__call__')]
     print(joiner.join([m for m in methods if filter_lambda(m) == True]))
 
-# menu action class
+# TODOS:
 # context menu (set shortcut)
+# clearly log & report crashes!
+# especially those that occur in slots
 
 new_file_count = 0
 
@@ -20,11 +22,15 @@ new_file_count = 0
 #  default filepaths
 #  keybinds
 #  ...
+# .ini should be straightforward enough
 
 app = QtWidgets.QApplication(sys.argv)
 window = QtWidgets.QMainWindow()
+window.setSurfaceType(QtGui.QSurface.OpenGLSurface)
 window.setWindowTitle('QtPyHammer')
 window.setGeometry(640, 400, 640, 480)
+
+gl_context = QtGui.QOpenGLContext() # share GL data across tabs
 
 tabs = QtWidgets.QTabWidget()
 tabs.setTabsClosable(True)
@@ -39,12 +45,23 @@ new_file = file_menu.addAction('&New')
 new_file.setShortcut('Ctrl+N')
 
 def new_tab():
-    print('doing it')
-    global new_file_count
+    global new_file_count, tabs, window
+    tabs.setUpdatesEnabled(False)
     new_file_count += 1
-    tab = QtWidgets.QtWidget()
+    tab = QtWidgets.QWidget() # use a custom QWidget class here
+    layout = QtWidgets.QGridLayout()
+    for x in range(2):
+        for y in range(2):
+##            s = f'({x}, {y})'
+##            layout.addWidget(QtWidgets.QLabel(s), x, y)
+            gl_widget = QtWidgets.QWidget() # bad idea?
+##            gl_widget.setSurfaceType(QtGui.QSurface.OpenGLSurface)
+            layout.addWidget(gl_widget, x, y)
+    tab.setLayout(layout)
     tab_index = tabs.addTab(tab, f'Untitled{new_file_count}')
-    print('did it')
+    tabs.setUpdatesEnabled(True)
+
+new_tab() # REMEMBER! SIGNAL & SLOTS DON'T REPORT ERRORS!
 
 new_file.triggered.connect(new_tab)
 # OK, NOW HOW DO WE CLOSE A TAB?
