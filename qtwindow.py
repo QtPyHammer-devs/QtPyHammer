@@ -1,34 +1,66 @@
 import sys
-from PyQt5 import QtWidgets
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 def print_methods(obj, filter_lambda=lambda x: True, joiner='\n'):
     methods = [a for a in dir(obj) if hasattr(getattr(obj, a), '__call__')]
     print(joiner.join([m for m in methods if filter_lambda(m) == True]))
 
-
 # menu action class
 # context menu (set shortcut)
 
-# keybinds menu
+new_file_count = 0
+
+# disable menu items when they cannot be used
+
+# need a QSettings to store:
+#  recent files
+#  OpenGL settings
+#  game configurations
+#  default filepaths
+#  keybinds
+#  ...
 
 app = QtWidgets.QApplication(sys.argv)
 window = QtWidgets.QMainWindow()
 window.setWindowTitle('QtPyHammer')
 window.setGeometry(640, 400, 640, 480)
 
+tabs = QtWidgets.QTabWidget()
+tabs.setTabsClosable(True)
+tabs.tabCloseRequested.connect(tabs.removeTab)
+window.setCentralWidget(tabs)
+
 ### MAIN MENU ###
 menu = QtWidgets.QMenuBar()
 
 file_menu = menu.addMenu('&File')
-file_menu.addAction('&New').setShortcut('Ctrl+N')
-# load a new workspace tab
-f_open = file_menu.addAction('&Open')
-f_open.setShortcut('Ctrl+O')
+new_file = file_menu.addAction('&New')
+new_file.setShortcut('Ctrl+N')
+
+def new_tab():
+    print('doing it')
+    global new_file_count
+    new_file_count += 1
+    tab = QtWidgets.QtWidget()
+    tab_index = tabs.addTab(tab, f'Untitled{new_file_count}')
+    print('did it')
+
+new_file.triggered.connect(new_tab)
+# OK, NOW HOW DO WE CLOSE A TAB?
+open_file = file_menu.addAction('&Open')
+open_file.setShortcut('Ctrl+O')
 open_browser = QtWidgets.QFileDialog()
+open_browser.setDirectory('F:/Modding/tf2 maps/') # default map directory
+open_browser.setDefaultSuffix('vmf') # for saving, doesn't filter
 # set to open file and filter for .vmf
-f_open.triggered.connect(open_browser.show)
+
+def load_vmf():
+    vmf_name = QtWidgets.QFileDialog.getOpenFileName(filter='Valve Map Format (*.vmf)')[0]
+    
+    print(vmf_name)
+
+open_file.triggered.connect(load_vmf)
 
 file_menu.addAction('&Save').setShortcut('Ctrl+S')
 file_menu.addAction('Save &As').setShortcut('Ctrl+Shift+S')
@@ -73,8 +105,7 @@ show_grid = map_menu.addAction('Sho&w Grid')
 show_grid.setShortcut('Shift+R')
 show_grid.setCheckable(True)
 show_grid.setChecked(True)
-map_menu.addMenu('&Grid Settings')
-map_menu.addMenu('U&nits')
+grid_settings = map_menu.addMenu('&Grid Settings')
 map_menu.addSeparator()
 map_menu.addAction('&Entity Report')
 map_menu.addAction('&Zooify') # make an asset zoo / texture pallets
@@ -158,12 +189,16 @@ help_menu.addAction('Offline Help').setShortcut('F1')
 file_act = QtWidgets.QAction()
 menu.addAction(file_act) # ???
 
-# Workspace Tabs
-tab_1 = QtWidgets.QDockWidget()
-window.addDockWidget(1, tab_1)
-tab_2 = QtWidgets.QDockWidget()
-window.addDockWidget(2, tab_2)
-print([a for a in dir(tab_1) if 'add' in a])
+### Workspace Tabs
+##tab_1 = QtWidgets.QDockWidget()
+##window.addDockWidget(1, tab_1)
+##tab_2 = QtWidgets.QDockWidget()
+##window.addDockWidget(2, tab_2)
+
+##tabs = QtWidgets.QTabWidget()
+##window.setCentralWidget(tabs)
+##tabs.addTab(QtWidgets.QWidget(), 'Untitled') # build a "WorkspaceTab" class
+# should be modifiable like blender viewports
 
 window.setMenuBar(menu)
 
