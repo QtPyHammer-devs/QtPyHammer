@@ -26,11 +26,13 @@ new_file_count = 0
 
 app = QtWidgets.QApplication(sys.argv)
 window = QtWidgets.QMainWindow()
-window.setSurfaceType(QtGui.QSurface.OpenGLSurface)
 window.setWindowTitle('QtPyHammer')
 window.setGeometry(640, 400, 640, 480)
 
 gl_context = QtGui.QOpenGLContext() # share GL data across tabs
+
+vmfs = ...
+# hold vmf / all the data for each tab
 
 tabs = QtWidgets.QTabWidget()
 tabs.setTabsClosable(True)
@@ -44,18 +46,18 @@ file_menu = menu.addMenu('&File')
 new_file = file_menu.addAction('&New')
 new_file.setShortcut('Ctrl+N')
 
-def new_tab():
+def new_tab(vmf=None):
     global new_file_count, tabs, window
     tabs.setUpdatesEnabled(False)
     new_file_count += 1
     tab = QtWidgets.QWidget() # use a custom QWidget class here
+    # we need to attach our vmf to the tab
+    # though with a new tab we don't have one
+    # we generate a blank one & will ask the user for a path when saving it
     layout = QtWidgets.QGridLayout()
     for x in range(2):
         for y in range(2):
-##            s = f'({x}, {y})'
-##            layout.addWidget(QtWidgets.QLabel(s), x, y)
-            gl_widget = QtWidgets.QWidget() # bad idea?
-##            gl_widget.setSurfaceType(QtGui.QSurface.OpenGLSurface)
+            gl_widget = QtWidgets.QOpenGLWidget()
             layout.addWidget(gl_widget, x, y)
     tab.setLayout(layout)
     tab_index = tabs.addTab(tab, f'Untitled{new_file_count}')
@@ -74,7 +76,10 @@ open_browser.setDefaultSuffix('vmf') # for saving, doesn't filter
 
 def load_vmf():
     vmf_name = QtWidgets.QFileDialog.getOpenFileName(filter='Valve Map Format (*.vmf)')[0]
-    
+    # load on a seoerate thread from ui
+    # progress bar
+    #   how do we measure progress when we don't have a value for 100% ?
+    # reuse new_tab
     print(vmf_name)
 
 open_file.triggered.connect(load_vmf)
