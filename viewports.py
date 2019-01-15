@@ -39,7 +39,7 @@ class Viewport2D(QtWidgets.QOpenGLWidget):
         # MODELS: (dynamic draw)
         # modelname: vertex(start, len), index(start, len)
 
-    def executeGL(self, func, *args, **kwargs):
+    def executeGL(self, func, *args, **kwargs): # best hack ever
         """Execute func(self, *args, **kwargs) in this viewport's glContext"""
         self.makeCurrent()
         func(self, *args, **kwargs)
@@ -167,13 +167,12 @@ class Viewport3D(Viewport2D):
             # need to sample mouse vector (relative updates)
             self.camera.update(self.mouse, self.keys, self.dt)
 
-
-# dock widget containing grid?
-# docked tabs?
-# QTabWidget.addTab(MapDock)
-def class MapDock(QtWidgets.QDockWidget):
-    def __init__(self, parent):
-        super(QuadView, self).__init__(parent)
+# dock widget containing 4 viewports
+# window.tabifyDockWidget(?, QuadViewportDock())
+class QuadViewportDock(QtWidgets.QDockWidget):
+    def __init__(self, parent=None):
+        super(QuadViewportDock, self).__init__(parent)
+        widget = QtWidgets.QWidget() # dock cannot use layout itself
         quad_layout = QtWidgets.QGridLayout()
         for y in range(2):
             for x in range(2):
@@ -181,13 +180,15 @@ def class MapDock(QtWidgets.QDockWidget):
                     quad_layout.addWidget(Viewport3D(30), x, y)
                 else:
                     quad_layout.addWidget(Viewport2D(15), x, y)
-        self.setLayout(quad_layout)
+        widget.setLayout(quad_layout)
+        self.setWidget(widget)
     # 4 viewports
     # .vmf
     # buffers
     # camera(s)
     # shaders
-    ,,,
+##    def ...
+    # LOAD VMF AND MAKE SOME BUFFER HANDLES
 
 if __name__ == "__main__":
     import sys
@@ -199,6 +200,7 @@ if __name__ == "__main__":
     # ^^^ for python debugging inside Qt ^^^ #
     
     app = QtWidgets.QApplication(sys.argv)
+    app.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
     window = QtWidgets.QWidget()
     window.setGeometry(256, 256, 512, 512)
     quad_view = QtWidgets.QGridLayout()
