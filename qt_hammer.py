@@ -1,5 +1,6 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
+import viewports
 
 
 def print_methods(obj, filter_lambda=lambda x: True, joiner='\n'):
@@ -9,13 +10,18 @@ def print_methods(obj, filter_lambda=lambda x: True, joiner='\n'):
 # TODOS:
 # context menu (set shortcut)
 # clearly log & report crashes!
-# especially those that occur in slots
+# especially those that occur in slots (sys.excepthook)
+# vmf manager
+# edit vmf as text (text editor)
+# IDE (colours, auto-complete) preserve solids
+# use IDE tools to attempt recovery of corrupt vmfs
+# recovery tools in general
 
 new_file_count = 0
 
 # disable menu items when they cannot be used
 
-# need a QSettings to store:
+# need a QSettings to store: LOAD HERE!
 #  recent files
 #  OpenGL settings
 #  game configurations
@@ -24,24 +30,16 @@ new_file_count = 0
 #  ...
 # .ini should be straightforward enough
 
+QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
 app = QtWidgets.QApplication(sys.argv)
 window = QtWidgets.QMainWindow()
 window.setWindowTitle('QtPyHammer')
 window.setGeometry(640, 400, 640, 480)
-
-gl_context = QtGui.QOpenGLContext() # share GL data across tabs
-
-vmfs = ...
-# hold vmf / all the data for each tab
+window.setTabPosition(QtCore.Qt.TopDockWidgetArea, QtWidgets.QTabWidget.North)
 
 # read .fgd(s) for entity_data
-# prepeare .vpks (grab directories)
-# mount custom data
-
-tabs = QtWidgets.QTabWidget()
-tabs.setTabsClosable(True)
-tabs.tabCloseRequested.connect(tabs.removeTab)
-window.setCentralWidget(tabs)
+# prepare .vpks (grab directories)
+# mount custom data (tf/custom etc)
 
 ### MAIN MENU ###
 menu = QtWidgets.QMenuBar()
@@ -50,27 +48,18 @@ file_menu = menu.addMenu('&File')
 new_file = file_menu.addAction('&New')
 new_file.setShortcut('Ctrl+N')
 
-def new_tab(vmf=None):
-    global new_file_count, tabs, window
-    tabs.setUpdatesEnabled(False)
+tabs = []
+def new_tab(vmf=None): # add a new viewport
+    global new_file_count, window, tabs
     new_file_count += 1
-    tab = QtWidgets.QWidget() # use a custom QWidget class here
-    # we need to attach our vmf to the tab
-    # though with a new tab we don't have one
-    # we generate a blank one & will ask the user for a path when saving it
-    layout = QtWidgets.QGridLayout()
-    for x in range(2):
-        for y in range(2):
-            gl_widget = QtWidgets.QOpenGLWidget()
-            layout.addWidget(gl_widget, x, y)
-    tab.setLayout(layout)
-    tab_index = tabs.addTab(tab, f'Untitled{new_file_count}')
-    tabs.setUpdatesEnabled(True)
+    map_dock = viewports.QuadViewportDock(f'untitled {new_file_count}') # feed in vmf here
+    tabs.append(map_dock)
+    window.addDockWidget(QtCore.Qt.TopDockWidgetArea, map_dock)
+    # add dock as tab if already have one dock ?
+##    map_dock.widget().layout().itemAt(2).widget().sharedGLsetup() # too soon
+    
+new_file.triggered.connect(new_tab) # also need to load .vmf into the manager
 
-new_tab() # REMEMBER! SIGNAL & SLOTS DON'T REPORT ERRORS!
-
-new_file.triggered.connect(new_tab)
-# OK, NOW HOW DO WE CLOSE A TAB?
 open_file = file_menu.addAction('&Open')
 open_file.setShortcut('Ctrl+O')
 open_browser = QtWidgets.QFileDialog()
@@ -103,8 +92,6 @@ file_menu.addSeparator()
 file_menu.addAction('Compile').setShortcut('F9')
 file_menu.addSeparator()
 file_menu.addAction('Exit')
-
-##print(dir(file_menu))
 
 edit_menu = menu.addMenu('&Edit')
 edit_menu.addAction('Undo').setShortcut('Ctrl+Z')
@@ -152,24 +139,12 @@ search_menu.addSeparator()
 search_menu.addAction('Goto Coordinates')
 
 view_menu = menu.addMenu('&View')
-view_menu.addAction('&OpenGL Settings')
+view_menu.addAction('Add &Viewport')
 view_menu.addSeparator()
-quad_view = view_menu.addAction('&Quad View')
-quad_view.setShortcut('Ctrl+Alt+Q')
-quad_view.setCheckable(True)
-quad_view.setChecked(True)
+view_menu.addAction('Center 2D Views on selection').setShortcut('Ctrl+E')
+view_menu.addAction('Center 3D Views on selection').setShortcut('Ctrl+Shift+E')
+view_menu.addAction('Go To &Coordinates')
 view_menu.addSeparator()
-# Use in GL viewports only
-##view_2d = view_menu.addMenu('2D')
-##view_2d.addAction('&X/Y')
-##view_2d.addAction('&Y/Z')
-##view_2d.addAction('&Z/X')
-##view_3d = view_menu.addMenu('3D')
-##view_menu.addSeparator()
-##view_menu.addAction('Center 2D Views on selection').setShortcut('Ctrl+E')
-##view_menu.addAction('Center 3D Views on selection').setShortcut('Ctrl+Shift+E')
-##view_menu.addAction('Go To &Coordinates')
-##view_menu.addSeparator()
 io_links = view_menu.addAction('Show IO &Links')
 io_links.setCheckable(True)
 show_2d_models = view_menu.addAction('Show &Models in 2D')
@@ -188,6 +163,8 @@ view_menu.addAction('Hide Unselected').setShortcut('Ctrl+H')
 view_menu.addAction('&Unhide').setShortcut('U')
 view_menu.addSeparator()
 view_menu.addAction('Selection to Visgroup')
+view_menu.addSeparator()
+view_menu.addAction('&OpenGL Settings')
 
 tools_menu = menu.addMenu('&Tools')
 tools_menu.addAction('&Group').setShortcut('Ctrl+G')
@@ -224,21 +201,23 @@ help_menu.addAction('TF2Maps.net')
 file_act = QtWidgets.QAction()
 menu.addAction(file_act) # ???
 
-### Workspace Tabs
-##tab_1 = QtWidgets.QDockWidget()
-##window.addDockWidget(1, tab_1)
-##tab_2 = QtWidgets.QDockWidget()
-##window.addDockWidget(2, tab_2)
-
-##tabs = QtWidgets.QTabWidget()
-##window.setCentralWidget(tabs)
-##tabs.addTab(QtWidgets.QWidget(), 'Untitled') # build a "WorkspaceTab" class
-# should be modifiable like blender viewports
-
 window.setMenuBar(menu)
+
+key_tools = QtWidgets.QToolBar('Tools 1')
+key_tools.setMovable(False)
+button_1 = key_tools.addWidget(QtWidgets.QToolButton())
+window.addToolBar(QtCore.Qt.TopToolBarArea, key_tools)
+
+# toolbars
 
 ##window.showMaximized() # start with maximised window
 window.show()
+
+new_tab() # REMEMBER! SIGNAL & SLOTS DON'T REPORT ERRORS!
+
+for i, t in enumerate(tabs):
+    # contexts aren't sharing?
+    tabs[i].widget().layout().itemAt(1).widget().sharedGLsetup()
 
 app.exec_() # loop?
 

@@ -15,7 +15,7 @@ import solid_tool # must be loaded AFTER vmf_tool (how do dependencies work?)
 view_modes = ['flat', 'textured', 'wireframe']
 # "silhouette" view mode, lights on black brushwork & props
 
-class Viewport2D(QtWidgets.QOpenGLWidget):
+class Viewport2D(QtWidgets.QOpenGLWidget): # remove from docks
     def __init__(self, fps=30, parent=None):
         super(Viewport2D, self).__init__(parent)
         self.timer = QtCore.QTimer()
@@ -54,8 +54,8 @@ class Viewport2D(QtWidgets.QOpenGLWidget):
         glClearColor(0, 0, 0, 0)
         # glEnables
         glColor(.75, .75, .75)
-        if self.fps != 30: # for 2d
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+##        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+        glEnable(GL_TEXTURE_2D)
 
     def sharedGLsetup(self): # call manually in one viewport once all are made
         """Sets up buffers, textures & shaders shared across many viewports"""
@@ -70,9 +70,11 @@ class Viewport2D(QtWidgets.QOpenGLWidget):
         glColor(1, 1, 1)
         self.doneCurrent()
 ##        return buffer_handles, shader_handles, texture_handles
+        print('sharing')
 
     def paintGL(self): # how do we use Qt OpenGL functions?
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glEnable(GL_TEXTURE_2D)
         glRotate(self.dt * 90, 0, 0, 1)
         glBegin(GL_TRIANGLES)
         glTexCoord(1, 0)
@@ -83,11 +85,11 @@ class Viewport2D(QtWidgets.QOpenGLWidget):
         glVertex(0, 1, 0)
         glEnd()
 
-        glEnableClientState(GL_VERTEX_ARRAY)
-        a = [[-.5, .5], [.5, .5], [.5, -.5], [-.5, -.5]]
-        glVertexPointerf(a)
-        glDrawArrays(GL_POLYGON, 0, len(a))
-        glFlush()
+##        glEnableClientState(GL_VERTEX_ARRAY)
+##        a = [[-.5, .5], [.5, .5], [.5, -.5], [-.5, -.5]]
+##        glVertexPointerf(a)
+##        glDrawArrays(GL_POLYGON, 0, len(a))
+##        glFlush()
 
     def update(self):
         super(Viewport2D, self).update()
@@ -169,9 +171,12 @@ class Viewport3D(Viewport2D):
 
 # dock widget containing 4 viewports
 # window.tabifyDockWidget(?, QuadViewportDock())
+# WHY AREN'T CONTEXTS SHARING?
+# make a widget class
+# dock is likely breaking contexts
 class QuadViewportDock(QtWidgets.QDockWidget):
-    def __init__(self, parent=None):
-        super(QuadViewportDock, self).__init__(parent)
+    def __init__(self, title, parent=None):
+        super(QuadViewportDock, self).__init__(title, parent)
         widget = QtWidgets.QWidget() # dock cannot use layout itself
         quad_layout = QtWidgets.QGridLayout()
         for y in range(2):
@@ -182,6 +187,7 @@ class QuadViewportDock(QtWidgets.QDockWidget):
                     quad_layout.addWidget(Viewport2D(15), x, y)
         widget.setLayout(quad_layout)
         self.setWidget(widget)
+        # setup shared context stuff
     # 4 viewports
     # .vmf
     # buffers
@@ -198,22 +204,15 @@ if __name__ == "__main__":
 
     sys.excepthook = except_hook
     # ^^^ for python debugging inside Qt ^^^ #
-    
+
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
     app = QtWidgets.QApplication(sys.argv)
-    app.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
-    window = QtWidgets.QWidget()
+    
+    window = QuadViewportDock('Untitled')
     window.setGeometry(256, 256, 512, 512)
-    quad_view = QtWidgets.QGridLayout()
-    for y in range(2):
-        for x in range(2):
-            if x == 0 and y == 0:
-                quad_view.addWidget(Viewport3D(30), x, y)
-            else:
-                quad_view.addWidget(Viewport2D(15), x, y)
-    window.setLayout(quad_view)
     window.show()
     # need initializeGL called by the viewport we setup
     # so the window must be shown FIRST to call initGL
-    quad_view.itemAtPosition(0, 0).widget().sharedGLsetup()
+    window.widget().layout().itemAt(1).widget().sharedGLsetup()
     
     sys.exit(app.exec_())
