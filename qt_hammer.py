@@ -2,6 +2,13 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 import viewports
 
+sys.path.insert(0, 'utilities')
+import vmf_tool
+import solid_tool
+
+def except_hook(cls, exception, traceback): # for debugging python called by Qt
+    sys.__excepthook__(cls, exception, traceback)
+sys.excepthook = except_hook
 
 def print_methods(obj, filter_lambda=lambda x: True, joiner='\n'):
     methods = [a for a in dir(obj) if hasattr(getattr(obj, a), '__call__')]
@@ -48,17 +55,17 @@ file_menu = menu.addMenu('&File')
 new_file = file_menu.addAction('&New')
 new_file.setShortcut('Ctrl+N')
 
-tabs = []
-def new_tab(vmf=None): # add a new viewport
-    global new_file_count, window, tabs
-    new_file_count += 1
-    map_dock = viewports.QuadViewportDock(f'untitled {new_file_count}') # feed in vmf here
-    tabs.append(map_dock)
-    window.addDockWidget(QtCore.Qt.TopDockWidgetArea, map_dock)
-    # add dock as tab if already have one dock ?
+##tabs = []
+##def new_tab(vmf=None): # add a new viewport
+##    global new_file_count, window, tabs
+##    new_file_count += 1
+##    map_dock = viewports.QuadViewportDock(f'untitled {new_file_count}') # feed in vmf here
+##    tabs.append(map_dock)
+##    window.addDockWidget(QtCore.Qt.TopDockWidgetArea, map_dock)
+##    # add dock as tab if already have one dock ?
 ##    map_dock.widget().layout().itemAt(2).widget().sharedGLsetup() # too soon
     
-new_file.triggered.connect(new_tab) # also need to load .vmf into the manager
+##new_file.triggered.connect(new_tab) # also need to load .vmf into the manager
 
 open_file = file_menu.addAction('&Open')
 open_file.setShortcut('Ctrl+O')
@@ -131,16 +138,15 @@ map_menu.addSeparator()
 map_menu.addAction('Show &Information')
 map_menu.addAction('&Map Properties') # skybox / detail file
 
-search_menu = menu.addMenu('&Search')
+search_menu = menu.addMenu('&Search') # connect to active editor.find()
 search_menu.addAction('Find Entity')
 search_menu.addAction('Find IO')
 search_menu.addAction('Find + Replace IO')
 search_menu.addSeparator()
-search_menu.addAction('Goto Coordinates')
+search_menu.addAction('Go to Coordinates')
+search_menu.addAction('Go to Brush Number')
 
 view_menu = menu.addMenu('&View')
-view_menu.addAction('Add &Viewport')
-view_menu.addSeparator()
 view_menu.addAction('Center 2D Views on selection').setShortcut('Ctrl+E')
 view_menu.addAction('Center 3D Views on selection').setShortcut('Ctrl+Shift+E')
 view_menu.addAction('Go To &Coordinates')
@@ -203,21 +209,122 @@ menu.addAction(file_act) # ???
 
 window.setMenuBar(menu)
 
+# TOOLBARS
 key_tools = QtWidgets.QToolBar('Tools 1')
 key_tools.setMovable(False)
-button_1 = key_tools.addWidget(QtWidgets.QToolButton())
+button_1 = QtWidgets.QToolButton() # need icons (.png)
+button_1.setToolTip('Toggle 2D grid visibility')
+key_tools.addWidget(button_1)
+button_2 = QtWidgets.QToolButton()
+button_2.setToolTip('Toggle 3D grid visibility')
+key_tools.addWidget(button_2)
+button_3 = QtWidgets.QToolButton()
+button_3.setToolTip('Grid scale -  [')
+key_tools.addWidget(button_3)
+button_3 = QtWidgets.QToolButton()
+button_3.setToolTip('Grid scale +  ]')
+key_tools.addWidget(button_3)
+key_tools.addSeparator()
+# undo redo | carve | group ungroup ignore | hide unhide alt-hide |
+# cut copy paste | cordon radius | TL <TL> | DD 3D DW DA |
+# compile helpers 2D_models fade CM detail NO_DRAW
 window.addToolBar(QtCore.Qt.TopToolBarArea, key_tools)
 
-# toolbars
+# right-click "split view" anywhere? (blender style)
+# viewport type / mode selector
+
+class Highlighter(QtGui.QSyntaxHighlighter):
+    def __init__(self, parent=None): # parent is the document highlighted
+        super(Highlighter, self).__init__(parent)
+        self.text_formats = []
+        f1 = QtGui.QTextCharFormat()
+        f1.setBackground(QtCore.Qt.yellow)
+        self.text_formats.append(f1)
+        f2 = QtGui.QTextCharFormat()
+        f2.setFontWeight(QtGui.QFont.Bold)
+        f2.setBackground(QtCore.Qt.yellow)
+        self.text_formats.append(f2)
+        
+        self.expressions = []
+        f1_exp = QtCore.QRegularExpression("\".*\"") # catches quotes
+        self.expressions.append(f1_exp)
+        f2_exp = QtCore.QRegularExpression("\[.*\]|\(.*\)|[0-9]")
+        self.expressions.append(f2_exp)
+
+
+        self.rules = {0: 0, 1: 1}
+
+        # match with a dict
+
+    def highlightBlock(self, text):
+        for text_format, expression in self.rules.items():
+            text_format = self.text_formats[text_format]
+            expression = self.expressions[expression]
+            matcher = expression.globalMatch(text)
+            while matcher.hasNext():
+                match = matcher.next()
+                start = match.capturedStart()
+                length = match.capturedLength()
+                self.setFormat(start, length, text_format)
+
+# can we make diff higlighting?
+# need lots of stats on lines
+# can we jump straight into the undo-redo stack?
+# apply / preview updates (changes)
+
+# this is where the magic happens
+vmf = open('tests/vmfs/test.vmf') # QFile may load with less errors
+vmf_text = vmf.read()
+vmf_object = vmf_tool.namespace_from(vmf_text) # interacts
+workspace = QtWidgets.QSplitter(QtCore.Qt.Vertical)
+viewport = viewports.Viewport2D(30)
+
+# load vmf into viewport
+
+##def vmf_setup(viewport, vmf):
+##    viewport.draw_calls['shadername'] = (0, len(???))
+##viewport.executeGL(vmf_setup, vmf)
+
+workspace.addWidget(viewport)
+editor = QtWidgets.QPlainTextEdit()
+font = QtGui.QFont()
+font.setFamily("Courier")
+font.setFixedPitch(True) # fullwidth
+font.setPointSize(8)
+editor.setFont(font)
+editor.insertPlainText(vmf_text)
+editor.document().clearUndoRedoStacks(QtGui.QTextDocument.UndoStack)
+# document switcher & some options in a layout? (font, font size etc)
+# top bar of things
+editor.setDocumentTitle('test.vmf')
+# cursor pos getter (line:character)
+# if A < line_no < B:
+#     solid = X
+# keep diffs (utilise undo / redo)
+# undo history
+# wireframe preview
+# enter to apply
+# string to solid
+# tris to solid (OBJ LOAD / MODEL EDITING)
+# solid to string (VMF FILE)
+# solid to tris (RENDERER)
+editor.setTabStopWidth(20) # approx~ 4 spaces
+# more r-click options
+# contract segment (model-view ?)
+# show limited attributes per solid.side (simplified view)
+# line numbers
+# live diff
+# update viewport & vmf_object
+syntax_highlighter = Highlighter(editor.document())
+##syntax_highlighter.setDocument(editor.document()) # doesn't update automatically?
+workspace.addWidget(editor)
+
+window.setCentralWidget(workspace)
 
 ##window.showMaximized() # start with maximised window
 window.show()
 
-new_tab() # REMEMBER! SIGNAL & SLOTS DON'T REPORT ERRORS!
-
-for i, t in enumerate(tabs):
-    # contexts aren't sharing?
-    tabs[i].widget().layout().itemAt(1).widget().sharedGLsetup()
+workspace.widget(0).sharedGLsetup()
 
 app.exec_() # loop?
 

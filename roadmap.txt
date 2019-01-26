@@ -37,6 +37,9 @@ Save appearance settings to file
     Share with .zip
 Undo & Redo
 
+3D selection
+    https://www.opengl.org/archives/resources/faq/technical/selection.htm
+
     
 --==Nice To Have Features==--
 Forest fill (prop family, density, falloff side, sort by tricount)
@@ -146,3 +149,9 @@ Mirror edit
     Texture / vert changes etc
 Vertex Edit (when moving large selection) can also move point entity centres & overlays
 Cylinder texture wrap
+Deformable Grid
+    Spline displacement warp section
+    Ratio locked segments (2:3 etc.)
+    tools snap to grid
+    warp straight segment to new grid
+    grid preview

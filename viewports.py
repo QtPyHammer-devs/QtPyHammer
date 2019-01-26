@@ -15,7 +15,7 @@ import solid_tool # must be loaded AFTER vmf_tool (how do dependencies work?)
 view_modes = ['flat', 'textured', 'wireframe']
 # "silhouette" view mode, lights on black brushwork & props
 
-class Viewport2D(QtWidgets.QOpenGLWidget): # remove from docks
+class Viewport2D(QtWidgets.QOpenGLWidget):
     def __init__(self, fps=30, parent=None):
         super(Viewport2D, self).__init__(parent)
         self.timer = QtCore.QTimer()
@@ -54,10 +54,10 @@ class Viewport2D(QtWidgets.QOpenGLWidget): # remove from docks
         glClearColor(0, 0, 0, 0)
         # glEnables
         glColor(.75, .75, .75)
-##        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
         glEnable(GL_TEXTURE_2D)
 
-    def sharedGLsetup(self): # call manually in one viewport once all are made
+    def sharedGLsetup(self): # call once when sharing context with others
         """Sets up buffers, textures & shaders shared across many viewports"""
         self.makeCurrent()
         glEnable(GL_TEXTURE_2D)
@@ -70,7 +70,6 @@ class Viewport2D(QtWidgets.QOpenGLWidget): # remove from docks
         glColor(1, 1, 1)
         self.doneCurrent()
 ##        return buffer_handles, shader_handles, texture_handles
-        print('sharing')
 
     def paintGL(self): # how do we use Qt OpenGL functions?
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -84,12 +83,6 @@ class Viewport2D(QtWidgets.QOpenGLWidget): # remove from docks
         glTexCoord(0, 1)
         glVertex(0, 1, 0)
         glEnd()
-
-##        glEnableClientState(GL_VERTEX_ARRAY)
-##        a = [[-.5, .5], [.5, .5], [.5, -.5], [-.5, -.5]]
-##        glVertexPointerf(a)
-##        glDrawArrays(GL_POLYGON, 0, len(a))
-##        glFlush()
 
     def update(self):
         super(Viewport2D, self).update()
@@ -121,7 +114,7 @@ class Viewport3D(Viewport2D):
         # change shader to flat (flat / wireframe)
         # or to complex (textured)
 
-    def keyPressEvent(self, event):
+    def keyPressEvent(self, event): # how do>
         self.keys += event.key()
         if event.key() == QtCore.Qt.Key_Z:
             self.camera_moving = False if self.camera_moving else True
@@ -169,15 +162,10 @@ class Viewport3D(Viewport2D):
             # need to sample mouse vector (relative updates)
             self.camera.update(self.mouse, self.keys, self.dt)
 
-# dock widget containing 4 viewports
-# window.tabifyDockWidget(?, QuadViewportDock())
-# WHY AREN'T CONTEXTS SHARING?
-# make a widget class
-# dock is likely breaking contexts
-class QuadViewportDock(QtWidgets.QDockWidget):
-    def __init__(self, title, parent=None):
-        super(QuadViewportDock, self).__init__(title, parent)
-        widget = QtWidgets.QWidget() # dock cannot use layout itself
+# WHY AREN'T CONTEXTS SHARING?  ??????????????????????
+class QuadViewport(QtWidgets.QWidget): # busted
+    def __init__(self, parent=None):
+        super(QuadViewport, self).__init__(parent)
         quad_layout = QtWidgets.QGridLayout()
         for y in range(2):
             for x in range(2):
@@ -185,34 +173,39 @@ class QuadViewportDock(QtWidgets.QDockWidget):
                     quad_layout.addWidget(Viewport3D(30), x, y)
                 else:
                     quad_layout.addWidget(Viewport2D(15), x, y)
-        widget.setLayout(quad_layout)
-        self.setWidget(widget)
-        # setup shared context stuff
-    # 4 viewports
-    # .vmf
-    # buffers
-    # camera(s)
-    # shaders
-##    def ...
-    # LOAD VMF AND MAKE SOME BUFFER HANDLES
+        self.setLayout(quad_layout)
+
+    def show(self, *args, **kwargs):
+        super(QuadViewport, self).show(*args, **kwargs)
+        self.layout().itemAt(1).widget().sharedGLsetup()
+
 
 if __name__ == "__main__":
     import sys
 
     def except_hook(cls, exception, traceback):
         sys.__excepthook__(cls, exception, traceback)
-
     sys.excepthook = except_hook
     # ^^^ for python debugging inside Qt ^^^ #
 
     QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
     app = QtWidgets.QApplication(sys.argv)
     
-    window = QuadViewportDock('Untitled')
+##    window = QuadViewport()
+##    window.setGeometry(256, 256, 512, 512)
+##    window.show()
+    
+    window = QtWidgets.QWidget()
     window.setGeometry(256, 256, 512, 512)
+    layout = QtWidgets.QGridLayout()
+    window.setLayout(layout)
+    for y in range(2):
+        for x in range(2):
+            if x == 0 and y == 0:
+                window.layout().addWidget(Viewport3D(30), x, y)
+            else:
+                window.layout().addWidget(Viewport2D(15), x, y)
     window.show()
-    # need initializeGL called by the viewport we setup
-    # so the window must be shown FIRST to call initGL
-    window.widget().layout().itemAt(1).widget().sharedGLsetup()
+    window.layout().itemAt(1).widget().sharedGLsetup()
     
     sys.exit(app.exec_())
