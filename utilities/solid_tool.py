@@ -227,16 +227,17 @@ class solid:
                 uv[0] /= u_scale
                 uv[1] /= v_scale
 
-                assembled_vertex = tuple(itertools.chain(*zip(vertex, normal, uv, self.colour)))
+                assembled_vertex = tuple(itertools.chain(vertex, normal, uv, self.colour))
                 if assembled_vertex not in self.string_vertices:
                     self.vertices.append(assembled_vertex)
                     face_indices.append(len(self.vertices) - 1)
                 else:
                     face_indices.append(self.vertices.index(assembled_vertex))
-            face_indices = loop_fan_indices(face_indices)
+
+            face_indices = loop_fan(face_indices)
             self.index_map.append((start_index, len(face_indices)))
-            start_index += len(face_indices)
             self.indices += face_indices
+            start_index += len(face_indices)
         
         all_x = [v[0] for v in self.string_vertices]
         all_y = [v[1] for v in self.string_vertices]

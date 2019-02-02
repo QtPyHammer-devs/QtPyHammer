@@ -36,6 +36,7 @@ Save appearance settings to file
     Custom Icons
     Share with .zip
 Undo & Redo
+3 point plane clipping tool
 
 3D selection
     https://www.opengl.org/archives/resources/faq/technical/selection.htm
@@ -155,3 +156,4 @@ Deformable Grid
     tools snap to grid
     warp straight segment to new grid
     grid preview
+DOOM2016 weapon wheel texture / brush select

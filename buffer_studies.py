@@ -23,36 +23,6 @@ import vmf_tool
 import vector
 import solid_tool # must be loaded AFTER vmf_tool (how do dependencies work?)
 
-class pivot(enum.Enum): # for selections of more than one brush / entity
-    """like blender pivot point"""
-    median = 0
-    active = 1
-    cursor = 2
-    individual = 3
-
-
-def draw_aabb(aabb):
-    """"Precede with "glBegin(GL_QUADS)"\nExpects glPolygonMode to be GL_LINE"""
-    glVertex(aabb.min.x, aabb.max.y, aabb.max.z)
-    glVertex(aabb.max.x, aabb.max.y, aabb.max.z)
-    glVertex(aabb.max.x, aabb.min.y, aabb.max.z)
-    glVertex(aabb.min.x, aabb.min.y, aabb.max.z)
-
-    glVertex(aabb.min.x, aabb.max.y, aabb.max.z)
-    glVertex(aabb.max.x, aabb.max.y, aabb.max.z)
-    glVertex(aabb.max.x, aabb.max.y, aabb.min.z)
-    glVertex(aabb.min.x, aabb.max.y, aabb.min.z)
-
-    glVertex(aabb.min.x, aabb.min.y, aabb.max.z)
-    glVertex(aabb.max.x, aabb.min.y, aabb.max.z)
-    glVertex(aabb.max.x, aabb.min.y, aabb.min.z)
-    glVertex(aabb.min.x, aabb.min.y, aabb.min.z)
-
-    glVertex(aabb.min.x, aabb.max.y, aabb.min.z)
-    glVertex(aabb.max.x, aabb.max.y, aabb.min.z)
-    glVertex(aabb.max.x, aabb.min.y, aabb.min.z)
-    glVertex(aabb.min.x, aabb.min.y, aabb.min.z)
-
 
 def loop_fan(vertices):
     out = vertices[:3]
@@ -77,9 +47,7 @@ def main(vmf_path, width=1024, height=576):
     glClearColor(0.1, 0.1, 0.1, 0.0)
     glColor(1, 1, 1)
     gluPerspective(90, width / height, 0.1, 4096 * 4)
-##    glOrtho(-width / 4, width / 4, -height / 4, height / 4, 0.1, 8096)
     glEnable(GL_DEPTH_TEST)
-##    glEnable(GL_CULL_FACE)
     glPolygonMode(GL_BACK, GL_LINE)
     glFrontFace(GL_CW)
     glPointSize(4)
@@ -102,7 +70,6 @@ def main(vmf_path, width=1024, height=576):
     for brush in imported_vmf.world.solids:
         # bootleg auto-visgroup
         if not any([face.material == 'TOOLS/SKIP' or face.material == 'TOOLS/HINT' or 'CLIP' in face.material.upper() for face in brush.sides]):
-##        if any([hasattr(face, 'dispinfo') for face in brush.sides]):
             string_solids.append(brush)
     for entity in imported_vmf.entities:
         if hasattr(entity, 'solid'):
@@ -127,51 +94,64 @@ def main(vmf_path, width=1024, height=576):
     
     brush_index_map = [s.index_map for s in solids]
 
-    # vertices, indices & draw_call map ((brush (faces, ...)), ...)
-    # [brush[sides], ... ] TO:
-    # vertices bytes,
-    # indices bytes &
-    # [(brush (start, len), side (start, len), ...), ...]
-    # use compress sequence to assemble draw calls
-
-##    try: # GLSL 450
-##        # Vertex Shaders
-##        vert_shader_brush = compileShader(open('shaders/GLSL_450/verts_brush.v', 'rb'), GL_VERTEX_SHADER)
-##        vert_shader_displacement = compileShader(open('shaders/GLSL_450/verts_displacement.v', 'rb'), GL_VERTEX_SHADER)
-##        # Fragment Shaders
-##        frag_shader_brush_flat = compileShader(open('shaders/GLSL_450/brush_flat.f', 'rb'), GL_FRAGMENT_SHADER)
-##        frag_shader_displacement_flat = compileShader(open('shaders/GLSL_450/displacement_flat.f', 'rb'), GL_FRAGMENT_SHADER)
-##    except RuntimeError as exc: # GLES 3.00
-##        # Vertex Shaders
-##        vert_shader_brush = compileShader(open('shaders/GLES_300/verts_brush.v', 'rb'), GL_VERTEX_SHADER)
-##        vert_shader_displacement = compileShader(open('shaders/GLES_300/verts_displacement.v', 'rb'), GL_VERTEX_SHADER)
-##        # Fragment Shaders
-##        frag_shader_brush_flat = compileShader(open('shaders/GLES_300/brush_flat.f', 'rb'), GL_FRAGMENT_SHADER)
-##        frag_shader_displacement_flat = compileShader(open('shaders/GLES_300/displacement_flat.f', 'rb'), GL_FRAGMENT_SHADER)
-##    # Programs
-##    program_flat_brush = compileProgram(vert_shader_brush, frag_shader_brush_flat)
-##    program_flat_displacement = compileProgram(vert_shader_displacement, frag_shader_displacement_flat)
-##    glLinkProgram(program_flat_brush)
-##    glLinkProgram(program_flat_displacement)
+    try: # GLSL 450
+        # Vertex Shaders
+        vert_shader_brush = compileShader(open('shaders/GLSL_450/verts_brush.v', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_displacement = compileShader(open('shaders/GLSL_450/verts_displacement.v', 'rb'), GL_VERTEX_SHADER)
+        # Fragment Shaders
+        frag_shader_brush_flat = compileShader(open('shaders/GLSL_450/brush_flat.f', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_displacement_flat = compileShader(open('shaders/GLSL_450/displacement_flat.f', 'rb'), GL_FRAGMENT_SHADER)
+    except RuntimeError as exc: # GLES 3.00
+        # Vertex Shaders
+        vert_shader_brush = compileShader(open('shaders/GLES_300/verts_brush.v', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_displacement = compileShader(open('shaders/GLES_300/verts_displacement.v', 'rb'), GL_VERTEX_SHADER)
+        # Fragment Shaders
+        frag_shader_brush_flat = compileShader(open('shaders/GLES_300/brush_flat.f', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_displacement_flat = compileShader(open('shaders/GLES_300/displacement_flat.f', 'rb'), GL_FRAGMENT_SHADER)
+##        # Shader Attributes
+##        attrib_brush_position = glGetAttribLocation(vert_shader_brush, 'vertex_position')
+##        attrib_brush_normal = glGetAttribLocation(vert_shader_brush, 'vertex_normal')
+##        attrib_brush_uv = glGetAttribLocation(vert_shader_brush, 'vertex_uv')
+##        attrib_brush_colour = glGetAttribLocation(vert_shader_brush, 'editor_colour')
 ##
-##    # Vertex Buffer
-##    VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
-##    glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER)
-##    glBufferData(GL_ARRAY_BUFFER, len(vertices) * 4, np.array(vertices, dtype=np.float32), GL_STATIC_DRAW)
-##    # Index Buffer
-##    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
-##    glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * 4, np.array(indices, dtype=np.uint32), GL_STATIC_DRAW)
-##    # Vertex Format
-##    glEnableVertexAttribArray(0) # vertex_position
-##    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 40, GLvoidp(0))
-##    glEnableVertexAttribArray(1) # vertex_normal
-##    glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 40, GLvoidp(12))
-##    glEnableVertexAttribArray(2) # vertex_uv
-##    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 40, GLvoidp(24))
-##    glEnableVertexAttribArray(4) # editor_colour
-##    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 40, GLvoidp(32))
-##    # blend_alpha (displacement)
-##    glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, 40, GLvoidp(12)) # replace vertex_normal
+##        attrib_displacement_position = glGetAttribLocation(vert_shader_displacement, 'vertex_position')
+##        attrib_displacement_blend = glGetAttribLocation(vert_shader_displacement, 'blend_alpha')
+##        attrib_displacement_uv = glGetAttribLocation(vert_shader_displacement, 'vertex_uv')
+##        attrib_displacement_colour = glGetAttribLocation(vert_shader_displacement, 'editor_colour')
+##
+##        attrib_brush_matrix = glGetAttribLocation(vert_shader_brush, 'ModelViewProjectionMatrix')
+##        attrib_displacement_matrix = glGetAttribLocation(vert_shader_displacement, 'ModelViewProjectionMatrix')
+    # Programs
+    program_flat_brush = compileProgram(vert_shader_brush, frag_shader_brush_flat)
+    program_flat_displacement = compileProgram(vert_shader_displacement, frag_shader_displacement_flat)
+    glLinkProgram(program_flat_brush)
+    glLinkProgram(program_flat_displacement)
+
+    vertices = []
+    indices = []
+    for solid in solids:
+        vertices += solid.vertices
+        indices += solid.indices
+    # works without buffers
+
+    # Vertex Buffer
+    VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
+    glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER)
+    glBufferData(GL_ARRAY_BUFFER, len(vertices) * 4, np.array(vertices, dtype=np.float32), GL_STATIC_DRAW)
+    # Index Buffer
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * 4, np.array(indices, dtype=np.uint32), GL_STATIC_DRAW)
+    # Vertex Format
+    glEnableVertexAttribArray(0) # vertex_position
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
+    glEnableVertexAttribArray(1) # vertex_normal
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 44, GLvoidp(12))
+    glEnableVertexAttribArray(2) # vertex_uv
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
+    glEnableVertexAttribArray(4) # editor_colour
+    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
+    # blend_alpha (displacement)
+    glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(12)) # replace vertex_normal
     
     print(f'{len(solids)} brushes loaded succesfully!')   
     print('import took {:.2f} seconds'.format(time.time() - start_import))
@@ -180,14 +160,14 @@ def main(vmf_path, width=1024, height=576):
     # Skybox, 3D grid, Origin Point
     # Editor Props (playerspawn, lights, sprite, path_track)
 
-    CAMERA = camera.freecam(None, None, 128)
+    CAMERA = camera.freecam((160, -160, 160), None, 128)
     render_solids = [s for s in solids if (s.center - CAMERA.position).sqrmagnitude() < 1024]
     rendered_ray = []
 
     SDL_SetRelativeMouseMode(SDL_TRUE)
     SDL_CaptureMouse(SDL_TRUE)
 
-    mousepos = vector.vec2()
+    mousepos = vector.vec2(-180, 120) # overrides start angle
     keys = []
             
     tickrate = 1 / 0.015
@@ -232,7 +212,7 @@ def main(vmf_path, width=1024, height=576):
             if SDLK_r in keys:
                 CAMERA = camera.freecam(None, None, 128)
             if SDLK_BACKQUOTE in keys:
-                print(f'CAMERA @ {CAMERA.position:.3f}')
+                print(f'CAMERA @ {CAMERA.position:.3f} & {CAMERA.rotation:.3f}')
                 print(f'Currently rendering {len(render_solids)} brushes')
                 
                 console_loop = True
@@ -258,6 +238,27 @@ def main(vmf_path, width=1024, height=576):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glPushMatrix()
         CAMERA.set()
+
+        # with buffers
+        glColor(1, 1, 1)
+        glDrawArrays(GL_POINTS, 0, 24) # vertices only
+        glUseProgram(program_flat_brush)
+        # indices
+        glDrawElements(GL_TRIANGLES, len(indices), GL_UNSIGNED_INT, GLvoidp(0))
+        glUseProgram(0)
+
+##        # without buffers
+##        glColor(1, 1, 1)
+##        glBegin(GL_POINTS)
+##        for vertex in vertices: # verts only
+##            glVertex(*vertex[:3])
+##        glEnd()
+##
+##        glColor(1, 0, 1)
+##        glBegin(GL_TRIANGLES)
+##        for index in indices: # indices
+##            glVertex(*vertices[index][:3])
+##        glEnd()
 
         # CENTER MARKER
         glLineWidth(1)
@@ -310,6 +311,7 @@ def main(vmf_path, width=1024, height=576):
 ##            glVertex(*vertex)
 ##        glEnd()
 
+##        # BRUSH FACES
 ##        glBegin(GL_TRIANGLES)
 ##        for solid in render_solids:
 ##            if not solid.is_displacement:
@@ -322,41 +324,32 @@ def main(vmf_path, width=1024, height=576):
 ##                    for vertex in solid.triangles[start:end]:
 ##                        glVertex(*vertex)
 ##        glEnd()
-
-        # buffer test
-        glBegin(GL_TRIANGLES)
-        for solid in render_solids:
-            if not solid.is_displacement:
-                glColor(*solid.colour)
-                for index in solid.indices:
-                    glVertex(*solid.vertices[index][:3])
-        glEnd()
-
-        # DISPLACEMENTS
-        glBegin(GL_TRIANGLES)
-        glColor(.5, .5, .5)
-        for solid in render_solids:
-            if solid.is_displacement:
-                glColor(1, 1, 1) # Hammer Default
-                for i, points in solid.displacement_triangles.items():
-                    for point, alpha, normal in points:
-                        Kd = (vector.dot(normal, (1, 1, 1)) / 16) + .75
-                        # clamped from 0.75 to 0.75 + 1/32
-                        blend = vector.lerp(solid.colour, solid.sides[i].blend_colour, alpha / 255)
-                        glColor(*[Kd * x for x in blend])
-                        glVertex(*point)
-        glEnd()
-            
-        # DISPLACEMENT NORMALS
-        glColor(1, .75, 0)
-        glBegin(GL_LINES)
-        for solid in render_solids:
-            if solid.is_displacement:
-                for side_index, points in solid.displacement_vertices.items():
-                    for point, alpha, normal in points:
-                        glVertex(*point)
-                        glVertex(*point + normal * 32)
-        glEnd()
+##
+##        # DISPLACEMENTS
+##        glBegin(GL_TRIANGLES)
+##        glColor(.5, .5, .5)
+##        for solid in render_solids:
+##            if solid.is_displacement:
+##                glColor(1, 1, 1) # Hammer Default
+##                for i, points in solid.displacement_triangles.items():
+##                    for point, alpha, normal in points:
+##                        Kd = (vector.dot(normal, (1, 1, 1)) / 16) + .75
+##                        # clamped from 0.75 to 0.75 + 1/32
+##                        blend = vector.lerp(solid.colour, solid.sides[i].blend_colour, alpha / 255)
+##                        glColor(*[Kd * x for x in blend])
+##                        glVertex(*point)
+##        glEnd()
+##
+##        # DISPLACEMENT NORMALS
+##        glColor(1, .75, 0)
+##        glBegin(GL_LINES)
+##        for solid in render_solids:
+##            if solid.is_displacement:
+##                for side_index, points in solid.displacement_vertices.items():
+##                    for point, alpha, normal in points:
+##                        glVertex(*point)
+##                        glVertex(*point + normal * 32)
+##        glEnd()
 
         # BRUSH BOUNDING BOXES
         # be sure to turn off backface culling

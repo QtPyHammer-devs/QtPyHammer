@@ -23,9 +23,6 @@ class Viewport2D(QtWidgets.QOpenGLWidget):
         self.timer.start(1000 / fps)
         self.dt = 1 / fps # will desynchronise
         self.fps = fps
-##        self.drawcalls = {}
-##        # buffer: {shader: [[index_start, index_len], ...]}
-##        # all GL_TRIANGLES
         # set render resolution?
         self.camera = camera.freecam(None, None, 128)
         ### BUFFERS ###
@@ -38,6 +35,7 @@ class Viewport2D(QtWidgets.QOpenGLWidget):
         # index buffer len
         # MODELS: (dynamic draw)
         # modelname: vertex(start, len), index(start, len)
+        self.draw_calls = dict() # shader: (VERTEX_buffer, INDEX_buffer, start, end)
 
     def executeGL(self, func, *args, **kwargs): # best hack ever
         """Execute func(self, *args, **kwargs) in this viewport's glContext"""
@@ -84,6 +82,8 @@ class Viewport2D(QtWidgets.QOpenGLWidget):
         glVertex(0, 1, 0)
         glEnd()
 
+        # do draw_calls
+
     def update(self):
         super(Viewport2D, self).update()
         # update animations (TICKS)
@@ -98,6 +98,7 @@ class Viewport3D(Viewport2D):
         self.fov = 90 # how do users change this?
         self.camera_moving = False
         self.camera_keys = list()
+        self.draw_calls = dict() # shader: (start, length)
     
     def changeViewMode(self, view_mode): # overlay viewmode button
         if self.view_mode == view_mode:
@@ -125,10 +126,15 @@ class Viewport3D(Viewport2D):
 
     def initializeGL(self):
         glClearColor(0, 0, 0, 0)
-        # find width & height before calling
-        gluPerspective(90, self.width() / self.height(), 0.1, 4096 * 4)
+        glMatrixMode(GL_PROJECTION)
+        glLoadIdentity()
+##        gluPerspective(self.fov, self.width() / self.height(), 0.1, 4096 * 4)
+        gluPerspective(self.fov, 1, 0.1, 4096 * 4)
+        glRotate(-90, 1, 0, 0)
+        glTranslate(0, 384, -64)
         glEnable(GL_DEPTH_TEST)
-        glEnable(GL_CULL_FACE)
+##        glEnable(GL_CULL_FACE)
+        glPolygonMode(GL_BACK, GL_LINE)
         glFrontFace(GL_CW)
         glPointSize(4)
 
@@ -136,28 +142,50 @@ class Viewport3D(Viewport2D):
         # gluPerspective
         # rotate camera
         # draw skybox
-        # translate
+        # translate camera
+        glUseProgram(0)
+        glRotate(30 * self.dt, 0, 0, 1)
         glPushMatrix()
         glLineWidth(1)
         glBegin(GL_LINES)
-        glColor(1, 0, 0)
-        glVertex(0, 0, 0)
-        glVertex(128, 0, 0)
-        glColor(0, 1, 0)
-        glVertex(0, 0, 0)
-        glVertex(0, 128, 0)
-        glColor(0, 0, 1)
-        glVertex(0, 0, 0)
-        glVertex(0, 0, 128)
+##        glColor(1, 0, 0)
+##        glVertex(0, 0, 0)
+##        glVertex(128, 0, 0)
+##        glColor(0, 1, 0)
+##        glVertex(0, 0, 0)
+##        glVertex(0, 128, 0)
+##        glColor(0, 0, 1)
+##        glVertex(0, 0, 0)
+##        glVertex(0, 0, 128)
+        # grid
+        glColor(.25, .25, .25)
+        for x in range(-512, 1, 64): # segment to avoid clip warping shape
+            for y in range(-512, 1, 64):
+                glVertex(x, y)
+                glVertex(x, -y)
+                glVertex(-x, y)
+                glVertex(-x, -y)
+                glVertex(y, x)
+                glVertex(-y, x)
+                glVertex(y, -x)
+                glVertex(-y, -x)
         glEnd()
         glPopMatrix()
 
+        # do draw_calls
+        for shader, index_map in self.draw_calls.items():
+            start, length = index_map
+            glUseProgram(shader)
+            glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
+
     def resizeGL(self, width, height):
-        self.makeCurrent()
-        gluPerspective(self.fov, width / height, 0.1, 1024)
-        self.doneCurrent()
+##        self.makeCurrent()
+##        gluPerspective(self.fov, width / height, 0.1, 4096 * 4)
+##        self.doneCurrent()
+        pass
 
     def update(self):
+        super(Viewport3D, self).update()
         if self.camera_moving:
             # need to sample mouse vector (relative updates)
             self.camera.update(self.mouse, self.keys, self.dt)

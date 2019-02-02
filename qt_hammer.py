@@ -1,5 +1,9 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
+import numpy as np # for vertex buffers
+from OpenGL.GL import * # Installed via pip (PyOpenGl 3.1.0)
+from OpenGL.GL.shaders import compileShader, compileProgram
+from OpenGL.GLU import *
 import viewports
 
 sys.path.insert(0, 'utilities')
@@ -274,16 +278,105 @@ class Highlighter(QtGui.QSyntaxHighlighter):
 
 # this is where the magic happens
 vmf = open('tests/vmfs/test.vmf') # QFile may load with less errors
+window.setWindowTitle(f'QtPyHammer - [{vmf.name}]')
 vmf_text = vmf.read()
 vmf_object = vmf_tool.namespace_from(vmf_text) # interacts
+# solids -> iterable
+if hasattr(vmf_object.world, 'solid'):
+    vmf_object.world.solids = [vmf_object.world.solid]
+    del vmf_object.world.solid
+if not hasattr(vmf_object.world, 'solids'):
+    vmf_object.world['solids'] = []
+# entities -> iterable
+if hasattr(vmf_object, 'entity'):
+    vmf_object.entities = [vmf_object.entity]
+    del vmf_object.entity
+if not hasattr(vmf_object, 'entities'):
+    vmf_object['entities'] = []
+
+# map brushes into a buffer
+# when editing a brush
+# keep old
+# make new from start line to terminator
+# remove from draw calls
+# add new to buffer
+
+# defrag buffer & maps function(s)
+        
 workspace = QtWidgets.QSplitter(QtCore.Qt.Vertical)
-viewport = viewports.Viewport2D(30)
+viewport = viewports.Viewport3D(30)
 
 # load vmf into viewport
 
-##def vmf_setup(viewport, vmf):
-##    viewport.draw_calls['shadername'] = (0, len(???))
-##viewport.executeGL(vmf_setup, vmf)
+def vmf_setup(viewport, vmf_object):
+    string_solids = [] # need starting line number of each for snappy updates
+    for brush in vmf_object.world.solids:
+        string_solids.append(brush)
+    for entity in vmf_object.entities: # do these cases ever occur?
+        if hasattr(entity, 'solid'):
+            if isinstance(entity.solid, vmf_tool.namespace):
+                string_solids.append(entity.solid)
+        if hasattr(entity, 'solids'):
+            if isinstance(entity.solids[0], vmf_tool.namespace):
+                string_solids += entity.solids
+    brushes = []
+    for brush in string_solids:
+        try:
+            brushes.append(solid_tool.solid(brush))
+        except Exception as exc:
+            print(f"Invalid solid! (id {brush.id})")
+            print(exc, '\n')
+
+    vertices = []
+    indices = []
+    buffer_map = dict() # brush.id: (start, len) # start and len in index buffer
+    for solid in brushes: # build buffer
+        buffer_map[solid.string_solid.id] = (len(indices), len(solid.indices))
+        vertices += solid.vertices
+        indices += solid.indices
+
+    try: # GLSL 450
+        # Vertex Shaders
+        vert_shader_brush = compileShader(open('shaders/GLSL_450/verts_brush.v', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_displacement = compileShader(open('shaders/GLSL_450/verts_displacement.v', 'rb'), GL_VERTEX_SHADER)
+        # Fragment Shaders
+        frag_shader_brush_flat = compileShader(open('shaders/GLSL_450/brush_flat.f', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_displacement_flat = compileShader(open('shaders/GLSL_450/displacement_flat.f', 'rb'), GL_FRAGMENT_SHADER)
+    except RuntimeError as exc: # GLES 3.00
+        # Vertex Shaders
+        vert_shader_brush = compileShader(open('shaders/GLES_300/verts_brush.v', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_displacement = compileShader(open('shaders/GLES_300/verts_displacement.v', 'rb'), GL_VERTEX_SHADER)
+        # Fragment Shaders
+        frag_shader_brush_flat = compileShader(open('shaders/GLES_300/brush_flat.f', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_displacement_flat = compileShader(open('shaders/GLES_300/displacement_flat.f', 'rb'), GL_FRAGMENT_SHADER)
+    # Programs
+    program_flat_brush = compileProgram(vert_shader_brush, frag_shader_brush_flat)
+    program_flat_displacement = compileProgram(vert_shader_displacement, frag_shader_displacement_flat)
+    glLinkProgram(program_flat_brush)
+    glLinkProgram(program_flat_displacement)
+
+    # Vertex Buffer
+    VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
+    glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER)
+    glBufferData(GL_ARRAY_BUFFER, len(vertices) * 4, np.array(vertices, dtype=np.float32), GL_STATIC_DRAW)
+    # Index Buffer
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * 4, np.array(indices, dtype=np.uint32), GL_STATIC_DRAW)
+    # Vertex Format
+    glEnableVertexAttribArray(0) # vertex_position
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
+    glEnableVertexAttribArray(1) # vertex_normal
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 44, GLvoidp(12))
+    glEnableVertexAttribArray(2) # vertex_uv
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
+    glEnableVertexAttribArray(4) # editor_colour
+    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
+    # glEnableVertexAttribArray(5) # blend_alpha (displacements, overrides 1)
+    glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(12))
+
+    viewport.buffers = [VERTEX_BUFFER, INDEX_BUFFER]
+    viewport.programs = [program_flat_brush, program_flat_displacement]
+    viewport.draw_calls[viewport.programs[0]] = (0, len(indices))
 
 workspace.addWidget(viewport)
 editor = QtWidgets.QPlainTextEdit()
@@ -323,6 +416,10 @@ window.setCentralWidget(workspace)
 
 ##window.showMaximized() # start with maximised window
 window.show()
+
+viewport.executeGL(vmf_setup, vmf_object) # need active gl context
+# use surfaces & QGLWindow?
+# http://doc.qt.io/qt-5/qtgui-index.html#opengl-and-opengl-es-integration
 
 workspace.widget(0).sharedGLsetup()
 
