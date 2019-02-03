@@ -94,6 +94,8 @@ def main(vmf_path, width=1024, height=576):
     
     brush_index_map = [s.index_map for s in solids]
 
+    GLES_MODE = False
+
     try: # GLSL 450
         # Vertex Shaders
         vert_shader_brush = compileShader(open('shaders/GLSL_450/verts_brush.v', 'rb'), GL_VERTEX_SHADER)
@@ -102,30 +104,45 @@ def main(vmf_path, width=1024, height=576):
         frag_shader_brush_flat = compileShader(open('shaders/GLSL_450/brush_flat.f', 'rb'), GL_FRAGMENT_SHADER)
         frag_shader_displacement_flat = compileShader(open('shaders/GLSL_450/displacement_flat.f', 'rb'), GL_FRAGMENT_SHADER)
     except RuntimeError as exc: # GLES 3.00
+        GLES_MODE = True
         # Vertex Shaders
         vert_shader_brush = compileShader(open('shaders/GLES_300/verts_brush.v', 'rb'), GL_VERTEX_SHADER)
         vert_shader_displacement = compileShader(open('shaders/GLES_300/verts_displacement.v', 'rb'), GL_VERTEX_SHADER)
         # Fragment Shaders
         frag_shader_brush_flat = compileShader(open('shaders/GLES_300/brush_flat.f', 'rb'), GL_FRAGMENT_SHADER)
         frag_shader_displacement_flat = compileShader(open('shaders/GLES_300/displacement_flat.f', 'rb'), GL_FRAGMENT_SHADER)
-##        # Shader Attributes
-##        attrib_brush_position = glGetAttribLocation(vert_shader_brush, 'vertex_position')
-##        attrib_brush_normal = glGetAttribLocation(vert_shader_brush, 'vertex_normal')
-##        attrib_brush_uv = glGetAttribLocation(vert_shader_brush, 'vertex_uv')
-##        attrib_brush_colour = glGetAttribLocation(vert_shader_brush, 'editor_colour')
-##
-##        attrib_displacement_position = glGetAttribLocation(vert_shader_displacement, 'vertex_position')
-##        attrib_displacement_blend = glGetAttribLocation(vert_shader_displacement, 'blend_alpha')
-##        attrib_displacement_uv = glGetAttribLocation(vert_shader_displacement, 'vertex_uv')
-##        attrib_displacement_colour = glGetAttribLocation(vert_shader_displacement, 'editor_colour')
-##
-##        attrib_brush_matrix = glGetAttribLocation(vert_shader_brush, 'ModelViewProjectionMatrix')
-##        attrib_displacement_matrix = glGetAttribLocation(vert_shader_displacement, 'ModelViewProjectionMatrix')
     # Programs
     program_flat_brush = compileProgram(vert_shader_brush, frag_shader_brush_flat)
     program_flat_displacement = compileProgram(vert_shader_displacement, frag_shader_displacement_flat)
     glLinkProgram(program_flat_brush)
     glLinkProgram(program_flat_displacement)
+
+    MVP_matrix = ((1, 0, 0, 0),
+                  (0, 1, 0, 0),
+                  (0, 0, 1, 0),
+                  (0, 0, 0, 1))
+
+    glUseProgram(program_flat_brush)
+    # Attributes
+    attrib_brush_position = glGetAttribLocation(program_flat_brush, 'vertex_position')
+    attrib_brush_normal = glGetAttribLocation(program_flat_brush, 'vertex_normal')
+    attrib_brush_uv = glGetAttribLocation(program_flat_brush, 'vertex_uv')
+    attrib_brush_colour = glGetAttribLocation(program_flat_brush, 'editor_colour')
+    # Uniforms
+    uniform_brush_matrix = glGetUniformLocation(program_flat_brush, 'ModelViewProjectionMatrix')
+    glUniform4f(uniform_brush_matrix, *MVP_matrix)
+
+    glUseProgram(program_flat_displacement)
+    # Attributes
+    attrib_displacement_position = glGetAttribLocation(program_flat_displacement, 'vertex_position')
+    attrib_displacement_blend = glGetAttribLocation(program_flat_displacement, 'blend_alpha')
+    attrib_displacement_uv = glGetAttribLocation(program_flat_displacement, 'vertex_uv')
+    attrib_displacement_colour = glGetAttribLocation(program_flat_displacement, 'editor_colour')
+    # Uniforms
+    uniform_displacement_matrix = glGetUniformLocation(vert_shader_displacement, 'ModelViewProjectionMatrix')
+    glUniform4f(uniform_displacement_matrix, *MVP_matrix)
+
+    glUseProgram(0)
 
     vertices = []
     indices = []
@@ -150,8 +167,8 @@ def main(vmf_path, width=1024, height=576):
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
     glEnableVertexAttribArray(4) # editor_colour
     glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
-    # blend_alpha (displacement)
-    glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(12)) # replace vertex_normal
+##    # blend_alpha (displacement)
+##    glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(12)) # replace vertex_normal
     
     print(f'{len(solids)} brushes loaded succesfully!')   
     print('import took {:.2f} seconds'.format(time.time() - start_import))
@@ -242,10 +259,10 @@ def main(vmf_path, width=1024, height=576):
         # with buffers
         glColor(1, 1, 1)
         glDrawArrays(GL_POINTS, 0, 24) # vertices only
-        glUseProgram(program_flat_brush)
+##        glUseProgram(program_flat_brush)
         # indices
         glDrawElements(GL_TRIANGLES, len(indices), GL_UNSIGNED_INT, GLvoidp(0))
-        glUseProgram(0)
+##        glUseProgram(0)
 
 ##        # without buffers
 ##        glColor(1, 1, 1)
