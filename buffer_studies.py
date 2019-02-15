@@ -117,10 +117,10 @@ def main(vmf_path, width=1024, height=576):
     glLinkProgram(program_flat_brush)
     glLinkProgram(program_flat_displacement)
 
-    MVP_matrix = ((1, 0, 0, 0),
-                  (0, 1, 0, 0),
-                  (0, 0, 1, 0),
-                  (0, 0, 0, 1))
+    MVP_matrix = (1, 0, 0, 0,
+                  0, 1, 0, 0,
+                  0, 0, 1, 0,
+                  0, 0, 0, 1)
 
     glUseProgram(program_flat_brush)
     # Attributes
@@ -130,7 +130,7 @@ def main(vmf_path, width=1024, height=576):
     attrib_brush_colour = glGetAttribLocation(program_flat_brush, 'editor_colour')
     # Uniforms
     uniform_brush_matrix = glGetUniformLocation(program_flat_brush, 'ModelViewProjectionMatrix')
-    glUniform4f(uniform_brush_matrix, *MVP_matrix)
+    glUniform4fv(uniform_brush_matrix, 16, MVP_matrix)
 
     glUseProgram(program_flat_displacement)
     # Attributes
@@ -140,7 +140,7 @@ def main(vmf_path, width=1024, height=576):
     attrib_displacement_colour = glGetAttribLocation(program_flat_displacement, 'editor_colour')
     # Uniforms
     uniform_displacement_matrix = glGetUniformLocation(vert_shader_displacement, 'ModelViewProjectionMatrix')
-    glUniform4f(uniform_displacement_matrix, *MVP_matrix)
+    glUniformMatrix4fv(uniform_displacement_matrix, 1, GL_FALSE, MVP_matrix)
 
     glUseProgram(0)
 
