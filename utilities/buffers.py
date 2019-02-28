@@ -20,20 +20,20 @@
 ## 1 Quad == 176 bytes
 ## 1 Cube == 528 bytes
 
-### --- 48 bytes DISPLACEMENT VERTEX FORMAT --- ###
+### --- 44 bytes DISPLACEMENT VERTEX FORMAT --- ###
 # -- 12 bytes  (3 float32)  Position
-# -- 12 bytes  (3 float32)  Normal
-# -- 8  bytes  (2 float32)  UV
 # -- 4  bytes  (1 float32)  Alpha
+# -- 8  bytes  (padding)    Padding
+# -- 8  bytes  (2 float32)  UV
 # -- 12 bytes  (3 float32)  Colour
-## Power1 == 432   bytes (9   vertices)
-## Power2 == 1200  bytes (25  vertices)
-## Power3 == 3888  bytes (81  vertices)
-## Power4 == 13872 bytes (289 vertices)
+## Power1 == 396   bytes (9   vertices)
+## Power2 == 1100  bytes (25  vertices)
+## Power3 == 3564  bytes (81  vertices)
+## Power4 == 12716 bytes (289 vertices)
 
-### 100 Power 2 Displacements = 120 000 ~ 120MB
-### 100 Power 3 Displacements = 388 800 ~ 390MB
-## 100 Power2 + 100 Power3 = 510MB
+### 100 Power 2 Displacements = 110 000 ~ 110MB
+### 100 Power 3 Displacements = 35 6400 ~ 360MB
+## 100 Power2 + 100 Power3 = 470MB
 ## ~ 512MB Displacement VRAM
 ## 200 Cube Solids = 105 600 ~ 106MB
 
