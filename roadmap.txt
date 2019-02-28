@@ -157,3 +157,5 @@ Deformable Grid
     warp straight segment to new grid
     grid preview
 DOOM2016 weapon wheel texture / brush select
+Mute / Solo Visgroup
+Autogroup based on diff (focus on one building one area makes it a visgroup)

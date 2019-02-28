@@ -120,29 +120,30 @@ def main(vmf_path, width=1024, height=576):
     MVP_matrix = (1, 0, 0, 0,
                   0, 1, 0, 0,
                   0, 0, 1, 0,
-                  0, 0, 0, 1)
+                  0, 0, 0, 1) # bad format, breaks everything
 
-    glUseProgram(program_flat_brush)
-    # Attributes
-    attrib_brush_position = glGetAttribLocation(program_flat_brush, 'vertex_position')
-    attrib_brush_normal = glGetAttribLocation(program_flat_brush, 'vertex_normal')
-    attrib_brush_uv = glGetAttribLocation(program_flat_brush, 'vertex_uv')
-    attrib_brush_colour = glGetAttribLocation(program_flat_brush, 'editor_colour')
-    # Uniforms
-    uniform_brush_matrix = glGetUniformLocation(program_flat_brush, 'ModelViewProjectionMatrix')
-    glUniform4fv(uniform_brush_matrix, 16, MVP_matrix)
+    if GLES_MODE == True:
+        glUseProgram(program_flat_brush)
+        # Attributes
+        attrib_brush_position = glGetAttribLocation(program_flat_brush, 'vertex_position')
+        attrib_brush_normal = glGetAttribLocation(program_flat_brush, 'vertex_normal')
+        attrib_brush_uv = glGetAttribLocation(program_flat_brush, 'vertex_uv')
+        attrib_brush_colour = glGetAttribLocation(program_flat_brush, 'editor_colour')
+        # Uniforms
+        uniform_brush_matrix = glGetUniformLocation(program_flat_brush, 'ModelViewProjectionMatrix')
+        glUniform4fv(uniform_brush_matrix, 16, MVP_matrix)
 
-    glUseProgram(program_flat_displacement)
-    # Attributes
-    attrib_displacement_position = glGetAttribLocation(program_flat_displacement, 'vertex_position')
-    attrib_displacement_blend = glGetAttribLocation(program_flat_displacement, 'blend_alpha')
-    attrib_displacement_uv = glGetAttribLocation(program_flat_displacement, 'vertex_uv')
-    attrib_displacement_colour = glGetAttribLocation(program_flat_displacement, 'editor_colour')
-    # Uniforms
-    uniform_displacement_matrix = glGetUniformLocation(vert_shader_displacement, 'ModelViewProjectionMatrix')
-    glUniformMatrix4fv(uniform_displacement_matrix, 1, GL_FALSE, MVP_matrix)
+        glUseProgram(program_flat_displacement)
+        # Attributes
+        attrib_displacement_position = glGetAttribLocation(program_flat_displacement, 'vertex_position')
+        attrib_displacement_blend = glGetAttribLocation(program_flat_displacement, 'blend_alpha')
+        attrib_displacement_uv = glGetAttribLocation(program_flat_displacement, 'vertex_uv')
+        attrib_displacement_colour = glGetAttribLocation(program_flat_displacement, 'editor_colour')
+        # Uniforms
+        uniform_displacement_matrix = glGetUniformLocation(vert_shader_displacement, 'ModelViewProjectionMatrix')
+        glUniformMatrix4fv(uniform_displacement_matrix, 1, GL_FALSE, MVP_matrix)
 
-    glUseProgram(0)
+        glUseProgram(0)
 
     vertices = []
     indices = []
@@ -259,10 +260,10 @@ def main(vmf_path, width=1024, height=576):
         # with buffers
         glColor(1, 1, 1)
         glDrawArrays(GL_POINTS, 0, 24) # vertices only
-##        glUseProgram(program_flat_brush)
+        glUseProgram(program_flat_brush)
         # indices
         glDrawElements(GL_TRIANGLES, len(indices), GL_UNSIGNED_INT, GLvoidp(0))
-##        glUseProgram(0)
+        glUseProgram(0)
 
 ##        # without buffers
 ##        glColor(1, 1, 1)
