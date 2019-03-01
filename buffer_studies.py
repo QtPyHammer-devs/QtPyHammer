@@ -117,32 +117,39 @@ def main(vmf_path, width=1024, height=576):
     glLinkProgram(program_flat_brush)
     glLinkProgram(program_flat_displacement)
 
-    MVP_matrix = np.array((1, 0, 0, 0,
-                           0, 1, 0, 0,
-                           0, 0, 1, 0,
-                           0, 0, 0, 1), dtype=np.float32)
+    if GLES_MODE == True:
+        import math
+        f = 1 / math.tan(math.radians(90 / 2)) # cotangent(fov / 2)
+        aspect = width / height
+        far = 4096 * 4
+        near = 0.1
 
-    glUseProgram(program_flat_brush)
-    # Attributes
-    attrib_brush_position = glGetAttribLocation(program_flat_brush, 'vertex_position')
-    attrib_brush_normal = glGetAttribLocation(program_flat_brush, 'vertex_normal')
-    attrib_brush_uv = glGetAttribLocation(program_flat_brush, 'vertex_uv')
-    attrib_brush_colour = glGetAttribLocation(program_flat_brush, 'editor_colour')
-    # Uniforms
-    uniform_brush_matrix = glGetUniformLocation(program_flat_brush, 'ModelViewProjectionMatrix')
-    glUniformMatrix4fv(uniform_brush_matrix, 1, GL_FALSE, MVP_matrix)
+        MVP_matrix = np.array((f/aspect, 0, 0, 0,
+                               0, f, 0, 0,
+                               0, 0, far + near / near - far, -1,
+                               0, 0, (2 * near * far)/ near - far, 0), dtype=np.float32)
 
-    glUseProgram(program_flat_displacement)
-    # Attributes
-    attrib_displacement_position = glGetAttribLocation(program_flat_displacement, 'vertex_position')
-    attrib_displacement_blend = glGetAttribLocation(program_flat_displacement, 'blend_alpha')
-    attrib_displacement_uv = glGetAttribLocation(program_flat_displacement, 'vertex_uv')
-    attrib_displacement_colour = glGetAttribLocation(program_flat_displacement, 'editor_colour')
-    # Uniforms
-    uniform_displacement_matrix = glGetUniformLocation(program_flat_displacement, 'ModelViewProjectionMatrix')
-    glUniformMatrix4fv(uniform_displacement_matrix, 1, GL_FALSE, MVP_matrix)
+        glUseProgram(program_flat_brush)
+        # Attributes
+        attrib_brush_position = glGetAttribLocation(program_flat_brush, 'vertex_position')
+        attrib_brush_normal = glGetAttribLocation(program_flat_brush, 'vertex_normal')
+        attrib_brush_uv = glGetAttribLocation(program_flat_brush, 'vertex_uv')
+        attrib_brush_colour = glGetAttribLocation(program_flat_brush, 'editor_colour')
+        # Uniforms
+        uniform_brush_matrix = glGetUniformLocation(program_flat_brush, 'ModelViewProjectionMatrix')
+        glUniformMatrix4fv(uniform_brush_matrix, 1, GL_FALSE, MVP_matrix)
 
-    glUseProgram(0)
+        glUseProgram(program_flat_displacement)
+        # Attributes
+        attrib_displacement_position = glGetAttribLocation(program_flat_displacement, 'vertex_position')
+        attrib_displacement_blend = glGetAttribLocation(program_flat_displacement, 'blend_alpha')
+        attrib_displacement_uv = glGetAttribLocation(program_flat_displacement, 'vertex_uv')
+        attrib_displacement_colour = glGetAttribLocation(program_flat_displacement, 'editor_colour')
+        # Uniforms
+        uniform_displacement_matrix = glGetUniformLocation(program_flat_displacement, 'ModelViewProjectionMatrix')
+        glUniformMatrix4fv(uniform_displacement_matrix, 1, GL_FALSE, MVP_matrix)
+
+        glUseProgram(0)
 
     split_vertices = []
     indices = []
