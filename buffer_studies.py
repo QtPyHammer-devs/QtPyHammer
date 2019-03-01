@@ -155,7 +155,7 @@ def main(vmf_path, width=1024, height=576):
     indices = []
     for solid in solids:
         split_vertices += solid.vertices
-        indices += solid.indices
+        indices += [len(split_vertices) + i for i in solid.indices]
     vertices = tuple(itertools.chain(*split_vertices))
 
     # Vertex Buffer
@@ -390,8 +390,8 @@ def main(vmf_path, width=1024, height=576):
 
 if __name__ == '__main__':
     try:
-        main('tests/vmfs/test.vmf')
-##        main('tests/vmfs/test2.vmf')
+##        main('tests/vmfs/test.vmf')
+        main('tests/vmfs/test2.vmf')
 ##        main('tests/vmfs/sdk_pl_goldrush.vmf')
 ##        main('tests/vmfs/pl_upward_d.vmf')
     except Exception as exc:

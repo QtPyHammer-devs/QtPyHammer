@@ -1,3 +1,4 @@
+import itertools
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 import numpy as np # for vertex buffers
@@ -8,7 +9,8 @@ import viewports
 
 sys.path.insert(0, 'utilities')
 import vmf_tool
-import solid_tool
+import solid_tool # import second or errors occur
+import vector # for moving camera
 
 def except_hook(cls, exception, traceback): # for debugging python called by Qt
     sys.__excepthook__(cls, exception, traceback)
@@ -26,7 +28,7 @@ def print_methods(obj, filter_lambda=lambda x: True, joiner='\n'):
 # edit vmf as text (text editor)
 # IDE (colours, auto-complete) preserve solids
 # use IDE tools to attempt recovery of corrupt vmfs
-# recovery tools in general
+#### == >>> recovery tools in general <<< == ###
 
 new_file_count = 0
 
@@ -68,7 +70,7 @@ new_file.setShortcut('Ctrl+N')
 ##    window.addDockWidget(QtCore.Qt.TopDockWidgetArea, map_dock)
 ##    # add dock as tab if already have one dock ?
 ##    map_dock.widget().layout().itemAt(2).widget().sharedGLsetup() # too soon
-    
+
 ##new_file.triggered.connect(new_tab) # also need to load .vmf into the manager
 
 open_file = file_menu.addAction('&Open')
@@ -272,7 +274,9 @@ class Highlighter(QtGui.QSyntaxHighlighter):
 # apply / preview updates (changes)
 
 # this is where the magic happens
-vmf = open('tests/vmfs/test.vmf') # QFile may load with less errors
+# ATTACH TO OPEN ACTION SIGNAL
+print('Loading .vmf ...')
+vmf = open('tests/vmfs/pl_upward_d.vmf') # QFile may load with less errors
 window.setWindowTitle(f'QtPyHammer - [{vmf.name}]')
 vmf_text = vmf.read()
 vmf_object = vmf_tool.namespace_from(vmf_text) # interacts
@@ -288,26 +292,23 @@ if hasattr(vmf_object, 'entity'):
     del vmf_object.entity
 if not hasattr(vmf_object, 'entities'):
     vmf_object['entities'] = []
+print('.vmf Loaded!')
 
-# map brushes into a buffer
 # when editing a brush
 # keep old
 # make new from start line to terminator
-# remove from draw calls
 # add new to buffer
 
-# defrag buffer & maps function(s)
-        
+# defrag the buffer on timer or command?
+
 workspace = QtWidgets.QSplitter(QtCore.Qt.Vertical)
 viewport = viewports.Viewport3D(30)
 
-# load vmf into viewport
-
 def vmf_setup(viewport, vmf_object):
-    string_solids = [] # need starting line number of each for snappy updates
+    string_solids = [] # need per solid line numbers for snappy updates
     for brush in vmf_object.world.solids:
         string_solids.append(brush)
-    for entity in vmf_object.entities: # do these cases ever occur?
+    for entity in vmf_object.entities: # do some of these cases never occur?
         if hasattr(entity, 'solid'):
             if isinstance(entity.solid, vmf_tool.namespace):
                 string_solids.append(entity.solid)
@@ -322,33 +323,71 @@ def vmf_setup(viewport, vmf_object):
             print(f"Invalid solid! (id {brush.id})")
             print(exc, '\n')
 
-    vertices = []
+    split_vertices = []
     indices = []
     buffer_map = dict() # brush.id: (start, len) # start and len in index buffer
     for solid in brushes: # build buffer
         buffer_map[solid.string_solid.id] = (len(indices), len(solid.indices))
-        vertices += solid.vertices
-        indices += solid.indices
+        split_vertices += solid.vertices
+        indices += [len(split_vertices) + i for i in solid.indices]
+    vertices = tuple(itertools.chain(*split_vertices))
+
+    GLES_MODE = False
 
     try: # GLSL 450
         # Vertex Shaders
-        vert_shader_brush = compileShader(open('shaders/GLSL_450/verts_brush.v', 'rb'), GL_VERTEX_SHADER)
-        vert_shader_displacement = compileShader(open('shaders/GLSL_450/verts_displacement.v', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_brush = compileShader(open('shaders/GLSL_450/verts_brush.vert', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_displacement = compileShader(open('shaders/GLSL_450/verts_displacement.vert', 'rb'), GL_VERTEX_SHADER)
         # Fragment Shaders
-        frag_shader_brush_flat = compileShader(open('shaders/GLSL_450/brush_flat.f', 'rb'), GL_FRAGMENT_SHADER)
-        frag_shader_displacement_flat = compileShader(open('shaders/GLSL_450/displacement_flat.f', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_brush_flat = compileShader(open('shaders/GLSL_450/brush_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_displacement_flat = compileShader(open('shaders/GLSL_450/displacement_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
     except RuntimeError as exc: # GLES 3.00
+        GLES_MODE = True
         # Vertex Shaders
         vert_shader_brush = compileShader(open('shaders/GLES_300/verts_brush.v', 'rb'), GL_VERTEX_SHADER)
-        vert_shader_displacement = compileShader(open('shaders/GLES_300/verts_displacement.v', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_displacement = compileShader(open('shaders/GLES_300/verts_displacement.vert', 'rb'), GL_VERTEX_SHADER)
         # Fragment Shaders
-        frag_shader_brush_flat = compileShader(open('shaders/GLES_300/brush_flat.f', 'rb'), GL_FRAGMENT_SHADER)
-        frag_shader_displacement_flat = compileShader(open('shaders/GLES_300/displacement_flat.f', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_brush_flat = compileShader(open('shaders/GLES_300/brush_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_displacement_flat = compileShader(open('shaders/GLES_300/displacement_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
     # Programs
     program_flat_brush = compileProgram(vert_shader_brush, frag_shader_brush_flat)
     program_flat_displacement = compileProgram(vert_shader_displacement, frag_shader_displacement_flat)
     glLinkProgram(program_flat_brush)
     glLinkProgram(program_flat_displacement)
+
+    if GLES_MODE == True:
+        import math
+        f = 1 / math.tan(math.radians(90 / 2)) # cotangent(fov / 2)
+        aspect = width / height
+        far = 4096 * 4
+        near = 0.1
+
+        MVP_matrix = np.array((f/aspect, 0, 0, 0,
+                               0, f, 0, 0,
+                               0, 0, far + near / near - far, -1,
+                               0, 0, (2 * near * far)/ near - far, 0), dtype=np.float32)
+
+        glUseProgram(program_flat_brush)
+        # Attributes
+        attrib_brush_position = glGetAttribLocation(program_flat_brush, 'vertex_position')
+        attrib_brush_normal = glGetAttribLocation(program_flat_brush, 'vertex_normal')
+        attrib_brush_uv = glGetAttribLocation(program_flat_brush, 'vertex_uv')
+        attrib_brush_colour = glGetAttribLocation(program_flat_brush, 'editor_colour')
+        # Uniforms
+        uniform_brush_matrix = glGetUniformLocation(program_flat_brush, 'ModelViewProjectionMatrix')
+        glUniformMatrix4fv(uniform_brush_matrix, 1, GL_FALSE, MVP_matrix)
+
+        glUseProgram(program_flat_displacement)
+        # Attributes
+        attrib_displacement_position = glGetAttribLocation(program_flat_displacement, 'vertex_position')
+        attrib_displacement_blend = glGetAttribLocation(program_flat_displacement, 'blend_alpha')
+        attrib_displacement_uv = glGetAttribLocation(program_flat_displacement, 'vertex_uv')
+        attrib_displacement_colour = glGetAttribLocation(program_flat_displacement, 'editor_colour')
+        # Uniforms
+        uniform_displacement_matrix = glGetUniformLocation(program_flat_displacement, 'ModelViewProjectionMatrix')
+        glUniformMatrix4fv(uniform_displacement_matrix, 1, GL_FALSE, MVP_matrix)
+
+        glUseProgram(0)
 
     # Vertex Buffer
     VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
@@ -360,18 +399,22 @@ def vmf_setup(viewport, vmf_object):
     # Vertex Format
     glEnableVertexAttribArray(0) # vertex_position
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
-    glEnableVertexAttribArray(1) # vertex_normal
+    glEnableVertexAttribArray(1) # vertex_normal (brush only)
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 44, GLvoidp(12))
     glEnableVertexAttribArray(2) # vertex_uv
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
     glEnableVertexAttribArray(4) # editor_colour
     glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
-    # glEnableVertexAttribArray(5) # blend_alpha (displacements, overrides 1)
+    # glEnableVertexAttribArray(5) # blend_alpha (displacement only)
     glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(12))
 
+    # change to dictionaries
     viewport.buffers = [VERTEX_BUFFER, INDEX_BUFFER]
     viewport.programs = [program_flat_brush, program_flat_displacement]
     viewport.draw_calls[viewport.programs[0]] = (0, len(indices))
+
+camera_controls = QtWidgets.QWidget() # series of dials and sliders to move viewport camera
+# add to right of viewport with a HBoxLayout
 
 workspace.addWidget(viewport)
 editor = QtWidgets.QPlainTextEdit()
@@ -419,8 +462,3 @@ viewport.executeGL(vmf_setup, vmf_object) # need active gl context
 workspace.widget(0).sharedGLsetup()
 
 app.exec_() # loop?
-
-
-
-
-

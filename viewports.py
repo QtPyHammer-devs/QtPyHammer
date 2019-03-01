@@ -98,6 +98,7 @@ class Viewport3D(Viewport2D):
         self.camera_moving = False
         self.camera_keys = list()
         self.draw_calls = dict() # shader: (start, length)
+        self.camera.position += (0, -384, 64)
     
     def changeViewMode(self, view_mode): # overlay viewmode button
         if self.view_mode == view_mode:
@@ -127,10 +128,7 @@ class Viewport3D(Viewport2D):
         glClearColor(0, 0, 0, 0)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-##        gluPerspective(self.fov, self.width() / self.height(), 0.1, 4096 * 4)
-        gluPerspective(self.fov, 1, 0.1, 4096 * 4)
-        glRotate(-90, 1, 0, 0)
-        glTranslate(0, 384, -64)
+        gluPerspective(self.fov, self.width() / self.height(), 0.1, 4096 * 4)
         glEnable(GL_DEPTH_TEST)
 ##        glEnable(GL_CULL_FACE)
         glPolygonMode(GL_BACK, GL_LINE)
@@ -138,25 +136,13 @@ class Viewport3D(Viewport2D):
         glPointSize(4)
 
     def paintGL(self):
-        # gluPerspective
-        # rotate camera
-        # draw skybox
-        # translate camera
-        glUseProgram(0)
-        glRotate(30 * self.dt, 0, 0, 1)
         glPushMatrix()
-        glLineWidth(1)
-        glBegin(GL_LINES)
-##        glColor(1, 0, 0)
-##        glVertex(0, 0, 0)
-##        glVertex(128, 0, 0)
-##        glColor(0, 1, 0)
-##        glVertex(0, 0, 0)
-##        glVertex(0, 128, 0)
-##        glColor(0, 0, 1)
-##        glVertex(0, 0, 0)
-##        glVertex(0, 0, 128)
-        # grid
+        self.camera.set()
+        glUseProgram(0)
+##        # orbit center at 30 degrees per second
+##        self.camera.rotation.z = (self.camera.rotation.z + 30 * self.dt) % 360
+##        self.camera.position = self.camera.position.rotate(0, 0, -30 * self.dt)
+        glBegin(GL_LINES) # GRID
         glColor(.25, .25, .25)
         for x in range(-512, 1, 64): # segment to avoid clip warping shape
             for y in range(-512, 1, 64):
@@ -169,19 +155,18 @@ class Viewport3D(Viewport2D):
                 glVertex(y, -x)
                 glVertex(-y, -x)
         glEnd()
-        glPopMatrix()
-
-        # do draw_calls
+        # DRAW CALLS
         for shader, index_map in self.draw_calls.items():
             start, length = index_map
             glUseProgram(shader)
             glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
+        glPopMatrix()
 
     def resizeGL(self, width, height):
 ##        self.makeCurrent()
-##        gluPerspective(self.fov, width / height, 0.1, 4096 * 4)
 ##        self.doneCurrent()
-        pass
+        glLoadIdentity()
+        gluPerspective(self.fov, self.width() / self.height(), 0.1, 4096 * 4)
 
     def update(self):
         super(Viewport3D, self).update()
