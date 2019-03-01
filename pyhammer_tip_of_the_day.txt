@@ -3,5 +3,5 @@ If you click on any of the logos listed at https://wiki.teamfortress.com/wiki/Li
 Check https://teamwork.tf/community/map-stats to see if someone came up with the same awesome map name as you!
 
 https://docs.google.com/spreadsheets/d/1vzK6g2DA4PWlcw6cIy2BITWyjXh3ilWXSNJ7Ucl4hFM/edit?usp=sharing
-Idolon Payload Timings
+Idolon's Payload & Payload Race Minimum Round Times
 # Auto map timings are handy (use .nav?)

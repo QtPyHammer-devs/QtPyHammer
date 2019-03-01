@@ -84,18 +84,18 @@ def main(vmf_path, width=1024, height=576):
 
 ##    try: # GLSL 450
 ##        # Vertex Shaders
-##        vert_shader_brush = compileShader(open('shaders/GLSL_450/verts_brush.v', 'rb'), GL_VERTEX_SHADER)
-##        vert_shader_displacement = compileShader(open('shaders/GLSL_450/verts_displacement.v', 'rb'), GL_VERTEX_SHADER)
+##        vert_shader_brush = compileShader(open('shaders/GLSL_450/verts_brush.vert', 'rb'), GL_VERTEX_SHADER)
+##        vert_shader_displacement = compileShader(open('shaders/GLSL_450/verts_displacement.vert', 'rb'), GL_VERTEX_SHADER)
 ##        # Fragment Shaders
-##        frag_shader_brush_flat = compileShader(open('shaders/GLSL_450/brush_flat.f', 'rb'), GL_FRAGMENT_SHADER)
-##        frag_shader_displacement_flat = compileShader(open('shaders/GLSL_450/displacement_flat.f', 'rb'), GL_FRAGMENT_SHADER)
+##        frag_shader_brush_flat = compileShader(open('shaders/GLSL_450/brush_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
+##        frag_shader_displacement_flat = compileShader(open('shaders/GLSL_450/displacement_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
 ##    except RuntimeError as exc: # GLES 3.00
 ##        # Vertex Shaders
-##        vert_shader_brush = compileShader(open('shaders/GLES_300/verts_brush.v', 'rb'), GL_VERTEX_SHADER)
-##        vert_shader_displacement = compileShader(open('shaders/GLES_300/verts_displacement.v', 'rb'), GL_VERTEX_SHADER)
+##        vert_shader_brush = compileShader(open('shaders/GLES_300/verts_brush.vert', 'rb'), GL_VERTEX_SHADER)
+##        vert_shader_displacement = compileShader(open('shaders/GLES_300/verts_displacement.vert', 'rb'), GL_VERTEX_SHADER)
 ##        # Fragment Shaders
-##        frag_shader_brush_flat = compileShader(open('shaders/GLES_300/brush_flat.f', 'rb'), GL_FRAGMENT_SHADER)
-##        frag_shader_displacement_flat = compileShader(open('shaders/GLES_300/displacement_flat.f', 'rb'), GL_FRAGMENT_SHADER)
+##        frag_shader_brush_flat = compileShader(open('shaders/GLES_300/brush_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
+##        frag_shader_displacement_flat = compileShader(open('shaders/GLES_300/displacement_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
 ##    # Programs
 ##    program_flat_brush = compileProgram(vert_shader_brush, frag_shader_brush_flat)
 ##    program_flat_displacement = compileProgram(vert_shader_displacement, frag_shader_displacement_flat)

@@ -17,7 +17,8 @@ I/O Autocomplete
     Allow users to choose expected !activator (but expect player & check flags)
 Realtime skybox & sun preview
 Multiple viewports
-    See blender subwindows
+    Like blender subwindows
+    Split / Merge
 Process .vmt & .vtf
     Material flags & texture compression
     Thumbnails
@@ -132,28 +133,31 @@ Action History Text Log
 Plain English IO Debugging
     Identify Keywords, Contexts and Discern what should be examined
 Demo playback tools
-    Swap to killer (killcam)
     Rewind
-    Choose target (scoreboard, click in 3d, name in chat)
+    Jump to target (scoreboard, click in 3d, name in chat)
     Chokemap (mark rough owned territories & front lines)
-    As close to player HUD as possible
+    Heatmaps with decay (radius, heat & decay sliders)
+    As close to player experience as possible
 Snap to vertex
-3D Skybox Background
+Customise Background / Skybox
     Skybox Browser
     Skybox Editor
-Set Background Colour
+    Void Skybox / Colour
+    Replace "tools/skybox" with skybox
 Preview map in 3D skybox & vice-versa
     Optional Tint / Transparency
 Quick Instance
     Duplicate a brush model while working on it
 Mirror edit
     Texture / vert changes etc
-Vertex Edit (when moving large selection) can also move point entity centres & overlays
+    Model flipper (auto-pack)
+Vertex Edit also moves point entity centres & overlays (toggle on key)
 Cylinder texture wrap
 Deformable Grid
     Spline displacement warp section
     Ratio locked segments (2:3 etc.)
     tools snap to grid
     warp straight segment to new grid
-    grid preview
+    grid preview (render warped segments over regular)
+Hide floor (auto-visgroup)
 DOOM2016 weapon wheel texture / brush select

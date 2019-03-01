@@ -240,28 +240,23 @@ window.addToolBar(QtCore.Qt.TopToolBarArea, key_tools)
 class Highlighter(QtGui.QSyntaxHighlighter):
     def __init__(self, parent=None): # parent is the document highlighted
         super(Highlighter, self).__init__(parent)
-        self.text_formats = []
+        self.expressions = {}
+        self.expressions['quotes'] = QtCore.QRegularExpression("\".*\"")
+        self.expressions['numbers'] = QtCore.QRegularExpression("\[.*\]|\(.*\)|[0-9]")
+
+        self.text_formats = {}
         f1 = QtGui.QTextCharFormat()
         f1.setBackground(QtCore.Qt.yellow)
-        self.text_formats.append(f1)
+        self.text_formats['basic'] = f1
         f2 = QtGui.QTextCharFormat()
         f2.setFontWeight(QtGui.QFont.Bold)
         f2.setBackground(QtCore.Qt.yellow)
-        self.text_formats.append(f2)
-        
-        self.expressions = []
-        f1_exp = QtCore.QRegularExpression("\".*\"") # catches quotes
-        self.expressions.append(f1_exp)
-        f2_exp = QtCore.QRegularExpression("\[.*\]|\(.*\)|[0-9]")
-        self.expressions.append(f2_exp)
+        self.text_formats['bold'] = f2
 
-
-        self.rules = {0: 0, 1: 1}
-
-        # match with a dict
+        self.rules = {'quotes': 'basic', 'numbers': 'bold'}
 
     def highlightBlock(self, text):
-        for text_format, expression in self.rules.items():
+        for expression, text_format in self.rules.items():
             text_format = self.text_formats[text_format]
             expression = self.expressions[expression]
             matcher = expression.globalMatch(text)

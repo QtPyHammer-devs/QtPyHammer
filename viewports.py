@@ -1,6 +1,5 @@
 # try qopengl to keep dependecies simple & multi-platform
 from OpenGL.GL import *
-from OpenGL.GL.shaders import compileShader, compileProgram
 from OpenGL.GLU import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 

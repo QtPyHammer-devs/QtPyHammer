@@ -98,29 +98,29 @@ def main(vmf_path, width=1024, height=576):
 
     try: # GLSL 450
         # Vertex Shaders
-        vert_shader_brush = compileShader(open('shaders/GLSL_450/verts_brush.v', 'rb'), GL_VERTEX_SHADER)
-        vert_shader_displacement = compileShader(open('shaders/GLSL_450/verts_displacement.v', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_brush = compileShader(open('shaders/GLSL_450/verts_brush.vert', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_displacement = compileShader(open('shaders/GLSL_450/verts_displacement.vert', 'rb'), GL_VERTEX_SHADER)
         # Fragment Shaders
-        frag_shader_brush_flat = compileShader(open('shaders/GLSL_450/brush_flat.f', 'rb'), GL_FRAGMENT_SHADER)
-        frag_shader_displacement_flat = compileShader(open('shaders/GLSL_450/displacement_flat.f', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_brush_flat = compileShader(open('shaders/GLSL_450/brush_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_displacement_flat = compileShader(open('shaders/GLSL_450/displacement_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
     except RuntimeError as exc: # GLES 3.00
         GLES_MODE = True
         # Vertex Shaders
-        vert_shader_brush = compileShader(open('shaders/GLES_300/verts_brush.v', 'rb'), GL_VERTEX_SHADER)
-        vert_shader_displacement = compileShader(open('shaders/GLES_300/verts_displacement.v', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_brush = compileShader(open('shaders/GLES_300/verts_brush.vert', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_displacement = compileShader(open('shaders/GLES_300/verts_displacement.vert', 'rb'), GL_VERTEX_SHADER)
         # Fragment Shaders
-        frag_shader_brush_flat = compileShader(open('shaders/GLES_300/brush_flat.f', 'rb'), GL_FRAGMENT_SHADER)
-        frag_shader_displacement_flat = compileShader(open('shaders/GLES_300/displacement_flat.f', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_brush_flat = compileShader(open('shaders/GLES_300/brush_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_displacement_flat = compileShader(open('shaders/GLES_300/displacement_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
     # Programs
     program_flat_brush = compileProgram(vert_shader_brush, frag_shader_brush_flat)
     program_flat_displacement = compileProgram(vert_shader_displacement, frag_shader_displacement_flat)
     glLinkProgram(program_flat_brush)
     glLinkProgram(program_flat_displacement)
 
-    MVP_matrix = (1, 0, 0, 0,
-                  0, 1, 0, 0,
-                  0, 0, 1, 0,
-                  0, 0, 0, 1)
+    MVP_matrix = np.array((1, 0, 0, 0,
+                           0, 1, 0, 0,
+                           0, 0, 1, 0,
+                           0, 0, 0, 1), dtype=np.float32)
 
     glUseProgram(program_flat_brush)
     # Attributes
@@ -130,7 +130,7 @@ def main(vmf_path, width=1024, height=576):
     attrib_brush_colour = glGetAttribLocation(program_flat_brush, 'editor_colour')
     # Uniforms
     uniform_brush_matrix = glGetUniformLocation(program_flat_brush, 'ModelViewProjectionMatrix')
-    glUniform4fv(uniform_brush_matrix, 16, MVP_matrix)
+    glUniformMatrix4fv(uniform_brush_matrix, 1, GL_FALSE, MVP_matrix)
 
     glUseProgram(program_flat_displacement)
     # Attributes
@@ -139,17 +139,17 @@ def main(vmf_path, width=1024, height=576):
     attrib_displacement_uv = glGetAttribLocation(program_flat_displacement, 'vertex_uv')
     attrib_displacement_colour = glGetAttribLocation(program_flat_displacement, 'editor_colour')
     # Uniforms
-    uniform_displacement_matrix = glGetUniformLocation(vert_shader_displacement, 'ModelViewProjectionMatrix')
+    uniform_displacement_matrix = glGetUniformLocation(program_flat_displacement, 'ModelViewProjectionMatrix')
     glUniformMatrix4fv(uniform_displacement_matrix, 1, GL_FALSE, MVP_matrix)
 
     glUseProgram(0)
 
-    vertices = []
+    split_vertices = []
     indices = []
     for solid in solids:
-        vertices += solid.vertices
+        split_vertices += solid.vertices
         indices += solid.indices
-    # works without buffers
+    vertices = tuple(itertools.chain(*split_vertices))
 
     # Vertex Buffer
     VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
@@ -162,7 +162,7 @@ def main(vmf_path, width=1024, height=576):
     glEnableVertexAttribArray(0) # vertex_position
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
     glEnableVertexAttribArray(1) # vertex_normal
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 44, GLvoidp(12))
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(12))
     glEnableVertexAttribArray(2) # vertex_uv
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
     glEnableVertexAttribArray(4) # editor_colour
@@ -259,22 +259,22 @@ def main(vmf_path, width=1024, height=576):
         # with buffers
         glColor(1, 1, 1)
         glDrawArrays(GL_POINTS, 0, 24) # vertices only
-##        glUseProgram(program_flat_brush)
+        glUseProgram(program_flat_brush)
         # indices
         glDrawElements(GL_TRIANGLES, len(indices), GL_UNSIGNED_INT, GLvoidp(0))
-##        glUseProgram(0)
+        glUseProgram(0)
 
-##        # without buffers
+        # without buffers
 ##        glColor(1, 1, 1)
 ##        glBegin(GL_POINTS)
-##        for vertex in vertices: # verts only
+##        for vertex in split_vertices: # verts only
 ##            glVertex(*vertex[:3])
 ##        glEnd()
 ##
 ##        glColor(1, 0, 1)
 ##        glBegin(GL_TRIANGLES)
 ##        for index in indices: # indices
-##            glVertex(*vertices[index][:3])
+##            glVertex(*split_vertices[index][:3])
 ##        glEnd()
 
         # CENTER MARKER
