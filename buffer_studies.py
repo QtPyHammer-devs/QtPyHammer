@@ -109,7 +109,7 @@ def main(vmf_path, width=1024, height=576):
         frag_shader_flat_brush = compileShader(open('shaders/GLES_300/flat_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
         frag_shader_flat_displacement = compileShader(open('shaders/GLES_300/flat_displacement.frag', 'rb'), GL_FRAGMENT_SHADER)
         frag_shader_stripey_brush = compileShader(open('shaders/GLES_300/stripey_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
-        raise exc # to debug GLSL 4.5 shaders
+##        raise exc # to debug GLSL 4.5 shaders
     # Programs
     program_flat_brush = compileProgram(vert_shader_brush, frag_shader_flat_brush)
     program_flat_displacement = compileProgram(vert_shader_displacement, frag_shader_flat_displacement)
@@ -129,10 +129,22 @@ def main(vmf_path, width=1024, height=576):
 
     vertices = []
     indices = []
+    solid_map = dict()
+    displacement_ids = []
     for solid in solids:
+        if solid.is_displacement:
+            displacement_ids += solid.id
+        solid_map[solid.id] = (len(indices), len(solid.indices))
         vertices += solid.vertices
         indices += [len(vertices) + i for i in solid.indices]
     vertices = tuple(itertools.chain(*vertices))
+
+    # TODO: don't render solids that are also displacements
+    # TODO: render displacements from the buffer
+    
+    ### ====== BUFFER ====== ###
+    # solid verts | disp verts #
+    ############################
 
     # Vertex Buffer
     VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
@@ -356,9 +368,9 @@ def main(vmf_path, width=1024, height=576):
 if __name__ == '__main__':
     try:
 ##        main('tests/vmfs/test.vmf')
-##        main('tests/vmfs/test2.vmf')
+        main('tests/vmfs/test2.vmf')
 ##        main('tests/vmfs/sdk_pl_goldrush.vmf')
-        main('tests/vmfs/pl_upward_d.vmf')
+##        main('tests/vmfs/pl_upward_d.vmf')
     except Exception as exc:
         SDL_Quit()
         raise exc

@@ -77,6 +77,7 @@ def disp_tris(verts, power): # copied from snake-biscuits/bsp_tool/bsp_tool.py
     return tris
 
 
+#TODO: Know your line endings
 class solid:
     def __init__(self, string_solid):
         """Initialise from string, nested dict or namespace"""
@@ -89,6 +90,7 @@ class solid:
         else:
             raise RuntimeError(f'Tried to create solid from invalid type: {type(string_solid)}')
         self.string_solid = string_solid # preserve for debug & export
+        self.id = int(self.string_solid.id)
         self.colour = tuple(int(x) / 255 for x in string_solid.editor.color.split())
         self.string_triangles = [triangle_of(s) for s in string_solid.sides]
         self.string_vertices = list(itertools.chain(*self.string_triangles))
