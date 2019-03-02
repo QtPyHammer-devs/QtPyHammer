@@ -92,7 +92,6 @@ def main(vmf_path, width=1024, height=576):
     brush_index_map = [s.index_map for s in solids]
 
     GLES_MODE = False
-
     try: # GLSL 450
         # Vertex Shaders
         vert_shader_brush = compileShader(open('shaders/GLSL_450/brush.vert', 'rb'), GL_VERTEX_SHADER)
@@ -100,8 +99,9 @@ def main(vmf_path, width=1024, height=576):
         # Fragment Shaders
         frag_shader_flat_brush = compileShader(open('shaders/GLSL_450/flat_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
         frag_shader_flat_displacement = compileShader(open('shaders/GLSL_450/flat_displacement.frag', 'rb'), GL_FRAGMENT_SHADER)
-    except RuntimeError as exc: # GLES 3.00
-        GLES_MODE = True
+        frag_shader_stripey_brush = compileShader(open('shaders/GLSL_450/stripey_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
+    except RuntimeError as exc: # Wrong version or shader failed for another reason?
+        GLES_MODE = True # GLES 3.00
         # Vertex Shaders
         vert_shader_brush = compileShader(open('shaders/GLES_300/brush.vert', 'rb'), GL_VERTEX_SHADER)
         vert_shader_displacement = compileShader(open('shaders/GLES_300/displacement.vert', 'rb'), GL_VERTEX_SHADER)
@@ -109,6 +109,7 @@ def main(vmf_path, width=1024, height=576):
         frag_shader_flat_brush = compileShader(open('shaders/GLES_300/flat_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
         frag_shader_flat_displacement = compileShader(open('shaders/GLES_300/flat_displacement.frag', 'rb'), GL_FRAGMENT_SHADER)
         frag_shader_stripey_brush = compileShader(open('shaders/GLES_300/stripey_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
+        raise exc # to debug GLSL 4.5 shaders
     # Programs
     program_flat_brush = compileProgram(vert_shader_brush, frag_shader_flat_brush)
     program_flat_displacement = compileProgram(vert_shader_displacement, frag_shader_flat_displacement)
@@ -126,12 +127,12 @@ def main(vmf_path, width=1024, height=576):
         uniform_stripey_matrix = glGetUniformLocation(program_flat_brush, 'ModelViewProjectionMatrix')
         glUseProgram(0)
 
-    split_vertices = []
+    vertices = []
     indices = []
     for solid in solids:
-        split_vertices += solid.vertices
-        indices += [len(split_vertices) + i for i in solid.indices]
-    vertices = tuple(itertools.chain(*split_vertices))
+        vertices += solid.vertices
+        indices += [len(vertices) + i for i in solid.indices]
+    vertices = tuple(itertools.chain(*vertices))
 
     # Vertex Buffer
     VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
@@ -242,10 +243,6 @@ def main(vmf_path, width=1024, height=576):
         
 
         # draw brushes
-        glColor(1, 1, 1)
-        glDrawArrays(GL_POINTS, 0, len(vertices))
-        # when using GLES DrawArrays won't position correctly without shaders
-        # this means a pure white frag shader is needed to work with GLES
         glUseProgram(program_stripey_brush)
         if GLES_MODE:
             glUniformMatrix4fv(uniform_stripey_matrix, 1, GL_FALSE, MVP_matrix)
@@ -359,9 +356,9 @@ def main(vmf_path, width=1024, height=576):
 if __name__ == '__main__':
     try:
 ##        main('tests/vmfs/test.vmf')
-        main('tests/vmfs/test2.vmf')
+##        main('tests/vmfs/test2.vmf')
 ##        main('tests/vmfs/sdk_pl_goldrush.vmf')
-##        main('tests/vmfs/pl_upward_d.vmf')
+        main('tests/vmfs/pl_upward_d.vmf')
     except Exception as exc:
         SDL_Quit()
         raise exc
