@@ -83,72 +83,47 @@ def main(vmf_path, width=1024, height=576):
     for brush in string_solids:
         try:
             solids.append(solid_tool.solid(brush))
-        except Exception as exc:
+        except Exception as exc: # find buggy brushes for testing & recovery
             print(f"Invalid solid! (id {brush.id})")
             print(exc, '\n')
-##            raise exc
 
     brush_triangles = list(itertools.chain(*[s.triangles for s in solids]))
-
-    offset_index_map = lambda B, O: [(S + O, L) for S, L in B.index_map]
-    
+    offset_index_map = lambda B, O: [(S + O, L) for S, L in B.index_map] # B? S? O? L?
     brush_index_map = [s.index_map for s in solids]
 
     GLES_MODE = False
 
     try: # GLSL 450
         # Vertex Shaders
-        vert_shader_brush = compileShader(open('shaders/GLSL_450/verts_brush.vert', 'rb'), GL_VERTEX_SHADER)
-        vert_shader_displacement = compileShader(open('shaders/GLSL_450/verts_displacement.vert', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_brush = compileShader(open('shaders/GLSL_450/brush.vert', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_displacement = compileShader(open('shaders/GLSL_450/displacement.vert', 'rb'), GL_VERTEX_SHADER)
         # Fragment Shaders
-        frag_shader_brush_flat = compileShader(open('shaders/GLSL_450/brush_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
-        frag_shader_displacement_flat = compileShader(open('shaders/GLSL_450/displacement_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_flat_brush = compileShader(open('shaders/GLSL_450/flat_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_flat_displacement = compileShader(open('shaders/GLSL_450/flat_displacement.frag', 'rb'), GL_FRAGMENT_SHADER)
     except RuntimeError as exc: # GLES 3.00
         GLES_MODE = True
         # Vertex Shaders
-        vert_shader_brush = compileShader(open('shaders/GLES_300/verts_brush.vert', 'rb'), GL_VERTEX_SHADER)
-        vert_shader_displacement = compileShader(open('shaders/GLES_300/verts_displacement.vert', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_brush = compileShader(open('shaders/GLES_300/brush.vert', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_displacement = compileShader(open('shaders/GLES_300/displacement.vert', 'rb'), GL_VERTEX_SHADER)
         # Fragment Shaders
-        frag_shader_brush_flat = compileShader(open('shaders/GLES_300/brush_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
-        frag_shader_displacement_flat = compileShader(open('shaders/GLES_300/displacement_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_flat_brush = compileShader(open('shaders/GLES_300/flat_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_flat_displacement = compileShader(open('shaders/GLES_300/flat_displacement.frag', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_stripey_brush = compileShader(open('shaders/GLES_300/stripey_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
     # Programs
-    program_flat_brush = compileProgram(vert_shader_brush, frag_shader_brush_flat)
-    program_flat_displacement = compileProgram(vert_shader_displacement, frag_shader_displacement_flat)
+    program_flat_brush = compileProgram(vert_shader_brush, frag_shader_flat_brush)
+    program_flat_displacement = compileProgram(vert_shader_displacement, frag_shader_flat_displacement)
+    program_stripey_brush = compileProgram(vert_shader_brush, frag_shader_stripey_brush)
     glLinkProgram(program_flat_brush)
     glLinkProgram(program_flat_displacement)
+    glLinkProgram(program_stripey_brush)
 
-    if GLES_MODE == True:
-        import math
-        f = 1 / math.tan(math.radians(90 / 2)) # cotangent(fov / 2)
-        aspect = width / height
-        far = 4096 * 4
-        near = 0.1
-
-        MVP_matrix = np.array((f/aspect, 0, 0, 0,
-                               0, f, 0, 0,
-                               0, 0, far + near / near - far, -1,
-                               0, 0, (2 * near * far)/ near - far, 0), dtype=np.float32)
-
+    if GLES_MODE == True: # set uniform locations in the shaders to eliminate the need for this block
         glUseProgram(program_flat_brush)
-        # Attributes
-        attrib_brush_position = glGetAttribLocation(program_flat_brush, 'vertex_position')
-        attrib_brush_normal = glGetAttribLocation(program_flat_brush, 'vertex_normal')
-        attrib_brush_uv = glGetAttribLocation(program_flat_brush, 'vertex_uv')
-        attrib_brush_colour = glGetAttribLocation(program_flat_brush, 'editor_colour')
-        # Uniforms
         uniform_brush_matrix = glGetUniformLocation(program_flat_brush, 'ModelViewProjectionMatrix')
-        glUniformMatrix4fv(uniform_brush_matrix, 1, GL_FALSE, MVP_matrix)
-
         glUseProgram(program_flat_displacement)
-        # Attributes
-        attrib_displacement_position = glGetAttribLocation(program_flat_displacement, 'vertex_position')
-        attrib_displacement_blend = glGetAttribLocation(program_flat_displacement, 'blend_alpha')
-        attrib_displacement_uv = glGetAttribLocation(program_flat_displacement, 'vertex_uv')
-        attrib_displacement_colour = glGetAttribLocation(program_flat_displacement, 'editor_colour')
-        # Uniforms
         uniform_displacement_matrix = glGetUniformLocation(program_flat_displacement, 'ModelViewProjectionMatrix')
-        glUniformMatrix4fv(uniform_displacement_matrix, 1, GL_FALSE, MVP_matrix)
-
+        glUseProgram(program_stripey_brush)
+        uniform_stripey_matrix = glGetUniformLocation(program_flat_brush, 'ModelViewProjectionMatrix')
         glUseProgram(0)
 
     split_vertices = []
@@ -262,27 +237,20 @@ def main(vmf_path, width=1024, height=576):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glPushMatrix()
         CAMERA.set()
+        if GLES_MODE:
+            MVP_matrix = np.array(glGetFloatv(GL_MODELVIEW_MATRIX), np.float32)
+        
 
-        # with buffers
+        # draw brushes
         glColor(1, 1, 1)
-        glDrawArrays(GL_POINTS, 0, 24) # vertices only
-        glUseProgram(program_flat_brush)
-        # indices
+        glDrawArrays(GL_POINTS, 0, len(vertices))
+        # when using GLES DrawArrays won't position correctly without shaders
+        # this means a pure white frag shader is needed to work with GLES
+        glUseProgram(program_stripey_brush)
+        if GLES_MODE:
+            glUniformMatrix4fv(uniform_stripey_matrix, 1, GL_FALSE, MVP_matrix)
         glDrawElements(GL_TRIANGLES, len(indices), GL_UNSIGNED_INT, GLvoidp(0))
         glUseProgram(0)
-
-        # without buffers
-##        glColor(1, 1, 1)
-##        glBegin(GL_POINTS)
-##        for vertex in split_vertices: # verts only
-##            glVertex(*vertex[:3])
-##        glEnd()
-##
-##        glColor(1, 0, 1)
-##        glBegin(GL_TRIANGLES)
-##        for index in indices: # indices
-##            glVertex(*split_vertices[index][:3])
-##        glEnd()
 
         # CENTER MARKER
         glLineWidth(1)
