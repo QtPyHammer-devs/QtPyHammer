@@ -84,8 +84,9 @@ def main(vmf_path, width=1024, height=576):
         try:
             solids.append(solid_tool.solid(brush))
         except Exception as exc: # find buggy brushes for testing & recovery
-            print(f"Invalid solid! (id {brush.id})")
-            print(exc, '\n')
+##            print(f"Invalid solid! (id {brush.id})")
+##            print(exc, '\n')
+            pass
 
     brush_triangles = list(itertools.chain(*[s.triangles for s in solids]))
     offset_index_map = lambda B, O: [(S + O, L) for S, L in B.index_map] # B? S? O? L?
@@ -100,7 +101,7 @@ def main(vmf_path, width=1024, height=576):
         frag_shader_flat_brush = compileShader(open('shaders/GLSL_450/flat_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
         frag_shader_flat_displacement = compileShader(open('shaders/GLSL_450/flat_displacement.frag', 'rb'), GL_FRAGMENT_SHADER)
         frag_shader_stripey_brush = compileShader(open('shaders/GLSL_450/stripey_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
-    except RuntimeError as exc: # Wrong version or shader failed for another reason?
+    except RuntimeError as exc: # Check supported shader versions instead
         GLES_MODE = True # GLES 3.00
         # Vertex Shaders
         vert_shader_brush = compileShader(open('shaders/GLES_300/brush.vert', 'rb'), GL_VERTEX_SHADER)
@@ -133,7 +134,7 @@ def main(vmf_path, width=1024, height=576):
     displacement_ids = []
     for solid in solids:
         if solid.is_displacement:
-            displacement_ids += solid.id
+            displacement_ids.append(solid.id)
         solid_map[solid.id] = (len(indices), len(solid.indices))
         vertices += solid.vertices
         indices += [len(vertices) + i for i in solid.indices]
@@ -219,6 +220,7 @@ def main(vmf_path, width=1024, height=576):
         while dt >= 1 / tickrate:
             # use KEYTIME to delay input repeat
             # KEYTIME
+            # KEYTIME_COOLDOWN (time since key pressed with a limit of X seconds)
             CAMERA.update(mousepos, keys, 1 / tickrate)
             render_solids = [s for s in solids if (s.center - CAMERA.position).magnitude() < 2048]
             if SDLK_r in keys:
@@ -283,84 +285,48 @@ def main(vmf_path, width=1024, height=576):
         glEnd()
 
         # GRID
-##        glLineWidth(2)
-##        glBegin(GL_LINES)
-##        for x in range(-16, 17):
-##            x = x * 64
-##            glColor(1, 0 , 0)
-##            glVertex(x, -1024, 0)
-##            glColor(.25, .25, .25)
-##            glVertex(x, 0, 0)
-##            glVertex(x, 0, 0)
-##            glColor(1, 0 , 0)
-##            glVertex(x, 1024, 0)
-##        for y in range(-16, 17):
-##            y = y * 64
-##            glColor(0, 1 , 0)
-##            glVertex(-1024, y, 0)
-##            glColor(.25, .25, .25)
-##            glVertex(0, y, 0)
-##            glVertex(0, y, 0)
-##            glColor(0, 1 , 0)
-##            glVertex(1024, y, 0)
-##        glEnd()
+        glLineWidth(2)
+        glColor(.25, .25, .25)
+        glBegin(GL_LINES)
+        for x in range(-32, 33):
+            x = x * 64
+            glVertex(x, -2048, 0)
+            glVertex(x, 0, 0)
+            glVertex(x, 0, 0)
+            glVertex(x, 2048, 0)
+        for y in range(-32, 33):
+            y = y * 64
+            glVertex(-2048, y, 0)
+            glVertex(0, y, 0)
+            glVertex(0, y, 0)
+            glVertex(2048, y, 0)
+        glEnd()
 
-        # SOLIDS
-##        glColor(1, 1, 1)
-##        glBegin(GL_TRIANGLES)
-##        for vertex in brush_triangles:
-##            glVertex(*vertex)
-##        glEnd()
+        # DISPLACEMENTS
+        glBegin(GL_TRIANGLES)
+        glColor(.5, .5, .5)
+        for solid in render_solids:
+            if solid.is_displacement:
+                glColor(1, 1, 1) # Hammer Default
+                for i, points in solid.displacement_triangles.items():
+                    for point, alpha, normal in points:
+                        Kd = (vector.dot(normal, (1, 1, 1)) / 16) + .75
+                        # clamped from 0.75 to 0.75 + 1/32
+                        blend = vector.lerp(solid.colour, solid.sides[i].blend_colour, alpha / 255)
+                        glColor(*[Kd * x for x in blend])
+                        glVertex(*point)
+        glEnd()
 
-##        # BRUSH FACES
-##        glBegin(GL_TRIANGLES)
-##        for solid in render_solids:
-##            if not solid.is_displacement:
-##                glColor(*solid.colour) # Flat Colour Unshaded
-##                for side_index, index_range in enumerate(solid.face_tri_map):
-##                    normal = solid.planes[side_index][0]
-##                    Kd = (vector.dot(normal, (1, 1, 1)) / 16) + .75
-##                    glColor(*[Kd * x for x in solid.colour])
-##                    start, end = index_range
-##                    for vertex in solid.triangles[start:end]:
-##                        glVertex(*vertex)
-##        glEnd()
-##
-##        # DISPLACEMENTS
-##        glBegin(GL_TRIANGLES)
-##        glColor(.5, .5, .5)
-##        for solid in render_solids:
-##            if solid.is_displacement:
-##                glColor(1, 1, 1) # Hammer Default
-##                for i, points in solid.displacement_triangles.items():
-##                    for point, alpha, normal in points:
-##                        Kd = (vector.dot(normal, (1, 1, 1)) / 16) + .75
-##                        # clamped from 0.75 to 0.75 + 1/32
-##                        blend = vector.lerp(solid.colour, solid.sides[i].blend_colour, alpha / 255)
-##                        glColor(*[Kd * x for x in blend])
-##                        glVertex(*point)
-##        glEnd()
-##
-##        # DISPLACEMENT NORMALS
-##        glColor(1, .75, 0)
-##        glBegin(GL_LINES)
-##        for solid in render_solids:
-##            if solid.is_displacement:
-##                for side_index, points in solid.displacement_vertices.items():
-##                    for point, alpha, normal in points:
-##                        glVertex(*point)
-##                        glVertex(*point + normal * 32)
-##        glEnd()
-
-        # BRUSH BOUNDING BOXES
-        # be sure to turn off backface culling
-##        glColor(1, 0, 0)
-##        glPolygonMode(GL_FRONT, GL_LINE)
-##        glBegin(GL_QUADS)
-##        for solid in solids:
-##            draw_aabb(solid.aabb)
-##        glEnd()
-##        glPolygonMode(GL_FRONT, GL_FILL)
+        # DISPLACEMENT NORMALS
+        glColor(1, .75, 0)
+        glBegin(GL_LINES)
+        for solid in render_solids:
+            if solid.is_displacement:
+                for side_index, points in solid.displacement_vertices.items():
+                    for point, alpha, normal in points:
+                        glVertex(*point)
+                        glVertex(*point + normal * 32)
+        glEnd()
 
         glPopMatrix()
         SDL_GL_SwapWindow(window)
