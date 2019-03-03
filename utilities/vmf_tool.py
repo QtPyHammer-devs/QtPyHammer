@@ -59,6 +59,11 @@ class scope:
             except:
                 break
 
+    def pluralise(self):
+        # do we have the singular?
+        # one step back, 2 steps forward?
+        self.strings = [*self.strings, plural, 1]
+
 
 def namespace_from(text_file):
     """String or .vmf file to nested namespace"""
@@ -71,12 +76,21 @@ def namespace_from(text_file):
     namespace_nest = namespace({})
     current_scope = scope([])
     previous_line = ''
-    for line_no, line in enumerate(file_iter):
+    for line_number, line in enumerate(file_iter):
         try:
             line = line.rstrip('\n')
-            line = textwrap.shorten(line, width=200) # cleanup spacing, may break at 200+ chars
-            if line == '' or line.startswith('//'): # ignore blank / comments
+            line = textwrap.shorten(line, width=1024) # use regex instead
+            if line == '':
                 continue
+            if line.startswith('//'):
+                if not hasattr(eval(current_scope), '_comments'):
+                    exec(f'{current_scope}._comments = list()')
+                if previous_line.startswith('//'):
+                    last_comment = eval(f'{current_scope}._comments[-1]')
+                    new_comment = '\n'.join((last_comment[0], line))
+                    exec(f"""{current_scope}._comments[-1][0] = '''{new_comment}'''""")
+                else:
+                    exec(f"{current_scope}._comments.append(['''{line}''', {line_number}])")
             elif line =='{': # START declaration
                 current_keys = eval(f'namespace_nest{current_scope}.__dict__.keys()')
                 plural = pluralise(previous_line)
@@ -104,13 +118,13 @@ def namespace_from(text_file):
                 exec(f'namespace_nest{current_scope}[key] = value')
             previous_line = line.strip('"')
         except Exception as exc:            
-            print(f'error on line {line_no:04d}:\n{line}\n{previous_line}')
+            print(f'error on line {line_number:04d}:\n{line}\n{previous_line}')
             raise exc
     return namespace_nest
     
 class namespace: # DUNDER METHODS ONLY!
     """Nested Dicts -> Nested Objects"""
-    def __init__(self, nested_dict):
+    def __init__(self, nested_dict=dict()):
         for key, value in nested_dict.items() if isinstance(nested_dict, dict) else nested_dict.__dict__.items():
             if isinstance(value, dict):
                 self[key] = namespace(value)
@@ -132,6 +146,7 @@ class namespace: # DUNDER METHODS ONLY!
         return len(self.__dict__.keys())
 
     def __repr__(self):
+        attrs = [a if ' ' not in a else f'"{a}"' for a in self.__dict__.keys()]
         return f"namespace([{', '.join(self.__dict__.keys())}])"
 
 
