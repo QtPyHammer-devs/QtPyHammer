@@ -165,8 +165,11 @@ def main(vmf_path, width=1024, height=576):
     glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
 ##    # blend_alpha (displacement)
 ##    glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(12)) # replace vertex_normal
-    
-    print(f'{len(solids)} brushes loaded succesfully!')   
+
+    print(vmf_path)
+    print(f'{len(solids)} brushes loaded succesfully!')
+    print(f'{len(vertices) // 33:,} TRIANGLES')
+    print(f'{len(vertices) * 4 // 1024:,}KB')
     print('import took {:.2f} seconds'.format(time.time() - start_import))
 
     # STATIC BUFFER (UTILITIES)
@@ -334,9 +337,9 @@ def main(vmf_path, width=1024, height=576):
 if __name__ == '__main__':
     try:
 ##        main('tests/vmfs/test.vmf')
-        main('tests/vmfs/test2.vmf')
+##        main('tests/vmfs/test2.vmf')
 ##        main('tests/vmfs/sdk_pl_goldrush.vmf')
-##        main('tests/vmfs/pl_upward_d.vmf')
+        main('tests/vmfs/pl_upward_d.vmf')
     except Exception as exc:
         SDL_Quit()
         raise exc
