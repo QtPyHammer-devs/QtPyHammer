@@ -276,7 +276,7 @@ class Highlighter(QtGui.QSyntaxHighlighter):
 # this is where the magic happens
 # ATTACH TO OPEN ACTION SIGNAL
 print('Loading .vmf ...')
-vmf = open('tests/vmfs/pl_upward_d.vmf') # QFile may load with less errors
+vmf = open('tests/vmfs/test2.vmf') # QFile may load with less errors
 window.setWindowTitle(f'QtPyHammer - [{vmf.name}]')
 vmf_text = vmf.read()
 vmf_object = vmf_tool.namespace_from(vmf_text) # interacts
@@ -315,79 +315,61 @@ def vmf_setup(viewport, vmf_object):
         if hasattr(entity, 'solids'):
             if isinstance(entity.solids[0], vmf_tool.namespace):
                 string_solids += entity.solids
-    brushes = []
-    for brush in string_solids:
+    solids = []
+    for ss in string_solids:
         try:
-            brushes.append(solid_tool.solid(brush))
+            solids.append(solid_tool.solid(ss))
         except Exception as exc:
-            print(f"Invalid solid! (id {brush.id})")
+            print(f"Invalid solid! (id {ss.id})")
             print(exc, '\n')
 
-    split_vertices = []
-    indices = []
-    buffer_map = dict() # brush.id: (start, len) # start and len in index buffer
-    for solid in brushes: # build buffer
-        buffer_map[solid.string_solid.id] = (len(indices), len(solid.indices))
-        split_vertices += solid.vertices
-        indices += [len(split_vertices) + i for i in solid.indices]
-    vertices = tuple(itertools.chain(*split_vertices))
-
     GLES_MODE = False
-
     try: # GLSL 450
         # Vertex Shaders
-        vert_shader_brush = compileShader(open('shaders/GLSL_450/verts_brush.vert', 'rb'), GL_VERTEX_SHADER)
-        vert_shader_displacement = compileShader(open('shaders/GLSL_450/verts_displacement.vert', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_brush = compileShader(open('shaders/GLSL_450/brush.vert', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_displacement = compileShader(open('shaders/GLSL_450/displacement.vert', 'rb'), GL_VERTEX_SHADER)
         # Fragment Shaders
-        frag_shader_brush_flat = compileShader(open('shaders/GLSL_450/brush_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
-        frag_shader_displacement_flat = compileShader(open('shaders/GLSL_450/displacement_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
-    except RuntimeError as exc: # GLES 3.00
-        GLES_MODE = True
+        frag_shader_flat_brush = compileShader(open('shaders/GLSL_450/flat_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_flat_displacement = compileShader(open('shaders/GLSL_450/flat_displacement.frag', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_stripey_brush = compileShader(open('shaders/GLSL_450/stripey_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
+    except RuntimeError as exc: # Check supported shader versions instead
+        GLES_MODE = True # GLES 3.00
         # Vertex Shaders
-        vert_shader_brush = compileShader(open('shaders/GLES_300/verts_brush.v', 'rb'), GL_VERTEX_SHADER)
-        vert_shader_displacement = compileShader(open('shaders/GLES_300/verts_displacement.vert', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_brush = compileShader(open('shaders/GLES_300/brush.vert', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_displacement = compileShader(open('shaders/GLES_300/displacement.vert', 'rb'), GL_VERTEX_SHADER)
         # Fragment Shaders
-        frag_shader_brush_flat = compileShader(open('shaders/GLES_300/brush_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
-        frag_shader_displacement_flat = compileShader(open('shaders/GLES_300/displacement_flat.frag', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_flat_brush = compileShader(open('shaders/GLES_300/flat_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_flat_displacement = compileShader(open('shaders/GLES_300/flat_displacement.frag', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_stripey_brush = compileShader(open('shaders/GLES_300/stripey_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
+##        raise exc # to debug GLSL 4.5 shaders
     # Programs
-    program_flat_brush = compileProgram(vert_shader_brush, frag_shader_brush_flat)
-    program_flat_displacement = compileProgram(vert_shader_displacement, frag_shader_displacement_flat)
+    program_flat_brush = compileProgram(vert_shader_brush, frag_shader_flat_brush)
+    program_flat_displacement = compileProgram(vert_shader_displacement, frag_shader_flat_displacement)
+    program_stripey_brush = compileProgram(vert_shader_brush, frag_shader_stripey_brush)
     glLinkProgram(program_flat_brush)
     glLinkProgram(program_flat_displacement)
+    glLinkProgram(program_stripey_brush)
 
     if GLES_MODE == True:
-        import math
-        f = 1 / math.tan(math.radians(90 / 2)) # cotangent(fov / 2)
-        aspect = width / height
-        far = 4096 * 4
-        near = 0.1
-
-        MVP_matrix = np.array((f/aspect, 0, 0, 0,
-                               0, f, 0, 0,
-                               0, 0, far + near / near - far, -1,
-                               0, 0, (2 * near * far)/ near - far, 0), dtype=np.float32)
-
         glUseProgram(program_flat_brush)
-        # Attributes
-        attrib_brush_position = glGetAttribLocation(program_flat_brush, 'vertex_position')
-        attrib_brush_normal = glGetAttribLocation(program_flat_brush, 'vertex_normal')
-        attrib_brush_uv = glGetAttribLocation(program_flat_brush, 'vertex_uv')
-        attrib_brush_colour = glGetAttribLocation(program_flat_brush, 'editor_colour')
-        # Uniforms
         uniform_brush_matrix = glGetUniformLocation(program_flat_brush, 'ModelViewProjectionMatrix')
-        glUniformMatrix4fv(uniform_brush_matrix, 1, GL_FALSE, MVP_matrix)
-
         glUseProgram(program_flat_displacement)
-        # Attributes
-        attrib_displacement_position = glGetAttribLocation(program_flat_displacement, 'vertex_position')
-        attrib_displacement_blend = glGetAttribLocation(program_flat_displacement, 'blend_alpha')
-        attrib_displacement_uv = glGetAttribLocation(program_flat_displacement, 'vertex_uv')
-        attrib_displacement_colour = glGetAttribLocation(program_flat_displacement, 'editor_colour')
-        # Uniforms
         uniform_displacement_matrix = glGetUniformLocation(program_flat_displacement, 'ModelViewProjectionMatrix')
-        glUniformMatrix4fv(uniform_displacement_matrix, 1, GL_FALSE, MVP_matrix)
-
+        glUseProgram(program_stripey_brush)
+        uniform_stripey_matrix = glGetUniformLocation(program_flat_brush, 'ModelViewProjectionMatrix')
         glUseProgram(0)
+
+    vertices = []
+    indices = []
+    solid_map = dict()
+    displacement_ids = []
+    for solid in solids:
+        if solid.is_displacement:
+            displacement_ids.append(solid.id)
+        solid_map[solid.id] = (len(indices), len(solid.indices))
+        vertices += solid.vertices
+        indices += [len(vertices) + i for i in solid.indices]
+    vertices = tuple(itertools.chain(*vertices))
 
     # Vertex Buffer
     VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
@@ -410,11 +392,15 @@ def vmf_setup(viewport, vmf_object):
 
     # change to dictionaries
     viewport.buffers = [VERTEX_BUFFER, INDEX_BUFFER]
-    viewport.programs = [program_flat_brush, program_flat_displacement]
-    viewport.draw_calls[viewport.programs[0]] = (0, len(indices))
+    viewport.programs = [program_flat_brush, program_flat_displacement,
+                         program_stripey_brush]
+    viewport.draw_calls[viewport.programs[2]] = (0, len(indices))
+    viewport.GLES_MODE = GLES_MODE
+    if GLES_MODE:
+        viewport.uniforms = {program_flat_brush: uniform_brush_matrix,
+                             program_stripey_brush: uniform_stripey_matrix,
+                             program_flat_displacement: uniform_displacement_matrix}
 
-camera_controls = QtWidgets.QWidget() # series of dials and sliders to move viewport camera
-# add to right of viewport with a HBoxLayout
 
 workspace.addWidget(viewport)
 editor = QtWidgets.QPlainTextEdit()
@@ -427,7 +413,8 @@ editor.insertPlainText(vmf_text)
 editor.document().clearUndoRedoStacks(QtGui.QTextDocument.UndoStack)
 # document switcher & some options in a layout? (font, font size etc)
 # top bar of things
-editor.setDocumentTitle('test.vmf')
+editor.setDocumentTitle(vmf.name)
+print(editor.documentTitle())
 # cursor pos getter (line:character)
 # if A < line_no < B:
 #     solid = X

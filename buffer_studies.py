@@ -48,7 +48,8 @@ def main(vmf_path, width=1024, height=576):
     glColor(1, 1, 1)
     gluPerspective(90, width / height, 0.1, 4096 * 4)
     glEnable(GL_DEPTH_TEST)
-    glPolygonMode(GL_BACK, GL_LINE)
+##    glPolygonMode(GL_BACK, GL_LINE)
+    glEnable(GL_CULL_FACE)
     glFrontFace(GL_CW)
     glPointSize(4)
 
@@ -87,10 +88,6 @@ def main(vmf_path, width=1024, height=576):
 ##            print(f"Invalid solid! (id {brush.id})")
 ##            print(exc, '\n')
             pass
-
-    brush_triangles = list(itertools.chain(*[s.triangles for s in solids]))
-    offset_index_map = lambda B, O: [(S + O, L) for S, L in B.index_map] # B? S? O? L?
-    brush_index_map = [s.index_map for s in solids]
 
     GLES_MODE = False
     try: # GLSL 450
@@ -131,6 +128,7 @@ def main(vmf_path, width=1024, height=576):
     vertices = []
     indices = []
     solid_map = dict()
+    # for excluding (hiding) specific brushes
     displacement_ids = []
     for solid in solids:
         if solid.is_displacement:
@@ -142,10 +140,14 @@ def main(vmf_path, width=1024, height=576):
 
     # TODO: don't render solids that are also displacements
     # TODO: render displacements from the buffer
-    
-    ### ====== BUFFER ====== ###
-    # solid verts | disp verts #
-    ############################
+    # TODO: render only certain brushes with as few draw calls as possible
+    # ----  keep brushes that share entities/groups/visgroups together
+    # ----  defrag the buffers?
+
+    # now is better than never
+    # but never is better than *right* now
+    # You Ain't Gonna Need It
+    # Don't Repeat Yourself
 
     # Vertex Buffer
     VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
@@ -258,7 +260,6 @@ def main(vmf_path, width=1024, height=576):
         if GLES_MODE:
             MVP_matrix = np.array(glGetFloatv(GL_MODELVIEW_MATRIX), np.float32)
         
-
         # draw brushes
         glUseProgram(program_stripey_brush)
         if GLES_MODE:
@@ -331,15 +332,23 @@ def main(vmf_path, width=1024, height=576):
                         glVertex(*point + normal * 32)
         glEnd()
 
+##        glDisable(GL_DEPTH_TEST)
+##        solid_number = 40
+##        for index in solids[solid_number].indices:
+##            vertex = solids[solid_number].vertices[index][:3]
+##            normal = solids[solid_number].vertices[index][3:6]
+##            uv = solids[solid_number].vertices[index][6:8]
+##        glEnable(GL_DEPTH_TEST)
+
         glPopMatrix()
         SDL_GL_SwapWindow(window)
 
 if __name__ == '__main__':
     try:
 ##        main('tests/vmfs/test.vmf')
-##        main('tests/vmfs/test2.vmf')
+        main('tests/vmfs/test2.vmf')
 ##        main('tests/vmfs/sdk_pl_goldrush.vmf')
-        main('tests/vmfs/pl_upward_d.vmf')
+##        main('tests/vmfs/pl_upward_d.vmf')
     except Exception as exc:
         SDL_Quit()
         raise exc

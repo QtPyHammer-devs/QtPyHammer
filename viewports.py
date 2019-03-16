@@ -1,4 +1,5 @@
 # try qopengl to keep dependecies simple & multi-platform
+import numpy as np # how does QOpenGL.glMatrix4fv work?
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -9,7 +10,9 @@ import camera
 import physics
 import vmf_tool
 import vector
-import solid_tool # must be loaded AFTER vmf_tool (how do dependencies work?)
+import solid_tool # must be loaded AFTER vmf_tool (dependencies augh!?!?!)
+
+camera.keybinds = {}
 
 view_modes = ['flat', 'textured', 'wireframe']
 # "silhouette" view mode, lights on black brushwork & props
@@ -20,21 +23,11 @@ class Viewport2D(QtWidgets.QOpenGLWidget):
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.update)
         self.timer.start(1000 / fps)
-        self.dt = 1 / fps # will desynchronise
+        self.dt = 1 / fps # will desynchronise, use time.time()
         self.fps = fps
         # set render resolution?
         self.camera = camera.freecam(None, None, 128)
-        ### BUFFERS ###
-        # HELPER MODELS: (static draw)
-        # shared app-wide
-        # modelname: index(start, len)
-        # BRUSHES: (dynamic draw)
-        # brush index: vertex(start, len), index(start, len)
-        # vertex buffer len
-        # index buffer len
-        # MODELS: (dynamic draw)
-        # modelname: vertex(start, len), index(start, len)
-        self.draw_calls = dict() # shader: (VERTEX_buffer, INDEX_buffer, start, end)
+        self.draw_calls = dict() # shader: (start, end)
 
     def executeGL(self, func, *args, **kwargs): # best hack ever
         """Execute func(self, *args, **kwargs) in this viewport's glContext"""
@@ -99,8 +92,12 @@ class Viewport3D(Viewport2D):
         self.camera_keys = list()
         self.draw_calls = dict() # shader: (start, length)
         self.camera.position += (0, -384, 64)
+        self.GLES_MODE = False
+        self.keys = set()
     
     def changeViewMode(self, view_mode): # overlay viewmode button
+        # if GLES_MODE = True
+        # shaders MUST be used
         if self.view_mode == view_mode:
             return # exit, no changes needed
         if self.view_mode == 'wireframe':
@@ -115,8 +112,8 @@ class Viewport3D(Viewport2D):
         # change shader to flat (flat / wireframe)
         # or to complex (textured)
 
-    def keyPressEvent(self, event): # how do>
-        self.keys += event.key()
+    def keyPressEvent(self, event):
+        self.keys.add(event.key())
         if event.key() == QtCore.Qt.Key_Z:
             self.camera_moving = False if self.camera_moving else True
             if self.camera_moving == True:
@@ -138,10 +135,13 @@ class Viewport3D(Viewport2D):
     def paintGL(self):
         glPushMatrix()
         self.camera.set()
+        if self.GLES_MODE:
+            MVP_matrix = np.array(glGetFloatv(GL_MODELVIEW_MATRIX), np.float32)
+            
         glUseProgram(0)
-##        # orbit center at 30 degrees per second
-##        self.camera.rotation.z = (self.camera.rotation.z + 30 * self.dt) % 360
-##        self.camera.position = self.camera.position.rotate(0, 0, -30 * self.dt)
+        # orbit center at 30 degrees per second
+        self.camera.rotation.z = (self.camera.rotation.z + 30 * self.dt) % 360
+        self.camera.position = self.camera.position.rotate(0, 0, -30 * self.dt)
         glBegin(GL_LINES) # GRID
         glColor(.25, .25, .25)
         for x in range(-512, 1, 64): # segment to avoid clip warping shape
@@ -155,11 +155,14 @@ class Viewport3D(Viewport2D):
                 glVertex(y, -x)
                 glVertex(-y, -x)
         glEnd()
-        # DRAW CALLS
-        for shader, index_map in self.draw_calls.items():
+        
+        for shader, index_map in self.draw_calls.items(): # DRAW CALLS
             start, length = index_map
             glUseProgram(shader)
+            if self.GLES_MODE == True:
+                glUniformMatrix4fv(self.uniforms[shader], 1, GL_FALSE, MVP_matrix)
             glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
+
         glPopMatrix()
 
     def resizeGL(self, width, height):
@@ -207,17 +210,21 @@ if __name__ == "__main__":
 ##    window.setGeometry(256, 256, 512, 512)
 ##    window.show()
     
-    window = QtWidgets.QWidget()
+##    window = QtWidgets.QWidget()
+##    window.setGeometry(256, 256, 512, 512)
+##    layout = QtWidgets.QGridLayout()
+##    window.setLayout(layout)
+##    for y in range(2):
+##        for x in range(2):
+##            if x == 0 and y == 0:
+##                window.layout().addWidget(Viewport3D(30), x, y)
+##            else:
+##                window.layout().addWidget(Viewport2D(15), x, y)
+##    window.show()
+##    window.layout().itemAt(1).widget().sharedGLsetup()
+
+    window = Viewport3D(30)
     window.setGeometry(256, 256, 512, 512)
-    layout = QtWidgets.QGridLayout()
-    window.setLayout(layout)
-    for y in range(2):
-        for x in range(2):
-            if x == 0 and y == 0:
-                window.layout().addWidget(Viewport3D(30), x, y)
-            else:
-                window.layout().addWidget(Viewport2D(15), x, y)
     window.show()
-    window.layout().itemAt(1).widget().sharedGLsetup()
     
     sys.exit(app.exec_())

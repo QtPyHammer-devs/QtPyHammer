@@ -22,6 +22,11 @@ import sys
 sys.path.insert(0, '../')
 from vector import vec2, vec3
 
+# overwritable (monkey-patchable) global dict binding keys to directions
+keybinds = {'FORWARD': [SDLK_w], 'BACK': [SDLK_s], 'LEFT': [SDLK_a, SDLK_LEFT],
+            'RIGHT': [SDLK_d, SDLK_RIGHT], 'UP': [SDLK_q, SDLK_UP],
+            'DOWN': [SDLK_e, SDLK_DOWN]}
+
 sensitivity = 0.25
 
 class freecam:
@@ -38,9 +43,9 @@ class freecam:
         self.rotation.z = mousepos.x * sensitivity
         self.rotation.x = mousepos.y * sensitivity
         local_move = vec3()
-        local_move.x = ((SDLK_d in keys or SDLK_RIGHT in keys) - (SDLK_a in keys or SDLK_LEFT in keys))
-        local_move.y = ((SDLK_w in keys) - (SDLK_s in keys))
-        local_move.z = ((SDLK_q in keys or SDLK_UP in keys) - (SDLK_e in keys  or SDLK_DOWN in keys))
+        local_move.x = (any(k in keys for k in keybinds['RIGHT']) - any(k in keys for k in keybinds['LEFT']))
+        local_move.y = (any(k in keys for k in keybinds['FORWARD']) - any(k in keys for k in keybinds['BACK']))
+        local_move.z = (any(k in keys for k in keybinds['UP']) - any(k in keys for k in keybinds['DOWN']))
         global_move = local_move.rotate(*-self.rotation)
         self.position += global_move * self.speed * dt
 

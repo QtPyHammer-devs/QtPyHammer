@@ -76,9 +76,23 @@ def disp_tris(verts, power): # copied from snake-biscuits/bsp_tool/bsp_tool.py
                 tris.append(verts[offset + power2B])
     return tris
 
+def square_neighbours(x, y, edge_length):
+    """square is the length of an edge"""
+    for i in range(x - 1, x + 2):
+        if i >= 0 and i < edge_length:
+            for j in range(y - 1, y + 2):
+                if j >= 0 and j < edge_length:
+                    if not (i != x and j != y):
+                        yield i * edge_length + j
 
-#TODO: Know your line endings
+
+# brush tool solid constructors
+# IMPORT from string
 class solid:
+    __slots__ = ('aabb', 'center', 'colour', 'displacement_triangles',
+                 'displacement_vertices', 'faces', 'id', 'index_map', 'indices',
+                 'is_displacement', 'planes', 'planes', 'sides', 'string_solid',
+                 'string_triangles', 'string_vertices', 'vertices')
     def __init__(self, string_solid):
         """Initialise from string, nested dict or namespace"""
         if isinstance(string_solid, vmf_tool.namespace):
@@ -89,14 +103,14 @@ class solid:
             source = vmf_tool.namespace_from(string_solid)
         else:
             raise RuntimeError(f'Tried to create solid from invalid type: {type(string_solid)}')
-        self.string_solid = string_solid # preserve for debug & export
+        self.string_solid = string_solid # preserved for debug
         self.id = int(self.string_solid.id)
         self.colour = tuple(int(x) / 255 for x in string_solid.editor.color.split())
         self.string_triangles = [triangle_of(s) for s in string_solid.sides]
         self.string_vertices = list(itertools.chain(*self.string_triangles))
         # does not contain every point, some will be missing
         # goldrush contains an example (start of stage 2, arch behind cart)
-        self.planes = [plane_of(*t) for t in self.string_triangles] # ((Normal XYZ), Dist)
+        self.planes = [plane_of(*t) for t in self.string_triangles]
         self.is_displacement = False
         self.sides = []
         for side in self.string_solid.sides:
@@ -108,6 +122,7 @@ class solid:
         # tabulate edges where 2 planes meet
         # identify holes (1 vertex edges)
         # calculate missing vertices from holes (if any)
+        # bounding box?
 
         # faces namespace
         # face([plane, texture_data([material, uvs, lightmap_scale]), vertices])
@@ -122,22 +137,9 @@ class solid:
             face = vector.sort_clockwise(face, plane[0])
             self.faces.append(face)
 
-        # displacements next
-        # loop fan OR disp pattern
-        self.face_tri_map = []
-        triangles = []
-        last_index = 0
-        for face in self.faces:
-            face_tris = loop_fan(face)
-            self.face_tri_map.append((last_index, last_index + len(face_tris)))
-            last_index += len(face_tris)
-            triangles += face_tris
-        self.triangles = tuple(triangles)
-
-        # move triangle assembley to renderer (make immutable)
-        self.displacement_triangles = {}
-        # {side_index: vertices}
-        self.displacement_vertices = {}
+        global square_neighbours
+        self.displacement_triangles = {} # {side_index: vertices}
+        self.displacement_vertices = {} # ???
         for i, side in enumerate(string_solid.sides):
             if hasattr(side, 'dispinfo'):
                 self.sides[i].blend_colour = [1 - i for i in self.colour]
@@ -169,15 +171,6 @@ class solid:
                         normal = vector.vec3(normals_row[k], normals_row[k + 1], normals_row[k + 2])
                         baryvert = vector.lerp(right_vert, left_vert, x / power2)
                         side_dispverts.append(vector.vec3(baryvert) + (distance * normal))
-
-                def square_neighbours(x, y, edge_length):
-                    """square is the length of an edge"""
-                    for i in range(x - 1, x + 2):
-                        if i >= 0 and i < edge_length:
-                            for j in range(y - 1, y + 2):
-                                if j >= 0 and j < edge_length:
-                                    if not (i != x and j != y):
-                                        yield i * edge_length + j
                 
                 for x in range(power2 + 1):
                     for y in range(power2 + 1):
@@ -248,21 +241,7 @@ class solid:
         min_y, max_y = min(all_y), max(all_y)
         min_z, max_z = min(all_z), max(all_z)
         self.aabb = physics.aabb([min_x, min_y, min_z], [max_x, max_y, max_z])
-        self.center = (self.aabb.min + self.aabb.max) / 2
-
-        # DISPLACEMENTS (IF PRESENT)
-        # {side_index: displacement}
-        # SEE HAMMER DISP DRAW MODES
-        # DRAW BRUSH FACES
-        # DISP ONLY
-        # DISP FACES AS DISP + SOLID FACES AS SOLID
-        # DRAW WALKABLE (calculate tri normals)
-        self.displacements = {}
-        for i, side in enumerate(string_solid):
-            if hasattr(solid, 'dispinfo'):
-                self.displacements[i] = solid.dispinfo
-
-        self.disp_tris = {} # {side_index: [vertex, ...], ...}        
+        self.center = (self.aabb.min + self.aabb.max) / 2     
 
     def flip(self, center, axis):
         """axis is a vector"""
@@ -271,14 +250,14 @@ class solid:
         # invert all plane normals along axis, flip along axis
         ...
 
-    def recalculate(self):
+    def recalculate_string(self): # for saving as .vmf
         """update self.string_solid to match vertices"""
         # foreach face
         #   solid.sides.append(vmf_tool.namespace(...))
         #   solid.sides.[-1].plane = '({:.f}) ({:.f}) ({:.f})'.format(*face[:3])
         ...
 
-    def rotate(self, pivot_point=None):
+    def rotate(self, angles, pivot_point=None):
         # if pivot_point == None:
         #     pivot_point = self.center
         # foreach plane
