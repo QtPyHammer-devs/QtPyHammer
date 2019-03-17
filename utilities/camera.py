@@ -40,6 +40,7 @@ class freecam:
 
     def update(self, mousepos, keys, dt): #diagonal?
         global sensitivity
+        # change to += (additive mouse updates, needs different mousepos)
         self.rotation.z = mousepos.x * sensitivity
         self.rotation.x = mousepos.y * sensitivity
         local_move = vec3()

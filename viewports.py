@@ -12,7 +12,11 @@ import vmf_tool
 import vector
 import solid_tool # must be loaded AFTER vmf_tool (dependencies augh!?!?!)
 
-camera.keybinds = {}
+camera.keybinds = {'FORWARD': [QtCore.Qt.Key_W], 'BACK': [QtCore.Qt.Key_S],
+                   'LEFT': [QtCore.Qt.Key_A, QtCore.Qt.LeftArrow],
+                   'RIGHT': [QtCore.Qt.Key_D, QtCore.Qt.RightArrow],
+                   'UP': [QtCore.Qt.Key_Q, QtCore.Qt.UpArrow],
+                   'DOWN': [QtCore.Qt.Key_E, QtCore.Qt.DownArrow]}
 
 view_modes = ['flat', 'textured', 'wireframe']
 # "silhouette" view mode, lights on black brushwork & props
@@ -94,6 +98,7 @@ class Viewport3D(Viewport2D):
         self.camera.position += (0, -384, 64)
         self.GLES_MODE = False
         self.keys = set()
+        self.mouse = vector.vec2()
     
     def changeViewMode(self, view_mode): # overlay viewmode button
         # if GLES_MODE = True
@@ -116,10 +121,20 @@ class Viewport3D(Viewport2D):
         self.keys.add(event.key())
         if event.key() == QtCore.Qt.Key_Z:
             self.camera_moving = False if self.camera_moving else True
-            if self.camera_moving == True:
+            if self.camera_moving:
                 print('camera moving')
+                self.setMouseTracking(True)
+                # lock mouse to frame
             else:
                 print('camera stopped')
+                self.setMouseTracking(False)
+                # unlock mouse from frame
+
+    def keyReleaseEvent(self, event):
+        self.keys.discard(event.key())
+
+    def mouseMoveEvent(self, event):
+        self.mouse = vector.vec2(event.pos().x(), event.pos().y())
 
     def initializeGL(self):
         glClearColor(0, 0, 0, 0)
@@ -139,9 +154,9 @@ class Viewport3D(Viewport2D):
             MVP_matrix = np.array(glGetFloatv(GL_MODELVIEW_MATRIX), np.float32)
             
         glUseProgram(0)
-        # orbit center at 30 degrees per second
-        self.camera.rotation.z = (self.camera.rotation.z + 30 * self.dt) % 360
-        self.camera.position = self.camera.position.rotate(0, 0, -30 * self.dt)
+##        # orbit center at 30 degrees per second
+##        self.camera.rotation.z = (self.camera.rotation.z + 30 * self.dt) % 360
+##        self.camera.position = self.camera.position.rotate(0, 0, -30 * self.dt)
         glBegin(GL_LINES) # GRID
         glColor(.25, .25, .25)
         for x in range(-512, 1, 64): # segment to avoid clip warping shape
@@ -174,7 +189,6 @@ class Viewport3D(Viewport2D):
     def update(self):
         super(Viewport3D, self).update()
         if self.camera_moving:
-            # need to sample mouse vector (relative updates)
             self.camera.update(self.mouse, self.keys, self.dt)
 
 # WHY AREN'T CONTEXTS SHARING?  ??????????????????????
