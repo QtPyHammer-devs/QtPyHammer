@@ -7,10 +7,14 @@ from OpenGL.GL.shaders import compileShader, compileProgram
 from OpenGL.GLU import *
 import viewports
 
-sys.path.insert(0, 'utilities')
-import vmf_tool
-import solid_tool # import second or errors occur
-import vector # for moving camera
+# sys.path.insert(0, 'utilities')
+# import vmf_tool
+# import solid_tool # import second or errors occur
+# import vector # for moving camera
+
+import utilities.solid_tool as solid_tool
+import utilities.vmf_tool as vmf_tool
+import utilities.vector as vector
 
 def except_hook(cls, exception, traceback): # for debugging python called by Qt
     sys.__excepthook__(cls, exception, traceback)

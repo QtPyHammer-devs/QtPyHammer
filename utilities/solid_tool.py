@@ -1,10 +1,7 @@
 import itertools
-import vector
-import sys
-sys.path.insert(0, '../')
-import vmf_tool
-sys.path.insert(0, 'render/')
-import physics
+import utilities.vector as vector
+import utilities.vmf_tool as vmf_tool
+import utilities.physics as physics
 
 def triangle_of(side):
     "extract triangle from string (returns 3 vec3)"

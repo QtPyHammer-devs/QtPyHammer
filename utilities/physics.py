@@ -1,6 +1,4 @@
-import sys
-sys.path.insert(0, '../')
-import vector
+import utilities.vector
 
 class plane:
     def __init__(normal, distance):

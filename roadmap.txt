@@ -162,3 +162,4 @@ Deformable Grid
 DOOM2016 weapon wheel texture / brush select
 Mute / Solo Visgroup
 Autogroup based on diff (group an area built over a certain period)
+Check if material needs a cubemap
