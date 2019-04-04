@@ -17,6 +17,9 @@ import utilities.camera as camera
 import utilities.vector as vector
     
 
+# TODO: toggle mouse capture
+# TODO: off-center raycasts (apply projection matrix to orient ray_dir)
+
 def main(width=1024, height=576):
     SDL_Init(SDL_INIT_VIDEO)
     window = SDL_CreateWindow(b'SDL2 OpenGL', SDL_WINDOWPOS_CENTERED,  SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS)

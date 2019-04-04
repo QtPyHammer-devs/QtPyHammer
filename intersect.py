@@ -45,3 +45,15 @@ def ray_triangle_length(ray, triangle):
     if v < 0 or u + v > 1:
         return 0
     return (1 / proj_AB) * dot(AC, snap_cross)
+
+def ray_hull(ray, planes):
+    ray_origin, ray_dir = ray
+    intersections = dict()
+    for i, plane in enumerate(planes):
+        normal, distance = plane
+        distance_to_plane = distance - dot(normal, ray_origin)
+        parallelity = dot(normal, ray_dir)
+        t = distance_to_plane / parallelity # ray length at intersection
+        if t > 0:
+            intersections[i] = t
+    return intersections
