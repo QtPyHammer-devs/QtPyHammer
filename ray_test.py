@@ -16,9 +16,9 @@ import time
 import utilities.camera as camera
 import utilities.vector as vector
     
+#TODO: Unlock camera with a keypress (toggle)
+#TODO: Cast off-center ray (GL function to warp ray by projection matrix)
 
-# TODO: toggle mouse capture
-# TODO: off-center raycasts (apply projection matrix to orient ray_dir)
 
 def main(width=1024, height=576):
     SDL_Init(SDL_INIT_VIDEO)

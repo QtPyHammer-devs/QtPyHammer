@@ -1,5 +1,9 @@
 from utilities.vector import dot
 
+## TODO: polygon intersection
+## TODO: match intersect to object
+## TODO: plane convergance (solid/brush recovery)
+
 def ray_triangle(ray, triangle, length=1024):
     """returns a whether or not ray and triangle intersect, and the point of intersection"""
     point = (0, 0, 0)
