@@ -6,7 +6,6 @@
 # created:  22nd April 2017                                                    #
 # liscense: CC 4.0 BY SA                                                       #
 ################################################################################
-# TODO: fix CW_sort
 import itertools
 import math
 
@@ -50,8 +49,8 @@ class vec2:
             return vec2(self.x // other, self.y // other)
         raise TypeError(f"unsupported operand type(s) for //: 'vec2' and '{other.__class__.__name__}'")
 
-    def __getitem__(self, index):
-        return [self.x, self.y][index]
+    def __getitem__(self, key):
+        return [self.x, self.y][key]
 
     def __iter__(self):
         return iter((self.x, self.y))
@@ -75,6 +74,15 @@ class vec2:
 
     def __rmul__(self, other):
         return self.__mul__(other)
+
+    def __setitem__(self, key, value):
+        # how do you support slices here?
+        if key == 0:
+            self.x = value
+        elif key == 1:
+            self.y = value
+        else:
+            raise RuntimeError(f'{type(key)} ({key}) is not a valid key')
 
     def __sub__(self, other):
         try:
@@ -157,8 +165,8 @@ class vec3:
             raise ArithmeticError('Cannot divide vector by another vector.')
         raise TypeError(f"unsupported operand type(s) for //: 'vec3' and '{other.__class__.__name__}'")
 
-    def __getitem__(self, index):
-        return [self.x, self.y, self.z][index]
+    def __getitem__(self, key):
+        return [self.x, self.y, self.z][key]
 
     def __iter__(self):
         return iter((self.x, self.y, self.z))
@@ -183,6 +191,17 @@ class vec3:
 
     def __rmul__(self, other):
         return self.__mul__(other)
+
+    def __setitem__(self, key, value):
+        # how do you support slices here?
+        if key == 0:
+            self.x = value
+        elif key == 1:
+            self.y = value
+        elif key == 2:
+            self.z = value
+        else:
+            raise RuntimeError(f'{type(key)} ({key}) is not a valid key')
 
     def __sub__(self, other):
         try:
@@ -210,7 +229,7 @@ class vec3:
         else:
             return self
 
-    def rotate(self, x, y, z):
+    def rotate(self, x=0, y=0, z=0):
         angles = [math.radians(i) for i in (x, y, z)]
         cos_x, sin_x = math.cos(angles[0]), math.sin(angles[0])
         cos_y, sin_y = math.cos(angles[1]), math.sin(angles[1])

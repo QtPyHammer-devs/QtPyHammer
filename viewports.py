@@ -124,11 +124,13 @@ class Viewport3D(Viewport2D):
             if self.camera_moving:
                 print('camera moving')
                 self.setMouseTracking(True)
-                # lock mouse to frame
+                self.grabMouse()
+                self.setCursor(QtCore.Qt.BlankCursor)
             else:
                 print('camera stopped')
                 self.setMouseTracking(False)
-                # unlock mouse from frame
+                self.unsetCursor()
+                self.releaseMouse()
 
     def keyReleaseEvent(self, event):
         self.keys.discard(event.key())

@@ -19,6 +19,106 @@ import utilities.vector as vector
 #TODO: Unlock camera with a keypress (toggle)
 #TODO: Cast off-center ray (GL function to warp ray by projection matrix)
 
+# for new solid_tool
+# series of functions for assembling <class 'brush'> objects
+# -- from model
+# -- from string (.vmf segment)
+# -- from series of planes (link to clipping tool)
+# -- from 3D paint strokes
+# -- from cloud of points
+# parametric generators (USEFUL regular shapes)
+# if no params given (texvec, material), generate them
+def block_planes(bounds_min, bounds_max):
+    planes = []
+    for i in range(3): # generates a cube to fit bounds
+        normal = vector.vec3(0, 0, 0)
+        normal[i] = -1
+        planes.append((normal, -bounds_min[i]))
+        normal = vector.vec3(0, 0, 0)
+        normal[i] = 1
+        planes.append((normal, bounds_max[i]))
+    return planes
+
+def spike_planes(): # radius (internal), sides
+    P0 = (vector.vec3(0, 0, -1), 0)
+    planes = [P0]
+    # degrees = 360 / sides
+    planes.append((P0[0].rotate(y=135), 128))
+    planes.append((planes[1][0].rotate(z=120), 128))
+    planes.append((planes[1][0].rotate(z=-120), 128))
+    planes.append((vector.vec3(0, 0, 1), 128))
+    return planes
+
+class brush:
+    def __init__(self, planes):
+        self.planes = planes
+
+        self.dots = dict()
+        self.crosses = dict()
+        self.coincident_planes = [set() for i in self.planes]
+        for i, plane in enumerate(self.planes):
+            normal, distance = plane
+            for j in range(i + 1, len(self.planes)): # compare pairs only once
+                other_normal, other_distance = self.planes[j]
+                parallelity = vector.dot(normal, other_normal)
+                if abs(parallelity) != 1:
+                    self.coincident_planes[i].add(j)
+                    self.coincident_planes[j].add(i)
+                self.dots[(i, j)] = parallelity
+                self.crosses[(i, j)] = normal * other_normal
+
+        self.triples = []
+        for plane1, coincidents in enumerate(self.coincident_planes):
+            for plane2 in coincidents:
+                # skip repeats in here to go a little bit faster
+                for plane3 in coincidents.intersection(self.coincident_planes[plane2]):
+                    triple = set((plane1, plane2, plane3))
+                    if triple not in self.triples:
+                        self.triples.append(triple)
+        # sum(index in t for t in self.triples) # number of points on plane face
+        # sum({index1, index2}.issubset(t) for t in self.triples) # number of points on plane edge
+
+        tv_map = dict()
+        self.vertices = []
+        self.face_indices = {i: [] for i, plane in enumerate(self.planes)}
+        for triple in self.triples:
+            try:
+                point = intersect.planes_coincident_point(*[self.planes[i] for i in triple])
+            except ZeroDivisionError:
+                print(f'{triple} does not meet at a point')
+                continue
+            cullers = set()
+            for plane in triple:
+                cullers = cullers.union(set(self.coincident_planes[plane]))
+            cullers = cullers.difference(triple)
+            for culler in cullers:
+                normal, distance = self.planes[culler]
+##                if vector.dot(point, normal) > distance:
+##                    print(f'skipping {point:.3f}')
+##                    continue
+            if point not in self.vertices:
+                print(f'adding {point:.3f}')
+                self.vertices.append(point)
+                tv_map[tuple(point)] = triple
+            else:
+                print(f'{point:.3f} {triple} repeat of {tv_map[tuple(point)]}')
+            for plane_index in triple:
+                self.face_indices[plane_index].append(self.vertices.index(point))
+
+        for face, indices in self.face_indices.items():
+            face_vertices = tuple(self.vertices[i] for i in indices)
+            plane_normal = self.planes[face][0]
+            sorted_vertices = vector.sort_clockwise(face_vertices, plane_normal)
+            self.face_indices[face] = tuple(self.vertices.index(v) for v in sorted_vertices)
+
+        # calc from tv_map (triples)
+        # should be faster & easier
+        self.edges = [] # wireframe
+        for edge_loop in self.face_indices.values():
+            for A, B in zip(edge_loop, (*edge_loop[1:], edge_loop[0])):
+                if {A, B} not in self.edges:
+                    self.edges.append({A, B})
+
 
 def main(width=1024, height=576):
     SDL_Init(SDL_INIT_VIDEO)
@@ -29,25 +129,29 @@ def main(width=1024, height=576):
     glColor(1, 1, 1)
     gluPerspective(90, width / height, 0.1, 4096 * 4)
     glEnable(GL_DEPTH_TEST)
-    glEnable(GL_CULL_FACE)
-    glFrontFace(GL_CW)
+    glEnable(GL_BLEND)
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA)
     glPointSize(8)
 
     CAMERA = camera.freecam((160, -160, 160), None, 128)
     rendered_ray = []
-    ray_intersects = False
-
-    triangle = ((-128, 0, 0), (0, 128, 0), (128, 0, 0))
-    triangle = tuple(map(vector.vec3, triangle))
     intersection = (0, 0, 0)
 
-    SDL_SetRelativeMouseMode(SDL_TRUE)
-    SDL_CaptureMouse(SDL_TRUE)
+    triangle = ((-128, 256, 0), (0, 384, 0), (128, 256, 0))
+    triangle = tuple(map(vector.vec3, triangle))
+    ray_intersects_triangle = False
+
+##    test_brush = brush(block_planes((-64, -64, 64), (64, 64, 192)))
+    test_brush = brush(spike_planes())
 
     mousepos = vector.vec2(-180, 120) # overrides start angle
     # need to move to an incremental camera so re-capturing the mouse doesn't
     #   reset the camera
     keys = []
+
+    locked_mouse = False
+    SDL_SetRelativeMouseMode(SDL_TRUE)
+    SDL_CaptureMouse(SDL_TRUE)
             
     tickrate = 1 / 0.015
     old_time = time.time()
@@ -58,7 +162,7 @@ def main(width=1024, height=576):
                 SDL_GL_DeleteContext(glContext)
                 SDL_DestroyWindow(window)
                 SDL_Quit()
-                return False
+                return test_brush
             if event.type == SDL_KEYDOWN:
                 if event.key.keysym.sym not in keys:
                     keys.append(event.key.keysym.sym)
@@ -79,20 +183,28 @@ def main(width=1024, height=576):
 
         dt = time.time() - old_time
         while dt >= 1 / tickrate:
+            # KEYTIME to prevent repeats
             CAMERA.update(mousepos, keys, 1 / tickrate)
+            if SDLK_z in keys:
+                SDL_SetRelativeMouseMode(SDL_FALSE if locked_mouse else SDL_TRUE)
+                locked_mouse = not locked_mouse
             if SDLK_r in keys:
                 CAMERA = camera.freecam(None, None, 128)
             if SDLK_BACKQUOTE in keys:
-                print(f'RAY @ {ray_start:.3f} WITH DIR {ray_dir:.3f}')
-                r = lambda x: f'({x:.2f})'
-                print('INTERSECTS TRIANGLE', ', '.join(map(r, triangle)))
-                print(f'@ {intersection:.3f}')
-                        
+                print(f'VERTICES: {test_brush.vertices}')
             if SDL_BUTTON_LEFT in keys:
                 ray_start = CAMERA.position
                 ray_dir = vector.vec3(0, 1, 0).rotate(*-CAMERA.rotation)
                 rendered_ray = [ray_start, ray_start + (ray_dir * 4096)]
-                ray_intersects, intersection = intersect.ray_triangle((ray_start, ray_dir), triangle)
+                ray_intersects_triangle, intersection = intersect.ray_triangle((ray_start, ray_dir), triangle)
+
+                # test against brush
+                brush_ray_intersections = intersect.ray_hull((ray_start, ray_dir), test_brush.planes)
+                if len(brush_ray_intersections) != 0:
+                    print(brush_ray_intersections)
+                    ray_intersects_brush = True
+                    intersection = ray_start + ray_dir * brush_ray_intersections[0]
+                
             dt -= 1 / tickrate
             old_time = time.time()
 
@@ -120,13 +232,19 @@ def main(width=1024, height=576):
 
         # RAYCAST
         glDisable(GL_DEPTH_TEST)
-        glColor(*((0, 1, .5) if ray_intersects else (1, .5, 0)))
+        glColor(*((0, 1, .5) if ray_intersects_triangle else (1, .5, 0)))
 
         # RAY
         glBegin(GL_LINES)
         for point in rendered_ray:
             glVertex(*point)
         glEnd()
+
+        # POINT OF INTERSECTION
+        if ray_intersects_triangle:
+            glBegin(GL_POINTS)
+            glVertex(*intersection)
+            glEnd()
 
         # TRIANGLE
         glLineWidth(2)
@@ -135,12 +253,45 @@ def main(width=1024, height=576):
             glVertex(*vertex)
             glVertex(*next_vertex)
         glEnd()
+        glColor(*((0, .5, .25, .5) if ray_intersects_triangle else (.5, .25, 0, .5)))
+        glBegin(GL_TRIANGLES)
+        for vertex in triangle:
+            glVertex(*vertex)
+        glEnd()
 
-        # POINT OF INTERSECTION
-        if ray_intersects:
-            glBegin(GL_POINTS)
-            glVertex(*intersection)
+        # BRUSH
+        glColor(.5, .25, 0, 0.5)
+        for face, indices in test_brush.face_indices.items():
+            glBegin(GL_POLYGON)
+            for index in indices:
+                glVertex(*test_brush.vertices[index])
             glEnd()
+
+        # BRUSH WIREFRAME
+        glColor(1, .5, 0)
+        glBegin(GL_LINES)
+        for edge in test_brush.edges:
+            for index in edge:
+                glVertex(*test_brush.vertices[index])
+        glEnd()
+
+        glColor(1, .5, 0)
+        glBegin(GL_POINTS)
+        for vertex in test_brush.vertices:
+            glVertex(*vertex)
+        # PLANE CENTERS
+        glColor(1, 0, 1)
+        for normal, distance in test_brush.planes:
+            glVertex(*(normal * distance))
+        glEnd()
+
+        glLineWidth(1)
+        glColor(1, 0, 1)
+        glBegin(GL_LINES)
+        for normal, distance in test_brush.planes:
+            glVertex(*(normal * distance))
+            glVertex(*(normal * distance + normal * 32))
+        glEnd()
 
         glEnable(GL_DEPTH_TEST)
 
@@ -149,7 +300,7 @@ def main(width=1024, height=576):
 
 if __name__ == '__main__':
     try:
-        main()
+        output = main()
     except Exception as exc:
         SDL_Quit()
         raise exc
