@@ -36,11 +36,10 @@ class freecam:
         self.rotation = vec3(rotation) if rotation != None else vec3()
         self.speed = speed
 
-    def update(self, mousepos, keys, dt): #diagonal?
+    def update(self, mousepos, keys, dt):
         global sensitivity
-        # change to += (additive mouse updates, needs different mousepos)
-        self.rotation.z = mousepos.x * sensitivity
-        self.rotation.x = mousepos.y * sensitivity
+        self.rotation.z += mousepos.x * sensitivity
+        self.rotation.x += mousepos.y * sensitivity
         local_move = vec3()
         local_move.x = (any(k in keys for k in keybinds['RIGHT']) - any(k in keys for k in keybinds['LEFT']))
         local_move.y = (any(k in keys for k in keybinds['FORWARD']) - any(k in keys for k in keybinds['BACK']))

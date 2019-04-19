@@ -1,17 +1,12 @@
 # try qopengl to keep dependecies simple & multi-platform
-import numpy as np # how does QOpenGL.glMatrix4fv work?
+import math
+import numpy as np
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from PyQt5 import QtCore, QtGui, QtWidgets
+from utilities import camera, physics, vmf_tool, vector, solid_tool
 
-import sys
-sys.path.insert(0, 'utilities') # there has to be a better way to load these
-import camera
-import physics
-import vmf_tool
-import vector
-import solid_tool # must be loaded AFTER vmf_tool (dependencies augh!?!?!)
-
+# arrow keys aren't registering? why? need separate function?
 camera.keybinds = {'FORWARD': [QtCore.Qt.Key_W], 'BACK': [QtCore.Qt.Key_S],
                    'LEFT': [QtCore.Qt.Key_A, QtCore.Qt.LeftArrow],
                    'RIGHT': [QtCore.Qt.Key_D, QtCore.Qt.RightArrow],
@@ -19,7 +14,7 @@ camera.keybinds = {'FORWARD': [QtCore.Qt.Key_W], 'BACK': [QtCore.Qt.Key_S],
                    'DOWN': [QtCore.Qt.Key_E, QtCore.Qt.DownArrow]}
 
 view_modes = ['flat', 'textured', 'wireframe']
-# "silhouette" view mode, lights on black brushwork & props
+# "silhouette" view mode, lights on flat gray brushwork & props
 
 class Viewport2D(QtWidgets.QOpenGLWidget):
     def __init__(self, fps=30, parent=None):
@@ -31,7 +26,7 @@ class Viewport2D(QtWidgets.QOpenGLWidget):
         self.fps = fps
         # set render resolution?
         self.camera = camera.freecam(None, None, 128)
-        self.draw_calls = dict() # shader: (start, end)
+        self.draw_calls = dict() # shader: (index buffer start, end)
 
     def executeGL(self, func, *args, **kwargs): # best hack ever
         """Execute func(self, *args, **kwargs) in this viewport's glContext"""
@@ -95,10 +90,12 @@ class Viewport3D(Viewport2D):
         self.camera_moving = False
         self.camera_keys = list()
         self.draw_calls = dict() # shader: (start, length)
-        self.camera.position += (0, -384, 64)
         self.GLES_MODE = False
         self.keys = set()
-        self.mouse = vector.vec2()
+        self.current_mouse_position = vector.vec2()
+        self.previous_mouse_position = vector.vec2()
+        self.mouse_vector = vector.vec2()
+        self._perspective = (90, 0.1, 10234)
     
     def changeViewMode(self, view_mode): # overlay viewmode button
         # if GLES_MODE = True
@@ -121,6 +118,9 @@ class Viewport3D(Viewport2D):
         self.keys.add(event.key())
         if event.key() == QtCore.Qt.Key_Z:
             self.camera_moving = False if self.camera_moving else True
+            # remember where the cursor was when tracking
+            # move to center while hidden (move back after every update)
+            # move mouse back to starting position once finished
             if self.camera_moving:
                 print('camera moving')
                 self.setMouseTracking(True)
@@ -136,7 +136,9 @@ class Viewport3D(Viewport2D):
         self.keys.discard(event.key())
 
     def mouseMoveEvent(self, event):
-        self.mouse = vector.vec2(event.pos().x(), event.pos().y())
+        self.previous_mouse_position = self.current_mouse_position # use center (we teleport back there after each camera.update())
+        self.current_mouse_position = vector.vec2(event.pos().x(), event.pos().y())
+        self.mouse_vector = self.current_mouse_position - self.previous_mouse_position
 
     def initializeGL(self):
         glClearColor(0, 0, 0, 0)
@@ -149,11 +151,46 @@ class Viewport3D(Viewport2D):
         glFrontFace(GL_CW)
         glPointSize(4)
 
+    def printMatrix(self):
+        print(glGetFloatv(GL_MODELVIEW_MATRIX))
+
     def paintGL(self):
         glPushMatrix()
         self.camera.set()
         if self.GLES_MODE:
-            MVP_matrix = np.array(glGetFloatv(GL_MODELVIEW_MATRIX), np.float32)
+            far, near = 0.1, 4096 # same as in gluPerspective ^^^
+            s = 1 / math.tan(self.fov / 2)
+            MVP_matrix = np.array([s, 0, 0, 0,
+                                   0, s, 0, 0,
+                                   0, 0, -far / (far - near), -1,
+                                   self.camera.position.x, self.camera.position.y, (-far * near / (far - near)) + self.camera.position.z, 0], np.float32)
+            ### ^^^ re-calculate P (Perspective) in resizeGL ^^^ ###
+            position = self.camera.position
+            T = [1, 0, 0, 0,
+                 0, 1, 0, 0,
+                 0, 0, 1, 0,
+                 -position.x, -position.y, -position.z, 1]
+            theta = self.camera.rotation.x
+            Rx = [1, 0, 0, 0,
+                  0, math.cos(theta), -math.sin(theta), 0,
+                  0, math.sin(theta), math.cos(theta), 0,
+                  0, 0, 0, 1]
+            theta = self.camera.rotation.y
+            Ry = [math.cos(theta), 0, math.sin(theta), 0,
+                  0, 1, 0, 0,
+                  -math.sin(theta), 0, math.cos(theta), 0,
+                  0, 0, 0, 1]
+            theta = self.camera.rotation.z
+            Rz = [mah.cos(theta), -math.sin(theta), 0, 0,
+                  math.sin(theta), math.cos(theta), 0, 0,
+                  0, 0, 1, 0,
+                  0, 0, 0, 1]
+
+            # MVP_matrix = T * Rx * Ry * Rz * P
+            # CALCULATE ALL THIS AFTER CAMERA UPDATES!
+            # keep it as a private class variable
+            # but only if GLES_MODE == True
+
             
         glUseProgram(0)
 ##        # orbit center at 30 degrees per second
@@ -161,7 +198,7 @@ class Viewport3D(Viewport2D):
 ##        self.camera.position = self.camera.position.rotate(0, 0, -30 * self.dt)
         glBegin(GL_LINES) # GRID
         glColor(.25, .25, .25)
-        for x in range(-512, 1, 64): # segment to avoid clip warping shape
+        for x in range(-512, 1, 64): # break up to avoid clipping plane warp
             for y in range(-512, 1, 64):
                 glVertex(x, y)
                 glVertex(x, -y)
@@ -183,18 +220,18 @@ class Viewport3D(Viewport2D):
         glPopMatrix()
 
     def resizeGL(self, width, height):
-##        self.makeCurrent()
-##        self.doneCurrent()
         glLoadIdentity()
         gluPerspective(self.fov, self.width() / self.height(), 0.1, 4096 * 4)
 
     def update(self):
         super(Viewport3D, self).update()
         if self.camera_moving:
-            self.camera.update(self.mouse, self.keys, self.dt)
+            self.camera.update(self.mouse_vector, self.keys, self.dt)
+            self.mouse_vector = vector.vec2()
+            # teleport mouse to screen center instead ([0, 0] or something else?)
 
-# WHY AREN'T CONTEXTS SHARING?  ??????????????????????
-class QuadViewport(QtWidgets.QWidget): # busted
+### === ????? WHY AREN'T CONTEXTS SHARING ?????? === ###
+class QuadViewport(QtWidgets.QWidget): # busted, borked, no work good
     def __init__(self, parent=None):
         super(QuadViewport, self).__init__(parent)
         quad_layout = QtWidgets.QGridLayout()
@@ -240,6 +277,7 @@ if __name__ == "__main__":
 ##    window.layout().itemAt(1).widget().sharedGLsetup()
 
     window = Viewport3D(30)
+    window.camera.position += (0, -384, 64)
     window.setGeometry(256, 256, 512, 512)
     window.show()
     

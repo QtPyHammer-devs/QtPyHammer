@@ -13,15 +13,7 @@ from sdl2 import * #Installed via pip (PySDL2 0.9.5)
 # PYSDL2_DLL_PATH must point to the folder containing the DLL
 # this makes loading SDL2 addons with their DLLs in the same folders very easy
 import time
-
-import sys
-sys.path.insert(0, 'utilities')
-# there has to be a better way to load these
-import camera
-import physics
-import vmf_tool
-import vector
-import solid_tool # must be loaded AFTER vmf_tool (how do dependencies work?)
+from utilities import camera, physics, vmf_tool, vector, solid_tool
 
 class pivot(enum.Enum): # for selections of more than one brush / entity
     """like blender pivot point"""
@@ -121,20 +113,11 @@ def main(vmf_path, width=1024, height=576):
             print(exc, '\n')
 ##            raise exc
 
-    brush_triangles = list(itertools.chain(*[s.triangles for s in solids]))
-
+    # [(Start + Offset, Length) for Start, Length in Brush.index_map]
     offset_index_map = lambda B, O: [(S + O, L) for S, L in B.index_map]
-    
     brush_index_map = [s.index_map for s in solids]
 
-    # vertices, indices & draw_call map ((brush (faces, ...)), ...)
-    # [brush[sides], ... ] TO:
-    # vertices bytes,
-    # indices bytes &
-    # [(brush (start, len), side (start, len), ...), ...]
-    # use compress sequence to assemble draw calls
-
-##    try: # GLSL 450
+##    try: # GLSL 4.50
 ##        # Vertex Shaders
 ##        vert_shader_brush = compileShader(open('shaders/GLSL_450/verts_brush.vert', 'rb'), GL_VERTEX_SHADER)
 ##        vert_shader_displacement = compileShader(open('shaders/GLSL_450/verts_displacement.vert', 'rb'), GL_VERTEX_SHADER)
@@ -212,7 +195,7 @@ def main(vmf_path, width=1024, height=576):
                 while event.button.button in keys:
                     keys.remove(event.button.button)
             if event.type == SDL_MOUSEMOTION:
-                mousepos += vector.vec2(event.motion.xrel, event.motion.yrel)
+                mousepos = vector.vec2(event.motion.xrel, event.motion.yrel)
                 SDL_WarpMouseInWindow(window, width // 2, height // 2)
             if event.type == SDL_MOUSEWHEEL:
                 if CAMERA.speed + event.wheel.y * 32 > 0: # speed limits
@@ -228,6 +211,7 @@ def main(vmf_path, width=1024, height=576):
             # use KEYTIME to delay input repeat
             # KEYTIME
             CAMERA.update(mousepos, keys, 1 / tickrate)
+            mousepos = vector.vec2()
             render_solids = [s for s in solids if (s.center - CAMERA.position).magnitude() < 2048]
             if SDLK_r in keys:
                 CAMERA = camera.freecam(None, None, 128)
@@ -373,8 +357,8 @@ def main(vmf_path, width=1024, height=576):
 
 if __name__ == '__main__':
     try:
-        main('tests/vmfs/test.vmf')
-##        main('tests/vmfs/test2.vmf')
+##        main('tests/vmfs/test.vmf')
+        main('tests/vmfs/test2.vmf')
 ##        main('tests/vmfs/sdk_pl_goldrush.vmf')
 ##        main('tests/vmfs/pl_upward_d.vmf')
     except Exception as exc:

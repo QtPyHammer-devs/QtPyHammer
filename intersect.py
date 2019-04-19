@@ -93,6 +93,8 @@ def planes_coincident_point(p1, p2, p3):
     D = determinant([p1[0].x, p1[0].y, p1[0].z,
                      p2[0].x, p2[0].y, p2[0].z,
                      p3[0].x, p3[0].y, p3[0].z])
+    if D == 0:
+        D = 1
     D1 = determinant([p1[1], p1[0].y, p1[0].z,
                       p2[1], p2[0].y, p2[0].z,
                       p3[1], p3[0].y, p3[0].z])

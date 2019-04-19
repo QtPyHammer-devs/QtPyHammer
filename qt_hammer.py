@@ -7,14 +7,7 @@ from OpenGL.GL.shaders import compileShader, compileProgram
 from OpenGL.GLU import *
 import viewports
 
-# sys.path.insert(0, 'utilities')
-# import vmf_tool
-# import solid_tool # import second or errors occur
-# import vector # for moving camera
-
-import utilities.solid_tool as solid_tool
-import utilities.vmf_tool as vmf_tool
-import utilities.vector as vector
+from utilities import solid_tool, vmf_tool, vector
 
 def except_hook(cls, exception, traceback): # for debugging python called by Qt
     sys.__excepthook__(cls, exception, traceback)
@@ -26,26 +19,24 @@ def print_methods(obj, filter_lambda=lambda x: True, joiner='\n'):
 
 # TODOS:
 # context menu (set shortcut)
+# -- doom style weapon wheel of tools
 # clearly log & report crashes!
-# especially those that occur in slots (sys.excepthook)
-# vmf manager
-# edit vmf as text (text editor)
-# IDE (colours, auto-complete) preserve solids
-# use IDE tools to attempt recovery of corrupt vmfs
-#### == >>> recovery tools in general <<< == ###
+# -- especially those that occur in Qt slots (sys.excepthook)
+#### == >>> solid / vmf recovery tools in general <<< == ###
 
 new_file_count = 0
 
 # disable menu items when they cannot be used
 
-# need a QSettings to store: LOAD HERE!
+# need QSettings to store:
 #  recent files
 #  OpenGL settings
 #  game configurations
 #  default filepaths
 #  keybinds
 #  ...
-# .ini should be straightforward enough
+# an .ini file should be straightforward enough
+### LOAD BEFORE INITIALISING! ###
 
 QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
 app = QtWidgets.QApplication(sys.argv)
@@ -56,7 +47,7 @@ window.setTabPosition(QtCore.Qt.TopDockWidgetArea, QtWidgets.QTabWidget.North)
 
 # read .fgd(s) for entity_data
 # prepare .vpks (grab directories)
-# mount custom data (tf/custom etc)
+# mount custom data (check the gameinfo.txt for paths, but have defaults)
 
 ### MAIN MENU ###
 menu = QtWidgets.QMenuBar()
@@ -65,7 +56,7 @@ file_menu = menu.addMenu('&File')
 new_file = file_menu.addAction('&New')
 new_file.setShortcut('Ctrl+N')
 
-##tabs = []
+##tabs = [] # Firefox-esque tabs that you can drag around (pull off to make a new window!)
 ##def new_tab(vmf=None): # add a new viewport
 ##    global new_file_count, window, tabs
 ##    new_file_count += 1
@@ -75,7 +66,7 @@ new_file.setShortcut('Ctrl+N')
 ##    # add dock as tab if already have one dock ?
 ##    map_dock.widget().layout().itemAt(2).widget().sharedGLsetup() # too soon
 
-##new_file.triggered.connect(new_tab) # also need to load .vmf into the manager
+##new_file.triggered.connect(new_tab) # also need to load .vmf
 
 open_file = file_menu.addAction('&Open')
 open_file.setShortcut('Ctrl+O')
@@ -86,10 +77,9 @@ open_browser.setDefaultSuffix('vmf') # for saving, doesn't filter
 
 def load_vmf():
     vmf_name = QtWidgets.QFileDialog.getOpenFileName(filter='Valve Map Format (*.vmf)')[0]
-    # load on a seoerate thread from ui
+    # load on a separate thread from ui
     # progress bar
-    #   how do we measure progress when we don't have a value for 100% ?
-    # reuse new_tab
+    #   how do we measure progress when we don't know where we are until 100%?
     print(vmf_name)
 
 open_file.triggered.connect(load_vmf)
@@ -307,6 +297,7 @@ print('.vmf Loaded!')
 
 workspace = QtWidgets.QSplitter(QtCore.Qt.Vertical)
 viewport = viewports.Viewport3D(30)
+##viewport.camera.position = vector.vec3(0, 256, 64)
 
 def vmf_setup(viewport, vmf_object):
     string_solids = [] # need per solid line numbers for snappy updates

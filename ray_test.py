@@ -84,7 +84,11 @@ class brush:
         for triple in self.triples:
             try:
                 point = intersect.planes_coincident_point(*[self.planes[i] for i in triple])
-            except ZeroDivisionError:
+            except ZeroDivisionError as exc:
+                A, B, C = (self.planes[i][0] for i in triple)
+                print(f'{A:.3f} dot ({B:.3f} cross {C:.3f})')
+                print(f'{A:.3f} dot {B * C:.3f}')
+                print(f'{vector.dot(A, B * C):.3f}')
                 print(f'{triple} does not meet at a point')
                 continue
             cullers = set()
@@ -97,7 +101,7 @@ class brush:
 ##                    print(f'skipping {point:.3f}')
 ##                    continue
             if point not in self.vertices:
-                print(f'adding {point:.3f}')
+                print(f'adding {point:.3f} {triple}')
                 self.vertices.append(point)
                 tv_map[tuple(point)] = triple
             else:
@@ -129,6 +133,8 @@ def main(width=1024, height=576):
     glColor(1, 1, 1)
     gluPerspective(90, width / height, 0.1, 4096 * 4)
     glEnable(GL_DEPTH_TEST)
+    glEnable(GL_CULL_FACE)
+    glFrontFace(GL_CW)
     glEnable(GL_BLEND)
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA)
     glPointSize(8)
@@ -260,8 +266,10 @@ def main(width=1024, height=576):
         glEnd()
 
         # BRUSH
-        glColor(.5, .25, 0, 0.5)
+        colour = (0.5, 0.25, 0)
         for face, indices in test_brush.face_indices.items():
+            glColor(*colour, 0.5)
+            colour = (*colour[1:], colour[0])
             glBegin(GL_POLYGON)
             for index in indices:
                 glVertex(*test_brush.vertices[index])

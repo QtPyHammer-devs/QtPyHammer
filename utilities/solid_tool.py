@@ -1,7 +1,5 @@
 import itertools
-import utilities.vector as vector
-import utilities.vmf_tool as vmf_tool
-import utilities.physics as physics
+from utilities import vector, vmf_tool, physics
 
 def triangle_of(side):
     "extract triangle from string (returns 3 vec3)"
@@ -73,8 +71,8 @@ def disp_tris(verts, power): # copied from snake-biscuits/bsp_tool/bsp_tool.py
                 tris.append(verts[offset + power2B])
     return tris
 
-def square_neighbours(x, y, edge_length):
-    """square is the length of an edge"""
+def square_neighbours(x, y, edge_length): # edge_length = (2^power) + 1
+    """yields the indicies of neighbouring points in a displacement"""
     for i in range(x - 1, x + 2):
         if i >= 0 and i < edge_length:
             for j in range(y - 1, y + 2):
@@ -238,7 +236,7 @@ class solid:
         min_y, max_y = min(all_y), max(all_y)
         min_z, max_z = min(all_z), max(all_z)
         self.aabb = physics.aabb([min_x, min_y, min_z], [max_x, max_y, max_z])
-        self.center = (self.aabb.min + self.aabb.max) / 2     
+        self.center = (self.aabb.min + self.aabb.max) / 2
 
     def flip(self, center, axis):
         """axis is a vector"""
