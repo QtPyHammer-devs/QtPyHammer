@@ -181,7 +181,7 @@ class Viewport3D(Viewport2D):
                   -math.sin(theta), 0, math.cos(theta), 0,
                   0, 0, 0, 1]
             theta = self.camera.rotation.z
-            Rz = [mah.cos(theta), -math.sin(theta), 0, 0,
+            Rz = [math.cos(theta), -math.sin(theta), 0, 0,
                   math.sin(theta), math.cos(theta), 0, 0,
                   0, 0, 1, 0,
                   0, 0, 0, 1]
