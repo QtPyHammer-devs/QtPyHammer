@@ -1,5 +1,3 @@
-Move to github.com/snake-biscuits/vmf_tool/projects
-
 See Also: https://developer.valvesoftware.com/wiki/Hammer_Feature_Requests
 
 --==Must Have Features==--
@@ -163,3 +161,5 @@ DOOM2016 weapon wheel texture / brush select
 Mute / Solo Visgroup
 Autogroup based on diff (group an area built over a certain period)
 Check if material needs a cubemap
+Choose material of new face made with clipping tool
+   Auto select new face if you switch from vertex/clip to texture mode
