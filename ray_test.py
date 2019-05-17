@@ -15,6 +15,8 @@ from sdl2 import * #Installed via pip (PySDL2 0.9.5)
 import time
 import utilities.camera as camera
 import utilities.vector as vector
+
+camera.sensitivity = 1
     
 #TODO: Unlock camera with a keypress (toggle)
 #TODO: Cast off-center ray (GL function to warp ray by projection matrix)
@@ -139,7 +141,9 @@ def main(width=1024, height=576):
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA)
     glPointSize(8)
 
-    CAMERA = camera.freecam((160, -160, 160), None, 128)
+    CAMERA = camera.freecam((160, -160, 245), (20, 0, -45), 192)
+    mousepos = vector.vec2()
+    
     rendered_ray = []
     intersection = (0, 0, 0)
 
@@ -147,12 +151,9 @@ def main(width=1024, height=576):
     triangle = tuple(map(vector.vec3, triangle))
     ray_intersects_triangle = False
 
-##    test_brush = brush(block_planes((-64, -64, 64), (64, 64, 192)))
-    test_brush = brush(spike_planes())
+    test_brush = brush(block_planes((-64, -64, 64), (64, 64, 192)))
+##    test_brush = brush(spike_planes())
 
-    mousepos = vector.vec2(-180, 120) # overrides start angle
-    # need to move to an incremental camera so re-capturing the mouse doesn't
-    #   reset the camera
     keys = []
 
     locked_mouse = False
@@ -181,7 +182,7 @@ def main(width=1024, height=576):
                 while event.button.button in keys:
                     keys.remove(event.button.button)
             if event.type == SDL_MOUSEMOTION:
-                mousepos += vector.vec2(event.motion.xrel, event.motion.yrel)
+                mousepos = vector.vec2(event.motion.xrel, event.motion.yrel)
                 SDL_WarpMouseInWindow(window, width // 2, height // 2)
             if event.type == SDL_MOUSEWHEEL:
                 if CAMERA.speed + event.wheel.y * 32 > 0: # speed limits
@@ -191,6 +192,7 @@ def main(width=1024, height=576):
         while dt >= 1 / tickrate:
             # KEYTIME to prevent repeats
             CAMERA.update(mousepos, keys, 1 / tickrate)
+            mousepos = vector.vec2(0, 0)
             if SDLK_z in keys:
                 SDL_SetRelativeMouseMode(SDL_FALSE if locked_mouse else SDL_TRUE)
                 locked_mouse = not locked_mouse

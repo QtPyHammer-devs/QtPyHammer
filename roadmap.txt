@@ -97,6 +97,8 @@ Displacement Tools
 Rulers
     Jump Arcs (Double, Detonator, Scorch Shot, Pill, Trimp, C-Tap / No C-Tap)
     Rocket Jump Chains
+    MvM giant scaling guides
+     -- load from popfile
 Load Rollouts / Ghosts from Demo File
 Load Heatmap (heatmaps.tf)
 Ragdoll Preview (for that perfect deathpit / finale)
