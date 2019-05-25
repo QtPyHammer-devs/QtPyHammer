@@ -165,3 +165,7 @@ Autogroup based on diff (group an area built over a certain period)
 Check if material needs a cubemap
 Choose material of new face made with clipping tool
    Auto select new face if you switch from vertex/clip to texture mode
+Filter out specific material folders in browser
+Filter out specific model folders in browser
+Faster load times on asset browsers in general
+ -- Generators / load one level at a time 
