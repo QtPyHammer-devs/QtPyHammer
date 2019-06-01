@@ -23,9 +23,10 @@ Process .vmt & .vtf
     Material sounds & impact particles
     Proxies (scrolling etc.)
 Compile Through Compilepal
-    pyHammer file -> .vmf -> Compilepal -> Release Quality .bsp
+    QtPyHammer file -> .vmf -> Compilepal -> Release Quality .bsp
+    One button
 Auto-save
-Custom pyHammer WIP format (.pyh, .pyh.backup)
+Custom QtPyHammer format (.pyh, .pyh.backup)
     Convert to .vmf for compile (or a button for changing devices)
 Inner angle more visible when adjusting light_spot
     Brightest patch should be instantly clear
@@ -39,14 +40,16 @@ Undo & Redo
 
 3D selection
     https://www.opengl.org/archives/resources/faq/technical/selection.htm
-
+    https://graphics.stanford.edu/courses/cs348b-98/gg/intersect.html
+    https://www.youtube.com/watch?v=EZXz-uPyCyA
     
+
 --==Nice To Have Features==--
+https://tf2maps.net/threads/3-most-wanted-features-for-hammer.37807/
 Forest fill (prop family, density, falloff side, sort by tricount)
-    for blocking out
     should be fast & intuitive
 Model Copy & Edit
-    flip prop along axis
+    flip prop along axis (some recompile scripts for this are being made)
 Brushwork to Model (.smd / .obj export)
 Preview I/O Sequence
     Payload gates
@@ -125,13 +128,14 @@ Selecting an entire group (or part of) in object or solids mode, copies of the s
 Meaningful sub-grouping
 per entity output organisation (group lines of outputs)
 copied objects retain the visgroup of origonal object (optional)
-https://tf2maps.net/threads/3-most-wanted-features-for-hammer.37807/
 carve that just extrudes smoothly
 browse for sprites / hud materials in texture browser (context aware)
-edit vmf in cinema4d / blender (would take years you absolute madman, stop doing this to yourself)
-Action History Text Log
+ -- auto-filter textures
+edit vmf in cinema4d / blender (would take years you absolute madman, stop doing this to yourself) [oh no he's actually doing it]
+Action Log
 Plain English IO Debugging
     Identify Keywords, Contexts and Discern what should be examined
+    Consistency is key
 Demo playback tools
     Rewind
     Jump to target (scoreboard, click in 3d, name in chat)
@@ -152,20 +156,39 @@ Mirror edit
     Texture / vert changes etc
     Model flipper (auto-pack)
 Vertex Edit also moves point entity centres & overlays (toggle on key)
-Cylinder texture wrap
+Cylinder texture wrap (automatic)
+ -- keep wrap when shifting in vertex edit / clip
 Deformable Grid
     Spline displacement warp section
     Ratio locked segments (2:3 etc.)
-    tools snap to grid
-    warp straight segment to new grid
+    tools snap & align to grid
+    bend straight segment to alt-grid
     grid preview (render warped segments over regular)
-DOOM2016 weapon wheel texture / brush select
+Tool wheels
+ -- quick palette (textures, brush shapes)
 Mute / Solo Visgroup
-Autogroup based on diff (group an area built over a certain period)
+ -- Changing visible objects does not affect selection
+ -- Hidden & Selected objects are not affected by changes made while they are hidden
+    (That's just a hammer bug, why would you replicate that)
+Autogroup
+ -- proximity
+ -- built / focused on in the same session
+ -- detail density
+ -- trace diff to see original shape and reworks
 Check if material needs a cubemap
+ -- automatically make one if speed mapping?
+ -- remind / warn on compile (not for fast) 
 Choose material of new face made with clipping tool
+    be smart
    Auto select new face if you switch from vertex/clip to texture mode
 Filter out specific material folders in browser
 Filter out specific model folders in browser
 Faster load times on asset browsers in general
- -- Generators / load one level at a time 
+ -- single cached maps of the vpks
+ -- search bins, (filter then load)
+ -- multi-thread / load one folder tier at a time
+ -- propper but fast, reliable and in-editor
+Nearby displacements base brushes snap together (hammer4 sew support)
+ -- move disp base brush but keep disp verts still
+Draw brushes / displacements
+ -- grease paint with rough perspective detection and projection (insane)
