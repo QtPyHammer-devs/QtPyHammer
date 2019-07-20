@@ -192,4 +192,9 @@ Nearby displacements base brushes snap together (hammer4 sew support)
  -- move disp base brush but keep disp verts still
 Draw brushes / displacements
  -- grease paint with rough perspective detection and projection (insane)
-Autocomplete when typing texture / model / particle / entity names
+Autocomplete in asset browsers
+Suggest similar asset names in asset browser(s)
+ -- rock0*: boulder* etc
+ -- floor* / wall*: metal
+ -- *trim* / *beam*
+ --- big unofficial list of alternate tags in a separate file
