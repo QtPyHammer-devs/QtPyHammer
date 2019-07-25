@@ -15,6 +15,8 @@ from sdl2 import * #Installed via pip (PySDL2 0.9.5)
 import time
 from utilities import camera, physics, vmf_tool, vector, solid_tool
 
+camera.sensitivity = 1
+
 class pivot(enum.Enum): # for selections of more than one brush / entity
     """like blender pivot point"""
     median = 0

@@ -151,8 +151,8 @@ def main(width=1024, height=576):
     triangle = tuple(map(vector.vec3, triangle))
     ray_intersects_triangle = False
 
-    test_brush = brush(block_planes((-64, -64, 64), (64, 64, 192)))
-##    test_brush = brush(spike_planes())
+##    test_brush = brush(block_planes((-64, -64, 64), (64, 64, 192)))
+    test_brush = brush(spike_planes())
 
     keys = []
 
