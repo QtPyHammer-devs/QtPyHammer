@@ -1,0 +1,7 @@
+QtPyHammer
+fgdtools==0.1.0
+numpy==1.15.2
+PyOpenGL==3.1.0
+PyQt5==5.11.3
+PyQt5-sip==4.19.13
+PySDL2==0.9.6
