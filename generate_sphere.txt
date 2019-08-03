@@ -27,3 +27,5 @@ glColor(.05, .05, .05)
                 glVertex(*xy * scalar_low, z_low)
                 glVertex(*xy * scalar_high, z_high)
             glEnd()
+
+# Now do it with planes
