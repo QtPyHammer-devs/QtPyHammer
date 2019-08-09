@@ -3,14 +3,11 @@ from itertools import chain
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 
-def except_hook(cls, exception, traceback):
+def except_hook(cls, exception, traceback): #for PyQt debugging
     sys.__excepthook__(cls, exception, traceback)
 sys.excepthook = except_hook
 
-app = QtWidgets.QApplication(sys.argv)
-window = QtWidgets.QTabWidget()
-window.setWindowTitle('Entity Browser')
-window.setGeometry(640, 400, 640, 480)
+tf_fgd = fgdtools.parser.FgdParse('tf.fgd')
 
 # Monkey Patches
 def fgd_repr(fgd):
@@ -30,40 +27,92 @@ fgdtools.parser.FgdEntityInput.__repr__ = lambda i: f"<{i.__class__.__name__} '{
 fgdtools.parser.FgdEntityOutput.__repr__ = lambda o: f"<{o.__class__.__name__} '{o.name}'>"
 # End Monkey Patches
 
-tf_fgd = fgdtools.parser.FgdParse('tf.fgd')
 entities = [e for e in chain(tf_fgd.entities, *[f.entities for f in tf_fgd.includes]) if e.class_type in ('PointClass', 'SolidClass')]
 entities = sorted(entities, key = lambda e: e.name) # sort alphabetically
-default_ent = entities.index(tf_fgd.entity_by_name('prop_static'))
+default_entity = entities.index(tf_fgd.entity_by_name('prop_static'))
 
+app = QtWidgets.QApplication(sys.argv)
+window = QtWidgets.QTabWidget()
+window.setWindowTitle('Entity Browser')
+window.setGeometry(640, 400, 640, 480)
+
+# make the whole window a class for loading on a button / key in the main program
 core_tab = QtWidgets.QWidget()
 layout = QtWidgets.QVBoxLayout()
-ent_selector = QtWidgets.QComboBox()
-ent_selector.addItems([e.name for e in entities])
-ent_selector.setCurrentIndex(default_ent)
-layout.addWidget(ent_selector)
+ent_select = QtWidgets.QComboBox()
+ent_select.addItems([e.name for e in entities])
+ent_select.setCurrentIndex(default_entity)
+ent_select_layout = QtWidgets.QHBoxLayout()
+ent_select_layout.addWidget(ent_select)
+ent_select_layout.addWidget(QtWidgets.QPushButton('Copy'))
+ent_select_layout.addWidget(QtWidgets.QPushButton('Paste'))
+ent_select_layout.setStretch(0, 2)
+layout.insertLayout(0, ent_select_layout)
 label = QtWidgets.QLabel('No Entity Selected')
+label.setWordWrap(True) # have a "Read More..." button (link)
 layout.addWidget(label)
 table = QtWidgets.QScrollArea()
 layout.addWidget(table)
 
+current_entity = entities[default_entity]
 
 def load_entity(index):
     global label, table, window
-    # find and remove flags tab if it exists
-    label.setText(entities[index].description)
-    widget = QtWidgets.QWidget()
-    layout = QtWidgets.QGridLayout()
-    for i, p in enumerate(filter(lambda e: isinstance(e, fgdtools.parser.FgdEntityProperty), entities[index].properties)):
-        if p.name == 'spawnflags':
+    try: # remove logic & flags tabs (if used)
+        window.removeTab(2)
+        window.removeTab(2)
+    except:
+        pass
+    entity = entities[index]
+    global current_entity
+    current_entity = entity
+    label.setText(entity.description.split('.')[0]) # paragraph in fgd amendment
+    properties = [*filter(lambda p: isinstance(p, fgdtools.parser.FgdEntityProperty), entity.properties)]
+    inputs = [*filter(lambda i: isinstance(i, fgdtools.parser.FgdEntityInput), entity.properties)]
+    outputs = [*filter(lambda o: isinstance(o, fgdtools.parser.FgdEntityOutput), entity.properties)]
+    if len(inputs) > 0 or len(outputs) > 0: # AND no inputs recieved
+        window.addTab(QtWidgets.QWidget(), 'Logic')
+    entity_widget = QtWidgets.QWidget()
+    form = QtWidgets.QFormLayout()
+    form.setAlignment(QtCore.Qt.AlignJustify)
+    for i, p in enumerate(properties):
+        if p.value_type == 'flags':
             window.addTab(QtWidgets.QWidget(), 'Flags')
-            continue
-        layout.addWidget(QtWidgets.QLabel(p.name), i, 0)
-        # look at type
-        # spinbox? file browser?
-        # remember shown value != saved value in .vmf
-        layout.addWidget(QtWidgets.QLineEdit(str(p.default_value)), i, 1)
-    widget.setLayout(layout)
-    table.setWidget(widget)
+        # use comboboxes informed by model for anims and skins
+        # when props change consistency will be difficult
+        # having a csv or similar naming skins would be neat
+        # matching teams to numbers etc.
+        elif p.value_type == 'choices':
+            selector = QtWidgets.QComboBox()
+            options = {i: o.value for i, o in enumerate(p.options)}
+            selector.addItems([str(o.display_name) for o in p.options])
+            selector.setCurrentIndex([i for i, v in options.items() if v == p.default_value][0])
+            form.addRow(p.display_name, selector)
+        elif p.value_type == 'integer':
+            # set 'skin' min & max from model (props)
+            selector = QtWidgets.QSpinBox()
+            selector.setValue(p.default_value)
+            form.addRow(p.display_name, selector)
+        elif p.value_type == 'studio': # model
+            selector = QtWidgets.QHBoxLayout()
+            address_bar = QtWidgets.QLineEdit(p.default_value)
+            selector.addWidget(address_bar)
+            button = QtWidgets.QPushButton('Browse...')
+            selector.addWidget(button) # connect to model browser
+            model_browser = QtWidgets.QFileDialog() # FAKE FOR TESTS
+            def get_file_address():
+                address = model_browser.getOpenFileName()[0]
+                # {tf_folder}/models/{address_bar.text}.mdl == actual address
+                # cleanup accordingly
+                stripped_address = address.split('/')[-1].rpartition('.')[0]
+                # stripped_address = address.lstrip(f'{tf_folder}/models/')
+                address_bar.setText(stripped_address)
+            button.clicked.connect(get_file_address)
+            form.addRow(p.display_name, selector)
+        else:
+            form.addRow(p.display_name, QtWidgets.QLineEdit(str(p.default_value)))
+    entity_widget.setLayout(form)
+    table.setWidget(entity_widget)
     
         # make a class from a FgdEntity object
 ##class BasicEntitiy:
@@ -74,12 +123,24 @@ def load_entity(index):
 ##            setattr(self, property.name, property.default_value)
 
 
-ent_selector.currentIndexChanged.connect(load_entity)
-load_entity(default_ent)
+ent_select.currentIndexChanged.connect(load_entity)
+# what we attach here should be contextual
+# have a function that checks the context and delegates?
+load_entity(default_entity)
 
 
 core_tab.setLayout(layout)
 window.addTab(core_tab, 'Core')
-window.addTab(QtWidgets.QWidget(), 'Logic')
+comments_tab = QtWidgets.QWidget()
+layout = QtWidgets.QVBoxLayout()
+layout.addWidget(QtWidgets.QLabel(current_entity.name)) # and entity name if it has one
+layout.addWidget(QtWidgets.QTextEdit())
+comments_tab.setLayout(layout)
+window.addTab(comments_tab, 'Comments')
 window.show()
 app.exec_()
+
+if __name__ == "__main__":
+    print('loading prop_static, prop_dynamic...')
+    prop_static = tf_fgd.entity_by_name('prop_static')
+    prop_dynamic = tf_fgd.entity_by_name('prop_dynamic')
