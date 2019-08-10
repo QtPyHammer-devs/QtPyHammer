@@ -30,6 +30,9 @@ fgdtools.parser.FgdEntityOutput.__repr__ = lambda o: f"<{o.__class__.__name__} '
 entities = [e for e in chain(tf_fgd.entities, *[f.entities for f in tf_fgd.includes]) if e.class_type in ('PointClass', 'SolidClass')]
 entities = sorted(entities, key = lambda e: e.name) # sort alphabetically
 default_entity = entities.index(tf_fgd.entity_by_name('prop_static'))
+# prop_dynamic for flags and logic
+# team_control_point for more field types
+current_entity = entities[default_entity]
 
 app = QtWidgets.QApplication(sys.argv)
 window = QtWidgets.QTabWidget()
@@ -48,25 +51,25 @@ ent_select_layout.addWidget(QtWidgets.QPushButton('Copy'))
 ent_select_layout.addWidget(QtWidgets.QPushButton('Paste'))
 ent_select_layout.setStretch(0, 2)
 layout.insertLayout(0, ent_select_layout)
-label = QtWidgets.QLabel('No Entity Selected')
-label.setWordWrap(True) # have a "Read More..." button (link)
-layout.addWidget(label)
+desc_label = QtWidgets.QLabel('No Entity Selected')
+entity_label = QtWidgets.QLabel(current_entity.name)
+desc_label.setWordWrap(True) # have a "Read More..." button (link)
+layout.addWidget(desc_label)
 table = QtWidgets.QScrollArea()
 layout.addWidget(table)
 
-current_entity = entities[default_entity]
 
-def load_entity(index):
-    global label, table, window
+def load_entity(index): #SmartEdit toggle & owo what's this?
+    global desc_label, table, window, entity_label, current_entity
+    entity_label = QtWidgets.QLabel(current_entity.name) # also entity's name property (if it has one), or 'Unnamed'
     try: # remove logic & flags tabs (if used)
         window.removeTab(2)
         window.removeTab(2)
     except:
         pass
     entity = entities[index]
-    global current_entity
     current_entity = entity
-    label.setText(entity.description.split('.')[0]) # paragraph in fgd amendment
+    desc_label.setText(entity.description.split('.')[0]) # paragraph in fgd amendment
     properties = [*filter(lambda p: isinstance(p, fgdtools.parser.FgdEntityProperty), entity.properties)]
     inputs = [*filter(lambda i: isinstance(i, fgdtools.parser.FgdEntityInput), entity.properties)]
     outputs = [*filter(lambda o: isinstance(o, fgdtools.parser.FgdEntityOutput), entity.properties)]
@@ -77,7 +80,14 @@ def load_entity(index):
     form.setAlignment(QtCore.Qt.AlignJustify)
     for i, p in enumerate(properties):
         if p.value_type == 'flags':
-            window.addTab(QtWidgets.QWidget(), 'Flags')
+            flags_tab = QtWidgets.QWidget()
+            flags_layout = QtWidgets.QVBoxLayout()
+            flags_layout.addWidget(entity_label)
+            for o in p.options:
+                flags_layout.addWidget(QtWidgets.QCheckBox(o.display_name))
+            flags_tab.setLayout(flags_layout)
+            window.addTab(flags_tab, 'Flags')
+            print(p, p.options[0].__dict__) # [o.name for o in p.options]
         # use comboboxes informed by model for anims and skins
         # when props change consistency will be difficult
         # having a csv or similar naming skins would be neat
@@ -133,7 +143,7 @@ core_tab.setLayout(layout)
 window.addTab(core_tab, 'Core')
 comments_tab = QtWidgets.QWidget()
 layout = QtWidgets.QVBoxLayout()
-layout.addWidget(QtWidgets.QLabel(current_entity.name)) # and entity name if it has one
+layout.addWidget(entity_label)
 layout.addWidget(QtWidgets.QTextEdit())
 comments_tab.setLayout(layout)
 window.addTab(comments_tab, 'Comments')
