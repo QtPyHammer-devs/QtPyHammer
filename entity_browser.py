@@ -57,10 +57,15 @@ desc_label.setWordWrap(True) # have a "Read More..." button (link)
 layout.addWidget(desc_label)
 table = QtWidgets.QScrollArea()
 layout.addWidget(table)
+bottom_row = QtWidgets.QHBoxLayout()
+bottom_row.addStretch(1)
+bottom_row.addWidget(QtWidgets.QPushButton('Cancel'))
+bottom_row.addWidget(QtWidgets.QPushButton('Apply'))
+layout.addLayout(bottom_row)
 
 
 def load_entity(index): #SmartEdit toggle & owo what's this?
-    global desc_label, table, window, entity_label, current_entity
+    global desc_label, table, window, entity_label, current_entity, bottom_row
     entity = entities[index]
     current_entity = entity
     entity_label = QtWidgets.QLabel(current_entity.name) # also entity's name property (if it has one), or 'Unnamed'
@@ -77,19 +82,20 @@ def load_entity(index): #SmartEdit toggle & owo what's this?
         window.addTab(QtWidgets.QWidget(), 'Logic')
     entity_widget = QtWidgets.QWidget()
     form = QtWidgets.QFormLayout()
-    form.setAlignment(QtCore.Qt.AlignJustify)
+    # fill scroll area horizontally
     for i, p in enumerate(properties):
         if p.value_type == 'flags':
             flags_tab = QtWidgets.QWidget()
             flags_layout = QtWidgets.QVBoxLayout()
             flags_scroll = QtWidgets.QScrollArea()
             flags_list = QtWidgets.QVBoxLayout()
-            flags_list.setSpacing(0)
             flags_layout.addWidget(entity_label)
             for o in p.options:
                 flags_list.addWidget(QtWidgets.QCheckBox(o.display_name))
+            flags_list.addStretch(1)
             flags_scroll.setLayout(flags_list)
             flags_layout.addWidget(flags_scroll)
+            flags_layout.addLayout(bottom_row)
             flags_tab.setLayout(flags_layout)
             window.addTab(flags_tab, 'Flags')
             print(p, p.options[0].__dict__) # [o.name for o in p.options]
@@ -150,6 +156,7 @@ comments_tab = QtWidgets.QWidget()
 layout = QtWidgets.QVBoxLayout()
 layout.addWidget(entity_label)
 layout.addWidget(QtWidgets.QTextEdit())
+layout.addLayout(bottom_row)
 comments_tab.setLayout(layout)
 window.addTab(comments_tab, 'Comments')
 window.show()
