@@ -7,7 +7,7 @@ def except_hook(cls, exception, traceback): #for PyQt debugging
     sys.__excepthook__(cls, exception, traceback)
 sys.excepthook = except_hook
 
-tf_fgd = fgdtools.parser.FgdParse('tf.fgd')
+tf_fgd = fgdtools.parser.FgdParse('bin/tf.fgd')
 
 # Monkey Patches
 def fgd_repr(fgd):
