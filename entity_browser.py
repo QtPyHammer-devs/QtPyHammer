@@ -61,14 +61,14 @@ layout.addWidget(table)
 
 def load_entity(index): #SmartEdit toggle & owo what's this?
     global desc_label, table, window, entity_label, current_entity
+    entity = entities[index]
+    current_entity = entity
     entity_label = QtWidgets.QLabel(current_entity.name) # also entity's name property (if it has one), or 'Unnamed'
     try: # remove logic & flags tabs (if used)
         window.removeTab(2)
         window.removeTab(2)
     except:
         pass
-    entity = entities[index]
-    current_entity = entity
     desc_label.setText(entity.description.split('.')[0]) # paragraph in fgd amendment
     properties = [*filter(lambda p: isinstance(p, fgdtools.parser.FgdEntityProperty), entity.properties)]
     inputs = [*filter(lambda i: isinstance(i, fgdtools.parser.FgdEntityInput), entity.properties)]
@@ -82,9 +82,14 @@ def load_entity(index): #SmartEdit toggle & owo what's this?
         if p.value_type == 'flags':
             flags_tab = QtWidgets.QWidget()
             flags_layout = QtWidgets.QVBoxLayout()
+            flags_scroll = QtWidgets.QScrollArea()
+            flags_list = QtWidgets.QVBoxLayout()
+            flags_list.setSpacing(0)
             flags_layout.addWidget(entity_label)
             for o in p.options:
-                flags_layout.addWidget(QtWidgets.QCheckBox(o.display_name))
+                flags_list.addWidget(QtWidgets.QCheckBox(o.display_name))
+            flags_scroll.setLayout(flags_list)
+            flags_layout.addWidget(flags_scroll)
             flags_tab.setLayout(flags_layout)
             window.addTab(flags_tab, 'Flags')
             print(p, p.options[0].__dict__) # [o.name for o in p.options]
