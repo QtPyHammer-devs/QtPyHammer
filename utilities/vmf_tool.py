@@ -12,7 +12,7 @@ def pluralise(word):
         return word[:-1] + 'ies'
     elif word.endswith('ex'): # vertex -> vertices
         return word[:-2] + 'ices'
-    else: # horse -> horses
+    else: # side -> sides
         return word + 's'
 
 def singularise(word):
@@ -20,7 +20,7 @@ def singularise(word):
         return word[:-3] + 'f'
     elif word.endswith('ies'): # body <- bodies
         return word[:-3] + 'y'
-    elif word.endswith('s'): # horse <- horses
+    elif word.endswith('s'): # side <-  sides
         return word[:-1]
     elif word.endswith('ices'): # vertex <- vertices
         return word[:-4] + 'ex'
@@ -59,11 +59,6 @@ class scope:
             except:
                 break
 
-    def pluralise(self):
-        # do we have the singular?
-        # one step back, 2 steps forward?
-        self.strings = [*self.strings, plural, 1]
-
 
 def namespace_from(text_file):
     """String or .vmf file to nested namespace"""
@@ -78,34 +73,26 @@ def namespace_from(text_file):
     previous_line = ''
     for line_number, line in enumerate(file_iter):
         try:
+            new_namespace = namespace({'_line': line_number})
             line = line.rstrip('\n')
-            line = textwrap.shorten(line, width=1024) # use regex instead
-            if line == '':
+            line = textwrap.shorten(line, width=200) # cleanup spacing, may break at 200+ chars
+            if line == '' or line.startswith('//'): # ignore blank / comments
                 continue
-            if line.startswith('//'):
-                if not hasattr(eval(current_scope), '_comments'):
-                    exec(f'{current_scope}._comments = list()')
-                if previous_line.startswith('//'):
-                    last_comment = eval(f'{current_scope}._comments[-1]')
-                    new_comment = '\n'.join((last_comment[0], line))
-                    exec(f"""{current_scope}._comments[-1][0] = '''{new_comment}'''""")
-                else:
-                    exec(f"{current_scope}._comments.append(['''{line}''', {line_number}])")
             elif line =='{': # START declaration
                 current_keys = eval(f'namespace_nest{current_scope}.__dict__.keys()')
                 plural = pluralise(previous_line)
                 if previous_line in current_keys: # NEW plural
                     exec(f'namespace_nest{current_scope}[plural] = [namespace_nest{current_scope}[previous_line]]')
                     exec(f'namespace_nest{current_scope}.__dict__.pop(previous_line)')
-                    exec(f'namespace_nest{current_scope}[plural].append(namespace(dict()))')
+                    exec(f'namespace_nest{current_scope}[plural].append(new_namespace)')
                     current_scope = scope([*current_scope.strings, plural, 1]) # why isn't this a method?
                 elif plural in current_keys: # APPEND plural
                     current_scope.add(plural)
-                    exec(f"namespace_nest{current_scope}.append(namespace(dict()))")
+                    exec(f"namespace_nest{current_scope}.append(new_namespace)")
                     current_scope.add(len(eval(f'namespace_nest{current_scope}')) - 1)
                 else: # NEW singular
                     current_scope.add(previous_line)
-                    exec(f'namespace_nest{current_scope} = namespace(dict())')
+                    exec(f'namespace_nest{current_scope} = new_namespace')
             elif line == '}': # END declaration
                 current_scope.reduce(1)
             elif '" "' in line: # KEY VALUE
@@ -121,7 +108,8 @@ def namespace_from(text_file):
             print(f'error on line {line_number:04d}:\n{line}\n{previous_line}')
             raise exc
     return namespace_nest
-    
+
+
 class namespace: # DUNDER METHODS ONLY!
     """Nested Dicts -> Nested Objects"""
     def __init__(self, nested_dict=dict()):
@@ -147,8 +135,12 @@ class namespace: # DUNDER METHODS ONLY!
 
     def __repr__(self):
         attrs = [a if ' ' not in a else f'"{a}"' for a in self.__dict__.keys()]
-        return f"namespace([{', '.join(self.__dict__.keys())}])"
+        return f"namespace([{', '.join(attrs)}])"
 
+    def items(self): # fix for lines_from
+        for k, v in self.__dict__.items():
+            yield (k, v)
+            
 
 def dict_from(namespace_nest):
     out = dict()
@@ -162,35 +154,38 @@ def dict_from(namespace_nest):
     return out
 
 
-def lines_from(_dict, tab_depth=0):
-    "Generate lines of text from a nested dict / namespace"
+def lines_from(_dict, tab_depth=0): # rethink & refactor
+    '''Takes a nested dictionary (which may also contain lists, but not tuples)
+from this a series of strings resembling valve's text format used in .vmf files
+are generated approximately one line at a time'''
     tabs = '\t' * tab_depth
-    for key, value in _dict.items() if isinstance(_dict, dict) else _dict.__dict__.items():
-        if isinstance(value, dict) or isinstance(value, namespace):
-            yield f'{tabs}{key}\n{tabs}' + '{\n'
-            for line in lines_from(value, tab_depth + 1):
-                yield line
-        elif isinstance(value, list):
+    for key, value in _dict.items():
+        if isinstance(value, (dict, namespace)): # another layer
+            value = (value,)
+        elif isinstance(value, list): # collection of plurals
             key = singularise(key)
-            for item in value:
-                yield f'{tabs}{key}\n{tabs}' + '{\n'
-                for line in lines_from(item, tab_depth + 1):
-                    yield line
-        else:
+        else: # key-value pair
+            if key == '_line':
+                continue
             yield f'{tabs}"{key}" "{value}"\n'
+            continue
+        for item in value:
+            yield f'{tabs}{key}\n{tabs}' + '{\n' # open into the next layer
+            for line in lines_from(item, tab_depth + 1): # recurse down
+                yield line
     if tab_depth > 0:
-        yield '\t' * (tab_depth - 1) + '}\n'
+        yield '\t' * (tab_depth - 1) + '}\n' # close the layer
 
 
 def export(_dict, outfile):
     """Don't forget to close the file afterwards!"""
-    print('Exporting ... ', end='')
-    for line in lines_from(_dict):
-        outfile.write(line)
+    print(f'Exporting {outfile.name} ... ', end='')
+    for line in lines_from(_dict): # using a buffer to write in chunks may be wise
+        outfile.write(line) # ''.join([line for line in lines_from(_dict)]) also works
     print('Done!')
 
 
-def add_visgroups(vmf, visgroup_dict): # WIP
+def add_visgroups(vmf, visgroup_dict): # work in progress
     """Add visgroups defined in a some object"""
     # FORMAT (TOP: [INNER1, INNER2: []])
     if 'visgroups' not in vmf:
