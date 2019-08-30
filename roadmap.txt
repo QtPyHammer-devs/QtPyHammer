@@ -199,3 +199,4 @@ Suggest similar asset names in asset browser(s)
  -- *trim* / *beam*
  --- big unofficial list of alternate tags in a separate file
 Compare size & silhouette of previous model in browser when changing a model (ghost wireframe / CM)
+randomly rotate prop along Z-axis (foliage)
