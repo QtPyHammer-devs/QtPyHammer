@@ -100,6 +100,7 @@ Displacement Tools
 Rulers
     Jump Arcs (Double, Detonator, Scorch Shot, Pill, Trimp, C-Tap / No C-Tap)
     Rocket Jump Chains
+    Fall Damage Calculator (and jump damage too)
     MvM giant scaling guides
      -- load from popfile
 Load Rollouts / Ghosts from Demo File
@@ -200,3 +201,5 @@ Suggest similar asset names in asset browser(s)
  --- big unofficial list of alternate tags in a separate file
 Compare size & silhouette of previous model in browser when changing a model (ghost wireframe / CM)
 randomly rotate prop along Z-axis (foliage)
+full texture proxy preview (scrolling)
+ -- make all texture scroll
