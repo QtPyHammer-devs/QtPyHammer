@@ -26,7 +26,7 @@ Compile Through Compilepal
     QtPyHammer file -> .vmf -> Compilepal -> Release Quality .bsp
     One button
 Auto-save
-Custom QtPyHammer format (.pyh, .pyh.backup)
+Custom QtPyHammer format (.qph, .qph.backup)
     Convert to .vmf for compile (or a button for changing devices)
 Inner angle more visible when adjusting light_spot
     Brightest patch should be instantly clear
