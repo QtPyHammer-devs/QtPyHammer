@@ -1,0 +1,8 @@
+# Load all binds from configs and apply them here
+self.actions["File>New"].setShortcut('Ctrl+N')
+self.actions["File>Open"].setShortcut('Ctrl+O')
+self.actions["File>Save"].setShortcut('Ctrl+S')
+self.actions["File>Save As"].setShortcut('Ctrl+Shift+S')
+self.actions["File>Compile"].setShortcut('F9')
+
+...

@@ -1,5 +1,0 @@
-.mwah
-Map / World Activity History
-
-.pdaft
-Project Demos and Feedback Table
