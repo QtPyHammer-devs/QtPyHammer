@@ -81,6 +81,12 @@ def square_neighbours(x, y, edge_length): # edge_length = (2^power) + 1
                         yield i * edge_length + j
 
 
+def poly_on(plane):
+    """generate a huge quad on the given plane"""
+    ...
+    # return ((x, y, z), * 4)
+    
+
 ##def slice(polygon, plane):
 ##    ...
 ##    return {back: ..., front: ...}
@@ -107,6 +113,7 @@ class solid:
             # slice by every other plane
             # -- could generate all huge polys in one loop
             # -- then slice in another
+            # slice (...)
             # -- this would mean we slice 2 at once
             self.ngons.append(ngon)
 

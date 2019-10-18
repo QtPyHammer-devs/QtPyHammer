@@ -1,46 +1,29 @@
-#TODO:
-#First-person and Third-person camera need update
-#to receive information based on character motion
-#An AI that interprets inputs into realistic camera motion would be cool
-#Inputs should be typed
-#
-#FIXED CAMERA with either:
-#no rotation
-#scripted rotation (i.e. security camera)
-#player controlled rotation (i.e. PSX Era Square Enix Games)
-#
-#Sensitivity is changed by setting camera.sensitivity in main()
-#
-#Scripted Camera Motion?
-#
-#Per Camera FoV?
+"""Classes for creating and using cameras in 3D"""
 import math
 from OpenGL.GL import *
 from OpenGL.GLU import *
-from sdl2 import *
-from utilities.vector import vec2, vec3
 
-# overwritable (monkey-patchable) global dict binding keys to directions
-keybinds = {'FORWARD': [SDLK_w], 'BACK': [SDLK_s], 'LEFT': [SDLK_a, SDLK_LEFT],
-            'RIGHT': [SDLK_d, SDLK_RIGHT], 'UP': [SDLK_q, SDLK_UP],
-            'DOWN': [SDLK_e, SDLK_DOWN]}
+from ..ops.utilities import vector
 
+keybinds = {'FORWARD': [], 'BACK': [], 'LEFT': [], 'RIGHT': [], 'UP': [], 'DOWN': []}
 sensitivity = 0.25
 
+
 class freecam:
-    """Quake / Source Free Camera"""
+    """Quake / Source free motion camera"""
     __slots__ = ['position', 'rotation', 'speed']
     
     def __init__(self, position, rotation, speed=0.75):
-        self.position = vec3(position) if position != None else vec3()
-        self.rotation = vec3(rotation) if rotation != None else vec3()
+        self.position = vector.vec3(position) if position != None else vector.vec3()
+        self.rotation = vector.vec3(rotation) if rotation != None else vector.vec3()
         self.speed = speed
 
     def update(self, mousepos, keys, dt):
+        """Take inputs and move at self.speed"""
         global sensitivity
         self.rotation.z += mousepos.x * sensitivity
         self.rotation.x += mousepos.y * sensitivity
-        local_move = vec3()
+        local_move = vector.vec3()
         local_move.x = (any(k in keys for k in keybinds['RIGHT']) - any(k in keys for k in keybinds['LEFT']))
         local_move.y = (any(k in keys for k in keybinds['FORWARD']) - any(k in keys for k in keybinds['BACK']))
         local_move.z = (any(k in keys for k in keybinds['UP']) - any(k in keys for k in keybinds['DOWN']))
@@ -68,11 +51,11 @@ class freecam:
 
 
 class firstperson:
-    """First Person Camera (ALL CLIENTS SHOULD HAVE ONE)"""
+    """First-person camera"""
     __slots__ = ['rotation']
     
     def __init__(self, rotation=None):
-        self.rotation = vec3(rotation) if rotation != None else vec3()
+        self.rotation = vector.vec3(rotation) if rotation != None else vector.vec3()
 
     def update(self, mouse):
         global sensitivity
@@ -80,30 +63,23 @@ class firstperson:
         self.rotation.x += mouse.y * sensitivity
 
     def set(self, position):
-##        glRotate(-90, 1, 0, 0)
         glRotate(self.rotation.x - 90, 1, 0, 0)
         glRotate(self.rotation.z, 0, 0, 1)
         glTranslate(-position.x, -position.y, -position.z)
 
 
 class thirdperson:
-    """Third Person Camera"""
-    #GDC 2014: 50 Game Camera Mistakes
-    #http://gdcvault.com/play/1020460/50-Camera
-    #https://www.youtube.com/watch?v=C7307qRmlMI
+    """Third-person Camera"""
     __slots__ = ['position', 'rotation', 'radius', 'offset']
     
     def __init__(self, position, rotation, radius, offset=(0, 0)):
-        self.position = vec3(position)
-        self.rotation = vec3(rotation)
+        self.position = vector.vec3(position)
+        self.rotation = vector.vec3(rotation)
         self.radius = radius
-        self.offset = vec2(offset)
+        self.offset = vector.vec2(offset)
 
     def update(self):
-        #take player, self and environment,
-        #adjust to more ideal camera position
-        #raycasts into world and path hints
-        #adjust all 7 axis
+        """write your own implementation"""
         pass
 
     def set(self):
@@ -113,14 +89,4 @@ class thirdperson:
         glTranslate(-self.position.x, -self.position.y, -self.position.z)
         glTranslate(0, 0, -self.radius)
         glTranslate(self.offset.x, self.offset.y, 0)
-
-class fixed: # fly-on-the-wall / security camera
-    def __init__(self, position, rotation):
-        self.position = vec3(position)
-        self.rotation = vec3(rotation)
-
-    def set(self):
-        glRotate(self.rotation.x - 90, 1, 0, 0)
-        glRotate(self.rotation.z, 0, 0, 1)
-        glTranslate(-self.position.x, -self.position.y, -self.position.z)
         

@@ -1,5 +1,6 @@
-"""Can unpack a variety of Valve text-formats including .vmt & the Client Schema"""
-#TODO: spot keys that appear more than once and pluralise
+"""https://github.com/snake-biscuits/vmf_tool"""
+#TODO: identify keys that appear more than once and pluralise
+#TODO: insure these keys are restored properly when reversing
 ## e.g. "visgroupid" "7"\n"visgroupid" "8" = {'visgroupid': ['7', '8']}
 #TODO: Functions for handling the horrible visgroup system
 import io

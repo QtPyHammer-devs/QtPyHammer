@@ -5,7 +5,8 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from ..utilities import camera, solid_tool, vector, vmf_tool
+import camera
+from ..ops.utilities import vector
 
 
 # arrow keys aren't registering? why? need a separate function?
