@@ -1,6 +1,6 @@
 {
     "categories": "Utility;",
-    "description": "",
+    "description": "An alternative to Valve's Hammer World Editor 4.x",
     "author_email": "",
-    "url": ""
+    "url": "https://github.com/snake-biscuits/QtPyHammer"
 }
