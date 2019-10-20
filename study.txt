@@ -1,2 +1,0 @@
-http://zetcode.com/gui/pyqt5/layout/ # <- Handy UI programming guide
-https://www.learnpyqt.com/courses/packaging-and-distribution/packaging-pyqt5-apps-fbs/
