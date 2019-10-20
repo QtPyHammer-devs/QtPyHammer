@@ -1,0 +1,44 @@
+File>New    Ctrl+N
+File>Open    Ctrl+O
+File>Save    Ctrl+S
+File>Save As    Ctrl+Shift+S
+File>Compile    F9
+
+Edit>Undo    Ctrl+Z
+Edit>Redo    Ctrl+Y
+Edit>Find    Ctrl+Shift+F
+Edit>Replace    Ctrl+Shift+R
+Edit>Cut    Ctrl+X
+Edit>Copy    Ctrl+C
+Edit>Paste    Ctrl+V
+Edit>Paste Special   Ctrl+Shift+V
+Edit>Delete    Del
+Edit>Properties    Alt+Enter
+
+Tools>Group    Ctrl+G
+Tools>Ungroup    Ctrl+U
+Tools>Brush to Entity    Ctrl+T
+Tools>Entity to Brush    Ctrl+Shift+W
+Tools>Apply Texture    Shift+A
+Tools>Texture Lock    Shift+L
+Tools>Sound Browser    Alt+S
+Tools>Transform    Ctrl+M
+Tools>Snap to Grid    Ctrl+B
+Tools>Flip Horizontally    Ctrl+L
+Tools>Flip Vertically    Ctrl+I
+Tools>Create Prefab    Ctrl+R
+
+Search>Coords    Ctrl+Shift+C
+
+Map>Snap to Grid    Shift+W
+Map>Show Grid    Shift+R
+Map>Debug    Alt+P
+
+View>Center 2D    Ctrl+E
+View>Center 3D    Ctrl+Shift+E
+View>Radius Culling    C
+View>Hide    H
+View>Hide Unselected    Ctrl+H
+View>Unhide    U
+
+Help>Offline    F1

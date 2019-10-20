@@ -1,0 +1,31 @@
+# Quarter arc for calculating scalar
+glBegin(GL_LINE_STRIP)
+for x in range(-32, 0):
+    x = x / 32
+    # r ** 2 = (x ** 2) + (y ** 2)
+    # 1 = (x ** 2) + (y ** 2)
+    # 1 - (x ** 2) = y ** 2
+    # sqrt(1 - x ** 2) = y
+    y = math.sqrt(1 - x ** 2) if x != 0 else 0
+    glVertex(x, y)
+glEnd()
+
+
+# Generate sphere as GL_TRIANGLE_STRIP
+glColor(.05, .05, .05)
+        res = 16
+        for j in range(-8, 8):
+            glBegin(GL_TRIANGLE_STRIP)
+            point = utils.vector.vec2(0, 1)
+            z_low = 0.125 * j
+            z_high = z_low + 0.125
+            scalar_low = math.sqrt(1 - z_low ** 2) if z_low != 0 else 1
+            scalar_high = math.sqrt(1 - z_high ** 2) if z_high != 0 else 1
+            for x in range(res + 2):
+                z = 0.125 * j
+                xy = point.rotate((360 / res) * x)
+                glVertex(*xy * scalar_low, z_low)
+                glVertex(*xy * scalar_high, z_high)
+            glEnd()
+
+# Now do it with planes
