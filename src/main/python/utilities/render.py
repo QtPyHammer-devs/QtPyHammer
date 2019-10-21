@@ -6,25 +6,15 @@ import itertools
 import numpy as np
 from OpenGL.GL import *
 from OpenGL.GL.shaders import compileShader, compileProgram
-from OpenGL.GLU import *
+##from OpenGL.GLU import *
 
 import camera
-from .utilities import solid, vector, vmf
+import solid
+import vector
+import vmf
 
-# PREP VMF FOR ITERATING
-##if hasattr(imported_vmf.world, 'solid'):
-##    imported_vmf.world.solids = [imported_vmf.world.solid]
-##    del imported_vmf.world.solid
-##if not hasattr(imported_vmf.world, 'solids'):
-##    imported_vmf.world['solids'] = []
-##if hasattr(imported_vmf, 'entity'):
-##    imported_vmf.entities = [imported_vmf.entity]
-##    del imported_vmf.entity
-##if not hasattr(imported_vmf, 'entities'):
-##    imported_vmf['entities'] = []
 
-def setup_viewport(viewport, vmf_object):
-        
+def vmf_setup(viewport, vmf_object):
     string_solids = [] # need per solid line numbers for snappy updates
     for brush in vmf_object.world.solids:
         string_solids.append(brush)
@@ -44,6 +34,7 @@ def setup_viewport(viewport, vmf_object):
             print(exc, '\n')
 
     GLES_MODE = False
+    # check the supported GLSL versions & settings instead of try: except!
     try: # GLSL 450
         # Vertex Shaders
         vert_shader_brush = compileShader(open('shaders/GLSL_450/brush.vert', 'rb'), GL_VERTEX_SHADER)
@@ -52,8 +43,8 @@ def setup_viewport(viewport, vmf_object):
         frag_shader_flat_brush = compileShader(open('shaders/GLSL_450/flat_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
         frag_shader_flat_displacement = compileShader(open('shaders/GLSL_450/flat_displacement.frag', 'rb'), GL_FRAGMENT_SHADER)
         frag_shader_stripey_brush = compileShader(open('shaders/GLSL_450/stripey_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
-    except RuntimeError as exc: # Check supported shader versions instead
-        GLES_MODE = True # GLES 3.00
+    except RuntimeError as exc: # try GLES 3.00
+        GLES_MODE = True
         # Vertex Shaders
         vert_shader_brush = compileShader(open('shaders/GLES_300/brush.vert', 'rb'), GL_VERTEX_SHADER)
         vert_shader_displacement = compileShader(open('shaders/GLES_300/displacement.vert', 'rb'), GL_VERTEX_SHADER)
@@ -94,23 +85,27 @@ def setup_viewport(viewport, vmf_object):
     # Vertex Buffer
     VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
     glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER)
-    glBufferData(GL_ARRAY_BUFFER, len(vertices) * 4, np.array(vertices, dtype=np.float32), GL_STATIC_DRAW)
+    glBufferData(GL_ARRAY_BUFFER, len(vertices) * 4,
+                 np.array(vertices, dtype=np.float32), GL_STATIC_DRAW)
     # Index Buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * 4, np.array(indices, dtype=np.uint32), GL_STATIC_DRAW)
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * 4,
+                 np.array(indices, dtype=np.uint32), GL_STATIC_DRAW)
     # Vertex Format
     glEnableVertexAttribArray(0) # vertex_position
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
     glEnableVertexAttribArray(1) # vertex_normal (brush only)
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 44, GLvoidp(12))
+    # glEnableVertexAttribArray(5) # blend_alpha (displacement only)
+    glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(12))
+    # ^ replaces vertex_normal / vertexNormal ^
     glEnableVertexAttribArray(2) # vertex_uv
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
     glEnableVertexAttribArray(4) # editor_colour
     glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
-    # glEnableVertexAttribArray(5) # blend_alpha (displacement only)
-    glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(12))
 
-    # change to dictionaries
+    # keep handles to the new GL objects
+    # dictionaries might be more convenient
     viewport.buffers = [VERTEX_BUFFER, INDEX_BUFFER]
     viewport.programs = [program_flat_brush, program_flat_displacement,
                          program_stripey_brush]

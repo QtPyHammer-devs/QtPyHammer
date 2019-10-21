@@ -1,11 +1,13 @@
 import math
+import sys
 
 import numpy as np
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from . import camera, vector
+sys.path.insert(0, "../")
+from utilities import camera, vector
 
 
 # arrow keys aren't registering? why? need a separate function?

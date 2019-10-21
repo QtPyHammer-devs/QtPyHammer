@@ -1,4 +1,6 @@
-from .utilities import solid_tool, vector, vmf_tool
+import sys
+sys.path.insert(0, "../")
+from utilities import solid, vector, vmf
 
 
 def new_file(instance):

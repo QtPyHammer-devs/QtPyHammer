@@ -2,8 +2,8 @@ import sys
 
 from PyQt5 import QtCore, QtWidgets
 
-sys.path.insert(0, "../src/main/")
-from python.ui import viewport
+sys.path.insert(0, "../src/main/python/")
+from ui import viewport
 
 
 def except_hook(cls, exception, traceback):

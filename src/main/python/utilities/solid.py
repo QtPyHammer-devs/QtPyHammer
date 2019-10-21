@@ -1,3 +1,4 @@
+import copy
 import itertools
 from . import vector, vmf_tool, physics
 
@@ -9,8 +10,52 @@ def triangle_of(side):
 def plane_of(A, B, C):
     """returns plane the triangle defined by A, B & C lies on"""
     normal = ((A - B) * (C - B)).normalise()
-    return (normal, vector.dot(normal, A))
+    return (normal, vector.dot(normal, A)) # normal (vec3), distance (float)
 
+class polygon:
+    def __init__(self, plane):
+    """generate a huge quad on the given plane"""
+    self.plane = plane # named tuple?
+    normal, distance = plane
+    non_parallel = vector.vec3(z=-1) if normal.z != 1 else vector.vec3(y=-1)
+    local_y = (non_paralell * normal).normalise()
+    local_x = (local_y * normal).normalise()
+    center = normal * distance
+    radius = 10 ** 12 # larger than any reasonable brush
+    self.vertices = [center + ((-local_x + local_y) * radius),
+                     center + ((local_x + local_y) * radius),
+                     center + ((local_x + -local_y) * radius),
+                     center + ((-local_x + -local_y) * radius)]
+
+    def slice(self, plane):
+        normal, distance = plane
+        split_verts = {"back": [], "front": []}
+        for i, A in enumerate(self.vertices):
+            next_index = (i + 1) % len(self.vertices)
+            B = self.vertices[next_index]
+            A_distance = dot(normal, A) - distance
+            B_distance = dot(normal, B) - distance
+            A_behind = round(A_distance, 6) < 0
+            B_behind = round(B_distance, 6) < 0
+            if A_behind:
+                split_verts["back"].append(A)
+            else:
+                split_verts["front"].append(A)
+            if (A_behind and not B_behind) or (B_behind and not A_behind):
+                t = A_distance / (A_distance - B_distance)
+                cut_point = vector.lerp(A, B, t)
+                split_verts["back"].append(cut_point)
+                split_verts["front"].append(cut_point)
+            if B_behind:
+                split_verts["back"].append(B)
+            else:
+                split_verts["front"].append(B)
+        back_poly = copy.deepcopy(self)
+        back_poly.vertices = split_verts["back"]
+        front_poly = copy.deepcopy(self)
+        back_poly.vertices = split_verts["front"]
+        return back_poly, front_poly
+    
 def loop_fan(vertices):
     "ploygon to triangle fan"
     out = vertices[:3]
@@ -81,17 +126,6 @@ def square_neighbours(x, y, edge_length): # edge_length = (2^power) + 1
                         yield i * edge_length + j
 
 
-def poly_on(plane):
-    """generate a huge quad on the given plane"""
-    ...
-    # return ((x, y, z), * 4)
-    
-
-##def slice(polygon, plane):
-##    ...
-##    return {back: ..., front: ...}
-
-
 class solid:
     __slots__ = ('aabb', 'center', 'colour', 'displacement_triangles',
                  'displacement_vertices', 'faces', 'id', 'index_map', 'indices',
@@ -107,15 +141,12 @@ class solid:
         self.planes = [plane_of(*t) for t in self.string_planes]
         self.is_displacement = False
 
-        self.ngons = [] # ...
-        for i, plane in self.planes
-            # generate a huge polygon on plane
-            # slice by every other plane
-            # -- could generate all huge polys in one loop
-            # -- then slice in another
-            # slice (...)
-            # -- this would mean we slice 2 at once
-            self.ngons.append(ngon)
+        self.faces = []
+        for i, plane in enumerate(self.planes)
+            ngon = polygon(plane)
+            for other_plane in self.planes:
+                ngon, offcut = ngon.slice(other_plane)
+            self.faces.append(ngon.vertices) # makes having a polygon class kinda pointless huh
 
         global square_neighbours
         self.displacement_vertices = {} # {side_index: vertices}
@@ -159,7 +190,8 @@ class solid:
                         try:
                             neighbours = [side_dispverts[i] for i in neighbour_indices]
                         except Exception as exc:
-                            print(f'({x} {y}) {list(square_neighbours(x, y, power2 + 1))}')
+                            # f"({x}, {y}) {list(square_neighbours(x, y, power2 + 1))=}") # python 3.8
+                            print("({}, {}) {}".format(x, y, list(square_neighbours(x, y, power2 + 1))))
                             print(exc)
                         normal = vector.vec3(0, 0, 1)
                         if len(neighbours) != 0:
@@ -223,15 +255,13 @@ class solid:
         self.aabb = physics.aabb([min_x, min_y, min_z], [max_x, max_y, max_z])
         self.center = (self.aabb.min + self.aabb.max) / 2
 
-    def flip(self, center, axis):
-        """axis is a vector"""
-        # flip along axis
+    def flip(self, plane):
         # maintain outward facing plane normals
-        # invert all plane normals along axis, flip along axis
+        # presevere accuracy of planes while flipping geo
         ...
 
     def as_vmf_solid(self):
-        # don't forget your .id
+        # don't forget to grab your .id
         # foreach face
         #   solid.sides.append(vmf_tool.namespace(...))
         #   solid.sides.[-1].plane = '({:.f}) ({:.f}) ({:.f})'.format(*face[:3])
