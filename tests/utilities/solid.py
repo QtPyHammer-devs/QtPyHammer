@@ -1,7 +1,9 @@
+import os
 import sys
 import unittest
 
-sys.path.insert(0, "../src/main/python/")
+local_path =  os.abspath(__file__)
+sys.path.insert(0, local_path + "../../src/main/python/")
 from utilities import solid
 
 brush = solid(""""id" "1"

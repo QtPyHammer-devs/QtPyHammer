@@ -1,15 +1,15 @@
+import os
 import sys
 
 from PyQt5 import QtCore, QtWidgets
 
-sys.path.insert(0, "../src/main/python/")
+sys.path.insert(0, "../src/main/python")
 from ui import viewport
 
 
 def except_hook(cls, exception, traceback):
     sys.__excepthook__(cls, exception, traceback)
 sys.excepthook = except_hook
-
 
 viewport.camera.sensitivity = 4
 # LOAD AND TESTS UI ELEMENTS
