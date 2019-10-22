@@ -28,11 +28,11 @@ if __name__ == '__main__':
     # read .fgd(s) for entity_data
     # prepare .vpks (grab directories)
     # mount & tag custom data (check the gameinfo.txt for paths, accept others)
-    
-    window = MainWindow()
+
+    window = MainWindow(ctx=appctxt)
     window.setWindowTitle('QtPyHammer')
     window.setGeometry(1920, 1080, 640, 480)
     window.showMaximized()
-    
+
     exit_code = appctxt.app.exec_()      # 2. Invoke appctxt.app.exec_()
     sys.exit(exit_code)

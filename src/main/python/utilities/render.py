@@ -8,50 +8,57 @@ from OpenGL.GL import *
 from OpenGL.GL.shaders import compileShader, compileProgram
 ##from OpenGL.GLU import *
 
-import camera
-import solid
-import vector
-import vmf
+from . import camera, solid, vector, vmf
 
 
-def vmf_setup(viewport, vmf_object):
+def vmf_setup(viewport, vmf_object, ctx):
     string_solids = [] # need per solid line numbers for snappy updates
+    if hasattr(vmf_object.world, "solid"):
+        vmf_object.world.solids = [vmf_object.world.solid]
+    if not hasattr(vmf_object.world, "solids"):
+        vmf_object.world.solids = []
     for brush in vmf_object.world.solids:
         string_solids.append(brush)
+    if hasattr(vmf_object, "entity"):
+        vmf_object.entities = [vmf_object.world.entity]
+    if not hasattr(vmf_object, "entities"):
+        vmf_object.entities = []
     for entity in vmf_object.entities: # do some of these cases never occur?
-        if hasattr(entity, 'solid'):
-            if isinstance(entity.solid, vmf_tool.namespace):
+        if hasattr(entity, "solid"):
+            if isinstance(entity.solid, vmf.namespace):
                 string_solids.append(entity.solid)
-        if hasattr(entity, 'solids'):
-            if isinstance(entity.solids[0], vmf_tool.namespace):
+        if hasattr(entity, "solids"):
+            if isinstance(entity.solids[0], vmf.namespace):
                 string_solids += entity.solids
+
     solids = []
+    global solid
     for ss in string_solids:
         try:
-            solids.append(solid_tool.solid(ss))
+            solids.append(solid.solid(ss))
         except Exception as exc:
-            print(f"Invalid solid! (id {ss.id})")
-            print(exc, '\n')
+            print("Invalid solid! (id {})".format(ss.id))
+            print(exc)
 
     GLES_MODE = False
     # check the supported GLSL versions & settings instead of try: except!
     try: # GLSL 450
         # Vertex Shaders
-        vert_shader_brush = compileShader(open('shaders/GLSL_450/brush.vert', 'rb'), GL_VERTEX_SHADER)
-        vert_shader_displacement = compileShader(open('shaders/GLSL_450/displacement.vert', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_brush = compileShader(open(ctx.get_resource("shaders/GLSL_450/brush.vert"), "rb"), GL_VERTEX_SHADER)
+        vert_shader_displacement = compileShader(open(ctx.get_resource("shaders/GLSL_450/displacement.vert"), "rb"), GL_VERTEX_SHADER)
         # Fragment Shaders
-        frag_shader_flat_brush = compileShader(open('shaders/GLSL_450/flat_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
-        frag_shader_flat_displacement = compileShader(open('shaders/GLSL_450/flat_displacement.frag', 'rb'), GL_FRAGMENT_SHADER)
-        frag_shader_stripey_brush = compileShader(open('shaders/GLSL_450/stripey_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_flat_brush = compileShader(open(ctx.get_resource("shaders/GLSL_450/flat_brush.frag"), "rb"), GL_FRAGMENT_SHADER)
+        frag_shader_flat_displacement = compileShader(open(ctx.get_resource("shaders/GLSL_450/flat_displacement.frag"), "rb"), GL_FRAGMENT_SHADER)
+        frag_shader_stripey_brush = compileShader(open(ctx.get_resource("shaders/GLSL_450/stripey_brush.frag"), "rb"), GL_FRAGMENT_SHADER)
     except RuntimeError as exc: # try GLES 3.00
         GLES_MODE = True
         # Vertex Shaders
-        vert_shader_brush = compileShader(open('shaders/GLES_300/brush.vert', 'rb'), GL_VERTEX_SHADER)
-        vert_shader_displacement = compileShader(open('shaders/GLES_300/displacement.vert', 'rb'), GL_VERTEX_SHADER)
+        vert_shader_brush = compileShader(open(ctx.get_resource("shaders/GLES_300/brush.vert"), "rb"), GL_VERTEX_SHADER)
+        vert_shader_displacement = compileShader(open(ctx.get_resource("shaders/GLES_300/displacement.vert"), "rb"), GL_VERTEX_SHADER)
         # Fragment Shaders
-        frag_shader_flat_brush = compileShader(open('shaders/GLES_300/flat_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
-        frag_shader_flat_displacement = compileShader(open('shaders/GLES_300/flat_displacement.frag', 'rb'), GL_FRAGMENT_SHADER)
-        frag_shader_stripey_brush = compileShader(open('shaders/GLES_300/stripey_brush.frag', 'rb'), GL_FRAGMENT_SHADER)
+        frag_shader_flat_brush = compileShader(open(ctx.get_resource("shaders/GLES_300/flat_brush.frag"), "rb"), GL_FRAGMENT_SHADER)
+        frag_shader_flat_displacement = compileShader(open(ctx.get_resource("shaders/GLES_300/flat_displacement.frag"), "rb"), GL_FRAGMENT_SHADER)
+        frag_shader_stripey_brush = compileShader(open(ctx.get_resource("shaders/GLES_300/stripey_brush.frag"), "rb"), GL_FRAGMENT_SHADER)
 ##        raise exc # to debug GLSL 4.5 shaders
     # Programs
     program_flat_brush = compileProgram(vert_shader_brush, frag_shader_flat_brush)
@@ -74,12 +81,12 @@ def vmf_setup(viewport, vmf_object):
     indices = []
     solid_map = dict()
     displacement_ids = []
-    for solid in solids:
-        if solid.is_displacement:
-            displacement_ids.append(solid.id)
-        solid_map[solid.id] = (len(indices), len(solid.indices))
-        vertices += solid.vertices
-        indices += [len(vertices) + i for i in solid.indices]
+    for brush in solids:
+        if brush.is_displacement:
+            displacement_ids.append(brush.id)
+        solid_map[brush.id] = (len(indices), len(brush.indices))
+        vertices += brush.vertices
+        indices += [len(vertices) + i for i in brush.indices]
     vertices = tuple(itertools.chain(*vertices))
 
     # Vertex Buffer

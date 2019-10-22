@@ -12,7 +12,7 @@
 ### ------------------------ ###
 
 ### --- 44 bytes SOLID FACE VERTEX FORMAT --- ###
-# -- 12 bytes  (3 float32)  Position 
+# -- 12 bytes  (3 float32)  Position
 # -- 12 bytes  (3 float32)  Normal
 # -- 8  bytes  (2 float32)  UV
 # -- 12 bytes  (3 float32)  Colour
@@ -39,7 +39,7 @@
 
 ### ----- HARDWARE USAGE EXAMPLES ----- ###
 # --- VMF: pl_upward_d
-# -- Displacement Brushes: 558  
+# -- Displacement Brushes: 558
 # -- Non-Displacement Brushes: 1890
 # -- Point Entities: 2438
 # USAGE:

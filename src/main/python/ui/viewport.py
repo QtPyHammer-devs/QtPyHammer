@@ -16,6 +16,7 @@ camera.keybinds = {'FORWARD': [QtCore.Qt.Key_W], 'BACK': [QtCore.Qt.Key_S],
                    'RIGHT': [QtCore.Qt.Key_D, QtCore.Qt.RightArrow],
                    'UP': [QtCore.Qt.Key_Q, QtCore.Qt.UpArrow],
                    'DOWN': [QtCore.Qt.Key_E, QtCore.Qt.DownArrow]}
+camera.sensitivity = 4
 
 view_modes = ['flat', 'textured', 'wireframe']
 # "silhouette" view mode, lights on flat gray brushwork & props
@@ -23,6 +24,7 @@ view_modes = ['flat', 'textured', 'wireframe']
 class Viewport2D(QtWidgets.QOpenGLWidget):
     def __init__(self, fps=30, parent=None):
         super(Viewport2D, self).__init__(parent)
+        self.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.update)
         self.timer.start(1000 / fps)
@@ -100,7 +102,7 @@ class Viewport3D(Viewport2D):
         self.previous_mouse_position = vector.vec2()
         self.mouse_vector = vector.vec2()
         self._perspective = (90, 0.1, 10234)
-    
+
     def changeViewMode(self, view_mode): # overlay viewmode button
         # if GLES_MODE = True
         # shaders MUST be used
@@ -126,15 +128,19 @@ class Viewport3D(Viewport2D):
             # move to center while hidden (move back after every update)
             # move mouse back to starting position once finished
             if self.camera_moving:
-                print('camera moving')
                 self.setMouseTracking(True)
                 self.grabMouse()
                 self.setCursor(QtCore.Qt.BlankCursor)
+                # keep teleporting the mouse back to the center
+                # teleport to entry point when free
             else:
-                print('camera stopped')
                 self.setMouseTracking(False)
                 self.unsetCursor()
                 self.releaseMouse()
+        if event.key() == QtCore.Qt.Key_Escape and self.camera_moving:
+            self.setMouseTracking(False)
+            self.unsetCursor()
+            self.releaseMouse()
 
     def keyReleaseEvent(self, event):
         self.keys.discard(event.key())
@@ -143,6 +149,10 @@ class Viewport3D(Viewport2D):
         self.previous_mouse_position = self.current_mouse_position # use center (we teleport back there after each camera.update())
         self.current_mouse_position = vector.vec2(event.pos().x(), event.pos().y())
         self.mouse_vector = self.current_mouse_position - self.previous_mouse_position
+
+    def wheelEvent(self, event):
+        if self.camera_moving:
+            self.camera.speed += event.angleDelta().y()
 
     def initializeGL(self):
         glClearColor(0, 0, 0, 0)
@@ -195,7 +205,7 @@ class Viewport3D(Viewport2D):
             # keep it as a private class variable
             # but only if GLES_MODE == True
 
-            
+
         glUseProgram(0)
 ##        # orbit center at 30 degrees per second
 ##        self.camera.rotation.z = (self.camera.rotation.z + 30 * self.dt) % 360
@@ -213,7 +223,7 @@ class Viewport3D(Viewport2D):
                 glVertex(y, -x)
                 glVertex(-y, -x)
         glEnd()
-        
+
         for shader, index_map in self.draw_calls.items(): # DRAW CALLS
             start, length = index_map
             glUseProgram(shader)

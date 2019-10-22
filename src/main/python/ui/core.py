@@ -8,10 +8,10 @@ from OpenGL.GL import *
 from OpenGL.GL.shaders import compileShader, compileProgram
 from OpenGL.GLU import *
 # QPH imports
-from . import viewport # ui
+from . import entity, viewport # ui
 sys.path.insert(0, "../") # sibling packages
 import ops # connects buttons to functions
-import utilities
+from utilities import render
 
 def except_hook(cls, exception, traceback): # nessecary for debugging SLOTS
     sys.__excepthook__(cls, exception, traceback)
@@ -19,48 +19,57 @@ sys.excepthook = except_hook
 
 
 class MainWindow(QtWidgets.QMainWindow):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, ctx=None):
         super(QtWidgets.QMainWindow, self).__init__(parent)
+        self.ctx = ctx # the fbs ApplicationContext
 
         ... # objects for holding map & session data
         self.actions = {} # {"identifier": action}
         # map all actions so we can rebind EVERYTHING
-        
+        self.open_vmf = ops.import_vmf(ctx.get_resource("vmfs/test2.vmf"))
+
         self.setTabPosition(QtCore.Qt.TopDockWidgetArea, QtWidgets.QTabWidget.North)
         self.main_menu = QtWidgets.QMenuBar()
-        self.file_menu = self.main_menu.addMenu('&File')
-        self.actions["File>New"] = self.file_menu.addAction('&New')
+        file_menu = self.main_menu.addMenu('&File')
+        self.actions["File>New"] = file_menu.addAction('&New')
         self.actions["File>New"].setEnabled(False)
         #self.actions["File>New"].triggered.connect(ops.core.new_file)
-        self.actions["File>Open"] = self.file_menu.addAction('&Open')
-        self.actions["File>Open"].triggered.connect(ops.core.open_file)
-        self.actions["File>Save"] = self.file_menu.addAction('&Save')
+        self.actions["File>Open"] = file_menu.addAction('&Open')
+        def set_open_vmf(): # should really be in ops/__init__
+            new_path = ops.open_vmf()
+            print("Opening", new_path)
+            self.open_vmf = new_path
+            # connect to objects that hold vmf data for editing
+            # maybe even make a new tab
+            self.viewport.executeGL(render.vmf_setup, self.open_vmf, self.ctx)
+        self.actions["File>Open"].triggered.connect(set_open_vmf)
+        self.actions["File>Save"] = file_menu.addAction('&Save')
         self.actions["File>Save"].setEnabled(False)
         # opens browser on first save / save_as & otherwise is silent
 ##        self.actions["File>Save"].triggered.connect(ops.core.save_file)
-        self.actions["File>Save As"] = self.file_menu.addAction('Save &As')
+        self.actions["File>Save As"] = file_menu.addAction('Save &As')
         self.actions["File>Save As"].setEnabled(False)
         # change args so save_file asks for a new location
 ##        self.actions["File>Save As"].triggered.connect(ops.core.save_file)
-        self.file_menu.addSeparator()
+        file_menu.addSeparator()
 ##        self.import_menu = file_menu.addMenu('Import')
 ##        self.import_menu.addAction('.obj')
 ##        export_menu = file_menu.addMenu('Export')
 ##        export_menu.addAction('.obj')
 ##        export_menu.addAction('.smd')
 ##        file_menu.addSeparator()
-        self.actions["File>Options"] = self.file_menu.addAction('&Options')
+        self.actions["File>Options"] = file_menu.addAction('&Options')
         self.actions["File>Options"].setEnabled(False)
 ##        self.actions["File>Options"].triggered.connect(ui.settings)
-        self.file_menu.addSeparator()
-        self.actions["File>Compile"] = self.file_menu.addAction('Compile')
+        file_menu.addSeparator()
+        self.actions["File>Compile"] = file_menu.addAction('Compile')
         self.actions["File>Compile"].setEnabled(False)
 ##        self.actions["File>Compile"].triggered.connect(ui.compile)
-        self.file_menu.addSeparator()
-        self.actions["File>Exit"] = self.file_menu.addAction('Exit')
-##        self.actions["File>Exit"].triggered.connect(ctx.app.exit)
+        file_menu.addSeparator()
+        self.actions["File>Exit"] = file_menu.addAction('Exit')
+        self.actions["File>Exit"].triggered.connect(QtCore.QCoreApplication.quit)
 
-        self.edit_menu = menu.addMenu('&Edit')
+        edit_menu = self.main_menu.addMenu('&Edit')
         self.actions["Edit>Undo"] = edit_menu.addAction('Undo')
         self.actions["Edit>Undo"].setEnabled(False)
 ##        self.actions["Edit>Undo"].triggered.connect( # edit timeline
@@ -77,38 +86,39 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["Edit>Replace"] = edit_menu.addMenu('&Replace')
         self.actions["Edit>Replace"].setEnabled(False)
 ##        self.actions["Edit>Replace"].triggered.connect(vmf.replace)
-        self.edit_menu.addSeparator()
-        self.actions["Edit>Cut"] = self.edit_menu.addAction('Cu&t')
+        edit_menu.addSeparator()
+        self.actions["Edit>Cut"] = edit_menu.addAction('Cu&t')
         self.actions["Edit>Cut"].setEnabled(False)
 ##        self.actions["Edit>Cut"].triggered.connect(
-        self.actions["Edit>Copy"] = self.edit_menu.addAction('&Copy')
+        self.actions["Edit>Copy"] = edit_menu.addAction('&Copy')
         self.actions["Edit>Copy"].setEnabled(False)
 ##        self.actions["Edit>Copy"].triggered.connect(
-        self.actions["Edit>Paste"] = self.edit_menu.addAction('&Paste')
+        self.actions["Edit>Paste"] = edit_menu.addAction('&Paste')
         self.actions["Edit>Paste"].setEnabled(False)
 ##        self.actions["Edit>Paste"].triggered.connect(
-        self.actions["Edit>Paste Special"] = self.edit_menu.addAction('Paste &Special')
+        self.actions["Edit>Paste Special"] = edit_menu.addAction('Paste &Special')
         self.actions["Edit>Paste Special"].setEnabled(False)
 ##        self.actions["Edit>Paste Special"].triggered.connect(
-        self.actions["Edit>Delete"] = self.edit_menu.addAction('&Delete')
+        self.actions["Edit>Delete"] = edit_menu.addAction('&Delete')
         self.actions["Edit>Delete"].setEnabled(False)
 ##        self.actions["Edit>Delete"].triggered.connect(
-        self.edit_menu.addSeparator()
-        self.actions["Edit>Properties"] = self.edit_menu.addAction('P&roperties')
+        edit_menu.addSeparator()
+        self.actions["Edit>Properties"] = edit_menu.addAction('P&roperties')
         self.actions["Edit>Properties"].setEnabled(False)
 ##        self.actions["Edit>Properties"].triggered.connect(
 
-        tools_menu = menu.addMenu('&Tools')
+        tools_menu = self.main_menu.addMenu('&Tools')
         self.actions["Tools>Group"] = tools_menu.addAction('&Group')
         self.actions["Tools>Group"].setEnabled(False)
 ##        self.actions["Tools>Group"].triggered.connect(
-        self.actions["Tools>UnGroup"] = tools_menu.addAction('&Ungroup')
+        self.actions["Tools>Ungroup"] = tools_menu.addAction('&Ungroup')
         self.actions["Tools>Ungroup"].setEnabled(False)
 ##        self.actions["Tools>Ungroup"].triggered.connect(
         tools_menu.addSeparator()
         self.actions["Tools>Brush to Entity"] = tools_menu.addAction('&Tie to Entitiy')
-        self.actions["Tools>Brush to Entity"].setEnabled(False)
-##        self.actions["Tools>Brush to Entity"].triggered.connect(
+        self.actions["Tools>Brush to Entity"].setEnabled(False) # fbs .get_resource breaks fgd-tool
+        # ent_browser = lambda: entity.browser(self)
+        # self.actions["Tools>Brush to Entity"].triggered.connect(ent_browser)
         self.actions["Tools>Entity to Brush"] = tools_menu.addAction('&Move to World')
         self.actions["Tools>Entity to Brush"].setEnabled(False)
 ##        self.actions["Tools>Entity to Brush"].triggered.connect(
@@ -128,7 +138,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["Tools>Sound Browser"].setEnabled(False)
 ##        self.actions["Tools>Sound Browser"].triggered.connect(ui.sound_browser)
         tools_menu.addSeparator()
-        self.actions["Tools>Transofrm"] = tools_menu.addAction('Transform')
+        self.actions["Tools>Transform"] = tools_menu.addAction('Transform')
         self.actions["Tools>Transform"].setEnabled(False)
 ##        self.actions["Tools>Transform"].triggered.connect(
         self.actions["Tools>Snap to Grid"] = tools_menu.addAction('Snap Selection to Grid')
@@ -146,7 +156,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["Tools>Create Prefab"].setEnabled(False)
 ##        self.actions["Tools>Create Prefab"].triggered.connect(
 
-        map_menu = menu.addMenu('&Map')
+        map_menu = self.main_menu.addMenu('&Map')
         self.actions["Map>Snap to Grid"] = map_menu.addAction('&Snap to Grid')
         self.actions["Map>Snap to Grid"].setCheckable(True)
         self.actions["Map>Snap to Grid"].setChecked(True)
@@ -160,6 +170,7 @@ class MainWindow(QtWidgets.QMainWindow):
         grid_settings = map_menu.addMenu('&Grid Settings')
         # Grid+ [
         # Grid- ]
+        grid_settings.setEnabled(False)
         map_menu.addSeparator()
         self.actions["Map>Entity Report"] = map_menu.addAction('&Entity Report')
         self.actions["Map>Entity Report"].setEnabled(False)
@@ -183,7 +194,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["Map>Properties"].setEnabled(False)
 ##        self.actions["Map>Properties"].triggered.connect(ui.map.properties)
 
-        search_menu = menu.addMenu('&Search')
+        search_menu = self.main_menu.addMenu('&Search')
         self.actions["Search>Entity"] = search_menu.addAction('Find &Entity')
         self.actions["Search>Entity"].setEnabled(False)
 ##        self.actions["Search>Entity"].triggered.connect(ui.search.entity)
@@ -201,7 +212,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["Search>Brush"].setEnabled(False)
 ##        self.actions["Search>Brush"].triggered.connect(ui.search.brush)
 
-        view_menu = menu.addMenu('&View')
+        view_menu = self.main_menu.addMenu('&View')
         self.actions["View>Center 2D"] = view_menu.addAction('Center 2D Views on selection')
         self.actions["View>Center 2D"].setEnabled(False)
 ##        self.actions["View>Center 2D"].triggered.connect(
@@ -240,21 +251,21 @@ class MainWindow(QtWidgets.QMainWindow):
         view_menu.addSeparator()
         self.actions["View>Visgroups"] = view_menu.addAction('Move Selection to Visgroup')
         self.actions["View>Visgroups"].setEnabled(False)
-##        self.actions["View>Visgroups"].triggered.connect(ui.        
+##        self.actions["View>Visgroups"].triggered.connect(ui.
         view_menu.addSeparator()
         self.actions["View>Settings"] = view_menu.addAction('&OpenGL Settings')
         self.actions["View>Settings"].setEnabled(False)
 ##        self.actions["View>Settings"].triggered.connect(ui.
 
-        open_url = lambda url: QtGui.QDesktopServices.openUrl(QtCore.QUrl(url))
-        help_menu = menu.addMenu('&Help')
+        open_url = lambda url: lambda: QtGui.QDesktopServices.openUrl(QtCore.QUrl(url))
+        help_menu = self.main_menu.addMenu('&Help')
         self.actions["Help>Offline"] = help_menu.addAction('Offline Help')
         self.actions["Help>Offline"].setEnabled(False)
 ##        self.actions["Help>Offline"].triggered.connect(ui.
         help_menu.addSeparator()
         self.actions["Help>About QPH"] = help_menu.addAction('About QtPyHammer')
-        self.actions["Help>About QPH"].setEnabled(False)
-##        self.actions["Help>About QPH"].triggered.connect(ui.
+        self.actions["Help>About QPH"].triggered.connect(
+            open_url("https://github.com/snake-biscuits/QtPyHammer"))
         self.actions["Help>About Qt"] = help_menu.addAction('About Qt')
         self.actions["Help>About Qt"].setEnabled(False)
 ##        self.actions["Help>About Qt"].triggered.connect(ui.
@@ -263,7 +274,7 @@ class MainWindow(QtWidgets.QMainWindow):
 ##        self.actions["Help>Liscense"].triggered.connect(ui.
         self.actions["Help>Contributors"] = help_menu.addAction('Contributors')
         self.actions["Help>Contributors"].setEnabled(False)
-##        self.actions["Help>Contributors"].triggered.connect(ui.        
+##        self.actions["Help>Contributors"].triggered.connect(ui.
         help_menu.addSeparator()
         self.actions["Help>VDC"] = help_menu.addAction('Valve Developer Community')
         self.actions["Help>VDC"].triggered.connect(
@@ -272,7 +283,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["Help>TF2Maps"].triggered.connect(
             open_url("https://tf2maps.net"))
 
-        window.setMenuBar(self.main_menu)
+        self.setMenuBar(self.main_menu)
 
 ##        # TOOLBARS
 ##        key_tools = QtWidgets.QToolBar('Tools 1')
@@ -290,13 +301,24 @@ class MainWindow(QtWidgets.QMainWindow):
 ##        button_3.setDefaultAction(...) # shortcut ']'
 ##        key_tools.addWidget(button_3)
 ##        key_tools.addSeparator()
-##
-##    window.addToolBar(QtCore.Qt.TopToolBarArea, key_tools)
-##    # undo redo | carve | group ungroup ignore | hide unhide alt-hide |
-##    # cut copy paste | cordon radius | TL <TL> | DD 3D DW DA |
-##    # compile helpers 2D_models fade CM prop_detail NO_DRAW
 
-    self.viewport = viewport.Viewport3D(30)
-    self.setCentralWidget(viewport)
-    viewport.sharedGLsetup() # setup shared GLcontexts
-    viewport.executeGL(utilities.render.vmf_setup, vmf_object)
+        # self.addToolBar(QtCore.Qt.TopToolBarArea, key_tools)
+        # # undo redo | carve | group ungroup ignore | hide unhide alt-hide |
+        # # cut copy paste | cordon radius | TL <TL> | DD 3D DW DA |
+        # # compile helpers 2D_models fade CM prop_detail NO_DRAW
+
+        self.viewport = viewport.Viewport3D(30)
+        self.setCentralWidget(self.viewport)
+        self.viewport.setFocus()
+
+    def viewport_setup(self):
+        self.viewport.sharedGLsetup() # setup shared GLcontexts
+        self.viewport.executeGL(render.vmf_setup, self.open_vmf, self.ctx)
+
+    def show(self):
+        super(MainWindow, self).show()
+        self.viewport_setup()
+
+    def showMaximized(self):
+        super(MainWindow, self).showMaximized()
+        self.viewport_setup()

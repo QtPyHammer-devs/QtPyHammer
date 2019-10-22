@@ -42,9 +42,9 @@ class scope:
         scope_string = ''
         for string in self.strings:
             if isinstance(string, str):
-                scope_string += f"['{string}']"
+                scope_string += "['{}']".format(string)
             elif isinstance(string, int):
-                scope_string += f"[{string}]"
+                scope_string += "[{}]".format(string)
         return scope_string
 
     def add(self, new):
@@ -68,7 +68,7 @@ def namespace_from(text_file):
     elif isinstance(text_file, str):
         file_iter = text_file.split('\n')
     else:
-        raise RuntimeError(f'Cannot construct dictionary from {type(text_file)}!')
+        raise RuntimeError("Cannot construct dictionary from {}!".format(type(text_file)))
     namespace_nest = namespace({})
     current_scope = scope([])
     previous_line = ''
@@ -80,33 +80,33 @@ def namespace_from(text_file):
             if line == '' or line.startswith('//'): # ignore blank / comments
                 continue
             elif line =='{': # START declaration
-                current_keys = eval(f'namespace_nest{current_scope}.__dict__.keys()')
+                current_keys = eval("namespace_nest{}.__dict__.keys()".format(current_scope))
                 plural = pluralise(previous_line)
                 if previous_line in current_keys: # NEW plural
-                    exec(f'namespace_nest{current_scope}[plural] = [namespace_nest{current_scope}[previous_line]]')
-                    exec(f'namespace_nest{current_scope}.__dict__.pop(previous_line)')
-                    exec(f'namespace_nest{current_scope}[plural].append(new_namespace)')
+                    exec("namespace_nest{}[plural] = [namespace_nest{}[previous_line]]".format(current_scope, current_scope))
+                    exec("namespace_nest{}.__dict__.pop(previous_line)".format(current_scope))
+                    exec("namespace_nest{}[plural].append(new_namespace)".format(current_scope))
                     current_scope = scope([*current_scope.strings, plural, 1]) # why isn't this a method?
                 elif plural in current_keys: # APPEND plural
                     current_scope.add(plural)
-                    exec(f"namespace_nest{current_scope}.append(new_namespace)")
-                    current_scope.add(len(eval(f'namespace_nest{current_scope}')) - 1)
+                    exec("namespace_nest{}.append(new_namespace)".format(current_scope))
+                    current_scope.add(len(eval("namespace_nest{}".format(current_scope))) - 1)
                 else: # NEW singular
                     current_scope.add(previous_line)
-                    exec(f'namespace_nest{current_scope} = new_namespace')
+                    exec("namespace_nest{} = new_namespace".format(current_scope))
             elif line == '}': # END declaration
                 current_scope.reduce(1)
             elif '" "' in line: # KEY VALUE
                 key, value = line.split('" "')
                 key = key.lstrip('"')
                 value = value.rstrip('"')
-                exec(f'namespace_nest{current_scope}[key] = value')
+                exec("namespace_nest{}[key] = value".format(current_scope))
             elif line.count(' ') == 1:
                 key, value = line.split()
-                exec(f'namespace_nest{current_scope}[key] = value')
+                exec("namespace_nest{}[key] = value".format(current_scope))
             previous_line = line.strip('"')
-        except Exception as exc:            
-            print(f'error on line {line_number:04d}:\n{line}\n{previous_line}')
+        except Exception as exc:
+            print("error on line {0:04d}:\n{1}\n{2}".format(line_number, line, previous_line))
             raise exc
     return namespace_nest
 
@@ -121,10 +121,10 @@ class namespace: # DUNDER METHODS ONLY!
                 self[key] = [namespace(i) for i in value]
             else:
                 self[key] = value
-    
+
     def __setitem__(self, index, value):
         setattr(self, str(index), value)
-    
+
     def __getitem__(self, index):
         return self.__dict__[str(index)]
 
@@ -135,13 +135,13 @@ class namespace: # DUNDER METHODS ONLY!
         return len(self.__dict__.keys())
 
     def __repr__(self):
-        attrs = [a if ' ' not in a else f'"{a}"' for a in self.__dict__.keys()]
+        attrs = [a if ' ' not in a else '"{}"'.format(a) for a in self.__dict__.keys()]
         return f"namespace([{', '.join(attrs)}])"
 
     def items(self): # fix for lines_from
         for k, v in self.__dict__.items():
             yield (k, v)
-            
+
 
 def dict_from(namespace_nest):
     out = dict()
@@ -166,64 +166,21 @@ are generated approximately one line at a time'''
         elif isinstance(value, list): # collection of plurals
             key = singularise(key)
         else: # key-value pair
-            if key == '_line':
+            if key == "_line":
                 continue
-            yield f'{tabs}"{key}" "{value}"\n'
+            yield """{}"{}" "{}"\n""".format(tabs, key, value)
             continue
         for item in value:
-            yield f'{tabs}{key}\n{tabs}' + '{\n' # open into the next layer
+            yield """{}{}\n{}""".format(tabs, key, tabs) + "{\n" # open into the next layer
             for line in lines_from(item, tab_depth + 1): # recurse down
                 yield line
     if tab_depth > 0:
-        yield '\t' * (tab_depth - 1) + '}\n' # close the layer
+        yield "\t" * (tab_depth - 1) + "}\n" # close the layer
 
 
 def export(_dict, outfile):
     """Don't forget to close the file afterwards!"""
-    print(f'Exporting {outfile.name} ... ', end='')
+    print("Exporting {} ... ".format(outfile.name), end="")
     for line in lines_from(_dict): # using a buffer to write in chunks may be wise
         outfile.write(line) # ''.join([line for line in lines_from(_dict)]) also works
-    print('Done!')
-
-
-def add_visgroups(vmf, visgroup_dict): # work in progress
-    """Add visgroups defined in a some object"""
-    # FORMAT (TOP: [INNER1, INNER2: []])
-    if 'visgroups' not in vmf:
-        vmf['visgroups'] = []
-    if 'visgroup' in vmf.visgroups:
-        vmf.visgroups['visgroups'] = [visgroup]
-    if 'visgroups' not in vmf.visgroups:
-        vmf.visgroups['visgroups'] = []
-
-    visgroups = vmf.visgroups.visgroups
-    max_id = max([v.visgroupid for v in visgroups])
-
-    def recurse(iterable):
-        ...
-    
-    for v in visgroup_dict:
-        max_id += 1
-        ...
-        
-
-if __name__ == "__main__":
-##    from time import time
-##    times = []
-##    for i in range(16):
-##        start = time()
-##        # vmf = dict_from(open('mapsrc/test.vmf'))
-##        # vmf = dict_from(open('mapsrc/test2.vmf'))
-##        vmf = dict_from(open('mapsrc/sdk_pl_goldrush.vmf'))
-##        time_taken = time() - start
-##        print(f'import took {time_taken:.3f} seconds')
-##        times.append(time_taken)
-##    print(f'average time: {sum(times) / 16:.3f}')
-    pass
-
-    # filter(lambda x: x['material'] != 'TOOLS/TOOLSNODRAW' and x['material'] != 'TOOLS/TOOLSSKYBOX', all_sides)
-    # [e['classname'] for e in vmf.dict['entities']]
-    # all_ents_with_outputs = [e for e in vmf.entities if hasattr(e, 'connections')]
-    # all_connections = [e.connections for e in all_ents_with_outputs]
-    # #now add all referenced targetnames to list
-    # #and create a top-down map of these ents
+    print("Done!")
