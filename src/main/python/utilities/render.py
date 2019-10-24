@@ -105,7 +105,7 @@ def vmf_setup(viewport, vmf_object, ctx):
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 44, GLvoidp(12))
     # glEnableVertexAttribArray(5) # blend_alpha (displacement only)
     glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(12))
-    # ^ replaces vertex_normal / vertexNormal ^
+    # ^ replaces vertex_normal if displacement ^
     glEnableVertexAttribArray(2) # vertex_uv
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
     glEnableVertexAttribArray(4) # editor_colour

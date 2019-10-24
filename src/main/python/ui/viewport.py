@@ -10,13 +10,14 @@ sys.path.insert(0, "../")
 from utilities import camera, vector
 
 
-# arrow keys aren't registering? why? need a separate function?
+# arrow keys aren't registering? why? do we need a separate function?
+# these should also be overridden when loading settings
 camera.keybinds = {'FORWARD': [QtCore.Qt.Key_W], 'BACK': [QtCore.Qt.Key_S],
                    'LEFT': [QtCore.Qt.Key_A, QtCore.Qt.LeftArrow],
                    'RIGHT': [QtCore.Qt.Key_D, QtCore.Qt.RightArrow],
                    'UP': [QtCore.Qt.Key_Q, QtCore.Qt.UpArrow],
                    'DOWN': [QtCore.Qt.Key_E, QtCore.Qt.DownArrow]}
-camera.sensitivity = 4
+camera.sensitivity = 2
 
 view_modes = ['flat', 'textured', 'wireframe']
 # "silhouette" view mode, lights on flat gray brushwork & props
