@@ -136,7 +136,7 @@ class namespace: # DUNDER METHODS ONLY!
 
     def __repr__(self):
         attrs = [a if ' ' not in a else '"{}"'.format(a) for a in self.__dict__.keys()]
-        return f"namespace([{', '.join(attrs)}])"
+        return "namespace([{}])".format(", ".join(attrs))
 
     def items(self): # fix for lines_from
         for k, v in self.__dict__.items():
