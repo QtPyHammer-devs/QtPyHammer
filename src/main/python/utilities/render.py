@@ -2,6 +2,7 @@
 import colorsys
 import ctypes
 import itertools
+import sys, traceback
 
 import numpy as np
 from OpenGL.GL import *
@@ -38,7 +39,10 @@ def vmf_setup(viewport, vmf_object, ctx):
             solids.append(solid.solid(ss))
         except Exception as exc:
             print("Invalid solid! (id {})".format(ss.id))
-            print(exc)
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            traceback.print_tb(exc_tb, limit=3)
+            print("*" * 80)
+##            raise exc
 
     GLES_MODE = False
     # check the supported GLSL versions & settings instead of try: except!
