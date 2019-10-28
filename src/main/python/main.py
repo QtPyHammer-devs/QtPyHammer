@@ -13,8 +13,7 @@ sys.excepthook = except_hook
 
 if __name__ == '__main__':
     appctxt = ApplicationContext()       # 1. Instantiate ApplicationContext
-    QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
-
+    
     # need QSettings to store: (cached_property)
     #  recent files
     #  OpenGL settings

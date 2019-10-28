@@ -120,7 +120,7 @@ def vmf_setup(viewport, vmf_object, ctx):
     viewport.buffers = [VERTEX_BUFFER, INDEX_BUFFER]
     viewport.programs = [program_flat_brush, program_flat_displacement,
                          program_stripey_brush]
-    viewport.draw_calls[viewport.programs[2]] = (0, len(indices))
+    viewport.draw_calls[viewport.programs[0]] = (0, len(indices))
     viewport.GLES_MODE = GLES_MODE
     if GLES_MODE:
         viewport.uniforms = {program_flat_brush: uniform_brush_matrix,

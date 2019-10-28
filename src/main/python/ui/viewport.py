@@ -56,6 +56,7 @@ class Viewport2D(QtWidgets.QOpenGLWidget):
     def sharedGLsetup(self): # call once when sharing context with others
         """Sets up buffers, textures & shaders shared across many viewports"""
         self.makeCurrent()
+        # create a texture so we know we're sharing
         glEnable(GL_TEXTURE_2D)
         black = b'\xFF\xAF\x00\x00'
         purple = b'\x00\xFF\xAF\x00'
@@ -64,6 +65,7 @@ class Viewport2D(QtWidgets.QOpenGLWidget):
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
         glColor(1, 1, 1)
+        # end shared content creation        
         self.doneCurrent()
 ##        return buffer_handles, shader_handles, texture_handles
 
@@ -79,7 +81,6 @@ class Viewport2D(QtWidgets.QOpenGLWidget):
         glTexCoord(0, 1)
         glVertex(0, 1, 0)
         glEnd()
-
         # do draw_calls
 
     def update(self):
@@ -202,6 +203,7 @@ class Viewport3D(Viewport2D):
                   0, 0, 0, 1]
 
             # MVP_matrix = T * Rx * Ry * Rz * P
+            # multiply with numpy
             # CALCULATE ALL THIS AFTER CAMERA UPDATES!
             # keep it as a private class variable
             # but only if GLES_MODE == True
@@ -233,6 +235,7 @@ class Viewport3D(Viewport2D):
             glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
 
         glPopMatrix()
+
 
     def resizeGL(self, width, height):
         glLoadIdentity()
