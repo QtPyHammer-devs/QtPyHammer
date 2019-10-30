@@ -46,6 +46,11 @@ def vmf_setup(viewport, vmf_object, ctx):
 
     GLES_MODE = False
     # check the supported GLSL versions & settings instead of try: except!
+    major, minor = glGetIntegerv(GL_MAJOR_VERSION), glGetIntegerv(GL_MINOR_VERSION)
+    print(glGetString(GL_VENDOR))
+    print(glGetString(GL_RENDERER))
+    print(glGetString(GL_VERSION))
+    print(glGetString(GL_SHADING_LANGUAGE_VERSION))
     try: # GLSL 450
         # Vertex Shaders
         vert_shader_brush = compileShader(open(ctx.get_resource("shaders/GLSL_450/brush.vert"), "rb"), GL_VERTEX_SHADER)
@@ -55,6 +60,8 @@ def vmf_setup(viewport, vmf_object, ctx):
         frag_shader_flat_displacement = compileShader(open(ctx.get_resource("shaders/GLSL_450/flat_displacement.frag"), "rb"), GL_FRAGMENT_SHADER)
         frag_shader_stripey_brush = compileShader(open(ctx.get_resource("shaders/GLSL_450/stripey_brush.frag"), "rb"), GL_FRAGMENT_SHADER)
     except RuntimeError as exc: # try GLES 3.00
+        exc_type, exc_value, exc_tb = sys.exc_info()
+        traceback.print_tb(exc_tb, limit=3)
         GLES_MODE = True
         # Vertex Shaders
         vert_shader_brush = compileShader(open(ctx.get_resource("shaders/GLES_300/brush.vert"), "rb"), GL_VERTEX_SHADER)
