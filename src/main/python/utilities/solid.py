@@ -121,40 +121,27 @@ class solid:
         self.planes = [plane_of(*t) for t in string_planes]
         self.is_displacement = False
 
-##        self.faces = []
-##        for i, plane in enumerate(self.planes):
-##            normal, distance = plane
-##            non_parallel = vector.vec3(z=-1) if normal.z != 1 else vector.vec3(y=-1)
-##            local_y = (non_parallel * normal).normalise()
-##            local_x = (local_y * normal).normalise()
-##            center = normal * distance
-##            radius = 10 ** 12 # larger than any reasonable brush
-##            ngon = [center + ((-local_x + local_y) * radius),
-##                             center + ((local_x + local_y) * radius),
-##                             center + ((local_x + -local_y) * radius),
-##                             center + ((-local_x + -local_y) * radius)]
-##            print('-' * 80)
-##            for other_plane in self.planes:
-##                if other_plane == plane: # what of inverse normal & epsilon?
-##                    continue
-##                offcut, ngon = clip(ngon, other_plane).values()
-##                print(len(ngon), len(offcut))
-##            self.faces.append(ngon)
-##        print('=' * 80)
-##        print(self.faces)
-
-        self.faces = [] # cheap & dirty method
-        string_vertices = list(itertools.chain(*string_planes))
-        for tri, plane in zip(string_planes, self.planes):
-            this_face = [*tri]
+        self.faces = []
+        for i, plane in enumerate(self.planes):
             normal, distance = plane
-            for v in string_vertices:
-                if v not in tri:
-                    v_dist = vector.dot(v, normal)
-                    if distance - .5 < v_dist < distance + .5:
-                        this_face.append(v)
-            this_face = vector.sort_clockwise(this_face, normal)
-            self.faces.append(this_face)
+            non_parallel = vector.vec3(z=-1) if normal.z != 1 else vector.vec3(y=-1)
+            local_y = (non_parallel * normal).normalise()
+            local_x = (local_y * normal).normalise()
+            center = normal * distance
+            radius = 10 ** 12 # larger than any reasonable brush
+            ngon = [center + ((-local_x + local_y) * radius),
+                             center + ((local_x + local_y) * radius),
+                             center + ((local_x + -local_y) * radius),
+                             center + ((-local_x + -local_y) * radius)]
+            print('-' * 80)
+            for other_plane in self.planes:
+                if other_plane == plane: # what of inverse normal & epsilon?
+                    continue
+                offcut, ngon = clip(ngon, other_plane).values()
+                print(len(ngon), len(offcut))
+            self.faces.append(ngon)
+        print('=' * 80)
+        print(self.faces)
 
         self.indices = []
         self.vertices = [] # [((position), (normal), (uv), (colour)), ...]
