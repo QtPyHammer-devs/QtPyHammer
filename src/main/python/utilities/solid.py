@@ -207,16 +207,16 @@ class solid:
                 A, B, C, D = quad
                 DA = D - A
                 CB = C - B
-                distance_rows = [*side.dispinfo.distances.__dict__.values()][1:] # skip line number
-                normal_rows = [*side.dispinfo.normals.__dict__.values()][1:]
+                distance_rows = [v for k, v in side.dispinfo.distances.__dict__.items() if k != "_line"] # skip line number
+                normal_rows = [v for k, v in side.dispinfo.normals.__dict__.items() if k != "_line"]
                 normals = []
                 alphas = []
-                for y, distances_row, normals_row in zip(itertools.count(), distance_rows, normal_rows):
-                    distances_row = [float(x) for x in distances_row.split()]
+                for y, distance_row, normals_row in zip(itertools.count(), distance_rows, normal_rows):
+                    distance_row = [float(x) for x in distance_row.split()]
                     normals_row = [*map(float, normals_row.split())]
                     left_vert = A + (DA * y / power2)
                     right_vert = B + (CB * y / power2)
-                    for x, distance in zip(itertools.count(), distances_row):
+                    for x, distance in zip(itertools.count(), distance_row):
                         k = x * 3
                         normal = vector.vec3(normals_row[k], normals_row[k + 1], normals_row[k + 2])
                         baryvert = vector.lerp(right_vert, left_vert, x / power2)
@@ -238,7 +238,7 @@ class solid:
                             normal = normal.normalise()
                         normals.append(normal)
 
-                alphas = [float(a) for row in [*side.dispinfo.alphas.__dict__.values()][1:] for a in row.split()]
+                alphas = [float(a) for row in [v for k, v in side.dispinfo.alphas.__dict__.items() if k != "_line"] for a in row.split()]
                 self.displacement_vertices[i] = [*zip(side_dispverts, alphas, normals)]
                 self.displacement_triangles[i] = disp_tris(self.displacement_vertices[i], power)
                 # use disp_tris when assembling vertex buffers
