@@ -22,7 +22,7 @@ camera.sensitivity = 2
 view_modes = ['flat', 'textured', 'wireframe']
 # "silhouette" view mode, lights on flat gray brushwork & props
 
-class Viewport2D(QtWidgets.QOpenGLWidget):
+class Viewport2D(QtWidgets.QOpenGLWidget): # why not QtWidgets.QGraphicsView ?
     def __init__(self, fps=30, parent=None):
         super(Viewport2D, self).__init__(parent)
         self.setFocusPolicy(QtCore.Qt.ClickFocus)
@@ -65,7 +65,7 @@ class Viewport2D(QtWidgets.QOpenGLWidget):
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
         glColor(1, 1, 1)
-        # end shared content creation        
+        # end shared content creation
         self.doneCurrent()
 ##        return buffer_handles, shader_handles, texture_handles
 

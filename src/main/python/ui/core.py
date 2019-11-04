@@ -80,10 +80,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["Edit>History"].setEnabled(False)
 ##        self.actions["Edit>History"].triggered.connect(ui.edit_timeline)
         edit_menu.addSeparator()
-        self.actions["Edit>Find"] = edit_menu.addMenu('Find &Entites')
+        self.actions["Edit>Find"] = edit_menu.addAction('Find &Entites')
         self.actions["Edit>Find"].setEnabled(False)
 ##        self.actions["Edit>Find"].triggered.connect(vmf.search)
-        self.actions["Edit>Replace"] = edit_menu.addMenu('&Replace')
+        self.actions["Edit>Replace"] = edit_menu.addAction('&Replace')
         self.actions["Edit>Replace"].setEnabled(False)
 ##        self.actions["Edit>Replace"].triggered.connect(vmf.replace)
         edit_menu.addSeparator()
@@ -117,8 +117,8 @@ class MainWindow(QtWidgets.QMainWindow):
         tools_menu.addSeparator()
         self.actions["Tools>Brush to Entity"] = tools_menu.addAction('&Tie to Entitiy')
         #self.actions["Tools>Brush to Entity"].setEnabled(False) # fbs .get_resource breaks fgd-tool
-        ent_browser = lambda: entity.browser(self)
-        self.actions["Tools>Brush to Entity"].triggered.connect(ent_browser)
+        ent_browser = entity.browser(self)
+        self.actions["Tools>Brush to Entity"].triggered.connect(ent_browser.exec)
         self.actions["Tools>Entity to Brush"] = tools_menu.addAction('&Move to World')
         self.actions["Tools>Entity to Brush"].setEnabled(False)
 ##        self.actions["Tools>Entity to Brush"].triggered.connect(
@@ -282,6 +282,22 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["Help>TF2Maps"] = help_menu.addAction('TF2Maps.net')
         self.actions["Help>TF2Maps"].triggered.connect(
             open_url("https://tf2maps.net"))
+
+        # use QSettings instead
+        line_no = 0
+        for line in open(self.ctx.get_resource("configs/core_binds.txt")):
+            line_no += 1
+            line = line.rstrip("\r\n")
+            if line == "":
+                continue
+            try:
+                action, shortcut = line.split(" " * 4)
+            except Exception as exc:
+                print(line_no, "|{}|".format(line), "is not formatted correctly")
+            try:
+                self.actions[action].setShortcut(shortcut)
+            except AttributeError:
+                print(action, "is not a registered action")
 
         self.setMenuBar(self.main_menu)
 
