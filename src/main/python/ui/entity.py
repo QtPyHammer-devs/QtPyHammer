@@ -3,19 +3,24 @@ from itertools import chain
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 
-class browser(QtWidgets.QTabWidget):
+class browser(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(browser, self).__init__(parent)
         ctx = parent.ctx # get ApplicationContext from MainWindow
 
         # should really load in the ApplicationContext as a @cached_property
-        tf_fgd = fgdtools.parser.FgdParse(ctx.get_resource("fgds/tf.fgd"))
+        tf_fgd = fgdtools.parser.FgdParse(ctx.get_resource("fgds/tf.fgd")) # cannot load base.fgd
         entities = [e for e in chain(tf_fgd.entities, *[f.entities for f in tf_fgd.includes]) if e.class_type in ('PointClass', 'SolidClass')]
         entities = sorted(entities, key = lambda e: e.name) # sort alphabetically
         default_entity = entities.index(tf_fgd.entity_by_name('prop_static'))
         # prop_dynamic for flags and logic
         # team_control_point for more field types
         current_entity = entities[default_entity]
+
+        base_widget = QtWidgets.QTabWidget()
+        base_layout = QtWidgets.QVBoxLayout()
+        base_layout.addWidget(base_widget)
+        self.setLayout(base_layout)
 
         core_tab = QtWidgets.QWidget()
         layout = QtWidgets.QVBoxLayout()
@@ -42,14 +47,14 @@ class browser(QtWidgets.QTabWidget):
         bottom_row.addWidget(QtWidgets.QPushButton('Apply'))
         layout.addLayout(bottom_row)
         core_tab.setLayout(layout)
-        self.addTab(core_tab, 'Core')
+        base_widget.addTab(core_tab, 'Core')
         comments_tab = QtWidgets.QWidget()
         layout = QtWidgets.QVBoxLayout()
         layout.addWidget(entity_label)
         layout.addWidget(QtWidgets.QTextEdit())
         layout.addLayout(bottom_row)
         comments_tab.setLayout(layout)
-        self.addTab(comments_tab, 'Comments')
+        base_widget.addTab(comments_tab, 'Comments')
 
 
     def load_entity(self, index): #SmartEdit toggle & owo what's this?

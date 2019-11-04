@@ -116,9 +116,9 @@ class MainWindow(QtWidgets.QMainWindow):
 ##        self.actions["Tools>Ungroup"].triggered.connect(
         tools_menu.addSeparator()
         self.actions["Tools>Brush to Entity"] = tools_menu.addAction('&Tie to Entitiy')
-        self.actions["Tools>Brush to Entity"].setEnabled(False) # fbs .get_resource breaks fgd-tool
-        # ent_browser = lambda: entity.browser(self)
-        # self.actions["Tools>Brush to Entity"].triggered.connect(ent_browser)
+        #self.actions["Tools>Brush to Entity"].setEnabled(False) # fbs .get_resource breaks fgd-tool
+        ent_browser = lambda: entity.browser(self)
+        self.actions["Tools>Brush to Entity"].triggered.connect(ent_browser)
         self.actions["Tools>Entity to Brush"] = tools_menu.addAction('&Move to World')
         self.actions["Tools>Entity to Brush"].setEnabled(False)
 ##        self.actions["Tools>Entity to Brush"].triggered.connect(
