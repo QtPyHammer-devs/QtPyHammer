@@ -9,7 +9,7 @@ in vec3 colour;
 void main()
 {
 	vec4 ambient = vec4(0.25, 0.25, 0.25, 1);
-    float dot(normal, vec3(1, 1, 1));
+    float diffuse = dot(normal, vec3(1, 1, 1));
     diffuse = clamp(diffuse, 0.25, 0.75);
 
 	float stripe = mod((uv.x + uv.y) / 64.0, 1.0);
