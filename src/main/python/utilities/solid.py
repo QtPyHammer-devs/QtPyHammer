@@ -1,15 +1,18 @@
 import itertools
 from . import vector, vmf, physics
 
+
 def triangle_of(side):
     "extract triangle from string (returns 3 vec3)"
     triangle = [[float(i) for i in xyz.split()] for xyz in side.plane[1:-1].split(') (')]
     return tuple(map(vector.vec3, triangle))
 
+
 def plane_of(A, B, C):
     """returns plane the triangle defined by A, B & C lies on"""
     normal = ((A - B) * (C - B)).normalise()
     return (normal, vector.dot(normal, A)) # normal (vec3), distance (float)
+
 
 def clip(poly, plane):
     normal, distance = plane
@@ -20,21 +23,22 @@ def clip(poly, plane):
         B_distance = vector.dot(normal, B) - distance
         A_behind = round(A_distance, 6) < 0
         B_behind = round(B_distance, 6) < 0
+
         if A_behind:
             split_verts["back"].append(A)
-        else:
+        else: # A is in front of the clipping plane
             split_verts["front"].append(A)
+
+        # does the edge AB intersect the clipping plane?
         if (A_behind and not B_behind) or (B_behind and not A_behind):
-            print("splitting", A_distance, B_distance)
             t = A_distance / (A_distance - B_distance)
             cut_point = vector.lerp(A, B, t)
+            print("splitting", A, B, t, cut_point)
             split_verts["back"].append(cut_point)
             split_verts["front"].append(cut_point)
-        if B_behind:
-            split_verts["back"].append(B)
-        else:
-            split_verts["front"].append(B)
+
     return split_verts
+
 
 def loop_fan(vertices):
     "ploygon to triangle fan"
@@ -43,12 +47,14 @@ def loop_fan(vertices):
         out += [out[0], out[-1], vertex]
     return out
 
+
 def loop_fan_indices(vertices):
     "polygon to triangle fan (indices only) by Exactol"
     indices = []
     for i in range(len(vertices) - 2):
         indices += [0, i + 1, i + 2]
     return indices
+
 
 def disp_tris(verts, power): # copied from snake-biscuits/bsp_tool/bsp_tool.py
     """takes flat array of verts and arranges them in a patterned triangle grid
@@ -96,6 +102,7 @@ def disp_tris(verts, power): # copied from snake-biscuits/bsp_tool/bsp_tool.py
                 tris.append(verts[offset + power2B])
     return tris
 
+
 def square_neighbours(x, y, edge_length): # edge_length = (2^power) + 1
     """yields the indicies of neighbouring points in a displacement"""
     for i in range(x - 1, x + 2):
@@ -104,6 +111,7 @@ def square_neighbours(x, y, edge_length): # edge_length = (2^power) + 1
                 if j >= 0 and j < edge_length:
                     if not (i != x and j != y):
                         yield i * edge_length + j
+
 
 
 class solid:
@@ -137,7 +145,7 @@ class solid:
             for other_plane in self.planes:
                 if other_plane == plane: # what of inverse normal & epsilon?
                     continue
-                offcut, ngon = clip(ngon, other_plane).values()
+                ngon, offcut = clip(ngon, other_plane).values() # back, front
                 print(len(ngon), len(offcut))
             self.faces.append(ngon)
         print('=' * 80)
