@@ -119,6 +119,9 @@ class MainWindow(QtWidgets.QMainWindow):
         #self.actions["Tools>Brush to Entity"].setEnabled(False) # fbs .get_resource breaks fgd-tool
         ent_browser = entity.browser(self)
         self.actions["Tools>Brush to Entity"].triggered.connect(ent_browser.exec)
+        # exec demands attention before closing
+        # we want the dialog to stay in front, but also to be able to ignore it
+        # otherwise we can't select in 3D with it open
         self.actions["Tools>Entity to Brush"] = tools_menu.addAction('&Move to World')
         self.actions["Tools>Entity to Brush"].setEnabled(False)
 ##        self.actions["Tools>Entity to Brush"].triggered.connect(
