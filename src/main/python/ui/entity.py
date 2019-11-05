@@ -14,8 +14,7 @@ class browser(QtWidgets.QDialog):
         # center with:
         # self.setGeometry(QStyle.alignedRect(QtCore.Qt.LefttoRight, QtCore.Qt.AlignCenter, self.size(), parent.parent.desktop().availableGeometry()))
 
-        # tf_fgd = fgdtools.parser.FgdParse(ctx.get_resource("fgds/tf.fgd"))
-        tf_fgd = fgdtools.parser.FgdParse("E:/Steam/SteamApps/common/Team Fortress 2/bin/tf.fgd")
+        tf_fgd = fgdtools.parser.FgdParse(ctx.get_resource("fgds/tf.fgd"))
         entities = [e for e in chain(tf_fgd.entities, *[f.entities for f in tf_fgd.includes]) if e.class_type in ('PointClass', 'SolidClass')]
         self.entities = sorted(entities, key = lambda e: e.name) # sort alphabetically
         # get default entity from config(s) loaded by the Application on startup
