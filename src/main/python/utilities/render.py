@@ -62,7 +62,6 @@ def vmf_setup(viewport, vmf_object, ctx):
         frag_shader_flat_brush = compileShader(open(ctx.get_resource("shaders/GLES_300/flat_brush.frag"), "rb"), GL_FRAGMENT_SHADER)
         frag_shader_flat_displacement = compileShader(open(ctx.get_resource("shaders/GLES_300/flat_displacement.frag"), "rb"), GL_FRAGMENT_SHADER)
         frag_shader_stripey_brush = compileShader(open(ctx.get_resource("shaders/GLES_300/stripey_brush.frag"), "rb"), GL_FRAGMENT_SHADER)
-##        raise exc # to debug GLSL 4.5 shaders
     # Programs
     program_flat_brush = compileProgram(vert_shader_brush, frag_shader_flat_brush)
     program_flat_displacement = compileProgram(vert_shader_displacement, frag_shader_flat_displacement)
@@ -71,6 +70,7 @@ def vmf_setup(viewport, vmf_object, ctx):
     glLinkProgram(program_flat_displacement)
     glLinkProgram(program_stripey_brush)
 
+    # Uniforms
     if GLES_MODE == True:
         glUseProgram(program_flat_brush)
         uniform_brush_matrix = glGetUniformLocation(program_flat_brush, 'ModelViewProjectionMatrix')
