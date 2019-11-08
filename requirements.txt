@@ -5,3 +5,4 @@ PyInstaller==3.4
 PyOpenGL==3.1.0
 PyQt5==5.9.2
 PySDL2==0.9.6
+setuptools==41.6.0
