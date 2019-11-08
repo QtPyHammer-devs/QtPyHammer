@@ -2,3 +2,8 @@ http://zetcode.com/gui/pyqt5/layout/ # <- Handy UI programming guide
 https://www.learnpyqt.com/courses/packaging-and-distribution/packaging-pyqt5-apps-fbs/
 https://github.com/pyinstaller/pyinstaller/wiki/If-Things-Go-Wrong
 https://build-system.fman.io/troubleshooting
+https://doc.qt.io/qt-5/linux-requirements.html
+https://github.com/pyinstaller/pyinstaller/issues/1930
+https://github.com/pyinstaller/pyinstaller/pull/3233
+https://github.com/pyinstaller/pyinstaller/wiki/How-to-Report-Bugs#make-sure-everything-is-packaged-correctly
+
