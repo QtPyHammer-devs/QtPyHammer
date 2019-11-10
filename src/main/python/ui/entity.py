@@ -1,7 +1,10 @@
-import fgdtools
 from itertools import chain
-from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
+import textwrap
+
+import fgdtools
+from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class browser(QtWidgets.QDialog):
     def __init__(self, parent=None):
@@ -28,10 +31,10 @@ class browser(QtWidgets.QDialog):
         base_layout.addWidget(self.base_widget)
         bottom_row = QtWidgets.QHBoxLayout()
         bottom_row.addStretch(1)
-        cancel_button = QtWidgets.QPushButton('Cancel')
+        cancel_button = QtWidgets.QPushButton("Cancel")
         cancel_button.clicked.connect(self.reject)
         bottom_row.addWidget(cancel_button)
-        apply_button = QtWidgets.QPushButton('Apply')
+        apply_button = QtWidgets.QPushButton("Apply")
         apply_button.clicked.connect(self.accept) # hijack this method!
         apply_button.setDefault(True)
         bottom_row.addWidget(apply_button)
@@ -47,18 +50,31 @@ class browser(QtWidgets.QDialog):
         ent_select.currentIndexChanged.connect(self.load_entity)
         ent_select_layout = QtWidgets.QHBoxLayout()
         ent_select_layout.addWidget(ent_select)
-        ent_select_layout.addWidget(QtWidgets.QPushButton('Copy'))
-        ent_select_layout.addWidget(QtWidgets.QPushButton('Paste'))
+        ent_select_layout.addWidget(QtWidgets.QPushButton("Copy"))
+        ent_select_layout.addWidget(QtWidgets.QPushButton("Paste"))
+        self.smart_edit = QtWidgets.QPushButton("SmartEdit")
+        self.smart_edit.setCheckable(True)
+        self.ent_form_map = {} # row: (name, display_name)
+        def switch_keyvals():
+            form = self.table.widget().layout()
+            smartedit_on = self.smart_edit.isChecked()
+            for row_index, names in self.ent_form_map.items():
+                name, display_name = names
+                other_name = name if smartedit_on else display_name
+                label = form.itemAt(row_index, QtWidgets.QFormLayout.LabelRole)
+                label.widget().setText(other_name)
+        self.smart_edit.clicked.connect(switch_keyvals)
+        ent_select_layout.addWidget(self.smart_edit)
         ent_select_layout.setStretch(0, 2)
         layout.insertLayout(0, ent_select_layout)
-        self.desc_label = QtWidgets.QLabel('No Entity Selected')
+        self.desc_label = QtWidgets.QLabel("No Entity Selected")
         self.entity_label = QtWidgets.QLabel(self.current_entity.name)
         self.desc_label.setWordWrap(True) # have a "Read More..." button (link)
         layout.addWidget(self.desc_label)
         self.table = QtWidgets.QScrollArea()
         layout.addWidget(self.table)
         core_tab.setLayout(layout)
-        self.base_widget.addTab(core_tab, 'Core')
+        self.base_widget.addTab(core_tab, "Core")
         # A whole tab for comments on the selected entity/entities
         comments_tab = QtWidgets.QWidget()
         layout = QtWidgets.QVBoxLayout()
@@ -84,77 +100,102 @@ class browser(QtWidgets.QDialog):
         inputs = [*filter(lambda i: isinstance(i, fgdtools.parser.FgdEntityInput), entity.properties)]
         outputs = [*filter(lambda o: isinstance(o, fgdtools.parser.FgdEntityOutput), entity.properties)]
         # split properly in some version of fgdtools (prob 1.0.0 but it's broken?)
-        if len(inputs) > 0 or len(outputs) > 0: # AND no inputs recieved
+        if len(inputs) > 0 or len(outputs) > 0: # OR ANY inputs recieved
             self.base_widget.addTab(QtWidgets.QWidget(), 'Logic')
         entity_widget = QtWidgets.QWidget()
         form = QtWidgets.QFormLayout()
-        # fill scroll area horizontally
-        for i, p in enumerate(properties):
+        for p in [p for p in properties if p.value_type == "flags"]: # loop once and make flags = p
+            # should ask about having this simplified in fgdtools
+            flags_tab = QtWidgets.QWidget()
+            flags_layout = QtWidgets.QVBoxLayout()
+            flags_scroll = QtWidgets.QScrollArea()
+            flags_list = QtWidgets.QVBoxLayout()
+            flags_layout.addWidget(self.entity_label)
+            for o in p.options:
+                flags_list.addWidget(QtWidgets.QCheckBox(o.display_name))
+            flags_list.addStretch(1)
+            flags_scroll.setLayout(flags_list)
+            flags_layout.addWidget(flags_scroll)
+            flags_tab.setLayout(flags_layout)
+            self.base_widget.addTab(flags_tab, "Flags")
+        self.ent_form_map = {} # row: (name, display_name)
+        for i, p in enumerate([p for p in properties if p.value_type != "flags"]):
+            self.ent_form_map[i] = (p.name, p.display_name)
             # use comboboxes informed by model for anims and skins
             # Default Animation \/ ref, open, close
             # Skin \/ Red, Blue
             # skin naming will require prop catalogues (.csv ?)
-            if p.value_type == "flags":
-                flags_tab = QtWidgets.QWidget()
-                flags_layout = QtWidgets.QVBoxLayout()
-                flags_scroll = QtWidgets.QScrollArea()
-                flags_list = QtWidgets.QVBoxLayout()
-                flags_layout.addWidget(self.entity_label)
-                for o in p.options:
-                    flags_list.addWidget(QtWidgets.QCheckBox(o.display_name))
-                flags_list.addStretch(1)
-                flags_scroll.setLayout(flags_list)
-                flags_layout.addWidget(flags_scroll)
-                flags_tab.setLayout(flags_layout)
-                self.base_widget.addTab(flags_tab, "Flags")
-
-            elif p.value_type == "color255": # colour
+            if p.value_type == "color255":
                 text_field = QtWidgets.QLineEdit(p.default_value)
                 button = QtWidgets.QPushButton("Pick")
-                picker = QtWidgets.QColorDialog()
-                picker.setModal(True)
-                button.clicked.connect(picker.exec) # can't call a dialog from a dialog?
-                # update text field
-                # change text / backgroud colour to colour?
+                def pick_colour():
+                    current_colour = QtGui.QColor(*map(int, text_field.text().split()[:3]))
+                    picker = QtWidgets.QColorDialog(current_colour)
+                    new_colour = picker.getColor()
+                    # canceling returns QColor(0, 0, 0)
+                    # break instead
+                    text_field.setText("{} {} {}".format(*new_colour.getRgb()))
+                    # preview the colour?
+                    # no method to set the text_field text or background colour
+                button.clicked.connect(pick_colour)
                 selector = QtWidgets.QHBoxLayout()
                 selector.addWidget(text_field)
                 selector.addWidget(button)
-                form.addRow(p.display_name, selector)
-                # row.label.setWhatsThis(p.description)
-                # row.setToolTip(p.description)
             elif p.value_type == "choices":
                 selector = QtWidgets.QComboBox()
                 options = {i: o.value for i, o in enumerate(p.options)}
                 selector.addItems([str(o.display_name) for o in p.options])
                 selector.setCurrentIndex([i for i, v in options.items() if v == p.default_value][0])
-                form.addRow(p.display_name, selector)
             elif p.value_type == "integer":
                 # set "skin" min & max from model (props)
                 selector = QtWidgets.QSpinBox()
-                selector.setMaximum(p.default_value) # don't have maximums but hey
+                selector.setMaximum(p.default_value) # fgd doesn't specify a max, a soft / adjustable max like blender would be nice
                 selector.setValue(p.default_value)
-                form.addRow(p.display_name, selector)
             elif p.value_type == "studio": # model
-                selector = QtWidgets.QHBoxLayout()
                 address_bar = QtWidgets.QLineEdit(p.default_value)
-                selector.addWidget(address_bar)
                 button = QtWidgets.QPushButton("Browse...")
-                selector.addWidget(button) # connect to model browser
                 model_browser = QtWidgets.QFileDialog() # FAKE FOR TESTS
-                def get_file_address():
+                def pick_model(): # real deal should search vpks and grab actual mdls
                     address = model_browser.getOpenFileName()[0]
                     # {tf_folder}/models/{address_bar.text}.mdl == actual address
                     # cleanup accordingly
                     stripped_address = address.split("/")[-1].rpartition(".")[0]
                     # stripped_address = address.lstrip(f'{tf_folder}/models/')
                     address_bar.setText(stripped_address)
-                button.clicked.connect(get_file_address)
-                form.addRow(p.display_name, selector)
+                button.clicked.connect(pick_model)
+                selector = QtWidgets.QHBoxLayout()
+                selector.addWidget(address_bar)
+                selector.addWidget(button)
+            elif p.value_type == "target_destination":
+                selector = QtWidgets.QLineEdit()
+                # add a 3D / entity picker
+                # selector. ??? .connect(highlight_row(i))
             else:
-                form.addRow(p.display_name, QtWidgets.QLineEdit(str(p.default_value)))
-            # all cases except flags end in "form.addRow(p.display_name, selector)"
-            # extrapolate this out and add setToolTip & setWhatsThis for each row
+                selector = QtWidgets.QLineEdit(str(p.default_value))
+
+            field_name = p.name if self.smart_edit.isChecked() else p.display_name
+            field_label = QtWidgets.QLabel(field_name)
+            if isinstance(p.description, str):
+                description = textwrap.fill(p.description, width=40)
+            else:
+                description = p.display_name
+            field_label.setToolTip(description)
+            field_label.setWhatsThis(description)
+            # doesn't appear to work
+            if isinstance(selector, QtWidgets.QWidget):
+                selector.setToolTip(description)
+                selector.setWhatsThis(description)
+            elif isinstance(selector, QtWidgets.QLayout):
+                for i in range(selector.count()):
+                    widget = selector.itemAt(i).widget()
+                    if not isinstance(widget, QtWidgets.QWidget):
+                        continue
+                    widget.setToolTip(description)
+                    widget.setWhatsThis(description)
+            form.addRow(field_name, selector)
+            
         entity_widget.setLayout(form)
+        # add keyvalue button?, smartedit only?
         self.table.setWidget(entity_widget)
         # ensure this widget always scales to fit horizontally without scrolling
         # highlight properties that are not default
