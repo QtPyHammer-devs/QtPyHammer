@@ -125,18 +125,16 @@ class browser(QtWidgets.QDialog):
             # Default Animation \/ ref, open, close
             # Skin \/ Red, Blue
             # skin naming will require prop catalogues (.csv ?)
-            if p.value_type == "color255":
+            if p.value_type == "color255": # need something similar for lights
                 text_field = QtWidgets.QLineEdit(p.default_value)
                 button = QtWidgets.QPushButton("Pick")
                 def pick_colour():
                     current_colour = QtGui.QColor(*map(int, text_field.text().split()[:3]))
                     picker = QtWidgets.QColorDialog(current_colour)
                     new_colour = picker.getColor()
-                    # canceling returns QColor(0, 0, 0)
-                    # break instead
-                    text_field.setText("{} {} {}".format(*new_colour.getRgb()))
-                    # preview the colour?
-                    # no method to set the text_field text or background colour
+                    if new_colour.isValid(): # user did not cancel
+                        text_field.setText("{} {} {}".format(*new_colour.getRgb()))
+                    # preview the colour, but how?
                 button.clicked.connect(pick_colour)
                 selector = QtWidgets.QHBoxLayout()
                 selector.addWidget(text_field)
@@ -193,7 +191,7 @@ class browser(QtWidgets.QDialog):
                     widget.setToolTip(description)
                     widget.setWhatsThis(description)
             form.addRow(field_name, selector)
-            
+
         entity_widget.setLayout(form)
         # add keyvalue button?, smartedit only?
         self.table.setWidget(entity_widget)
