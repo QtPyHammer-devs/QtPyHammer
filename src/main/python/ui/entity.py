@@ -119,6 +119,8 @@ class browser(QtWidgets.QDialog):
             flags_tab.setLayout(flags_layout)
             self.base_widget.addTab(flags_tab, "Flags")
         self.ent_form_map = {} # row: (name, display_name)
+        # also map property.name to value set in form
+        # this will be sent back to the selection and added to the Edit Timeline
         for i, p in enumerate([p for p in properties if p.value_type != "flags"]):
             self.ent_form_map[i] = (p.name, p.display_name)
             # use comboboxes informed by model for anims and skins
@@ -126,19 +128,7 @@ class browser(QtWidgets.QDialog):
             # Skin \/ Red, Blue
             # skin naming will require prop catalogues (.csv ?)
             if p.value_type == "color255": # need something similar for lights
-                text_field = QtWidgets.QLineEdit(p.default_value)
-                button = QtWidgets.QPushButton("Pick")
-                def pick_colour():
-                    current_colour = QtGui.QColor(*map(int, text_field.text().split()[:3]))
-                    picker = QtWidgets.QColorDialog(current_colour)
-                    new_colour = picker.getColor()
-                    if new_colour.isValid(): # user did not cancel
-                        text_field.setText("{} {} {}".format(*new_colour.getRgb()))
-                    # preview the colour, but how?
-                button.clicked.connect(pick_colour)
-                selector = QtWidgets.QHBoxLayout()
-                selector.addWidget(text_field)
-                selector.addWidget(button)
+                selector = colour_picker(default=p.default_value)
             elif p.value_type == "choices":
                 selector = QtWidgets.QComboBox()
                 options = {i: o.value for i, o in enumerate(p.options)}
@@ -150,20 +140,7 @@ class browser(QtWidgets.QDialog):
                 selector.setMaximum(p.default_value) # fgd doesn't specify a max, a soft / adjustable max like blender would be nice
                 selector.setValue(p.default_value)
             elif p.value_type == "studio": # model
-                address_bar = QtWidgets.QLineEdit(p.default_value)
-                button = QtWidgets.QPushButton("Browse...")
-                model_browser = QtWidgets.QFileDialog() # FAKE FOR TESTS
-                def pick_model(): # real deal should search vpks and grab actual mdls
-                    address = model_browser.getOpenFileName()[0]
-                    # {tf_folder}/models/{address_bar.text}.mdl == actual address
-                    # cleanup accordingly
-                    stripped_address = address.split("/")[-1].rpartition(".")[0]
-                    # stripped_address = address.lstrip(f'{tf_folder}/models/')
-                    address_bar.setText(stripped_address)
-                button.clicked.connect(pick_model)
-                selector = QtWidgets.QHBoxLayout()
-                selector.addWidget(address_bar)
-                selector.addWidget(button)
+                selector = model_picker(default=p.default_value)
             elif p.value_type == "target_destination":
                 selector = QtWidgets.QLineEdit()
                 # add a 3D / entity picker
@@ -172,7 +149,7 @@ class browser(QtWidgets.QDialog):
                 selector = QtWidgets.QLineEdit(str(p.default_value))
 
             field_name = p.name if self.smart_edit.isChecked() else p.display_name
-            field_label = QtWidgets.QLabel(field_name)
+            field_label = QtWidgets.QLabel("<{}>".format(p.value_type) + field_name)
             if isinstance(p.description, str):
                 description = textwrap.fill(p.description, width=40)
             else:
@@ -197,7 +174,50 @@ class browser(QtWidgets.QDialog):
         self.table.setWidget(entity_widget)
         # ensure this widget always scales to fit horizontally without scrolling
         # highlight properties that are not default
+        # allow reset per-row for changed properties
         # allow re-ordering of properties, with a reset order option
+
+
+class model_picker(QtWidgets.QHBoxLayout):
+    def __init__(self, parent=None, default=""):
+        super(QtWidgets.QHBoxLayout, self).__init__(parent)
+        self.text_field = QtWidgets.QLineEdit(default)
+        self.button = QtWidgets.QPushButton("Browse")
+        self.model_browser = QtWidgets.QFileDialog() # FAKE FOR TESTS
+        def pick_model(): # real deal should search vpks and grab actual mdls
+            address = self.model_browser.getOpenFileName()[0]
+            stripped_address = address.split("/")[-1].rpartition(".")[0]
+            self.text_field.setText(stripped_address)
+        self.button.clicked.connect(pick_model)
+        self.addWidget(self.text_field)
+        self.addWidget(self.button)
+
+
+class colour_picker(QtWidgets.QHBoxLayout):
+    def __init__(self, parent=None, default=""):
+        super(QtWidgets.QHBoxLayout, self).__init__(parent)
+        default_len = len(default.split())
+        self.text_field = QtWidgets.QLineEdit(default)
+        self.button = QtWidgets.QPushButton("Pick")
+        self.text = lambda: self.text_field.text()
+        self.setText = lambda t: self.text_field.setText(t)
+        def pick_colour(): # variables must be locked to this row
+            current_colour = QtGui.QColor(*map(int, self.text().split()[:3]))
+            picker = QtWidgets.QColorDialog(current_colour)
+            new_colour = picker.getColor()
+            if new_colour.isValid(): # user did not cancel
+                if default_len == 3:
+                    self.setText("{} {} {}".format(*new_colour.getRgb()))
+                elif default_len == 4:
+                    try:
+                        strength = self.text().split()[3]
+                    except: # cannot get the strength from self.text
+                        strength = default.split()[3]
+                    self.setText("{} {} {} {}".format(*new_colour.getRgb()[:3], strength))
+            # preview the colour, but how?
+        self.button.clicked.connect(pick_colour)
+        self.addWidget(self.text_field)
+        self.addWidget(self.button)
 
     # make a class from a FgdEntity object
 ##class BasicEntitiy:
