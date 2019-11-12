@@ -1,0 +1,1404 @@
+223 INFO: PyInstaller: 3.4
+223 INFO: Python: 3.6.9
+226 INFO: Platform: Linux-4.15.0-66-generic-x86_64-with-Ubuntu-16.04-xenial
+227 INFO: wrote /home/jared/Documents/Code/GitHub/QtPyHammer/target/PyInstaller/QtPyHammer.spec
+227 DEBUG: Testing for UPX ...
+233 INFO: UPX is not available.
+237 DEBUG: script: /home/jared/Documents/Code/GitHub/QtPyHammer/src/main/python/main.py
+237 INFO: Extending PYTHONPATH with paths
+['/home/jared/Documents/Code/GitHub/QtPyHammer/src/main/python',
+ '/home/jared/Documents/Code/GitHub/QtPyHammer/target/PyInstaller']
+238 INFO: checking Analysis
+238 INFO: Building Analysis because Analysis-00.toc is non existent
+238 INFO: Initializing module dependency graph...
+241 INFO: Initializing module graph hooks...
+246 INFO: Analyzing base_library.zip ...
+247 DEBUG: Collecting submodules for collections
+400 DEBUG: collect_submodules - Found submodules: {'collections', 'collections.abc'}
+405 DEBUG: Collecting submodules for encodings
+562 DEBUG: collect_submodules - Found submodules: {'encodings.mac_iceland', 'encodings.utf_16_le', 'encodings.hp_roman8', 'encodings.rot_13', 'encodings.mac_cyrillic', 'encodings.cp775', 'encodings.cp852', 'encodings.cp737', 'encodings.cp858', 'encodings.cp037', 'encodings.euc_kr', 'encodings.cp857', 'encodings.koi8_t', 'encodings.undefined', 'encodings.cp1026', 'encodings.idna', 'encodings.iso2022_jp_2004', 'encodings.quopri_codec', 'encodings.cp855', 'encodings.cp863', 'encodings.ptcp154', 'encodings.cp1140', 'encodings.iso8859_14', 'encodings.cp1258', 'encodings.punycode', 'encodings.unicode_escape', 'encodings.shift_jisx0213', 'encodings.iso8859_8', 'encodings.zlib_codec', 'encodings.cp65001', 'encodings.cp1125', 'encodings.cp437', 'encodings.iso2022_jp_3', 'encodings.mac_centeuro', 'encodings.utf_32_be', 'encodings.palmos', 'encodings.mac_croatian', 'encodings.cp850', 'encodings.mac_farsi', 'encodings.cp874', 'encodings.raw_unicode_escape', 'encodings.iso8859_5', 'encodings.cp866', 'encodings.cp1006', 'encodings.shift_jis_2004', 'encodings.iso8859_2', 'encodings.iso2022_jp_1', 'encodings.cp273', 'encodings.base64_codec', 'encodings.cp1257', 'encodings.iso2022_jp_2', 'encodings.bz2_codec', 'encodings.gb2312', 'encodings.iso8859_7', 'encodings.cp950', 'encodings.mbcs', 'encodings.iso8859_1', 'encodings.utf_32', 'encodings.cp1250', 'encodings.iso8859_4', 'encodings.cp861', 'encodings.cp865', 'encodings.iso8859_9', 'encodings.cp869', 'encodings.utf_7', 'encodings.oem', 'encodings.unicode_internal', 'encodings.cp500', 'encodings.iso2022_kr', 'encodings.koi8_r', 'encodings.mac_romanian', 'encodings.mac_roman', 'encodings.utf_32_le', 'encodings.iso8859_13', 'encodings.big5hkscs', 'encodings.cp875', 'encodings.uu_codec', 'encodings.mac_greek', 'encodings.cp1255', 'encodings.iso8859_3', 'encodings.shift_jis', 'encodings.big5', 'encodings.iso2022_jp', 'encodings.cp720', 'encodings.iso2022_jp_ext', 'encodings.cp860', 'encodings.euc_jp', 'encodings.cp949', 'encodings.aliases', 'encodings.cp1251', 'encodings.gbk', 'encodings.kz1048', 'encodings.utf_8_sig', 'encodings.cp1254', 'encodings.cp856', 'encodings.hex_codec', 'encodings.iso8859_15', 'encodings.hz', 'encodings.iso8859_6', 'encodings.cp864', 'encodings.cp932', 'encodings.euc_jis_2004', 'encodings.euc_jisx0213', 'encodings.iso8859_16', 'encodings.koi8_u', 'encodings.cp1253', 'encodings.cp1252', 'encodings.iso8859_10', 'encodings.mac_latin2', 'encodings.latin_1', 'encodings.mac_arabic', 'encodings.ascii', 'encodings', 'encodings.johab', 'encodings.charmap', 'encodings.utf_8', 'encodings.gb18030', 'encodings.iso8859_11', 'encodings.tis_620', 'encodings.cp424', 'encodings.mac_turkish', 'encodings.utf_16', 'encodings.cp862', 'encodings.cp1256', 'encodings.utf_16_be'}
+11898 DEBUG: Adding python files to base_library.zip
+11979 DEBUG: Hidden import: codecs
+11979 DEBUG: Hidden import 'codecs' already found
+11980 INFO: running Analysis Analysis-00.toc
+11980 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/bin/python3.6
+12019 DEBUG: Skipping libpthread.so.0 dependency of python3.6
+12020 DEBUG: Skipping libc.so.6 dependency of python3.6
+12020 DEBUG: Skipping libdl.so.2 dependency of python3.6
+12020 DEBUG: Adding libexpat.so.1 dependency of python3.6 from /lib/x86_64-linux-gnu/libexpat.so.1
+12020 DEBUG: Skipping libutil.so.1 dependency of python3.6
+12020 DEBUG: Skipping libm.so.6 dependency of python3.6
+12021 DEBUG: Adding libz.so.1 dependency of python3.6 from /lib/x86_64-linux-gnu/libz.so.1
+12021 DEBUG: Analyzing /lib/x86_64-linux-gnu/libexpat.so.1
+12053 DEBUG: Skipping libc.so.6 dependency of libexpat.so.1
+12054 DEBUG: Analyzing /lib/x86_64-linux-gnu/libz.so.1
+12091 DEBUG: Skipping libc.so.6 dependency of libz.so.1
+12091 INFO: Caching module hooks...
+12109 INFO: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/src/main/python/main.py
+14595 INFO: Processing pre-find module path hook   distutils
+14621 INFO: distutils: retargeting to non-venv dir '/usr/lib/python3.6/distutils'
+18722 INFO: Processing pre-safe import module hook   setuptools.extern.six.moves
+19934 INFO: Processing pre-find module path hook   site
+19957 INFO: site: retargeting to fake-dir '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyInstaller/fake-modules'
+33321 INFO: Loading module hooks...
+33322 INFO: Loading module hook "hook-pkg_resources.py"...
+33323 DEBUG: Collecting submodules for pkg_resources._vendor
+33779 DEBUG: collect_submodules - Found submodules: {'pkg_resources._vendor.packaging', 'pkg_resources._vendor.packaging.__about__', 'pkg_resources._vendor.packaging.version', 'pkg_resources._vendor.pyparsing', 'pkg_resources._vendor.six', 'pkg_resources._vendor.packaging._compat', 'pkg_resources._vendor.packaging._structures', 'pkg_resources._vendor.packaging.markers', 'pkg_resources._vendor.appdirs', 'pkg_resources._vendor.packaging.requirements', 'pkg_resources._vendor.packaging.specifiers', 'pkg_resources._vendor', 'pkg_resources._vendor.packaging.utils'}
+34617 INFO: Processing pre-safe import module hook   win32com
+34646 INFO: Loading module hook "hook-PyQt5.QtNetwork.py"...
+34649 DEBUG: add_qt5_dependencies: Examining /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/QtNetwork.so, based on hook of /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyInstaller/hooks/hook-PyQt5.QtNetwork.py.
+34708 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libpthread.so.0 -> parsed lib pthread
+34709 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Network.so.5 -> parsed lib qt5network
+34709 DEBUG: add_qt5_dependencies: Import of /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Network.so.5.
+34753 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libpcre.so.3 -> parsed lib pcre
+34754 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libglib-2.0.so.0 -> parsed lib glib-2.0
+34754 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicui18n.so.56 -> parsed lib icui18n
+34754 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libz.so.1 -> parsed lib z
+34754 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicudata.so.56 -> parsed lib icudata
+34754 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libc.so.6 -> parsed lib c
+34755 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libdl.so.2 -> parsed lib dl
+34755 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libstdc++.so.6 -> parsed lib stdc++
+34755 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libgcc_s.so.1 -> parsed lib gcc_s
+34755 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libm.so.6 -> parsed lib m
+34755 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Core.so.5 -> parsed lib qt5core
+34756 DEBUG: add_qt5_dependencies: Import of /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Core.so.5.
+34801 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicuuc.so.56 -> parsed lib icuuc
+34802 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libgthread-2.0.so.0 -> parsed lib gthread-2.0
+34802 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libpthread.so.0 -> parsed lib pthread
+34802 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libpcre.so.3 -> parsed lib pcre
+34802 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libglib-2.0.so.0 -> parsed lib glib-2.0
+34802 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicui18n.so.56 -> parsed lib icui18n
+34803 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libz.so.1 -> parsed lib z
+34803 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicudata.so.56 -> parsed lib icudata
+34803 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libc.so.6 -> parsed lib c
+34803 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libdl.so.2 -> parsed lib dl
+34804 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libstdc++.so.6 -> parsed lib stdc++
+34804 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libgcc_s.so.1 -> parsed lib gcc_s
+34804 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libm.so.6 -> parsed lib m
+34973 DEBUG: Found plugin files ['/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/bearer/libqnmbearer.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/bearer/libqgenericbearer.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/bearer/libqconnmanbearer.so'] for plugin 'bearer
+34975 DEBUG: add_qt5_dependencies: imports from hook-PyQt5.QtNetwork:
+  hiddenimports = ['PyQt5.QtNetwork', 'PyQt5.QtCore']
+  binaries = [('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/bearer/libqnmbearer.so', 'PyQt5/Qt/plugins/bearer'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/bearer/libqgenericbearer.so', 'PyQt5/Qt/plugins/bearer'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/bearer/libqconnmanbearer.so', 'PyQt5/Qt/plugins/bearer')]
+  datas = [('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/translations/qtbase_*.qm', 'PyQt5/Qt/translations')]
+34980 INFO: Loading module hook "hook-PyQt5.QtGui.py"...
+34984 DEBUG: add_qt5_dependencies: Examining /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/QtGui.so, based on hook of /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyInstaller/hooks/hook-PyQt5.QtGui.py.
+35047 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libpthread.so.0 -> parsed lib pthread
+35048 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-dri3.so.0 -> parsed lib xcb-dri3
+35048 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libglib-2.0.so.0 -> parsed lib glib-2.0
+35048 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-glx.so.0 -> parsed lib xcb-glx
+35048 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Gui.so.5 -> parsed lib qt5gui
+35048 DEBUG: add_qt5_dependencies: Import of /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Gui.so.5.
+35102 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXdamage.so.1 -> parsed lib xdamage
+35102 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxshmfence.so.1 -> parsed lib xshmfence
+35103 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libz.so.1 -> parsed lib z
+35103 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicudata.so.56 -> parsed lib icudata
+35103 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb.so.1 -> parsed lib xcb
+35103 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXdmcp.so.6 -> parsed lib xdmcp
+35103 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libc.so.6 -> parsed lib c
+35104 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libstdc++.so.6 -> parsed lib stdc++
+35104 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-present.so.0 -> parsed lib xcb-present
+35104 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-sync.so.1 -> parsed lib xcb-sync
+35104 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libX11-xcb.so.1 -> parsed lib x11-xcb
+35104 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/mesa/libGL.so.1 -> parsed lib gl
+35104 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libm.so.6 -> parsed lib m
+35104 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Core.so.5 -> parsed lib qt5core
+35104 DEBUG: add_qt5_dependencies: Import of /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Core.so.5.
+35150 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libpcre.so.3 -> parsed lib pcre
+35150 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libexpat.so.1 -> parsed lib expat
+35151 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicui18n.so.56 -> parsed lib icui18n
+35151 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libdrm.so.2 -> parsed lib drm
+35151 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXau.so.6 -> parsed lib xau
+35151 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXext.so.6 -> parsed lib xext
+35151 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libdl.so.2 -> parsed lib dl
+35151 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libX11.so.6 -> parsed lib x11
+35152 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libgcc_s.so.1 -> parsed lib gcc_s
+35152 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libglapi.so.0 -> parsed lib glapi
+35152 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXxf86vm.so.1 -> parsed lib xxf86vm
+35152 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-dri2.so.0 -> parsed lib xcb-dri2
+35152 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicuuc.so.56 -> parsed lib icuuc
+35153 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXfixes.so.3 -> parsed lib xfixes
+35153 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libgthread-2.0.so.0 -> parsed lib gthread-2.0
+35153 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libpthread.so.0 -> parsed lib pthread
+35153 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-dri3.so.0 -> parsed lib xcb-dri3
+35153 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libglib-2.0.so.0 -> parsed lib glib-2.0
+35153 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-glx.so.0 -> parsed lib xcb-glx
+35154 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libz.so.1 -> parsed lib z
+35154 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicudata.so.56 -> parsed lib icudata
+35154 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libc.so.6 -> parsed lib c
+35154 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libstdc++.so.6 -> parsed lib stdc++
+35154 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libm.so.6 -> parsed lib m
+35155 DEBUG: Found plugin files ['/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platformthemes/libqgtk3.so'] for plugin 'platformthemes
+35156 DEBUG: Found plugin files ['/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqtiff.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqicns.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqwbmp.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqico.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqtga.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqwebp.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqsvg.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqgif.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqjpeg.so'] for plugin 'imageformats
+35157 DEBUG: Found plugin files ['/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqeglfs.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqlinuxfb.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqvnc.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqminimal.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqminimalegl.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqoffscreen.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqxcb.so'] for plugin 'platforms
+35158 DEBUG: Found plugin files ['/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforminputcontexts/libibusplatforminputcontextplugin.so'] for plugin 'platforminputcontexts
+35159 DEBUG: Found plugin files [] for plugin 'styles
+35159 DEBUG: Found plugin files [] for plugin 'accessible
+35160 DEBUG: Found plugin files ['/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/iconengines/libqsvgicon.so'] for plugin 'iconengines
+35161 DEBUG: add_qt5_dependencies: imports from hook-PyQt5.QtGui:
+  hiddenimports = ['PyQt5.QtCore', 'PyQt5.QtGui']
+  binaries = [('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platformthemes/libqgtk3.so', 'PyQt5/Qt/plugins/platformthemes'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqtiff.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqicns.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqwbmp.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqico.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqtga.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqwebp.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqsvg.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqgif.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqjpeg.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqeglfs.so', 'PyQt5/Qt/plugins/platforms'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqlinuxfb.so', 'PyQt5/Qt/plugins/platforms'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqvnc.so', 'PyQt5/Qt/plugins/platforms'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqminimal.so', 'PyQt5/Qt/plugins/platforms'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqminimalegl.so', 'PyQt5/Qt/plugins/platforms'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqoffscreen.so', 'PyQt5/Qt/plugins/platforms'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqxcb.so', 'PyQt5/Qt/plugins/platforms'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so', 'PyQt5/Qt/plugins/platforminputcontexts'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforminputcontexts/libibusplatforminputcontextplugin.so', 'PyQt5/Qt/plugins/platforminputcontexts'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/iconengines/libqsvgicon.so', 'PyQt5/Qt/plugins/iconengines')]
+  datas = [('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/translations/qtbase_*.qm', 'PyQt5/Qt/translations')]
+35167 INFO: Loading module hook "hook-PyQt5.QtWidgets.py"...
+35194 DEBUG: add_qt5_dependencies: Examining /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/QtWidgets.so, based on hook of /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyInstaller/hooks/hook-PyQt5.QtWidgets.py.
+35249 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libpthread.so.0 -> parsed lib pthread
+35250 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-dri3.so.0 -> parsed lib xcb-dri3
+35250 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libglib-2.0.so.0 -> parsed lib glib-2.0
+35250 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-glx.so.0 -> parsed lib xcb-glx
+35250 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Gui.so.5 -> parsed lib qt5gui
+35250 DEBUG: add_qt5_dependencies: Import of /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Gui.so.5.
+35306 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXdamage.so.1 -> parsed lib xdamage
+35306 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Widgets.so.5 -> parsed lib qt5widgets
+35307 DEBUG: add_qt5_dependencies: Import of /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Widgets.so.5.
+35345 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxshmfence.so.1 -> parsed lib xshmfence
+35346 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libz.so.1 -> parsed lib z
+35346 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicudata.so.56 -> parsed lib icudata
+35346 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb.so.1 -> parsed lib xcb
+35346 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXdmcp.so.6 -> parsed lib xdmcp
+35346 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libc.so.6 -> parsed lib c
+35346 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libstdc++.so.6 -> parsed lib stdc++
+35347 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-present.so.0 -> parsed lib xcb-present
+35347 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-sync.so.1 -> parsed lib xcb-sync
+35347 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libX11-xcb.so.1 -> parsed lib x11-xcb
+35347 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/mesa/libGL.so.1 -> parsed lib gl
+35347 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libm.so.6 -> parsed lib m
+35347 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Core.so.5 -> parsed lib qt5core
+35347 DEBUG: add_qt5_dependencies: Import of /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Core.so.5.
+35384 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libpcre.so.3 -> parsed lib pcre
+35385 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libexpat.so.1 -> parsed lib expat
+35385 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicui18n.so.56 -> parsed lib icui18n
+35385 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libdrm.so.2 -> parsed lib drm
+35385 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXau.so.6 -> parsed lib xau
+35385 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXext.so.6 -> parsed lib xext
+35386 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libdl.so.2 -> parsed lib dl
+35386 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libX11.so.6 -> parsed lib x11
+35386 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libgcc_s.so.1 -> parsed lib gcc_s
+35386 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libglapi.so.0 -> parsed lib glapi
+35386 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXxf86vm.so.1 -> parsed lib xxf86vm
+35386 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-dri2.so.0 -> parsed lib xcb-dri2
+35386 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicuuc.so.56 -> parsed lib icuuc
+35387 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXfixes.so.3 -> parsed lib xfixes
+35387 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libgthread-2.0.so.0 -> parsed lib gthread-2.0
+35387 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libpthread.so.0 -> parsed lib pthread
+35387 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-dri3.so.0 -> parsed lib xcb-dri3
+35387 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libglib-2.0.so.0 -> parsed lib glib-2.0
+35387 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-glx.so.0 -> parsed lib xcb-glx
+35387 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Gui.so.5 -> parsed lib qt5gui
+35387 DEBUG: add_qt5_dependencies: Import of /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Gui.so.5.
+35434 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXdamage.so.1 -> parsed lib xdamage
+35434 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxshmfence.so.1 -> parsed lib xshmfence
+35434 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libz.so.1 -> parsed lib z
+35435 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicudata.so.56 -> parsed lib icudata
+35435 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb.so.1 -> parsed lib xcb
+35435 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXdmcp.so.6 -> parsed lib xdmcp
+35435 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libc.so.6 -> parsed lib c
+35435 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libstdc++.so.6 -> parsed lib stdc++
+35435 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-present.so.0 -> parsed lib xcb-present
+35435 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-sync.so.1 -> parsed lib xcb-sync
+35436 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libX11-xcb.so.1 -> parsed lib x11-xcb
+35436 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/mesa/libGL.so.1 -> parsed lib gl
+35436 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libm.so.6 -> parsed lib m
+35436 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Core.so.5 -> parsed lib qt5core
+35436 DEBUG: add_qt5_dependencies: Import of /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Core.so.5.
+35486 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libpcre.so.3 -> parsed lib pcre
+35487 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libexpat.so.1 -> parsed lib expat
+35487 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicui18n.so.56 -> parsed lib icui18n
+35487 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libdrm.so.2 -> parsed lib drm
+35487 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXau.so.6 -> parsed lib xau
+35487 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXext.so.6 -> parsed lib xext
+35488 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libdl.so.2 -> parsed lib dl
+35488 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libX11.so.6 -> parsed lib x11
+35488 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libgcc_s.so.1 -> parsed lib gcc_s
+35488 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libglapi.so.0 -> parsed lib glapi
+35488 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXxf86vm.so.1 -> parsed lib xxf86vm
+35488 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-dri2.so.0 -> parsed lib xcb-dri2
+35488 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicuuc.so.56 -> parsed lib icuuc
+35489 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libXfixes.so.3 -> parsed lib xfixes
+35489 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libgthread-2.0.so.0 -> parsed lib gthread-2.0
+35489 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libpthread.so.0 -> parsed lib pthread
+35489 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-dri3.so.0 -> parsed lib xcb-dri3
+35489 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libglib-2.0.so.0 -> parsed lib glib-2.0
+35489 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libxcb-glx.so.0 -> parsed lib xcb-glx
+35489 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libz.so.1 -> parsed lib z
+35491 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicudata.so.56 -> parsed lib icudata
+35491 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libc.so.6 -> parsed lib c
+35491 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libstdc++.so.6 -> parsed lib stdc++
+35491 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libm.so.6 -> parsed lib m
+35492 DEBUG: Found plugin files ['/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platformthemes/libqgtk3.so'] for plugin 'platformthemes
+35494 DEBUG: Found plugin files ['/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqtiff.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqicns.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqwbmp.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqico.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqtga.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqwebp.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqsvg.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqgif.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqjpeg.so'] for plugin 'imageformats
+35495 DEBUG: Found plugin files ['/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqeglfs.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqlinuxfb.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqvnc.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqminimal.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqminimalegl.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqoffscreen.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqxcb.so'] for plugin 'platforms
+35496 DEBUG: Found plugin files ['/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so', '/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforminputcontexts/libibusplatforminputcontextplugin.so'] for plugin 'platforminputcontexts
+35497 DEBUG: Found plugin files [] for plugin 'styles
+35497 DEBUG: Found plugin files [] for plugin 'accessible
+35498 DEBUG: Found plugin files ['/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/iconengines/libqsvgicon.so'] for plugin 'iconengines
+35499 DEBUG: add_qt5_dependencies: imports from hook-PyQt5.QtWidgets:
+  hiddenimports = ['PyQt5.QtCore', 'PyQt5.QtWidgets', 'PyQt5.QtGui']
+  binaries = [('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platformthemes/libqgtk3.so', 'PyQt5/Qt/plugins/platformthemes'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqtiff.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqicns.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqwbmp.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqico.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqtga.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqwebp.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqsvg.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqgif.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqjpeg.so', 'PyQt5/Qt/plugins/imageformats'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqeglfs.so', 'PyQt5/Qt/plugins/platforms'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqlinuxfb.so', 'PyQt5/Qt/plugins/platforms'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqvnc.so', 'PyQt5/Qt/plugins/platforms'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqminimal.so', 'PyQt5/Qt/plugins/platforms'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqminimalegl.so', 'PyQt5/Qt/plugins/platforms'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqoffscreen.so', 'PyQt5/Qt/plugins/platforms'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqxcb.so', 'PyQt5/Qt/plugins/platforms'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so', 'PyQt5/Qt/plugins/platforminputcontexts'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforminputcontexts/libibusplatforminputcontextplugin.so', 'PyQt5/Qt/plugins/platforminputcontexts'), ('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/iconengines/libqsvgicon.so', 'PyQt5/Qt/plugins/iconengines')]
+  datas = [('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/translations/qtbase_*.qm', 'PyQt5/Qt/translations')]
+35507 INFO: Loading module hook "hook-distutils.py"...
+35541 INFO: Loading module hook "hook-PyQt5.QtCore.py"...
+35542 DEBUG: add_qt5_dependencies: Examining /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/QtCore.so, based on hook of /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyInstaller/hooks/hook-PyQt5.QtCore.py.
+35586 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libpthread.so.0 -> parsed lib pthread
+35587 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libc.so.6 -> parsed lib c
+35587 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libdl.so.2 -> parsed lib dl
+35587 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libpcre.so.3 -> parsed lib pcre
+35587 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libstdc++.so.6 -> parsed lib stdc++
+35587 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libglib-2.0.so.0 -> parsed lib glib-2.0
+35588 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicui18n.so.56 -> parsed lib icui18n
+35588 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libgcc_s.so.1 -> parsed lib gcc_s
+35588 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libgthread-2.0.so.0 -> parsed lib gthread-2.0
+35588 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libm.so.6 -> parsed lib m
+35588 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Core.so.5 -> parsed lib qt5core
+35589 DEBUG: add_qt5_dependencies: Import of /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Core.so.5.
+35628 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libz.so.1 -> parsed lib z
+35629 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicudata.so.56 -> parsed lib icudata
+35630 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libc.so.6 -> parsed lib c
+35630 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libdl.so.2 -> parsed lib dl
+35630 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libstdc++.so.6 -> parsed lib stdc++
+35630 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libgcc_s.so.1 -> parsed lib gcc_s
+35630 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libm.so.6 -> parsed lib m
+35631 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicuuc.so.56 -> parsed lib icuuc
+35631 DEBUG: add_qt5_dependencies: raw lib /usr/lib/x86_64-linux-gnu/libgthread-2.0.so.0 -> parsed lib gthread-2.0
+35631 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libpthread.so.0 -> parsed lib pthread
+35631 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libpcre.so.3 -> parsed lib pcre
+35632 DEBUG: add_qt5_dependencies: raw lib /lib/x86_64-linux-gnu/libglib-2.0.so.0 -> parsed lib glib-2.0
+35632 DEBUG: add_qt5_dependencies: raw lib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicui18n.so.56 -> parsed lib icui18n
+35634 DEBUG: add_qt5_dependencies: imports from hook-PyQt5.QtCore:
+  hiddenimports = ['PyQt5.QtCore']
+  binaries = []
+  datas = [('/home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/translations/qtbase_*.qm', 'PyQt5/Qt/translations')]
+35639 INFO: Loading module hook "hook-PyQt5.py"...
+35741 WARNING: Hidden import "PyQt5.sip" not found!
+35742 INFO: Loading module hook "hook-sysconfig.py"...
+35770 INFO: Loading module hook "hook-lib2to3.py"...
+35772 DEBUG: Collecting data files for lib2to3
+35774 DEBUG: collect_data_files - Found files: [('/usr/lib/python3.6/lib2to3/Grammar.txt', 'lib2to3'), ('/usr/lib/python3.6/lib2to3/PatternGrammar.txt', 'lib2to3')]
+35776 INFO: Loading module hook "hook-pydoc.py"...
+35777 INFO: Loading module hook "hook-OpenGL.py"...
+36138 INFO: Loading module hook "hook-numpy.py"...
+36140 INFO: Loading module hook "hook-encodings.py"...
+36141 DEBUG: Collecting submodules for encodings
+36299 DEBUG: collect_submodules - Found submodules: {'encodings.mac_iceland', 'encodings.utf_16_le', 'encodings.hp_roman8', 'encodings.rot_13', 'encodings.mac_cyrillic', 'encodings.cp775', 'encodings.cp852', 'encodings.cp737', 'encodings.cp858', 'encodings.cp037', 'encodings.euc_kr', 'encodings.cp857', 'encodings.koi8_t', 'encodings.undefined', 'encodings.cp1026', 'encodings.idna', 'encodings.iso2022_jp_2004', 'encodings.quopri_codec', 'encodings.cp855', 'encodings.cp863', 'encodings.ptcp154', 'encodings.cp1140', 'encodings.iso8859_14', 'encodings.cp1258', 'encodings.punycode', 'encodings.unicode_escape', 'encodings.shift_jisx0213', 'encodings.iso8859_8', 'encodings.zlib_codec', 'encodings.cp65001', 'encodings.cp1125', 'encodings.cp437', 'encodings.iso2022_jp_3', 'encodings.mac_centeuro', 'encodings.utf_32_be', 'encodings.palmos', 'encodings.mac_croatian', 'encodings.cp850', 'encodings.mac_farsi', 'encodings.cp874', 'encodings.raw_unicode_escape', 'encodings.iso8859_5', 'encodings.cp866', 'encodings.cp1006', 'encodings.shift_jis_2004', 'encodings.iso8859_2', 'encodings.iso2022_jp_1', 'encodings.cp273', 'encodings.base64_codec', 'encodings.cp1257', 'encodings.iso2022_jp_2', 'encodings.bz2_codec', 'encodings.gb2312', 'encodings.iso8859_7', 'encodings.cp950', 'encodings.mbcs', 'encodings.iso8859_1', 'encodings.utf_32', 'encodings.cp1250', 'encodings.iso8859_4', 'encodings.cp861', 'encodings.cp865', 'encodings.iso8859_9', 'encodings.cp869', 'encodings.utf_7', 'encodings.oem', 'encodings.unicode_internal', 'encodings.cp500', 'encodings.iso2022_kr', 'encodings.koi8_r', 'encodings.mac_romanian', 'encodings.mac_roman', 'encodings.utf_32_le', 'encodings.iso8859_13', 'encodings.big5hkscs', 'encodings.cp875', 'encodings.uu_codec', 'encodings.mac_greek', 'encodings.cp1255', 'encodings.iso8859_3', 'encodings.shift_jis', 'encodings.big5', 'encodings.iso2022_jp', 'encodings.cp720', 'encodings.iso2022_jp_ext', 'encodings.cp860', 'encodings.euc_jp', 'encodings.cp949', 'encodings.aliases', 'encodings.cp1251', 'encodings.gbk', 'encodings.kz1048', 'encodings.utf_8_sig', 'encodings.cp1254', 'encodings.cp856', 'encodings.hex_codec', 'encodings.iso8859_15', 'encodings.hz', 'encodings.iso8859_6', 'encodings.cp864', 'encodings.cp932', 'encodings.euc_jis_2004', 'encodings.euc_jisx0213', 'encodings.iso8859_16', 'encodings.koi8_u', 'encodings.cp1253', 'encodings.cp1252', 'encodings.iso8859_10', 'encodings.mac_latin2', 'encodings.latin_1', 'encodings.mac_arabic', 'encodings.ascii', 'encodings', 'encodings.johab', 'encodings.charmap', 'encodings.utf_8', 'encodings.gb18030', 'encodings.iso8859_11', 'encodings.tis_620', 'encodings.cp424', 'encodings.mac_turkish', 'encodings.utf_16', 'encodings.cp862', 'encodings.cp1256', 'encodings.utf_16_be'}
+36334 INFO: Loading module hook "hook-numpy.core.py"...
+36608 INFO: Loading module hook "hook-setuptools.py"...
+36610 DEBUG: Collecting submodules for setuptools._vendor
+37288 DEBUG: collect_submodules - Found submodules: {'setuptools._vendor.packaging.markers', 'setuptools._vendor.packaging.requirements', 'setuptools._vendor.ordered_set', 'setuptools._vendor.packaging.utils', 'setuptools._vendor.packaging._structures', 'setuptools._vendor.packaging._compat', 'setuptools._vendor.packaging.version', 'setuptools._vendor.packaging.specifiers', 'setuptools._vendor.pyparsing', 'setuptools._vendor.packaging', 'setuptools._vendor.packaging.__about__', 'setuptools._vendor.six', 'setuptools._vendor'}
+38169 INFO: Loading module hook "hook-xml.py"...
+38466 DEBUG: Looking for egg data files...
+38467 INFO: Looking for ctypes DLLs
+38472 DEBUG: Scanning numpy.core._internal for shared libraries or dlls
+38505 DEBUG: Scanning multiprocessing.sharedctypes for shared libraries or dlls
+38515 DEBUG: Scanning setuptools.windows_support for shared libraries or dlls
+38697 DEBUG: Scanning setuptools.glibc for shared libraries or dlls
+38701 DEBUG: Scanning numpy.ctypeslib for shared libraries or dlls
+38713 DEBUG: Scanning OpenGL.error for shared libraries or dlls
+38723 DEBUG: Scanning OpenGL.raw.GLU.constants for shared libraries or dlls
+38735 DEBUG: Scanning OpenGL.arrays for shared libraries or dlls
+38736 DEBUG: Scanning OpenGL.arrays.arraydatatype for shared libraries or dlls
+38754 DEBUG: Scanning OpenGL.raw.GL._types for shared libraries or dlls
+38761 DEBUG: Scanning OpenGL._opaque for shared libraries or dlls
+38763 DEBUG: Scanning OpenGL.arrays.formathandler for shared libraries or dlls
+38768 DEBUG: Scanning OpenGL.arrays._arrayconstants for shared libraries or dlls
+38770 DEBUG: Scanning OpenGL.arrays.arrayhelpers for shared libraries or dlls
+38777 DEBUG: Scanning OpenGL.converters for shared libraries or dlls
+38791 DEBUG: Scanning OpenGL.wrapper for shared libraries or dlls
+38868 DEBUG: Scanning OpenGL.raw.GLU for shared libraries or dlls
+38889 DEBUG: Scanning OpenGL.raw.GLU.annotations for shared libraries or dlls
+38893 DEBUG: Scanning OpenGL.GLU.quadrics for shared libraries or dlls
+38895 DEBUG: Scanning OpenGL.GLU.projection for shared libraries or dlls
+38900 DEBUG: Scanning OpenGL.raw.GL.VERSION.GL_1_0 for shared libraries or dlls
+38977 DEBUG: Scanning OpenGL.raw.GL.VERSION.GL_1_1 for shared libraries or dlls
+39031 DEBUG: Scanning OpenGL.GLU.glustruct for shared libraries or dlls
+39035 DEBUG: Scanning OpenGL.GLU.tess for shared libraries or dlls
+39046 DEBUG: Scanning OpenGL.GLU.glunurbs for shared libraries or dlls
+39058 DEBUG: Scanning OpenGL.GLU for shared libraries or dlls
+39059 DEBUG: Scanning OpenGL.raw.GL.VERSION.GL_3_0 for shared libraries or dlls
+39100 DEBUG: Scanning OpenGL.GL.VERSION.GL_1_1 for shared libraries or dlls
+39103 DEBUG: Scanning OpenGL.raw.GL._lookupint for shared libraries or dlls
+39105 DEBUG: Scanning OpenGL.GL.VERSION.GL_1_0 for shared libraries or dlls
+39121 DEBUG: Scanning OpenGL.GL.pointers for shared libraries or dlls
+39135 DEBUG: Scanning OpenGL.raw.GL.VERSION.GL_1_2 for shared libraries or dlls
+39140 DEBUG: Scanning OpenGL.images for shared libraries or dlls
+39143 DEBUG: Scanning OpenGL.GL.images for shared libraries or dlls
+39163 DEBUG: Scanning OpenGL.GL.exceptional for shared libraries or dlls
+39174 DEBUG: Scanning OpenGL.GL.glget for shared libraries or dlls
+39174 DEBUG: Scanning OpenGL.GL.VERSION.GL_1_2 for shared libraries or dlls
+39176 DEBUG: Scanning OpenGL.GL.ARB.imaging for shared libraries or dlls
+39183 DEBUG: Scanning OpenGL.raw.GL.ARB.imaging for shared libraries or dlls
+39198 DEBUG: Scanning OpenGL.GL.VERSION.GL_1_2_images for shared libraries or dlls
+39200 DEBUG: Scanning OpenGL.GL.VERSION.GL_1_3 for shared libraries or dlls
+39206 DEBUG: Scanning OpenGL.raw.GL.VERSION.GL_1_3 for shared libraries or dlls
+39224 DEBUG: Scanning OpenGL.GL.VERSION.GL_1_4 for shared libraries or dlls
+39228 DEBUG: Scanning OpenGL.raw.GL.VERSION.GL_1_4 for shared libraries or dlls
+39242 DEBUG: Scanning OpenGL.GL.VERSION.GL_1_5 for shared libraries or dlls
+39249 DEBUG: Scanning OpenGL.raw.GL.VERSION.GL_1_5 for shared libraries or dlls
+39257 DEBUG: Scanning OpenGL.GL.VERSION.GL_2_0 for shared libraries or dlls
+39273 DEBUG: Scanning OpenGL.raw.GL.VERSION.GL_2_0 for shared libraries or dlls
+39303 DEBUG: Scanning OpenGL.raw.GL.ARB.shader_objects for shared libraries or dlls
+39316 DEBUG: Scanning OpenGL.GL.VERSION.GL_2_1 for shared libraries or dlls
+39317 DEBUG: Scanning OpenGL.raw.GL.VERSION.GL_2_1 for shared libraries or dlls
+39321 DEBUG: Scanning OpenGL.GL.VERSION.GL_3_0 for shared libraries or dlls
+39328 DEBUG: Scanning OpenGL.GL.ARB.vertex_array_object for shared libraries or dlls
+39329 DEBUG: Scanning OpenGL.raw.GL.ARB.vertex_array_object for shared libraries or dlls
+39331 DEBUG: Scanning OpenGL.GL.ARB.texture_buffer_object for shared libraries or dlls
+39332 DEBUG: Scanning OpenGL.raw.GL.ARB.texture_buffer_object for shared libraries or dlls
+39334 DEBUG: Scanning OpenGL.GL.ARB.framebuffer_object for shared libraries or dlls
+39337 DEBUG: Scanning OpenGL.raw.GL.ARB.framebuffer_object for shared libraries or dlls
+39348 DEBUG: Scanning OpenGL.GL.ARB.map_buffer_range for shared libraries or dlls
+39349 DEBUG: Scanning OpenGL.raw.GL.ARB.map_buffer_range for shared libraries or dlls
+39351 DEBUG: Scanning OpenGL.GL.VERSION.GL_3_1 for shared libraries or dlls
+39353 DEBUG: Scanning OpenGL.raw.GL.VERSION.GL_3_1 for shared libraries or dlls
+39361 DEBUG: Scanning OpenGL.GL.ARB.copy_buffer for shared libraries or dlls
+39362 DEBUG: Scanning OpenGL.raw.GL.ARB.copy_buffer for shared libraries or dlls
+39363 DEBUG: Scanning OpenGL.GL.ARB.uniform_buffer_object for shared libraries or dlls
+39366 DEBUG: Scanning OpenGL.raw.GL.ARB.uniform_buffer_object for shared libraries or dlls
+39370 DEBUG: Scanning OpenGL.GL.VERSION.GL_3_2 for shared libraries or dlls
+39373 DEBUG: Scanning OpenGL.raw.GL.VERSION.GL_3_2 for shared libraries or dlls
+39383 DEBUG: Scanning OpenGL.GL.ARB.draw_elements_base_vertex for shared libraries or dlls
+39384 DEBUG: Scanning OpenGL.raw.GL.ARB.draw_elements_base_vertex for shared libraries or dlls
+39386 DEBUG: Scanning OpenGL.GL.ARB.provoking_vertex for shared libraries or dlls
+39387 DEBUG: Scanning OpenGL.raw.GL.ARB.provoking_vertex for shared libraries or dlls
+39389 DEBUG: Scanning OpenGL.GL.ARB.sync for shared libraries or dlls
+39391 DEBUG: Scanning OpenGL.raw.GL.ARB.sync for shared libraries or dlls
+39394 DEBUG: Scanning OpenGL.GL.ARB.texture_multisample for shared libraries or dlls
+39396 DEBUG: Scanning OpenGL.raw.GL.ARB.texture_multisample for shared libraries or dlls
+39399 DEBUG: Scanning OpenGL.GL.VERSION.GL_3_3 for shared libraries or dlls
+39404 DEBUG: Scanning OpenGL.raw.GL.VERSION.GL_3_3 for shared libraries or dlls
+39420 DEBUG: Scanning OpenGL.GL.ARB.blend_func_extended for shared libraries or dlls
+39421 DEBUG: Scanning OpenGL.raw.GL.ARB.blend_func_extended for shared libraries or dlls
+39422 DEBUG: Scanning OpenGL.GL.ARB.sampler_objects for shared libraries or dlls
+39425 DEBUG: Scanning OpenGL.raw.GL.ARB.sampler_objects for shared libraries or dlls
+39429 DEBUG: Scanning OpenGL.GL.ARB.explicit_attrib_location for shared libraries or dlls
+39430 DEBUG: Scanning OpenGL.raw.GL.ARB.explicit_attrib_location for shared libraries or dlls
+39431 DEBUG: Scanning OpenGL.GL.ARB.occlusion_query2 for shared libraries or dlls
+39432 DEBUG: Scanning OpenGL.raw.GL.ARB.occlusion_query2 for shared libraries or dlls
+39433 DEBUG: Scanning OpenGL.GL.ARB.shader_bit_encoding for shared libraries or dlls
+39434 DEBUG: Scanning OpenGL.raw.GL.ARB.shader_bit_encoding for shared libraries or dlls
+39435 DEBUG: Scanning OpenGL.GL.ARB.texture_rgb10_a2ui for shared libraries or dlls
+39436 DEBUG: Scanning OpenGL.raw.GL.ARB.texture_rgb10_a2ui for shared libraries or dlls
+39437 DEBUG: Scanning OpenGL.GL.ARB.texture_swizzle for shared libraries or dlls
+39438 DEBUG: Scanning OpenGL.raw.GL.ARB.texture_swizzle for shared libraries or dlls
+39439 DEBUG: Scanning OpenGL.GL.ARB.timer_query for shared libraries or dlls
+39440 DEBUG: Scanning OpenGL.raw.GL.ARB.timer_query for shared libraries or dlls
+39442 DEBUG: Scanning OpenGL.GL.ARB.vertex_type_2_10_10_10_rev for shared libraries or dlls
+39445 DEBUG: Scanning OpenGL.raw.GL.ARB.vertex_type_2_10_10_10_rev for shared libraries or dlls
+39455 DEBUG: Scanning OpenGL.GL.VERSION.GL_4_0 for shared libraries or dlls
+39460 DEBUG: Scanning OpenGL.raw.GL.VERSION.GL_4_0 for shared libraries or dlls
+39477 DEBUG: Scanning OpenGL.GL.ARB.texture_query_lod for shared libraries or dlls
+39478 DEBUG: Scanning OpenGL.raw.GL.ARB.texture_query_lod for shared libraries or dlls
+39479 DEBUG: Scanning OpenGL.GL.ARB.draw_indirect for shared libraries or dlls
+39480 DEBUG: Scanning OpenGL.raw.GL.ARB.draw_indirect for shared libraries or dlls
+39482 DEBUG: Scanning OpenGL.GL.ARB.gpu_shader5 for shared libraries or dlls
+39483 DEBUG: Scanning OpenGL.raw.GL.ARB.gpu_shader5 for shared libraries or dlls
+39484 DEBUG: Scanning OpenGL.GL.ARB.gpu_shader_fp64 for shared libraries or dlls
+39486 DEBUG: Scanning OpenGL.raw.GL.ARB.gpu_shader_fp64 for shared libraries or dlls
+39493 DEBUG: Scanning OpenGL.GL.ARB.shader_subroutine for shared libraries or dlls
+39495 DEBUG: Scanning OpenGL.raw.GL.ARB.shader_subroutine for shared libraries or dlls
+39499 DEBUG: Scanning OpenGL.GL.ARB.tessellation_shader for shared libraries or dlls
+39500 DEBUG: Scanning OpenGL.raw.GL.ARB.tessellation_shader for shared libraries or dlls
+39503 DEBUG: Scanning OpenGL.GL.ARB.texture_buffer_object_rgb32 for shared libraries or dlls
+39504 DEBUG: Scanning OpenGL.raw.GL.ARB.texture_buffer_object_rgb32 for shared libraries or dlls
+39505 DEBUG: Scanning OpenGL.GL.ARB.texture_cube_map_array for shared libraries or dlls
+39506 DEBUG: Scanning OpenGL.raw.GL.ARB.texture_cube_map_array for shared libraries or dlls
+39508 DEBUG: Scanning OpenGL.GL.ARB.texture_gather for shared libraries or dlls
+39509 DEBUG: Scanning OpenGL.raw.GL.ARB.texture_gather for shared libraries or dlls
+39510 DEBUG: Scanning OpenGL.GL.ARB.transform_feedback2 for shared libraries or dlls
+39511 DEBUG: Scanning OpenGL.raw.GL.ARB.transform_feedback2 for shared libraries or dlls
+39514 DEBUG: Scanning OpenGL.GL.ARB.transform_feedback3 for shared libraries or dlls
+39515 DEBUG: Scanning OpenGL.raw.GL.ARB.transform_feedback3 for shared libraries or dlls
+39517 DEBUG: Scanning OpenGL.GL.VERSION.GL_4_1 for shared libraries or dlls
+39525 DEBUG: Scanning OpenGL.raw.GL.VERSION.GL_4_1 for shared libraries or dlls
+39552 DEBUG: Scanning OpenGL.GL.ARB.ES2_compatibility for shared libraries or dlls
+39554 DEBUG: Scanning OpenGL.raw.GL.ARB.ES2_compatibility for shared libraries or dlls
+39557 DEBUG: Scanning OpenGL.GL.ARB.get_program_binary for shared libraries or dlls
+39558 DEBUG: Scanning OpenGL.raw.GL.ARB.get_program_binary for shared libraries or dlls
+39560 DEBUG: Scanning OpenGL.GL.ARB.separate_shader_objects for shared libraries or dlls
+39565 DEBUG: Scanning OpenGL.raw.GL.ARB.separate_shader_objects for shared libraries or dlls
+39583 DEBUG: Scanning OpenGL.GL.ARB.shader_precision for shared libraries or dlls
+39584 DEBUG: Scanning OpenGL.raw.GL.ARB.shader_precision for shared libraries or dlls
+39585 DEBUG: Scanning OpenGL.GL.ARB.vertex_attrib_64bit for shared libraries or dlls
+39587 DEBUG: Scanning OpenGL.raw.GL.ARB.vertex_attrib_64bit for shared libraries or dlls
+39592 DEBUG: Scanning OpenGL.GL.ARB.viewport_array for shared libraries or dlls
+39593 DEBUG: Scanning OpenGL.raw.GL.ARB.viewport_array for shared libraries or dlls
+39598 DEBUG: Scanning OpenGL.GL.VERSION.GL_4_2 for shared libraries or dlls
+39600 DEBUG: Scanning OpenGL.raw.GL.VERSION.GL_4_2 for shared libraries or dlls
+39615 DEBUG: Scanning OpenGL.GL.ARB.base_instance for shared libraries or dlls
+39616 DEBUG: Scanning OpenGL.raw.GL.ARB.base_instance for shared libraries or dlls
+39618 DEBUG: Scanning OpenGL.GL.ARB.shading_language_420pack for shared libraries or dlls
+39619 DEBUG: Scanning OpenGL.raw.GL.ARB.shading_language_420pack for shared libraries or dlls
+39620 DEBUG: Scanning OpenGL.GL.ARB.transform_feedback_instanced for shared libraries or dlls
+39621 DEBUG: Scanning OpenGL.raw.GL.ARB.transform_feedback_instanced for shared libraries or dlls
+39623 DEBUG: Scanning OpenGL.GL.ARB.compressed_texture_pixel_storage for shared libraries or dlls
+39624 DEBUG: Scanning OpenGL.raw.GL.ARB.compressed_texture_pixel_storage for shared libraries or dlls
+39626 DEBUG: Scanning OpenGL.GL.ARB.conservative_depth for shared libraries or dlls
+39627 DEBUG: Scanning OpenGL.raw.GL.ARB.conservative_depth for shared libraries or dlls
+39628 DEBUG: Scanning OpenGL.GL.ARB.internalformat_query for shared libraries or dlls
+39631 DEBUG: Scanning OpenGL.raw.GL.ARB.internalformat_query for shared libraries or dlls
+39633 DEBUG: Scanning OpenGL.GL.ARB.map_buffer_alignment for shared libraries or dlls
+39634 DEBUG: Scanning OpenGL.raw.GL.ARB.map_buffer_alignment for shared libraries or dlls
+39635 DEBUG: Scanning OpenGL.GL.ARB.shader_atomic_counters for shared libraries or dlls
+39637 DEBUG: Scanning OpenGL.raw.GL.ARB.shader_atomic_counters for shared libraries or dlls
+39640 DEBUG: Scanning OpenGL.GL.ARB.shader_image_load_store for shared libraries or dlls
+39641 DEBUG: Scanning OpenGL.raw.GL.ARB.shader_image_load_store for shared libraries or dlls
+39646 DEBUG: Scanning OpenGL.GL.ARB.shading_language_packing for shared libraries or dlls
+39647 DEBUG: Scanning OpenGL.raw.GL.ARB.shading_language_packing for shared libraries or dlls
+39648 DEBUG: Scanning OpenGL.GL.ARB.texture_storage for shared libraries or dlls
+39649 DEBUG: Scanning OpenGL.raw.GL.ARB.texture_storage for shared libraries or dlls
+39651 DEBUG: Scanning OpenGL.GL.VERSION.GL_4_3 for shared libraries or dlls
+39656 DEBUG: Scanning OpenGL.raw.GL.VERSION.GL_4_3 for shared libraries or dlls
+39696 DEBUG: Scanning OpenGL.GL.ARB.arrays_of_arrays for shared libraries or dlls
+39697 DEBUG: Scanning OpenGL.raw.GL.ARB.arrays_of_arrays for shared libraries or dlls
+39698 DEBUG: Scanning OpenGL.GL.ARB.fragment_layer_viewport for shared libraries or dlls
+39699 DEBUG: Scanning OpenGL.raw.GL.ARB.fragment_layer_viewport for shared libraries or dlls
+39700 DEBUG: Scanning OpenGL.GL.ARB.shader_image_size for shared libraries or dlls
+39701 DEBUG: Scanning OpenGL.raw.GL.ARB.shader_image_size for shared libraries or dlls
+39702 DEBUG: Scanning OpenGL.GL.ARB.ES3_compatibility for shared libraries or dlls
+39703 DEBUG: Scanning OpenGL.raw.GL.ARB.ES3_compatibility for shared libraries or dlls
+39705 DEBUG: Scanning OpenGL.GL.ARB.clear_buffer_object for shared libraries or dlls
+39706 DEBUG: Scanning OpenGL.raw.GL.ARB.clear_buffer_object for shared libraries or dlls
+39708 DEBUG: Scanning OpenGL.GL.ARB.compute_shader for shared libraries or dlls
+39709 DEBUG: Scanning OpenGL.raw.GL.ARB.compute_shader for shared libraries or dlls
+39715 DEBUG: Scanning OpenGL.GL.ARB.copy_image for shared libraries or dlls
+39716 DEBUG: Scanning OpenGL.raw.GL.ARB.copy_image for shared libraries or dlls
+39717 DEBUG: Scanning OpenGL.GL.KHR.debug for shared libraries or dlls
+39720 DEBUG: Scanning OpenGL.raw.GL.KHR.debug for shared libraries or dlls
+39732 DEBUG: Scanning OpenGL.GL.ARB.explicit_uniform_location for shared libraries or dlls
+39733 DEBUG: Scanning OpenGL.raw.GL.ARB.explicit_uniform_location for shared libraries or dlls
+39734 DEBUG: Scanning OpenGL.GL.ARB.framebuffer_no_attachments for shared libraries or dlls
+39736 DEBUG: Scanning OpenGL.raw.GL.ARB.framebuffer_no_attachments for shared libraries or dlls
+39738 DEBUG: Scanning OpenGL.GL.ARB.internalformat_query2 for shared libraries or dlls
+39739 DEBUG: Scanning OpenGL.raw.GL.ARB.internalformat_query2 for shared libraries or dlls
+39747 DEBUG: Scanning OpenGL.GL.ARB.invalidate_subdata for shared libraries or dlls
+39748 DEBUG: Scanning OpenGL.raw.GL.ARB.invalidate_subdata for shared libraries or dlls
+39750 DEBUG: Scanning OpenGL.GL.ARB.multi_draw_indirect for shared libraries or dlls
+39752 DEBUG: Scanning OpenGL.raw.GL.ARB.multi_draw_indirect for shared libraries or dlls
+39753 DEBUG: Scanning OpenGL.GL.ARB.program_interface_query for shared libraries or dlls
+39755 DEBUG: Scanning OpenGL.raw.GL.ARB.program_interface_query for shared libraries or dlls
+39760 DEBUG: Scanning OpenGL.GL.ARB.robust_buffer_access_behavior for shared libraries or dlls
+39761 DEBUG: Scanning OpenGL.raw.GL.ARB.robust_buffer_access_behavior for shared libraries or dlls
+39762 DEBUG: Scanning OpenGL.GL.ARB.shader_storage_buffer_object for shared libraries or dlls
+39763 DEBUG: Scanning OpenGL.raw.GL.ARB.shader_storage_buffer_object for shared libraries or dlls
+39766 DEBUG: Scanning OpenGL.GL.ARB.stencil_texturing for shared libraries or dlls
+39767 DEBUG: Scanning OpenGL.raw.GL.ARB.stencil_texturing for shared libraries or dlls
+39768 DEBUG: Scanning OpenGL.GL.ARB.texture_buffer_range for shared libraries or dlls
+39769 DEBUG: Scanning OpenGL.raw.GL.ARB.texture_buffer_range for shared libraries or dlls
+39770 DEBUG: Scanning OpenGL.GL.ARB.texture_query_levels for shared libraries or dlls
+39771 DEBUG: Scanning OpenGL.raw.GL.ARB.texture_query_levels for shared libraries or dlls
+39772 DEBUG: Scanning OpenGL.GL.ARB.texture_storage_multisample for shared libraries or dlls
+39773 DEBUG: Scanning OpenGL.raw.GL.ARB.texture_storage_multisample for shared libraries or dlls
+39774 DEBUG: Scanning OpenGL.GL.ARB.texture_view for shared libraries or dlls
+39775 DEBUG: Scanning OpenGL.raw.GL.ARB.texture_view for shared libraries or dlls
+39777 DEBUG: Scanning OpenGL.GL.ARB.vertex_attrib_binding for shared libraries or dlls
+39778 DEBUG: Scanning OpenGL.raw.GL.ARB.vertex_attrib_binding for shared libraries or dlls
+39781 DEBUG: Scanning OpenGL.GL.VERSION.GL_4_4 for shared libraries or dlls
+39783 DEBUG: Scanning OpenGL.raw.GL.VERSION.GL_4_4 for shared libraries or dlls
+39788 DEBUG: Scanning OpenGL.arrays.vbo for shared libraries or dlls
+39804 DEBUG: Scanning OpenGL.GL.ARB.vertex_buffer_object for shared libraries or dlls
+39808 DEBUG: Scanning OpenGL.raw.GL.ARB.vertex_buffer_object for shared libraries or dlls
+39814 DEBUG: Scanning OpenGL.GL.ARB.enhanced_layouts for shared libraries or dlls
+39815 DEBUG: Scanning OpenGL.raw.GL.ARB.enhanced_layouts for shared libraries or dlls
+39816 DEBUG: Scanning OpenGL.GL.ARB.shader_objects for shared libraries or dlls
+39826 DEBUG: Scanning OpenGL.GL.ARB.fragment_shader for shared libraries or dlls
+39827 DEBUG: Scanning OpenGL.raw.GL.ARB.fragment_shader for shared libraries or dlls
+39828 DEBUG: Scanning OpenGL.GL.ARB.vertex_shader for shared libraries or dlls
+39834 DEBUG: Scanning OpenGL.raw.GL.ARB.vertex_shader for shared libraries or dlls
+39848 DEBUG: Scanning OpenGL.GL.ARB.vertex_program for shared libraries or dlls
+39854 DEBUG: Scanning OpenGL.raw.GL.ARB.vertex_program for shared libraries or dlls
+39875 DEBUG: Scanning OpenGL.GL.ARB.geometry_shader4 for shared libraries or dlls
+39877 DEBUG: Scanning OpenGL.raw.GL.ARB.geometry_shader4 for shared libraries or dlls
+39880 DEBUG: Scanning uuid for shared libraries or dlls
+40031 DEBUG: Scanning utilities.render for shared libraries or dlls
+40044 DEBUG: Scanning pkg_resources._vendor.appdirs for shared libraries or dlls
+40065 DEBUG: Scanning OpenGL.platform.glx for shared libraries or dlls
+40073 DEBUG: Scanning OpenGL.platform.baseplatform for shared libraries or dlls
+40099 DEBUG: Scanning OpenGL.platform.ctypesloader for shared libraries or dlls
+40102 DEBUG: Scanning OpenGL.arrays._buffers for shared libraries or dlls
+40107 DEBUG: Scanning OpenGL.arrays.ctypesarrays for shared libraries or dlls
+40115 DEBUG: Scanning OpenGL.arrays.numpymodule for shared libraries or dlls
+40128 DEBUG: Scanning OpenGL.arrays.ctypesparameters for shared libraries or dlls
+40134 DEBUG: Scanning OpenGL.arrays.buffers for shared libraries or dlls
+40142 DEBUG: Scanning OpenGL.arrays.ctypespointers for shared libraries or dlls
+40147 DEBUG: Scanning OpenGL.arrays.strings for shared libraries or dlls
+40153 DEBUG: Scanning OpenGL.arrays.numbers for shared libraries or dlls
+40159 DEBUG: Scanning OpenGL.arrays.lists for shared libraries or dlls
+40169 DEBUG: Scanning OpenGL.arrays._strings for shared libraries or dlls
+40173 INFO: Analyzing run-time hooks ...
+40173 INFO: Including custom run-time hook '/home/jared/Documents/Code/GitHub/QtPyHammer/target/PyInstaller/fbs_pyinstaller_hook.py'
+40218 INFO: Including run-time hook 'pyi_rth_pkgres.py'
+40223 INFO: Including run-time hook 'pyi_rth_multiprocessing.py'
+40237 INFO: Including run-time hook 'pyi_rth_qt5.py'
+40309 INFO: Looking for dynamic libraries
+40310 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqoffscreen.so
+40383 DEBUG: Skipping libpthread.so.0 dependency of libqoffscreen.so
+40384 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqoffscreen.so
+40384 DEBUG: Adding libpng12.so.0 dependency of libqoffscreen.so from /lib/x86_64-linux-gnu/libpng12.so.0
+40385 DEBUG: Adding libglib-2.0.so.0 dependency of libqoffscreen.so from /lib/x86_64-linux-gnu/libglib-2.0.so.0
+40385 DEBUG: Adding libxcb-glx.so.0 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libxcb-glx.so.0
+40385 DEBUG: Adding libXdamage.so.1 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libXdamage.so.1
+40385 DEBUG: Adding libxshmfence.so.1 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libxshmfence.so.1
+40386 DEBUG: Adding libQt5Core.so.5 dependency of libqoffscreen.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/../../lib/libQt5Core.so.5
+40386 DEBUG: Skipping libxcb.so.1 dependency of libqoffscreen.so
+40386 DEBUG: Adding libXdmcp.so.6 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libXdmcp.so.6
+40386 DEBUG: Skipping libc.so.6 dependency of libqoffscreen.so
+40386 DEBUG: Adding libstdc++.so.6 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libstdc++.so.6
+40387 DEBUG: Adding libxcb-present.so.0 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libxcb-present.so.0
+40387 DEBUG: Adding libxcb-sync.so.1 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libxcb-sync.so.1
+40387 DEBUG: Adding libX11-xcb.so.1 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libX11-xcb.so.1
+40387 DEBUG: Skipping libGL.so.1 dependency of libqoffscreen.so
+40388 DEBUG: Skipping libm.so.6 dependency of libqoffscreen.so
+40388 DEBUG: Adding libicudata.so.56 dependency of libqoffscreen.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/../../lib/libicudata.so.56
+40388 DEBUG: Adding libQt5Gui.so.5 dependency of libqoffscreen.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/../../lib/libQt5Gui.so.5
+40388 DEBUG: Adding libfontconfig.so.1 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libfontconfig.so.1
+40389 DEBUG: Adding libpcre.so.3 dependency of libqoffscreen.so from /lib/x86_64-linux-gnu/libpcre.so.3
+40389 DEBUG: Adding libicuuc.so.56 dependency of libqoffscreen.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/../../lib/libicuuc.so.56
+40389 DEBUG: Adding libdrm.so.2 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libdrm.so.2
+40390 DEBUG: Adding libXau.so.6 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libXau.so.6
+40390 DEBUG: Adding libXext.so.6 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libXext.so.6
+40390 DEBUG: Adding libfreetype.so.6 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libfreetype.so.6
+40390 DEBUG: Skipping libdl.so.2 dependency of libqoffscreen.so
+40390 DEBUG: Adding libX11.so.6 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libX11.so.6
+40390 DEBUG: Adding libgcc_s.so.1 dependency of libqoffscreen.so from /lib/x86_64-linux-gnu/libgcc_s.so.1
+40391 DEBUG: Adding libglapi.so.0 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libglapi.so.0
+40391 DEBUG: Adding libXxf86vm.so.1 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libXxf86vm.so.1
+40391 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqoffscreen.so
+40391 DEBUG: Adding libicui18n.so.56 dependency of libqoffscreen.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/../../lib/libicui18n.so.56
+40391 DEBUG: Adding libXfixes.so.3 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libXfixes.so.3
+40391 DEBUG: Adding libgthread-2.0.so.0 dependency of libqoffscreen.so from /usr/lib/x86_64-linux-gnu/libgthread-2.0.so.0
+40393 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/bearer/libqconnmanbearer.so
+40467 DEBUG: Skipping libpthread.so.0 dependency of libqconnmanbearer.so
+40467 DEBUG: Adding libgpg-error.so.0 dependency of libqconnmanbearer.so from /lib/x86_64-linux-gnu/libgpg-error.so.0
+40467 DEBUG: Adding liblzma.so.5 dependency of libqconnmanbearer.so from /lib/x86_64-linux-gnu/liblzma.so.5
+40468 DEBUG: Adding libQt5Core.so.5 dependency of libqconnmanbearer.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/bearer/../../lib/libQt5Core.so.5
+40468 DEBUG: Adding libQt5DBus.so.5 dependency of libqconnmanbearer.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/bearer/../../lib/libQt5DBus.so.5
+40468 DEBUG: Adding libsystemd.so.0 dependency of libqconnmanbearer.so from /lib/x86_64-linux-gnu/libsystemd.so.0
+40468 DEBUG: Adding libicudata.so.56 dependency of libqconnmanbearer.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/bearer/../../lib/libicudata.so.56
+40468 DEBUG: Adding libgcrypt.so.20 dependency of libqconnmanbearer.so from /lib/x86_64-linux-gnu/libgcrypt.so.20
+40468 DEBUG: Adding libdbus-1.so.3 dependency of libqconnmanbearer.so from /lib/x86_64-linux-gnu/libdbus-1.so.3
+40468 DEBUG: Skipping libc.so.6 dependency of libqconnmanbearer.so
+40468 DEBUG: Skipping libm.so.6 dependency of libqconnmanbearer.so
+40469 DEBUG: Skipping librt.so.1 dependency of libqconnmanbearer.so
+40469 DEBUG: Adding libicui18n.so.56 dependency of libqconnmanbearer.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/bearer/../../lib/libicui18n.so.56
+40469 DEBUG: Adding libselinux.so.1 dependency of libqconnmanbearer.so from /lib/x86_64-linux-gnu/libselinux.so.1
+40469 DEBUG: Adding libQt5Network.so.5 dependency of libqconnmanbearer.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/bearer/../../lib/libQt5Network.so.5
+40469 DEBUG: Skipping libdl.so.2 dependency of libqconnmanbearer.so
+40469 DEBUG: Adding libicuuc.so.56 dependency of libqconnmanbearer.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/bearer/../../lib/libicuuc.so.56
+40470 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platformthemes/libqgtk3.so
+40545 DEBUG: Skipping libpthread.so.0 dependency of libqgtk3.so
+40546 DEBUG: Adding libicudata.so.56 dependency of libqgtk3.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platformthemes/../../lib/libicudata.so.56
+40546 DEBUG: Adding libgio-2.0.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0
+40546 DEBUG: Adding libwayland-client.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libwayland-client.so.0
+40546 DEBUG: Adding libicuuc.so.56 dependency of libqgtk3.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platformthemes/../../lib/libicuuc.so.56
+40546 DEBUG: Skipping libxcb.so.1 dependency of libqgtk3.so
+40546 DEBUG: Skipping libc.so.6 dependency of libqgtk3.so
+40547 DEBUG: Adding libepoxy.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libepoxy.so.0
+40550 DEBUG: Adding libwayland-egl.so.1 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libwayland-egl.so.1
+40550 DEBUG: Adding libharfbuzz.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libharfbuzz.so.0
+40550 DEBUG: Adding libQt5DBus.so.5 dependency of libqgtk3.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platformthemes/../../lib/libQt5DBus.so.5
+40550 DEBUG: Adding libgraphite2.so.3 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libgraphite2.so.3
+40550 DEBUG: Adding libXrandr.so.2 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libXrandr.so.2
+40551 DEBUG: Adding libwayland-cursor.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0
+40551 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqgtk3.so
+40551 DEBUG: Adding libdatrie.so.1 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libdatrie.so.1
+40551 DEBUG: Adding libpangoft2-1.0.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0
+40551 DEBUG: Adding libgtk-3.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libgtk-3.so.0
+40552 DEBUG: Skipping libm.so.6 dependency of libqgtk3.so
+40552 DEBUG: Adding libgdk-3.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libgdk-3.so.0
+40552 DEBUG: Adding libthai.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libthai.so.0
+40552 DEBUG: Skipping libdl.so.2 dependency of libqgtk3.so
+40552 DEBUG: Adding libkj-0.5.3.so dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libkj-0.5.3.so
+40552 DEBUG: Adding libpangocairo-1.0.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0
+40552 DEBUG: Adding libXcursor.so.1 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libXcursor.so.1
+40553 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqgtk3.so
+40553 DEBUG: Adding libffi.so.6 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libffi.so.6
+40553 DEBUG: Adding libxcb-render.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libxcb-render.so.0
+40553 DEBUG: Adding libgdk_pixbuf-2.0.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0
+40553 DEBUG: Skipping libresolv.so.2 dependency of libqgtk3.so
+40553 DEBUG: Adding libQt5Gui.so.5 dependency of libqgtk3.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platformthemes/../../lib/libQt5Gui.so.5
+40553 DEBUG: Adding libprotobuf-lite.so.9 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libprotobuf-lite.so.9
+40554 DEBUG: Adding libcairo.so.2 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libcairo.so.2
+40554 DEBUG: Adding libatk-bridge-2.0.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libatk-bridge-2.0.so.0
+40554 DEBUG: Adding libmirclient.so.9 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libmirclient.so.9
+40554 DEBUG: Adding libpixman-1.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libpixman-1.so.0
+40554 DEBUG: Adding libboost_system.so.1.58.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libboost_system.so.1.58.0
+40554 DEBUG: Adding libicui18n.so.56 dependency of libqgtk3.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platformthemes/../../lib/libicui18n.so.56
+40554 DEBUG: Adding libXinerama.so.1 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libXinerama.so.1
+40555 DEBUG: Adding libXrender.so.1 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libXrender.so.1
+40555 DEBUG: Adding libcairo-gobject.so.2 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libcairo-gobject.so.2
+40555 DEBUG: Adding libcapnp-0.5.3.so dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libcapnp-0.5.3.so
+40555 DEBUG: Adding libgmodule-2.0.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0
+40555 DEBUG: Adding libpango-1.0.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libpango-1.0.so.0
+40555 DEBUG: Adding libmircommon.so.7 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libmircommon.so.7
+40555 DEBUG: Adding libXcomposite.so.1 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libXcomposite.so.1
+40556 DEBUG: Adding libboost_filesystem.so.1.58.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.58.0
+40556 DEBUG: Adding libmircore.so.1 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libmircore.so.1
+40556 DEBUG: Adding libXi.so.6 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libXi.so.6
+40556 DEBUG: Adding libxkbcommon.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libxkbcommon.so.0
+40556 DEBUG: Adding libatspi.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libatspi.so.0
+40556 DEBUG: Skipping libGL.so.1 dependency of libqgtk3.so
+40556 DEBUG: Adding libatk-1.0.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libatk-1.0.so.0
+40557 DEBUG: Skipping librt.so.1 dependency of libqgtk3.so
+40557 DEBUG: Adding libQt5Core.so.5 dependency of libqgtk3.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platformthemes/../../lib/libQt5Core.so.5
+40557 DEBUG: Adding libmirprotobuf.so.3 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libmirprotobuf.so.3
+40557 DEBUG: Adding libxcb-shm.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libxcb-shm.so.0
+40557 DEBUG: Adding libgobject-2.0.so.0 dependency of libqgtk3.so from /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+40557 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqxcb.so
+40634 DEBUG: Skipping libpthread.so.0 dependency of libqxcb.so
+40635 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqxcb.so
+40635 DEBUG: Skipping libxcb.so.1 dependency of libqxcb.so
+40635 DEBUG: Skipping libc.so.6 dependency of libqxcb.so
+40635 DEBUG: Skipping libGL.so.1 dependency of libqxcb.so
+40635 DEBUG: Skipping libm.so.6 dependency of libqxcb.so
+40636 DEBUG: Adding libQt5DBus.so.5 dependency of libqxcb.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/../../lib/libQt5DBus.so.5
+40636 DEBUG: Skipping librt.so.1 dependency of libqxcb.so
+40636 DEBUG: Skipping libdl.so.2 dependency of libqxcb.so
+40636 DEBUG: Adding libQt5XcbQpa.so.5 dependency of libqxcb.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/../../lib/libQt5XcbQpa.so.5
+40636 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqxcb.so
+40636 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforminputcontexts/libibusplatforminputcontextplugin.so
+40687 DEBUG: Skipping libpthread.so.0 dependency of libibusplatforminputcontextplugin.so
+40688 DEBUG: Skipping libxcb-dri3.so.0 dependency of libibusplatforminputcontextplugin.so
+40688 DEBUG: Adding libicui18n.so.56 dependency of libibusplatforminputcontextplugin.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforminputcontexts/../../lib/libicui18n.so.56
+40689 DEBUG: Skipping libxcb.so.1 dependency of libibusplatforminputcontextplugin.so
+40689 DEBUG: Skipping libc.so.6 dependency of libibusplatforminputcontextplugin.so
+40689 DEBUG: Adding libicudata.so.56 dependency of libibusplatforminputcontextplugin.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforminputcontexts/../../lib/libicudata.so.56
+40689 DEBUG: Skipping libGL.so.1 dependency of libibusplatforminputcontextplugin.so
+40689 DEBUG: Skipping libm.so.6 dependency of libibusplatforminputcontextplugin.so
+40689 DEBUG: Skipping librt.so.1 dependency of libibusplatforminputcontextplugin.so
+40689 DEBUG: Adding libQt5Core.so.5 dependency of libibusplatforminputcontextplugin.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforminputcontexts/../../lib/libQt5Core.so.5
+40689 DEBUG: Adding libQt5DBus.so.5 dependency of libibusplatforminputcontextplugin.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforminputcontexts/../../lib/libQt5DBus.so.5
+40690 DEBUG: Skipping libdl.so.2 dependency of libibusplatforminputcontextplugin.so
+40690 DEBUG: Adding libicuuc.so.56 dependency of libibusplatforminputcontextplugin.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforminputcontexts/../../lib/libicuuc.so.56
+40690 DEBUG: Skipping libxcb-dri2.so.0 dependency of libibusplatforminputcontextplugin.so
+40690 DEBUG: Adding libQt5Gui.so.5 dependency of libibusplatforminputcontextplugin.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforminputcontexts/../../lib/libQt5Gui.so.5
+40690 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/bearer/libqnmbearer.so
+40736 DEBUG: Skipping libpthread.so.0 dependency of libqnmbearer.so
+40737 DEBUG: Skipping libc.so.6 dependency of libqnmbearer.so
+40737 DEBUG: Skipping libm.so.6 dependency of libqnmbearer.so
+40737 DEBUG: Skipping librt.so.1 dependency of libqnmbearer.so
+40737 DEBUG: Skipping libdl.so.2 dependency of libqnmbearer.so
+40738 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqeglfs.so
+40798 DEBUG: Skipping libpthread.so.0 dependency of libqeglfs.so
+40799 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqeglfs.so
+40799 DEBUG: Skipping libxcb.so.1 dependency of libqeglfs.so
+40799 DEBUG: Skipping libc.so.6 dependency of libqeglfs.so
+40799 DEBUG: Skipping libGL.so.1 dependency of libqeglfs.so
+40799 DEBUG: Skipping libm.so.6 dependency of libqeglfs.so
+40799 DEBUG: Adding libxcb-xfixes.so.0 dependency of libqeglfs.so from /usr/lib/x86_64-linux-gnu/libxcb-xfixes.so.0
+40800 DEBUG: Skipping librt.so.1 dependency of libqeglfs.so
+40800 DEBUG: Adding libgbm.so.1 dependency of libqeglfs.so from /usr/lib/x86_64-linux-gnu/libgbm.so.1
+40800 DEBUG: Adding libwayland-server.so.0 dependency of libqeglfs.so from /usr/lib/x86_64-linux-gnu/libwayland-server.so.0
+40800 DEBUG: Skipping libdl.so.2 dependency of libqeglfs.so
+40800 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqeglfs.so
+40800 DEBUG: Adding libEGL.so.1 dependency of libqeglfs.so from /usr/lib/x86_64-linux-gnu/mesa-egl/libEGL.so.1
+40800 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqgif.so
+40852 DEBUG: Skipping libpthread.so.0 dependency of libqgif.so
+40853 DEBUG: Adding libicuuc.so.56 dependency of libqgif.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/../../lib/libicuuc.so.56
+40853 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqgif.so
+40853 DEBUG: Adding libQt5Gui.so.5 dependency of libqgif.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/../../lib/libQt5Gui.so.5
+40853 DEBUG: Skipping libxcb.so.1 dependency of libqgif.so
+40853 DEBUG: Skipping libc.so.6 dependency of libqgif.so
+40854 DEBUG: Skipping libGL.so.1 dependency of libqgif.so
+40854 DEBUG: Adding libicui18n.so.56 dependency of libqgif.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/../../lib/libicui18n.so.56
+40854 DEBUG: Skipping libm.so.6 dependency of libqgif.so
+40854 DEBUG: Adding libQt5Core.so.5 dependency of libqgif.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/../../lib/libQt5Core.so.5
+40854 DEBUG: Skipping libdl.so.2 dependency of libqgif.so
+40854 DEBUG: Adding libicudata.so.56 dependency of libqgif.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/../../lib/libicudata.so.56
+40854 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqgif.so
+40855 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqtiff.so
+40908 DEBUG: Skipping libpthread.so.0 dependency of libqtiff.so
+40909 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqtiff.so
+40909 DEBUG: Skipping libxcb.so.1 dependency of libqtiff.so
+40910 DEBUG: Skipping libc.so.6 dependency of libqtiff.so
+40910 DEBUG: Skipping libGL.so.1 dependency of libqtiff.so
+40910 DEBUG: Skipping libm.so.6 dependency of libqtiff.so
+40910 DEBUG: Skipping libdl.so.2 dependency of libqtiff.so
+40910 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqtiff.so
+40911 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqminimal.so
+40991 DEBUG: Skipping libpthread.so.0 dependency of libqminimal.so
+40992 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqminimal.so
+40992 DEBUG: Skipping libxcb.so.1 dependency of libqminimal.so
+40992 DEBUG: Skipping libc.so.6 dependency of libqminimal.so
+40992 DEBUG: Skipping libGL.so.1 dependency of libqminimal.so
+40992 DEBUG: Skipping libm.so.6 dependency of libqminimal.so
+40992 DEBUG: Skipping libdl.so.2 dependency of libqminimal.so
+40992 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqminimal.so
+40993 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqwebp.so
+41069 DEBUG: Skipping libpthread.so.0 dependency of libqwebp.so
+41070 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqwebp.so
+41070 DEBUG: Skipping libxcb.so.1 dependency of libqwebp.so
+41070 DEBUG: Skipping libc.so.6 dependency of libqwebp.so
+41070 DEBUG: Skipping libGL.so.1 dependency of libqwebp.so
+41070 DEBUG: Skipping libm.so.6 dependency of libqwebp.so
+41070 DEBUG: Skipping libdl.so.2 dependency of libqwebp.so
+41070 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqwebp.so
+41071 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so
+41122 DEBUG: Skipping libpthread.so.0 dependency of libcomposeplatforminputcontextplugin.so
+41123 DEBUG: Skipping libxcb-dri3.so.0 dependency of libcomposeplatforminputcontextplugin.so
+41124 DEBUG: Skipping libxcb.so.1 dependency of libcomposeplatforminputcontextplugin.so
+41124 DEBUG: Skipping libc.so.6 dependency of libcomposeplatforminputcontextplugin.so
+41124 DEBUG: Skipping libGL.so.1 dependency of libcomposeplatforminputcontextplugin.so
+41124 DEBUG: Skipping libm.so.6 dependency of libcomposeplatforminputcontextplugin.so
+41125 DEBUG: Skipping libdl.so.2 dependency of libcomposeplatforminputcontextplugin.so
+41125 DEBUG: Skipping libxcb-dri2.so.0 dependency of libcomposeplatforminputcontextplugin.so
+41125 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqlinuxfb.so
+41177 DEBUG: Skipping libpthread.so.0 dependency of libqlinuxfb.so
+41177 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqlinuxfb.so
+41177 DEBUG: Skipping libxcb.so.1 dependency of libqlinuxfb.so
+41177 DEBUG: Skipping libc.so.6 dependency of libqlinuxfb.so
+41178 DEBUG: Skipping libGL.so.1 dependency of libqlinuxfb.so
+41178 DEBUG: Skipping libm.so.6 dependency of libqlinuxfb.so
+41178 DEBUG: Skipping libdl.so.2 dependency of libqlinuxfb.so
+41178 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqlinuxfb.so
+41178 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqwbmp.so
+41230 DEBUG: Skipping libpthread.so.0 dependency of libqwbmp.so
+41231 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqwbmp.so
+41231 DEBUG: Skipping libxcb.so.1 dependency of libqwbmp.so
+41231 DEBUG: Skipping libc.so.6 dependency of libqwbmp.so
+41231 DEBUG: Skipping libGL.so.1 dependency of libqwbmp.so
+41231 DEBUG: Skipping libm.so.6 dependency of libqwbmp.so
+41231 DEBUG: Skipping libdl.so.2 dependency of libqwbmp.so
+41231 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqwbmp.so
+41232 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/bearer/libqgenericbearer.so
+41283 DEBUG: Skipping libpthread.so.0 dependency of libqgenericbearer.so
+41284 DEBUG: Skipping libc.so.6 dependency of libqgenericbearer.so
+41284 DEBUG: Skipping libdl.so.2 dependency of libqgenericbearer.so
+41284 DEBUG: Skipping libm.so.6 dependency of libqgenericbearer.so
+41284 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqvnc.so
+41342 DEBUG: Skipping libpthread.so.0 dependency of libqvnc.so
+41343 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqvnc.so
+41343 DEBUG: Adding libQt5Network.so.5 dependency of libqvnc.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/../../lib/libQt5Network.so.5
+41343 DEBUG: Skipping libxcb.so.1 dependency of libqvnc.so
+41343 DEBUG: Skipping libc.so.6 dependency of libqvnc.so
+41343 DEBUG: Skipping libGL.so.1 dependency of libqvnc.so
+41344 DEBUG: Skipping libm.so.6 dependency of libqvnc.so
+41344 DEBUG: Skipping librt.so.1 dependency of libqvnc.so
+41344 DEBUG: Skipping libdl.so.2 dependency of libqvnc.so
+41344 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqvnc.so
+41344 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqsvg.so
+41425 DEBUG: Skipping libpthread.so.0 dependency of libqsvg.so
+41426 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqsvg.so
+41426 DEBUG: Skipping libxcb.so.1 dependency of libqsvg.so
+41426 DEBUG: Skipping libc.so.6 dependency of libqsvg.so
+41426 DEBUG: Skipping libGL.so.1 dependency of libqsvg.so
+41427 DEBUG: Adding libQt5Svg.so.5 dependency of libqsvg.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/../../lib/libQt5Svg.so.5
+41427 DEBUG: Skipping libm.so.6 dependency of libqsvg.so
+41427 DEBUG: Adding libQt5Widgets.so.5 dependency of libqsvg.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/../../lib/libQt5Widgets.so.5
+41427 DEBUG: Skipping libdl.so.2 dependency of libqsvg.so
+41427 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqsvg.so
+41428 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/iconengines/libqsvgicon.so
+41477 DEBUG: Skipping libpthread.so.0 dependency of libqsvgicon.so
+41478 DEBUG: Adding libQt5Widgets.so.5 dependency of libqsvgicon.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/iconengines/../../lib/libQt5Widgets.so.5
+41478 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqsvgicon.so
+41478 DEBUG: Adding libicui18n.so.56 dependency of libqsvgicon.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/iconengines/../../lib/libicui18n.so.56
+41478 DEBUG: Adding libQt5Svg.so.5 dependency of libqsvgicon.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/iconengines/../../lib/libQt5Svg.so.5
+41479 DEBUG: Skipping libxcb.so.1 dependency of libqsvgicon.so
+41479 DEBUG: Skipping libc.so.6 dependency of libqsvgicon.so
+41479 DEBUG: Adding libQt5Core.so.5 dependency of libqsvgicon.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/iconengines/../../lib/libQt5Core.so.5
+41480 DEBUG: Adding libicudata.so.56 dependency of libqsvgicon.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/iconengines/../../lib/libicudata.so.56
+41480 DEBUG: Skipping libGL.so.1 dependency of libqsvgicon.so
+41480 DEBUG: Adding libQt5Gui.so.5 dependency of libqsvgicon.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/iconengines/../../lib/libQt5Gui.so.5
+41480 DEBUG: Skipping libm.so.6 dependency of libqsvgicon.so
+41480 DEBUG: Adding libicuuc.so.56 dependency of libqsvgicon.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/iconengines/../../lib/libicuuc.so.56
+41481 DEBUG: Skipping libdl.so.2 dependency of libqsvgicon.so
+41481 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqsvgicon.so
+41481 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqjpeg.so
+41559 DEBUG: Skipping libpthread.so.0 dependency of libqjpeg.so
+41560 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqjpeg.so
+41560 DEBUG: Skipping libxcb.so.1 dependency of libqjpeg.so
+41560 DEBUG: Skipping libc.so.6 dependency of libqjpeg.so
+41561 DEBUG: Skipping libGL.so.1 dependency of libqjpeg.so
+41561 DEBUG: Skipping libm.so.6 dependency of libqjpeg.so
+41561 DEBUG: Skipping libdl.so.2 dependency of libqjpeg.so
+41561 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqjpeg.so
+41561 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqico.so
+41632 DEBUG: Skipping libpthread.so.0 dependency of libqico.so
+41633 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqico.so
+41633 DEBUG: Skipping libxcb.so.1 dependency of libqico.so
+41633 DEBUG: Skipping libc.so.6 dependency of libqico.so
+41633 DEBUG: Skipping libGL.so.1 dependency of libqico.so
+41633 DEBUG: Skipping libm.so.6 dependency of libqico.so
+41633 DEBUG: Skipping libdl.so.2 dependency of libqico.so
+41634 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqico.so
+41634 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqtga.so
+41684 DEBUG: Skipping libpthread.so.0 dependency of libqtga.so
+41685 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqtga.so
+41685 DEBUG: Skipping libxcb.so.1 dependency of libqtga.so
+41686 DEBUG: Skipping libc.so.6 dependency of libqtga.so
+41686 DEBUG: Skipping libGL.so.1 dependency of libqtga.so
+41686 DEBUG: Skipping libm.so.6 dependency of libqtga.so
+41687 DEBUG: Skipping libdl.so.2 dependency of libqtga.so
+41687 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqtga.so
+41687 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqminimalegl.so
+41769 DEBUG: Skipping libpthread.so.0 dependency of libqminimalegl.so
+41770 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqminimalegl.so
+41770 DEBUG: Skipping libxcb.so.1 dependency of libqminimalegl.so
+41770 DEBUG: Skipping libc.so.6 dependency of libqminimalegl.so
+41771 DEBUG: Skipping libGL.so.1 dependency of libqminimalegl.so
+41771 DEBUG: Skipping libm.so.6 dependency of libqminimalegl.so
+41771 DEBUG: Skipping librt.so.1 dependency of libqminimalegl.so
+41771 DEBUG: Skipping libdl.so.2 dependency of libqminimalegl.so
+41771 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqminimalegl.so
+41773 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/libqicns.so
+41852 DEBUG: Skipping libpthread.so.0 dependency of libqicns.so
+41853 DEBUG: Skipping libxcb-dri3.so.0 dependency of libqicns.so
+41853 DEBUG: Skipping libxcb.so.1 dependency of libqicns.so
+41853 DEBUG: Skipping libc.so.6 dependency of libqicns.so
+41853 DEBUG: Skipping libGL.so.1 dependency of libqicns.so
+41853 DEBUG: Skipping libm.so.6 dependency of libqicns.so
+41853 DEBUG: Skipping libdl.so.2 dependency of libqicns.so
+41853 DEBUG: Skipping libxcb-dri2.so.0 dependency of libqicns.so
+41854 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/_decimal.cpython-36m-x86_64-linux-gnu.so
+41895 DEBUG: Skipping libpthread.so.0 dependency of _decimal.cpython-36m-x86_64-linux-gnu.so
+41896 DEBUG: Skipping libc.so.6 dependency of _decimal.cpython-36m-x86_64-linux-gnu.so
+41896 DEBUG: Skipping libm.so.6 dependency of _decimal.cpython-36m-x86_64-linux-gnu.so
+41896 DEBUG: Adding libmpdec.so.2 dependency of _decimal.cpython-36m-x86_64-linux-gnu.so from /usr/lib/x86_64-linux-gnu/libmpdec.so.2
+41897 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/mmap.cpython-36m-x86_64-linux-gnu.so
+41937 DEBUG: Skipping libpthread.so.0 dependency of mmap.cpython-36m-x86_64-linux-gnu.so
+41937 DEBUG: Skipping libc.so.6 dependency of mmap.cpython-36m-x86_64-linux-gnu.so
+41937 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/_ctypes.cpython-36m-x86_64-linux-gnu.so
+41980 DEBUG: Skipping libpthread.so.0 dependency of _ctypes.cpython-36m-x86_64-linux-gnu.so
+41985 DEBUG: Skipping libc.so.6 dependency of _ctypes.cpython-36m-x86_64-linux-gnu.so
+41985 DEBUG: Skipping libdl.so.2 dependency of _ctypes.cpython-36m-x86_64-linux-gnu.so
+41986 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/_multiprocessing.cpython-36m-x86_64-linux-gnu.so
+42030 DEBUG: Skipping libpthread.so.0 dependency of _multiprocessing.cpython-36m-x86_64-linux-gnu.so
+42031 DEBUG: Skipping libc.so.6 dependency of _multiprocessing.cpython-36m-x86_64-linux-gnu.so
+42031 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/resource.cpython-36m-x86_64-linux-gnu.so
+42069 DEBUG: Skipping libpthread.so.0 dependency of resource.cpython-36m-x86_64-linux-gnu.so
+42070 DEBUG: Skipping libc.so.6 dependency of resource.cpython-36m-x86_64-linux-gnu.so
+42070 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/_ssl.cpython-36m-x86_64-linux-gnu.so
+42116 DEBUG: Skipping libpthread.so.0 dependency of _ssl.cpython-36m-x86_64-linux-gnu.so
+42117 DEBUG: Skipping libc.so.6 dependency of _ssl.cpython-36m-x86_64-linux-gnu.so
+42117 DEBUG: Skipping libdl.so.2 dependency of _ssl.cpython-36m-x86_64-linux-gnu.so
+42117 DEBUG: Adding libssl.so.1.0.0 dependency of _ssl.cpython-36m-x86_64-linux-gnu.so from /lib/x86_64-linux-gnu/libssl.so.1.0.0
+42117 DEBUG: Adding libcrypto.so.1.0.0 dependency of _ssl.cpython-36m-x86_64-linux-gnu.so from /lib/x86_64-linux-gnu/libcrypto.so.1.0.0
+42118 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/_opcode.cpython-36m-x86_64-linux-gnu.so
+42156 DEBUG: Skipping libpthread.so.0 dependency of _opcode.cpython-36m-x86_64-linux-gnu.so
+42157 DEBUG: Skipping libc.so.6 dependency of _opcode.cpython-36m-x86_64-linux-gnu.so
+42157 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/readline.cpython-36m-x86_64-linux-gnu.so
+42221 DEBUG: Skipping libpthread.so.0 dependency of readline.cpython-36m-x86_64-linux-gnu.so
+42222 DEBUG: Adding libtinfo.so.5 dependency of readline.cpython-36m-x86_64-linux-gnu.so from /lib/x86_64-linux-gnu/libtinfo.so.5
+42222 DEBUG: Skipping libc.so.6 dependency of readline.cpython-36m-x86_64-linux-gnu.so
+42222 DEBUG: Adding libreadline.so.6 dependency of readline.cpython-36m-x86_64-linux-gnu.so from /lib/x86_64-linux-gnu/libreadline.so.6
+42222 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/termios.cpython-36m-x86_64-linux-gnu.so
+42264 DEBUG: Skipping libpthread.so.0 dependency of termios.cpython-36m-x86_64-linux-gnu.so
+42264 DEBUG: Skipping libc.so.6 dependency of termios.cpython-36m-x86_64-linux-gnu.so
+42265 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/_hashlib.cpython-36m-x86_64-linux-gnu.so
+42298 DEBUG: Skipping libpthread.so.0 dependency of _hashlib.cpython-36m-x86_64-linux-gnu.so
+42298 DEBUG: Skipping libc.so.6 dependency of _hashlib.cpython-36m-x86_64-linux-gnu.so
+42299 DEBUG: Skipping libdl.so.2 dependency of _hashlib.cpython-36m-x86_64-linux-gnu.so
+42299 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/_lzma.cpython-36m-x86_64-linux-gnu.so
+42338 DEBUG: Skipping libpthread.so.0 dependency of _lzma.cpython-36m-x86_64-linux-gnu.so
+42339 DEBUG: Skipping libc.so.6 dependency of _lzma.cpython-36m-x86_64-linux-gnu.so
+42339 DEBUG: Skipping libdl.so.2 dependency of _lzma.cpython-36m-x86_64-linux-gnu.so
+42339 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/_bz2.cpython-36m-x86_64-linux-gnu.so
+42375 DEBUG: Skipping libpthread.so.0 dependency of _bz2.cpython-36m-x86_64-linux-gnu.so
+42376 DEBUG: Skipping libc.so.6 dependency of _bz2.cpython-36m-x86_64-linux-gnu.so
+42376 DEBUG: Adding libbz2.so.1.0 dependency of _bz2.cpython-36m-x86_64-linux-gnu.so from /lib/x86_64-linux-gnu/libbz2.so.1.0
+42376 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/_codecs_hk.cpython-36m-x86_64-linux-gnu.so
+42434 DEBUG: Skipping libpthread.so.0 dependency of _codecs_hk.cpython-36m-x86_64-linux-gnu.so
+42435 DEBUG: Skipping libc.so.6 dependency of _codecs_hk.cpython-36m-x86_64-linux-gnu.so
+42435 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/_codecs_tw.cpython-36m-x86_64-linux-gnu.so
+42478 DEBUG: Skipping libpthread.so.0 dependency of _codecs_tw.cpython-36m-x86_64-linux-gnu.so
+42479 DEBUG: Skipping libc.so.6 dependency of _codecs_tw.cpython-36m-x86_64-linux-gnu.so
+42479 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/_codecs_iso2022.cpython-36m-x86_64-linux-gnu.so
+42522 DEBUG: Skipping libpthread.so.0 dependency of _codecs_iso2022.cpython-36m-x86_64-linux-gnu.so
+42523 DEBUG: Skipping libc.so.6 dependency of _codecs_iso2022.cpython-36m-x86_64-linux-gnu.so
+42523 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/_codecs_jp.cpython-36m-x86_64-linux-gnu.so
+42558 DEBUG: Skipping libpthread.so.0 dependency of _codecs_jp.cpython-36m-x86_64-linux-gnu.so
+42559 DEBUG: Skipping libc.so.6 dependency of _codecs_jp.cpython-36m-x86_64-linux-gnu.so
+42559 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/_codecs_kr.cpython-36m-x86_64-linux-gnu.so
+42597 DEBUG: Skipping libpthread.so.0 dependency of _codecs_kr.cpython-36m-x86_64-linux-gnu.so
+42598 DEBUG: Skipping libc.so.6 dependency of _codecs_kr.cpython-36m-x86_64-linux-gnu.so
+42598 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/_codecs_cn.cpython-36m-x86_64-linux-gnu.so
+42636 DEBUG: Skipping libpthread.so.0 dependency of _codecs_cn.cpython-36m-x86_64-linux-gnu.so
+42636 DEBUG: Skipping libc.so.6 dependency of _codecs_cn.cpython-36m-x86_64-linux-gnu.so
+42636 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/_multibytecodec.cpython-36m-x86_64-linux-gnu.so
+42674 DEBUG: Skipping libpthread.so.0 dependency of _multibytecodec.cpython-36m-x86_64-linux-gnu.so
+42674 DEBUG: Skipping libc.so.6 dependency of _multibytecodec.cpython-36m-x86_64-linux-gnu.so
+42675 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_multiarray_tests.cpython-36m-x86_64-linux-gnu.so
+42716 DEBUG: Skipping libpthread.so.0 dependency of _multiarray_tests.cpython-36m-x86_64-linux-gnu.so
+42717 DEBUG: Skipping libc.so.6 dependency of _multiarray_tests.cpython-36m-x86_64-linux-gnu.so
+42717 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/multiarray.cpython-36m-x86_64-linux-gnu.so
+42762 DEBUG: Skipping libpthread.so.0 dependency of multiarray.cpython-36m-x86_64-linux-gnu.so
+42763 DEBUG: Skipping libc.so.6 dependency of multiarray.cpython-36m-x86_64-linux-gnu.so
+42763 DEBUG: Adding libgfortran-ed201abd.so.3.0.0 dependency of multiarray.cpython-36m-x86_64-linux-gnu.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/../.libs/libgfortran-ed201abd.so.3.0.0
+42763 DEBUG: Skipping libm.so.6 dependency of multiarray.cpython-36m-x86_64-linux-gnu.so
+42763 DEBUG: Adding libopenblasp-r0-8dca6697.3.0.dev.so dependency of multiarray.cpython-36m-x86_64-linux-gnu.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/../.libs/libopenblasp-r0-8dca6697.3.0.dev.so
+42763 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/umath.cpython-36m-x86_64-linux-gnu.so
+42807 DEBUG: Skipping libpthread.so.0 dependency of umath.cpython-36m-x86_64-linux-gnu.so
+42807 DEBUG: Skipping libm.so.6 dependency of umath.cpython-36m-x86_64-linux-gnu.so
+42808 DEBUG: Skipping libc.so.6 dependency of umath.cpython-36m-x86_64-linux-gnu.so
+42808 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/_json.cpython-36m-x86_64-linux-gnu.so
+42849 DEBUG: Skipping libpthread.so.0 dependency of _json.cpython-36m-x86_64-linux-gnu.so
+42849 DEBUG: Skipping libc.so.6 dependency of _json.cpython-36m-x86_64-linux-gnu.so
+42850 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/lib-dynload/_curses.cpython-36m-x86_64-linux-gnu.so
+42928 DEBUG: Skipping libpthread.so.0 dependency of _curses.cpython-36m-x86_64-linux-gnu.so
+42929 DEBUG: Skipping libc.so.6 dependency of _curses.cpython-36m-x86_64-linux-gnu.so
+42929 DEBUG: Skipping libdl.so.2 dependency of _curses.cpython-36m-x86_64-linux-gnu.so
+42929 DEBUG: Adding libncursesw.so.5 dependency of _curses.cpython-36m-x86_64-linux-gnu.so from /lib/x86_64-linux-gnu/libncursesw.so.5
+42930 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/mtrand.cpython-36m-x86_64-linux-gnu.so
+42974 DEBUG: Skipping libpthread.so.0 dependency of mtrand.cpython-36m-x86_64-linux-gnu.so
+42975 DEBUG: Skipping libc.so.6 dependency of mtrand.cpython-36m-x86_64-linux-gnu.so
+42975 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/fft/fftpack_lite.cpython-36m-x86_64-linux-gnu.so
+43016 DEBUG: Skipping libpthread.so.0 dependency of fftpack_lite.cpython-36m-x86_64-linux-gnu.so
+43016 DEBUG: Skipping libc.so.6 dependency of fftpack_lite.cpython-36m-x86_64-linux-gnu.so
+43017 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/_umath_linalg.cpython-36m-x86_64-linux-gnu.so
+43059 DEBUG: Skipping libpthread.so.0 dependency of _umath_linalg.cpython-36m-x86_64-linux-gnu.so
+43060 DEBUG: Skipping libc.so.6 dependency of _umath_linalg.cpython-36m-x86_64-linux-gnu.so
+43060 DEBUG: Adding libgfortran-ed201abd.so.3.0.0 dependency of _umath_linalg.cpython-36m-x86_64-linux-gnu.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/../.libs/libgfortran-ed201abd.so.3.0.0
+43060 DEBUG: Skipping libm.so.6 dependency of _umath_linalg.cpython-36m-x86_64-linux-gnu.so
+43063 DEBUG: Adding libopenblasp-r0-8dca6697.3.0.dev.so dependency of _umath_linalg.cpython-36m-x86_64-linux-gnu.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/../.libs/libopenblasp-r0-8dca6697.3.0.dev.so
+43063 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/lapack_lite.cpython-36m-x86_64-linux-gnu.so
+43103 DEBUG: Skipping libpthread.so.0 dependency of lapack_lite.cpython-36m-x86_64-linux-gnu.so
+43104 DEBUG: Skipping libc.so.6 dependency of lapack_lite.cpython-36m-x86_64-linux-gnu.so
+43104 DEBUG: Skipping libm.so.6 dependency of lapack_lite.cpython-36m-x86_64-linux-gnu.so
+43104 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/QtWidgets.so
+43158 DEBUG: Skipping libpthread.so.0 dependency of QtWidgets.so
+43158 DEBUG: Skipping libxcb-dri3.so.0 dependency of QtWidgets.so
+43159 DEBUG: Adding libQt5Gui.so.5 dependency of QtWidgets.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Gui.so.5
+43159 DEBUG: Adding libQt5Widgets.so.5 dependency of QtWidgets.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Widgets.so.5
+43159 DEBUG: Adding libicudata.so.56 dependency of QtWidgets.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicudata.so.56
+43160 DEBUG: Skipping libxcb.so.1 dependency of QtWidgets.so
+43160 DEBUG: Skipping libc.so.6 dependency of QtWidgets.so
+43160 DEBUG: Skipping libGL.so.1 dependency of QtWidgets.so
+43161 DEBUG: Skipping libm.so.6 dependency of QtWidgets.so
+43162 DEBUG: Adding libQt5Core.so.5 dependency of QtWidgets.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Core.so.5
+43162 DEBUG: Adding libicui18n.so.56 dependency of QtWidgets.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicui18n.so.56
+43163 DEBUG: Skipping libdl.so.2 dependency of QtWidgets.so
+43163 DEBUG: Skipping libxcb-dri2.so.0 dependency of QtWidgets.so
+43163 DEBUG: Adding libicuuc.so.56 dependency of QtWidgets.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libicuuc.so.56
+43164 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/QtGui.so
+43215 DEBUG: Skipping libpthread.so.0 dependency of QtGui.so
+43216 DEBUG: Skipping libxcb-dri3.so.0 dependency of QtGui.so
+43217 DEBUG: Skipping libxcb.so.1 dependency of QtGui.so
+43217 DEBUG: Skipping libc.so.6 dependency of QtGui.so
+43217 DEBUG: Skipping libGL.so.1 dependency of QtGui.so
+43218 DEBUG: Skipping libm.so.6 dependency of QtGui.so
+43218 DEBUG: Skipping libdl.so.2 dependency of QtGui.so
+43218 DEBUG: Skipping libxcb-dri2.so.0 dependency of QtGui.so
+43219 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/QtCore.so
+43267 DEBUG: Skipping libpthread.so.0 dependency of QtCore.so
+43267 DEBUG: Skipping libc.so.6 dependency of QtCore.so
+43267 DEBUG: Skipping libdl.so.2 dependency of QtCore.so
+43268 DEBUG: Skipping libm.so.6 dependency of QtCore.so
+43268 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/sip.so
+43319 DEBUG: Skipping libm.so.6 dependency of sip.so
+43320 DEBUG: Skipping libc.so.6 dependency of sip.so
+43320 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/QtNetwork.so
+43367 DEBUG: Skipping libpthread.so.0 dependency of QtNetwork.so
+43368 DEBUG: Adding libQt5Network.so.5 dependency of QtNetwork.so from /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/lib/libQt5Network.so.5
+43368 DEBUG: Skipping libc.so.6 dependency of QtNetwork.so
+43368 DEBUG: Skipping libdl.so.2 dependency of QtNetwork.so
+43368 DEBUG: Skipping libm.so.6 dependency of QtNetwork.so
+43369 DEBUG: Analyzing /lib/x86_64-linux-gnu/libpng12.so.0
+43413 DEBUG: Skipping libm.so.6 dependency of libpng12.so.0
+43414 DEBUG: Skipping libc.so.6 dependency of libpng12.so.0
+43414 DEBUG: Analyzing /lib/x86_64-linux-gnu/libglib-2.0.so.0
+43458 DEBUG: Skipping libpthread.so.0 dependency of libglib-2.0.so.0
+43459 DEBUG: Skipping libc.so.6 dependency of libglib-2.0.so.0
+43459 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libxcb-glx.so.0
+43503 DEBUG: Skipping libxcb.so.1 dependency of libxcb-glx.so.0
+43504 DEBUG: Skipping libc.so.6 dependency of libxcb-glx.so.0
+43504 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libXdamage.so.1
+43550 DEBUG: Skipping libxcb.so.1 dependency of libXdamage.so.1
+43551 DEBUG: Skipping libc.so.6 dependency of libXdamage.so.1
+43551 DEBUG: Skipping libdl.so.2 dependency of libXdamage.so.1
+43551 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libxshmfence.so.1
+43600 DEBUG: Skipping libc.so.6 dependency of libxshmfence.so.1
+43600 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/../../lib/libQt5Core.so.5
+43644 DEBUG: Skipping libpthread.so.0 dependency of libQt5Core.so.5
+43644 DEBUG: Skipping libc.so.6 dependency of libQt5Core.so.5
+43645 DEBUG: Skipping libdl.so.2 dependency of libQt5Core.so.5
+43645 DEBUG: Skipping libm.so.6 dependency of libQt5Core.so.5
+43645 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libXdmcp.so.6
+43690 DEBUG: Skipping libc.so.6 dependency of libXdmcp.so.6
+43690 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libstdc++.so.6
+43734 DEBUG: Skipping libm.so.6 dependency of libstdc++.so.6
+43735 DEBUG: Skipping libc.so.6 dependency of libstdc++.so.6
+43735 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libxcb-present.so.0
+43779 DEBUG: Skipping libxcb.so.1 dependency of libxcb-present.so.0
+43780 DEBUG: Skipping libc.so.6 dependency of libxcb-present.so.0
+43780 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libxcb-sync.so.1
+43823 DEBUG: Skipping libxcb.so.1 dependency of libxcb-sync.so.1
+43824 DEBUG: Skipping libc.so.6 dependency of libxcb-sync.so.1
+43824 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libX11-xcb.so.1
+43866 DEBUG: Skipping libc.so.6 dependency of libX11-xcb.so.1
+43866 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/../../lib/libicudata.so.56
+43908 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/../../lib/libQt5Gui.so.5
+43957 DEBUG: Skipping libpthread.so.0 dependency of libQt5Gui.so.5
+43958 DEBUG: Skipping libxcb-dri3.so.0 dependency of libQt5Gui.so.5
+43958 DEBUG: Skipping libxcb.so.1 dependency of libQt5Gui.so.5
+43958 DEBUG: Skipping libc.so.6 dependency of libQt5Gui.so.5
+43958 DEBUG: Skipping libGL.so.1 dependency of libQt5Gui.so.5
+43959 DEBUG: Skipping libm.so.6 dependency of libQt5Gui.so.5
+43959 DEBUG: Skipping libdl.so.2 dependency of libQt5Gui.so.5
+43959 DEBUG: Skipping libxcb-dri2.so.0 dependency of libQt5Gui.so.5
+43959 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libfontconfig.so.1
+44005 DEBUG: Skipping libpthread.so.0 dependency of libfontconfig.so.1
+44006 DEBUG: Skipping libc.so.6 dependency of libfontconfig.so.1
+44006 DEBUG: Skipping libm.so.6 dependency of libfontconfig.so.1
+44006 DEBUG: Analyzing /lib/x86_64-linux-gnu/libpcre.so.3
+44051 DEBUG: Skipping libpthread.so.0 dependency of libpcre.so.3
+44052 DEBUG: Skipping libc.so.6 dependency of libpcre.so.3
+44052 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/../../lib/libicuuc.so.56
+44096 DEBUG: Skipping libpthread.so.0 dependency of libicuuc.so.56
+44097 DEBUG: Skipping libc.so.6 dependency of libicuuc.so.56
+44097 DEBUG: Skipping libdl.so.2 dependency of libicuuc.so.56
+44097 DEBUG: Skipping libm.so.6 dependency of libicuuc.so.56
+44097 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libdrm.so.2
+44143 DEBUG: Skipping libm.so.6 dependency of libdrm.so.2
+44144 DEBUG: Skipping libc.so.6 dependency of libdrm.so.2
+44144 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libXau.so.6
+44189 DEBUG: Skipping libc.so.6 dependency of libXau.so.6
+44189 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libXext.so.6
+44237 DEBUG: Skipping libxcb.so.1 dependency of libXext.so.6
+44237 DEBUG: Skipping libc.so.6 dependency of libXext.so.6
+44238 DEBUG: Skipping libdl.so.2 dependency of libXext.so.6
+44238 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libfreetype.so.6
+44284 DEBUG: Skipping libm.so.6 dependency of libfreetype.so.6
+44285 DEBUG: Skipping libc.so.6 dependency of libfreetype.so.6
+44285 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libX11.so.6
+44331 DEBUG: Skipping libxcb.so.1 dependency of libX11.so.6
+44332 DEBUG: Skipping libc.so.6 dependency of libX11.so.6
+44332 DEBUG: Skipping libdl.so.2 dependency of libX11.so.6
+44332 DEBUG: Analyzing /lib/x86_64-linux-gnu/libgcc_s.so.1
+44374 DEBUG: Skipping libc.so.6 dependency of libgcc_s.so.1
+44374 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libglapi.so.0
+44418 DEBUG: Skipping libpthread.so.0 dependency of libglapi.so.0
+44418 DEBUG: Skipping libc.so.6 dependency of libglapi.so.0
+44418 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libXxf86vm.so.1
+44464 DEBUG: Skipping libxcb.so.1 dependency of libXxf86vm.so.1
+44464 DEBUG: Skipping libc.so.6 dependency of libXxf86vm.so.1
+44464 DEBUG: Skipping libdl.so.2 dependency of libXxf86vm.so.1
+44465 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/../../lib/libicui18n.so.56
+44510 DEBUG: Skipping libpthread.so.0 dependency of libicui18n.so.56
+44511 DEBUG: Skipping libc.so.6 dependency of libicui18n.so.56
+44511 DEBUG: Skipping libdl.so.2 dependency of libicui18n.so.56
+44512 DEBUG: Skipping libm.so.6 dependency of libicui18n.so.56
+44512 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libXfixes.so.3
+44556 DEBUG: Skipping libxcb.so.1 dependency of libXfixes.so.3
+44557 DEBUG: Skipping libc.so.6 dependency of libXfixes.so.3
+44557 DEBUG: Skipping libdl.so.2 dependency of libXfixes.so.3
+44557 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libgthread-2.0.so.0
+44610 DEBUG: Skipping libpthread.so.0 dependency of libgthread-2.0.so.0
+44611 DEBUG: Skipping libc.so.6 dependency of libgthread-2.0.so.0
+44611 DEBUG: Analyzing /lib/x86_64-linux-gnu/libgpg-error.so.0
+44648 DEBUG: Skipping libc.so.6 dependency of libgpg-error.so.0
+44648 DEBUG: Analyzing /lib/x86_64-linux-gnu/liblzma.so.5
+44690 DEBUG: Skipping libc.so.6 dependency of liblzma.so.5
+44691 DEBUG: Skipping libdl.so.2 dependency of liblzma.so.5
+44691 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/bearer/../../lib/libQt5DBus.so.5
+44738 DEBUG: Skipping libpthread.so.0 dependency of libQt5DBus.so.5
+44738 DEBUG: Skipping libc.so.6 dependency of libQt5DBus.so.5
+44738 DEBUG: Skipping libm.so.6 dependency of libQt5DBus.so.5
+44739 DEBUG: Skipping librt.so.1 dependency of libQt5DBus.so.5
+44739 DEBUG: Skipping libdl.so.2 dependency of libQt5DBus.so.5
+44739 DEBUG: Analyzing /lib/x86_64-linux-gnu/libsystemd.so.0
+44785 DEBUG: Skipping libpthread.so.0 dependency of libsystemd.so.0
+44785 DEBUG: Skipping libc.so.6 dependency of libsystemd.so.0
+44786 DEBUG: Skipping libdl.so.2 dependency of libsystemd.so.0
+44786 DEBUG: Skipping librt.so.1 dependency of libsystemd.so.0
+44786 DEBUG: Analyzing /lib/x86_64-linux-gnu/libgcrypt.so.20
+44832 DEBUG: Skipping libc.so.6 dependency of libgcrypt.so.20
+44832 DEBUG: Analyzing /lib/x86_64-linux-gnu/libdbus-1.so.3
+44878 DEBUG: Skipping libpthread.so.0 dependency of libdbus-1.so.3
+44879 DEBUG: Skipping libc.so.6 dependency of libdbus-1.so.3
+44879 DEBUG: Skipping libdl.so.2 dependency of libdbus-1.so.3
+44880 DEBUG: Skipping librt.so.1 dependency of libdbus-1.so.3
+44880 DEBUG: Analyzing /lib/x86_64-linux-gnu/libselinux.so.1
+44924 DEBUG: Skipping libc.so.6 dependency of libselinux.so.1
+44925 DEBUG: Skipping libpthread.so.0 dependency of libselinux.so.1
+44925 DEBUG: Skipping libdl.so.2 dependency of libselinux.so.1
+44925 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/bearer/../../lib/libQt5Network.so.5
+44973 DEBUG: Skipping libpthread.so.0 dependency of libQt5Network.so.5
+44974 DEBUG: Skipping libc.so.6 dependency of libQt5Network.so.5
+44974 DEBUG: Skipping libdl.so.2 dependency of libQt5Network.so.5
+44975 DEBUG: Skipping libm.so.6 dependency of libQt5Network.so.5
+44975 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0
+45021 DEBUG: Skipping libpthread.so.0 dependency of libgio-2.0.so.0
+45021 DEBUG: Skipping libc.so.6 dependency of libgio-2.0.so.0
+45022 DEBUG: Skipping libdl.so.2 dependency of libgio-2.0.so.0
+45022 DEBUG: Skipping libresolv.so.2 dependency of libgio-2.0.so.0
+45022 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libwayland-client.so.0
+45067 DEBUG: Skipping libpthread.so.0 dependency of libwayland-client.so.0
+45068 DEBUG: Skipping librt.so.1 dependency of libwayland-client.so.0
+45068 DEBUG: Skipping libc.so.6 dependency of libwayland-client.so.0
+45068 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libepoxy.so.0
+45112 DEBUG: Skipping libc.so.6 dependency of libepoxy.so.0
+45113 DEBUG: Skipping libdl.so.2 dependency of libepoxy.so.0
+45113 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libwayland-egl.so.1
+45156 DEBUG: Skipping libc.so.6 dependency of libwayland-egl.so.1
+45156 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libharfbuzz.so.0
+45201 DEBUG: Skipping libpthread.so.0 dependency of libharfbuzz.so.0
+45202 DEBUG: Skipping libc.so.6 dependency of libharfbuzz.so.0
+45202 DEBUG: Skipping libm.so.6 dependency of libharfbuzz.so.0
+45202 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libgraphite2.so.3
+45249 DEBUG: Skipping libc.so.6 dependency of libgraphite2.so.3
+45249 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libXrandr.so.2
+45296 DEBUG: Skipping libxcb.so.1 dependency of libXrandr.so.2
+45297 DEBUG: Skipping libc.so.6 dependency of libXrandr.so.2
+45297 DEBUG: Skipping libdl.so.2 dependency of libXrandr.so.2
+45297 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0
+45344 DEBUG: Skipping libpthread.so.0 dependency of libwayland-cursor.so.0
+45344 DEBUG: Skipping libc.so.6 dependency of libwayland-cursor.so.0
+45344 DEBUG: Skipping librt.so.1 dependency of libwayland-cursor.so.0
+45345 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libdatrie.so.1
+45389 DEBUG: Skipping libc.so.6 dependency of libdatrie.so.1
+45390 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0
+45432 DEBUG: Skipping libpthread.so.0 dependency of libpangoft2-1.0.so.0
+45433 DEBUG: Skipping libc.so.6 dependency of libpangoft2-1.0.so.0
+45433 DEBUG: Skipping libm.so.6 dependency of libpangoft2-1.0.so.0
+45433 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libgtk-3.so.0
+45489 DEBUG: Skipping libpthread.so.0 dependency of libgtk-3.so.0
+45490 DEBUG: Skipping libresolv.so.2 dependency of libgtk-3.so.0
+45490 DEBUG: Skipping libxcb.so.1 dependency of libgtk-3.so.0
+45491 DEBUG: Skipping libc.so.6 dependency of libgtk-3.so.0
+45491 DEBUG: Skipping libm.so.6 dependency of libgtk-3.so.0
+45491 DEBUG: Skipping librt.so.1 dependency of libgtk-3.so.0
+45491 DEBUG: Skipping libdl.so.2 dependency of libgtk-3.so.0
+45491 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libgdk-3.so.0
+45552 DEBUG: Skipping libpthread.so.0 dependency of libgdk-3.so.0
+45552 DEBUG: Skipping libresolv.so.2 dependency of libgdk-3.so.0
+45552 DEBUG: Skipping libc.so.6 dependency of libgdk-3.so.0
+45552 DEBUG: Skipping libxcb.so.1 dependency of libgdk-3.so.0
+45553 DEBUG: Skipping libm.so.6 dependency of libgdk-3.so.0
+45553 DEBUG: Skipping librt.so.1 dependency of libgdk-3.so.0
+45553 DEBUG: Skipping libdl.so.2 dependency of libgdk-3.so.0
+45553 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libthai.so.0
+45597 DEBUG: Skipping libc.so.6 dependency of libthai.so.0
+45598 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libkj-0.5.3.so
+45646 DEBUG: Skipping libpthread.so.0 dependency of libkj-0.5.3.so
+45647 DEBUG: Skipping libc.so.6 dependency of libkj-0.5.3.so
+45647 DEBUG: Skipping libm.so.6 dependency of libkj-0.5.3.so
+45647 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0
+45700 DEBUG: Skipping libpthread.so.0 dependency of libpangocairo-1.0.so.0
+45701 DEBUG: Skipping libxcb.so.1 dependency of libpangocairo-1.0.so.0
+45701 DEBUG: Skipping libc.so.6 dependency of libpangocairo-1.0.so.0
+45701 DEBUG: Skipping libm.so.6 dependency of libpangocairo-1.0.so.0
+45701 DEBUG: Skipping librt.so.1 dependency of libpangocairo-1.0.so.0
+45701 DEBUG: Skipping libdl.so.2 dependency of libpangocairo-1.0.so.0
+45701 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libXcursor.so.1
+45746 DEBUG: Skipping libxcb.so.1 dependency of libXcursor.so.1
+45747 DEBUG: Skipping libc.so.6 dependency of libXcursor.so.1
+45747 DEBUG: Skipping libdl.so.2 dependency of libXcursor.so.1
+45748 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libffi.so.6
+45792 DEBUG: Skipping libc.so.6 dependency of libffi.so.6
+45792 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libxcb-render.so.0
+45839 DEBUG: Skipping libxcb.so.1 dependency of libxcb-render.so.0
+45840 DEBUG: Skipping libc.so.6 dependency of libxcb-render.so.0
+45840 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0
+45884 DEBUG: Skipping libpthread.so.0 dependency of libgdk_pixbuf-2.0.so.0
+45885 DEBUG: Skipping libc.so.6 dependency of libgdk_pixbuf-2.0.so.0
+45885 DEBUG: Skipping libdl.so.2 dependency of libgdk_pixbuf-2.0.so.0
+45885 DEBUG: Skipping libresolv.so.2 dependency of libgdk_pixbuf-2.0.so.0
+45885 DEBUG: Skipping libm.so.6 dependency of libgdk_pixbuf-2.0.so.0
+45886 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libprotobuf-lite.so.9
+45931 DEBUG: Skipping libpthread.so.0 dependency of libprotobuf-lite.so.9
+45931 DEBUG: Skipping libc.so.6 dependency of libprotobuf-lite.so.9
+45931 DEBUG: Skipping libm.so.6 dependency of libprotobuf-lite.so.9
+45932 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libcairo.so.2
+45979 DEBUG: Skipping libpthread.so.0 dependency of libcairo.so.2
+45980 DEBUG: Skipping libxcb.so.1 dependency of libcairo.so.2
+45980 DEBUG: Skipping libc.so.6 dependency of libcairo.so.2
+45981 DEBUG: Skipping libdl.so.2 dependency of libcairo.so.2
+45981 DEBUG: Skipping librt.so.1 dependency of libcairo.so.2
+45981 DEBUG: Skipping libm.so.6 dependency of libcairo.so.2
+45981 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libatk-bridge-2.0.so.0
+46028 DEBUG: Skipping libpthread.so.0 dependency of libatk-bridge-2.0.so.0
+46028 DEBUG: Skipping libxcb.so.1 dependency of libatk-bridge-2.0.so.0
+46029 DEBUG: Skipping libc.so.6 dependency of libatk-bridge-2.0.so.0
+46029 DEBUG: Skipping libdl.so.2 dependency of libatk-bridge-2.0.so.0
+46029 DEBUG: Skipping librt.so.1 dependency of libatk-bridge-2.0.so.0
+46029 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libmirclient.so.9
+46077 DEBUG: Skipping libpthread.so.0 dependency of libmirclient.so.9
+46077 DEBUG: Skipping libc.so.6 dependency of libmirclient.so.9
+46078 DEBUG: Skipping libdl.so.2 dependency of libmirclient.so.9
+46078 DEBUG: Skipping libm.so.6 dependency of libmirclient.so.9
+46078 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libpixman-1.so.0
+46122 DEBUG: Skipping libpthread.so.0 dependency of libpixman-1.so.0
+46123 DEBUG: Skipping libm.so.6 dependency of libpixman-1.so.0
+46123 DEBUG: Skipping libc.so.6 dependency of libpixman-1.so.0
+46123 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libboost_system.so.1.58.0
+46171 DEBUG: Skipping libpthread.so.0 dependency of libboost_system.so.1.58.0
+46172 DEBUG: Skipping libc.so.6 dependency of libboost_system.so.1.58.0
+46172 DEBUG: Skipping libm.so.6 dependency of libboost_system.so.1.58.0
+46172 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libXinerama.so.1
+46218 DEBUG: Skipping libxcb.so.1 dependency of libXinerama.so.1
+46219 DEBUG: Skipping libc.so.6 dependency of libXinerama.so.1
+46219 DEBUG: Skipping libdl.so.2 dependency of libXinerama.so.1
+46220 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libXrender.so.1
+46264 DEBUG: Skipping libxcb.so.1 dependency of libXrender.so.1
+46265 DEBUG: Skipping libc.so.6 dependency of libXrender.so.1
+46265 DEBUG: Skipping libdl.so.2 dependency of libXrender.so.1
+46265 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libcairo-gobject.so.2
+46314 DEBUG: Skipping libpthread.so.0 dependency of libcairo-gobject.so.2
+46314 DEBUG: Skipping libxcb.so.1 dependency of libcairo-gobject.so.2
+46314 DEBUG: Skipping libc.so.6 dependency of libcairo-gobject.so.2
+46315 DEBUG: Skipping libm.so.6 dependency of libcairo-gobject.so.2
+46315 DEBUG: Skipping librt.so.1 dependency of libcairo-gobject.so.2
+46315 DEBUG: Skipping libdl.so.2 dependency of libcairo-gobject.so.2
+46315 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libcapnp-0.5.3.so
+46361 DEBUG: Skipping libpthread.so.0 dependency of libcapnp-0.5.3.so
+46362 DEBUG: Skipping libc.so.6 dependency of libcapnp-0.5.3.so
+46362 DEBUG: Skipping libm.so.6 dependency of libcapnp-0.5.3.so
+46362 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0
+46408 DEBUG: Skipping libpthread.so.0 dependency of libgmodule-2.0.so.0
+46409 DEBUG: Skipping libc.so.6 dependency of libgmodule-2.0.so.0
+46409 DEBUG: Skipping libdl.so.2 dependency of libgmodule-2.0.so.0
+46409 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libpango-1.0.so.0
+46460 DEBUG: Skipping libpthread.so.0 dependency of libpango-1.0.so.0
+46461 DEBUG: Skipping libc.so.6 dependency of libpango-1.0.so.0
+46461 DEBUG: Skipping libm.so.6 dependency of libpango-1.0.so.0
+46461 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libmircommon.so.7
+46503 DEBUG: Skipping libpthread.so.0 dependency of libmircommon.so.7
+46503 DEBUG: Skipping libc.so.6 dependency of libmircommon.so.7
+46504 DEBUG: Skipping libdl.so.2 dependency of libmircommon.so.7
+46504 DEBUG: Skipping libm.so.6 dependency of libmircommon.so.7
+46504 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libXcomposite.so.1
+46553 DEBUG: Skipping libxcb.so.1 dependency of libXcomposite.so.1
+46553 DEBUG: Skipping libc.so.6 dependency of libXcomposite.so.1
+46554 DEBUG: Skipping libdl.so.2 dependency of libXcomposite.so.1
+46554 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.58.0
+46605 DEBUG: Skipping libpthread.so.0 dependency of libboost_filesystem.so.1.58.0
+46606 DEBUG: Skipping libc.so.6 dependency of libboost_filesystem.so.1.58.0
+46606 DEBUG: Skipping libm.so.6 dependency of libboost_filesystem.so.1.58.0
+46606 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libmircore.so.1
+46657 DEBUG: Skipping libpthread.so.0 dependency of libmircore.so.1
+46658 DEBUG: Skipping libc.so.6 dependency of libmircore.so.1
+46658 DEBUG: Skipping libm.so.6 dependency of libmircore.so.1
+46658 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libXi.so.6
+46700 DEBUG: Skipping libxcb.so.1 dependency of libXi.so.6
+46700 DEBUG: Skipping libc.so.6 dependency of libXi.so.6
+46701 DEBUG: Skipping libdl.so.2 dependency of libXi.so.6
+46701 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libxkbcommon.so.0
+46749 DEBUG: Skipping libc.so.6 dependency of libxkbcommon.so.0
+46750 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libatspi.so.0
+46793 DEBUG: Skipping libpthread.so.0 dependency of libatspi.so.0
+46794 DEBUG: Skipping libxcb.so.1 dependency of libatspi.so.0
+46794 DEBUG: Skipping libc.so.6 dependency of libatspi.so.0
+46794 DEBUG: Skipping libdl.so.2 dependency of libatspi.so.0
+46794 DEBUG: Skipping librt.so.1 dependency of libatspi.so.0
+46795 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libatk-1.0.so.0
+46835 DEBUG: Skipping libpthread.so.0 dependency of libatk-1.0.so.0
+46836 DEBUG: Skipping libc.so.6 dependency of libatk-1.0.so.0
+46836 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libmirprotobuf.so.3
+46880 DEBUG: Skipping libpthread.so.0 dependency of libmirprotobuf.so.3
+46881 DEBUG: Skipping libc.so.6 dependency of libmirprotobuf.so.3
+46881 DEBUG: Skipping libm.so.6 dependency of libmirprotobuf.so.3
+46881 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libxcb-shm.so.0
+46925 DEBUG: Skipping libxcb.so.1 dependency of libxcb-shm.so.0
+46925 DEBUG: Skipping libc.so.6 dependency of libxcb-shm.so.0
+46926 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+46971 DEBUG: Skipping libpthread.so.0 dependency of libgobject-2.0.so.0
+46972 DEBUG: Skipping libc.so.6 dependency of libgobject-2.0.so.0
+46972 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/platforms/../../lib/libQt5XcbQpa.so.5
+47025 DEBUG: Skipping libpthread.so.0 dependency of libQt5XcbQpa.so.5
+47026 DEBUG: Skipping libxcb-dri3.so.0 dependency of libQt5XcbQpa.so.5
+47026 DEBUG: Skipping libxcb.so.1 dependency of libQt5XcbQpa.so.5
+47026 DEBUG: Skipping libc.so.6 dependency of libQt5XcbQpa.so.5
+47027 DEBUG: Skipping libGL.so.1 dependency of libQt5XcbQpa.so.5
+47027 DEBUG: Skipping libm.so.6 dependency of libQt5XcbQpa.so.5
+47027 DEBUG: Skipping librt.so.1 dependency of libQt5XcbQpa.so.5
+47027 DEBUG: Skipping libdl.so.2 dependency of libQt5XcbQpa.so.5
+47027 DEBUG: Skipping libxcb-dri2.so.0 dependency of libQt5XcbQpa.so.5
+47027 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libxcb-xfixes.so.0
+47068 DEBUG: Skipping libxcb.so.1 dependency of libxcb-xfixes.so.0
+47069 DEBUG: Skipping libc.so.6 dependency of libxcb-xfixes.so.0
+47069 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libgbm.so.1
+47114 DEBUG: Skipping libpthread.so.0 dependency of libgbm.so.1
+47115 DEBUG: Skipping libdl.so.2 dependency of libgbm.so.1
+47115 DEBUG: Skipping libc.so.6 dependency of libgbm.so.1
+47115 DEBUG: Skipping librt.so.1 dependency of libgbm.so.1
+47115 DEBUG: Skipping libm.so.6 dependency of libgbm.so.1
+47115 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libwayland-server.so.0
+47158 DEBUG: Skipping libpthread.so.0 dependency of libwayland-server.so.0
+47159 DEBUG: Skipping librt.so.1 dependency of libwayland-server.so.0
+47159 DEBUG: Skipping libc.so.6 dependency of libwayland-server.so.0
+47160 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/mesa-egl/libEGL.so.1
+47216 DEBUG: Skipping libpthread.so.0 dependency of libEGL.so.1
+47216 DEBUG: Skipping libxcb-dri3.so.0 dependency of libEGL.so.1
+47217 DEBUG: Skipping libxcb.so.1 dependency of libEGL.so.1
+47217 DEBUG: Skipping libc.so.6 dependency of libEGL.so.1
+47217 DEBUG: Skipping libm.so.6 dependency of libEGL.so.1
+47217 DEBUG: Skipping librt.so.1 dependency of libEGL.so.1
+47218 DEBUG: Skipping libdl.so.2 dependency of libEGL.so.1
+47218 DEBUG: Skipping libxcb-dri2.so.0 dependency of libEGL.so.1
+47218 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/../../lib/libQt5Svg.so.5
+47269 DEBUG: Skipping libpthread.so.0 dependency of libQt5Svg.so.5
+47270 DEBUG: Skipping libxcb-dri3.so.0 dependency of libQt5Svg.so.5
+47270 DEBUG: Skipping libxcb.so.1 dependency of libQt5Svg.so.5
+47272 DEBUG: Skipping libc.so.6 dependency of libQt5Svg.so.5
+47272 DEBUG: Skipping libGL.so.1 dependency of libQt5Svg.so.5
+47272 DEBUG: Skipping libm.so.6 dependency of libQt5Svg.so.5
+47272 DEBUG: Skipping libdl.so.2 dependency of libQt5Svg.so.5
+47272 DEBUG: Skipping libxcb-dri2.so.0 dependency of libQt5Svg.so.5
+47273 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/Qt/plugins/imageformats/../../lib/libQt5Widgets.so.5
+47325 DEBUG: Skipping libpthread.so.0 dependency of libQt5Widgets.so.5
+47326 DEBUG: Skipping libxcb-dri3.so.0 dependency of libQt5Widgets.so.5
+47326 DEBUG: Skipping libxcb.so.1 dependency of libQt5Widgets.so.5
+47326 DEBUG: Skipping libc.so.6 dependency of libQt5Widgets.so.5
+47327 DEBUG: Skipping libGL.so.1 dependency of libQt5Widgets.so.5
+47327 DEBUG: Skipping libm.so.6 dependency of libQt5Widgets.so.5
+47327 DEBUG: Skipping libdl.so.2 dependency of libQt5Widgets.so.5
+47327 DEBUG: Skipping libxcb-dri2.so.0 dependency of libQt5Widgets.so.5
+47328 DEBUG: Analyzing /usr/lib/x86_64-linux-gnu/libmpdec.so.2
+47376 DEBUG: Skipping libm.so.6 dependency of libmpdec.so.2
+47377 DEBUG: Skipping libc.so.6 dependency of libmpdec.so.2
+47377 DEBUG: Analyzing /lib/x86_64-linux-gnu/libssl.so.1.0.0
+47422 DEBUG: Skipping libc.so.6 dependency of libssl.so.1.0.0
+47423 DEBUG: Skipping libdl.so.2 dependency of libssl.so.1.0.0
+47423 DEBUG: Analyzing /lib/x86_64-linux-gnu/libcrypto.so.1.0.0
+47462 DEBUG: Skipping libc.so.6 dependency of libcrypto.so.1.0.0
+47463 DEBUG: Skipping libdl.so.2 dependency of libcrypto.so.1.0.0
+47463 DEBUG: Analyzing /lib/x86_64-linux-gnu/libtinfo.so.5
+47504 DEBUG: Skipping libc.so.6 dependency of libtinfo.so.5
+47505 DEBUG: Analyzing /lib/x86_64-linux-gnu/libreadline.so.6
+47548 DEBUG: Skipping libc.so.6 dependency of libreadline.so.6
+47548 DEBUG: Analyzing /lib/x86_64-linux-gnu/libbz2.so.1.0
+47600 DEBUG: Skipping libc.so.6 dependency of libbz2.so.1.0
+47600 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/../.libs/libgfortran-ed201abd.so.3.0.0
+47644 DEBUG: Skipping libm.so.6 dependency of libgfortran-ed201abd.so.3.0.0
+47645 DEBUG: Skipping libc.so.6 dependency of libgfortran-ed201abd.so.3.0.0
+47645 DEBUG: Analyzing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/../.libs/libopenblasp-r0-8dca6697.3.0.dev.so
+47685 DEBUG: Skipping libpthread.so.0 dependency of libopenblasp-r0-8dca6697.3.0.dev.so
+47686 DEBUG: Skipping libm.so.6 dependency of libopenblasp-r0-8dca6697.3.0.dev.so
+47686 DEBUG: Skipping libc.so.6 dependency of libopenblasp-r0-8dca6697.3.0.dev.so
+47687 DEBUG: Analyzing /lib/x86_64-linux-gnu/libncursesw.so.5
+47732 DEBUG: Skipping libc.so.6 dependency of libncursesw.so.5
+47732 DEBUG: Skipping libdl.so.2 dependency of libncursesw.so.5
+47735 INFO: Looking for eggs
+47736 INFO: Python library not in binary dependencies. Doing additional searching...
+47844 DEBUG: Adding Python library to binary dependencies
+47847 INFO: Using Python library /usr/lib/x86_64-linux-gnu/libpython3.6m.so.1.0
+47895 INFO: Warnings written to /home/jared/Documents/Code/GitHub/QtPyHammer/target/PyInstaller/QtPyHammer/warn-QtPyHammer.txt
+48327 INFO: Graph cross-reference written to /home/jared/Documents/Code/GitHub/QtPyHammer/target/PyInstaller/QtPyHammer/xref-QtPyHammer.html
+48485 INFO: Graph drawing written to /home/jared/Documents/Code/GitHub/QtPyHammer/target/PyInstaller/QtPyHammer/graph-QtPyHammer.dot
+48593 INFO: checking PYZ
+48593 INFO: Building PYZ because PYZ-00.toc is non existent
+48594 INFO: Building PYZ (ZlibArchive) /home/jared/Documents/Code/GitHub/QtPyHammer/target/PyInstaller/QtPyHammer/PYZ-00.pyz
+51247 INFO: Building PYZ (ZlibArchive) /home/jared/Documents/Code/GitHub/QtPyHammer/target/PyInstaller/QtPyHammer/PYZ-00.pyz completed successfully.
+51327 INFO: checking PKG
+51327 INFO: Building PKG because PKG-00.toc is non existent
+51327 INFO: Building PKG (CArchive) PKG-00.pkg
+51405 DEBUG: Compiling /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyInstaller/loader/pyiboot01_bootstrap.py
+51406 DEBUG: Compiling /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyInstaller/loader/pyiboot01_bootstrap.py
+51431 DEBUG: Compiling /home/jared/Documents/Code/GitHub/QtPyHammer/target/PyInstaller/fbs_pyinstaller_hook.py
+51431 DEBUG: Compiling /home/jared/Documents/Code/GitHub/QtPyHammer/target/PyInstaller/fbs_pyinstaller_hook.py
+51433 DEBUG: Compiling /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyInstaller/loader/rthooks/pyi_rth_pkgres.py
+51434 DEBUG: Compiling /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyInstaller/loader/rthooks/pyi_rth_pkgres.py
+51435 DEBUG: Compiling /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyInstaller/loader/rthooks/pyi_rth_multiprocessing.py
+51435 DEBUG: Compiling /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyInstaller/loader/rthooks/pyi_rth_multiprocessing.py
+51437 DEBUG: Compiling /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyInstaller/loader/rthooks/pyi_rth_qt5.py
+51437 DEBUG: Compiling /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyInstaller/loader/rthooks/pyi_rth_qt5.py
+51438 DEBUG: Compiling /home/jared/Documents/Code/GitHub/QtPyHammer/src/main/python/main.py
+51439 DEBUG: Compiling /home/jared/Documents/Code/GitHub/QtPyHammer/src/main/python/main.py
+51457 INFO: Building PKG (CArchive) PKG-00.pkg completed successfully.
+51460 INFO: Bootloader /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyInstaller/bootloader/Linux-64bit/run
+51460 INFO: checking EXE
+51460 INFO: Building EXE because EXE-00.toc is non existent
+51460 INFO: Building EXE from EXE-00.toc
+51462 INFO: Appending archive to ELF section in EXE /home/jared/Documents/Code/GitHub/QtPyHammer/target/PyInstaller/QtPyHammer/QtPyHammer
+51503 DEBUG: objcopy returned 0
+51509 INFO: Building EXE from EXE-00.toc completed successfully.
+51517 INFO: checking COLLECT
+51518 INFO: Building COLLECT because COLLECT-00.toc is non existent
+51518 INFO: Building COLLECT COLLECT-00.toc
+54195 INFO: Building COLLECT COLLECT-00.toc completed successfully.

@@ -22,7 +22,7 @@ camera.sensitivity = 2
 view_modes = ['flat', 'textured', 'wireframe']
 # "silhouette" view mode, lights on flat gray brushwork & props
 
-class Viewport2D(QtWidgets.QOpenGLWidget):
+class Viewport2D(QtWidgets.QOpenGLWidget): # why not QtWidgets.QGraphicsView ?
     def __init__(self, fps=30, parent=None):
         super(Viewport2D, self).__init__(parent)
         self.setFocusPolicy(QtCore.Qt.ClickFocus)
@@ -65,7 +65,7 @@ class Viewport2D(QtWidgets.QOpenGLWidget):
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
         glColor(1, 1, 1)
-        # end shared content creation        
+        # end shared content creation
         self.doneCurrent()
 ##        return buffer_handles, shader_handles, texture_handles
 
@@ -167,52 +167,28 @@ class Viewport3D(Viewport2D):
         glFrontFace(GL_CW)
         glPointSize(4)
 
-    def printMatrix(self):
-        print(glGetFloatv(GL_MODELVIEW_MATRIX))
-
     def paintGL(self):
-        glPushMatrix()
+        glLoadIdentity()
+        gluPerspective(self.fov, self.width() / self.height(), 0.1, 4096 * 4)
         self.camera.set()
         if self.GLES_MODE:
-            far, near = 0.1, 4096 # same as in gluPerspective ^^^
-            s = 1 / math.tan(self.fov / 2)
-            MVP_matrix = np.array([s, 0, 0, 0,
-                                   0, s, 0, 0,
-                                   0, 0, -far / (far - near), -1,
-                                   self.camera.position.x, self.camera.position.y, (-far * near / (far - near)) + self.camera.position.z, 0], np.float32)
-            ### ^^^ re-calculate P (Perspective) in resizeGL ^^^ ###
-            position = self.camera.position
-            T = [1, 0, 0, 0,
-                 0, 1, 0, 0,
-                 0, 0, 1, 0,
-                 -position.x, -position.y, -position.z, 1]
-            theta = self.camera.rotation.x
-            Rx = [1, 0, 0, 0,
-                  0, math.cos(theta), -math.sin(theta), 0,
-                  0, math.sin(theta), math.cos(theta), 0,
-                  0, 0, 0, 1]
-            theta = self.camera.rotation.y
-            Ry = [math.cos(theta), 0, math.sin(theta), 0,
-                  0, 1, 0, 0,
-                  -math.sin(theta), 0, math.cos(theta), 0,
-                  0, 0, 0, 1]
-            theta = self.camera.rotation.z
-            Rz = [math.cos(theta), -math.sin(theta), 0, 0,
-                  math.sin(theta), math.cos(theta), 0, 0,
-                  0, 0, 1, 0,
-                  0, 0, 0, 1]
-
-            # MVP_matrix = T * Rx * Ry * Rz * P
-            # multiply with numpy
-            # CALCULATE ALL THIS AFTER CAMERA UPDATES!
-            # keep it as a private class variable
-            # but only if GLES_MODE == True
-
+            # far, near = 0.1, 4096 # same as gluPerspective args ^^^
+            # s = 1 / math.tan(self.fov / 2)
+            # ModelView * Perspective
+            # MVP = np.array([[s, 0, 0, 0],
+            #                 [0, s, 0, 0],
+            #                 [0, 0, -far / (far - near), -1],
+            #                 [self.camera.position.x, self.camera.position.y, (-far * near / (far - near)) + self.camera.position.z, 0]], np.float32)
+            # position = self.camera.position
+            # T = np.array([[1, 0, 0, -position.x],
+            #               [0, 1, 0, -position.y],
+            #               [0, 0, 1, -position.z],
+            #               [0, 0, 0, 1]], np.float32)
+            # self.camera.rotation -> 4x4 matrix
+            # matrix = MVP * T # * R
+            matrix = glGetFloatv(GL_PROJECTION_MATRIX)
 
         glUseProgram(0)
-##        # orbit center at 30 degrees per second
-##        self.camera.rotation.z = (self.camera.rotation.z + 30 * self.dt) % 360
-##        self.camera.position = self.camera.position.rotate(0, 0, -30 * self.dt)
         glBegin(GL_LINES) # GRID
         glColor(.25, .25, .25)
         for x in range(-512, 1, 64): # break up to avoid clipping plane warp
@@ -231,10 +207,9 @@ class Viewport3D(Viewport2D):
             start, length = index_map
             glUseProgram(shader)
             if self.GLES_MODE == True:
-                glUniformMatrix4fv(self.uniforms[shader], 1, GL_FALSE, MVP_matrix)
+                # plug the MVP matrix into the current shader
+                glUniformMatrix4fv(self.uniforms[shader], 1, GL_FALSE, matrix)
             glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
-
-        glPopMatrix()
 
 
     def resizeGL(self, width, height):

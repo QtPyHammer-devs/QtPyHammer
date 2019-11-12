@@ -11,7 +11,7 @@ Edit>Replace    Ctrl+Shift+R
 Edit>Cut    Ctrl+X
 Edit>Copy    Ctrl+C
 Edit>Paste    Ctrl+V
-Edit>Paste Special   Ctrl+Shift+V
+Edit>Paste Special    Ctrl+Shift+V
 Edit>Delete    Del
 Edit>Properties    Alt+Enter
 
