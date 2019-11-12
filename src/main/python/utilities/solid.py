@@ -23,20 +23,16 @@ def clip(poly, plane):
         B_distance = vector.dot(normal, B) - distance
         A_behind = round(A_distance, 6) < 0
         B_behind = round(B_distance, 6) < 0
-
         if A_behind:
             split_verts["back"].append(A)
         else: # A is in front of the clipping plane
             split_verts["front"].append(A)
-
         # does the edge AB intersect the clipping plane?
         if (A_behind and not B_behind) or (B_behind and not A_behind):
             t = A_distance / (A_distance - B_distance)
             cut_point = vector.lerp(A, B, t)
-            print("splitting", A, B, t, cut_point)
             split_verts["back"].append(cut_point)
             split_verts["front"].append(cut_point)
-
     return split_verts
 
 
@@ -84,7 +80,7 @@ def disp_tris(verts, power): # copied from snake-biscuits/bsp_tool/bsp_tool.py
                 tris.append(verts[offset + power2C])
                 tris.append(verts[offset + 2])
                 tris.append(verts[offset + 1])
-            else: #|/|\|
+            else: # |/|\|
                 tris.append(verts[offset + 0])
                 tris.append(verts[offset + power2A])
                 tris.append(verts[offset + power2B])
@@ -136,20 +132,16 @@ class solid:
             local_y = (non_parallel * normal).normalise()
             local_x = (local_y * normal).normalise()
             center = normal * distance
-            radius = 10 ** 12 # larger than any reasonable brush
+            radius = 10 ** 4 # larger than any reasonable brush
             ngon = [center + ((-local_x + local_y) * radius),
                              center + ((local_x + local_y) * radius),
                              center + ((local_x + -local_y) * radius),
                              center + ((-local_x + -local_y) * radius)]
-            print('-' * 80)
             for other_plane in self.planes:
-                if other_plane == plane: # what of inverse normal & epsilon?
+                if other_plane == plane: # what about the inverse plane?
                     continue
                 ngon, offcut = clip(ngon, other_plane).values() # back, front
-                print(len(ngon), len(offcut))
             self.faces.append(ngon)
-        print('=' * 80)
-        print(self.faces)
 
         self.indices = []
         self.vertices = [] # [((position), (normal), (uv), (colour)), ...]
@@ -217,6 +209,7 @@ class solid:
                         baryvert = vector.lerp(right_vert, left_vert, x / power2)
                         side_dispverts.append(vector.vec3(baryvert) + (distance * normal))
 
+                # calculate displacement normals
                 for x in range(power2 + 1):
                     for y in range(power2 + 1):
                         dispvert = side_dispverts[x * (power2 + 1) + y]
@@ -226,7 +219,7 @@ class solid:
                         except Exception as exc:
                             # f"({x}, {y}) {list(square_neighbours(x, y, power2 + 1))=}") # python 3.8
                             print("({}, {}) {}".format(x, y, list(square_neighbours(x, y, power2 + 1))))
-                            print(exc)
+                            print(exc) # raise traceback instead
                         normal = vector.vec3(0, 0, 1)
                         if len(neighbours) != 0:
                             normal -= dispvert - sum(neighbours, vector.vec3()) / len(neighbours)

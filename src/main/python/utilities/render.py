@@ -88,8 +88,8 @@ def vmf_setup(viewport, vmf_object, ctx):
         if brush.is_displacement:
             displacement_ids.append(brush.id)
         solid_map[brush.id] = (len(indices), len(brush.indices))
-        vertices += brush.vertices
         indices += [len(vertices) + i for i in brush.indices]
+        vertices += brush.vertices
     vertices = tuple(itertools.chain(*vertices))
 
     # Vertex Buffer
@@ -119,7 +119,7 @@ def vmf_setup(viewport, vmf_object, ctx):
     viewport.buffers = [VERTEX_BUFFER, INDEX_BUFFER]
     viewport.programs = [program_flat_brush, program_flat_displacement,
                          program_stripey_brush]
-    viewport.draw_calls[viewport.programs[0]] = (0, len(indices))
+    viewport.draw_calls[viewport.programs[0]] = (0, len(indices)) # flat for all
     viewport.GLES_MODE = GLES_MODE
     if GLES_MODE:
         viewport.uniforms = {program_flat_brush: uniform_brush_matrix,
