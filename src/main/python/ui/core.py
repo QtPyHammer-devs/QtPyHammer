@@ -26,7 +26,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ... # objects for holding map & session data
         self.actions = {} # {"identifier": action}
         # map all actions so we can rebind EVERYTHING
-        self.open_vmf = ops.import_vmf(ctx.get_resource("vmfs/test.vmf"))
+        self.open_vmf = ops.import_vmf(ctx.get_resource("vmfs/test2.vmf"))
 
         self.setTabPosition(QtCore.Qt.TopDockWidgetArea, QtWidgets.QTabWidget.North)
         self.main_menu = QtWidgets.QMenuBar()

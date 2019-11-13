@@ -111,10 +111,9 @@ def square_neighbours(x, y, edge_length): # edge_length = (2^power) + 1
 
 
 class solid:
-    __slots__ = ('aabb', 'center', 'colour', 'displacement_triangles',
-                 'displacement_vertices', 'faces', 'id', 'index_map', 'indices',
-                 'is_displacement', 'planes', 'planes', 'sides', 'source',
-                 'string_triangles', 'vertices')
+    __slots__ = ('aabb', 'center', 'colour', 'displacement_vertices', 'faces',
+                 'id', 'index_map', 'indices', 'is_displacement', 'planes',
+                 'planes', 'source', 'string_triangles', 'vertices')
 
     def __init__(self, solid_namespace): # THIS IS FOR IMPORTING FROM VMF
         """Initialise from namespace"""
@@ -128,7 +127,7 @@ class solid:
         self.faces = []
         for i, plane in enumerate(self.planes):
             normal, distance = plane
-            non_parallel = vector.vec3(z=-1) if normal.z != 1 else vector.vec3(y=-1)
+            non_parallel = vector.vec3(z=-1) if abs(normal.z) != 1 else vector.vec3(y=-1)
             local_y = (non_parallel * normal).normalise()
             local_x = (local_y * normal).normalise()
             center = normal * distance
@@ -145,7 +144,10 @@ class solid:
 
         self.indices = []
         self.vertices = [] # [((position), (normal), (uv), (colour)), ...]
+        # except it's flat thanks to itertools.chain
         self.index_map = []
+        uvs = {} # side: [(u, v), ...]
+        side_index = 0
         start_index = 0
         for face, side, plane in zip(self.faces, self.source.sides, self.planes):
             face_indices = []
@@ -156,11 +158,13 @@ class solid:
             v_axis = side.vaxis.rpartition(' ')[0::2]
             v_vector = [float(x) for x in v_axis[0][1:-1].split()]
             v_scale = float(v_axis[1])
+            uvs[side_index] = []
             for i, vertex in enumerate(face): # regex might help here
                 uv = [vector.dot(vertex, u_vector[:3]) + u_vector[-1],
                       vector.dot(vertex, v_vector[:3]) + v_vector[-1]]
                 uv[0] /= u_scale
                 uv[1] /= v_scale
+                uvs[side_index].append(uv)
 
                 assembled_vertex = tuple(itertools.chain(vertex, normal, uv, self.colour))
                 if assembled_vertex not in self.vertices:
@@ -169,6 +173,7 @@ class solid:
                 else:
                     face_indices.append(self.vertices.index(assembled_vertex))
 
+            side_index += 1
             face_indices = loop_fan(face_indices)
             self.index_map.append((start_index, len(face_indices)))
             self.indices += face_indices
@@ -176,7 +181,6 @@ class solid:
 
         global square_neighbours
         self.displacement_vertices = {} # {side_index: vertices}
-        self.displacement_triangles = {} # same but repeat verts to make disp shaped triangles
         for i, side in enumerate(self.source.sides):
             if hasattr(side, "dispinfo"):
                 self.source.sides[i].blend_colour = [1 - i for i in self.colour]
@@ -184,32 +188,42 @@ class solid:
                 power = int(side.dispinfo.power)
                 power2 = 2 ** power
                 quad = tuple(vector.vec3(x) for x in self.faces[i])
-                start = vector.vec3(eval(side.dispinfo.startposition.replace(" ", ", ")))
+                quad_uvs = tuple(vector.vec2(x) for x in uvs[i])
+                disp_uvs = [] # barymetric uvs for each baryvert
+                start = vector.vec3(*map(float, side.dispinfo.startposition[1:-1].split()))
                 if start in quad:
                     index = quad.index(start) - 1
                     quad = quad[index:] + quad[:index]
+                    quad_uvs = quad_uvs[index:] + quad_uvs[:index]
                 else:
+                    print(start)
+                    print(quad)
                     raise RuntimeError("Couldn't find start of displacement! (side id {})".format(side.id))
                 side_dispverts = []
                 A, B, C, D = quad
                 DA = D - A
                 CB = C - B
+                Auv, Buv, Cuv, Duv = quad_uvs
+                DAuv = Duv - Auv
+                CBuv = Cuv - Buv
                 distance_rows = [v for k, v in side.dispinfo.distances.__dict__.items() if k != "_line"] # skip line number
                 normal_rows = [v for k, v in side.dispinfo.normals.__dict__.items() if k != "_line"]
-                normals = []
-                alphas = []
                 for y, distance_row, normals_row in zip(itertools.count(), distance_rows, normal_rows):
                     distance_row = [float(x) for x in distance_row.split()]
                     normals_row = [*map(float, normals_row.split())]
                     left_vert = A + (DA * y / power2)
+                    left_uv = Auv + (DAuv * y / power2)
                     right_vert = B + (CB * y / power2)
-                    for x, distance in zip(itertools.count(), distance_row):
-                        k = x * 3
+                    right_uv = Buv + (CBuv * y / power2)
+                    for x, distance in enumerate(distance_row):
+                        k = x * 3 # index
                         normal = vector.vec3(normals_row[k], normals_row[k + 1], normals_row[k + 2])
                         baryvert = vector.lerp(right_vert, left_vert, x / power2)
+                        disp_uvs.append(vector.lerp(right_uv, left_uv, x / power2))
                         side_dispverts.append(vector.vec3(baryvert) + (distance * normal))
 
                 # calculate displacement normals
+                normals = []
                 for x in range(power2 + 1):
                     for y in range(power2 + 1):
                         dispvert = side_dispverts[x * (power2 + 1) + y]
@@ -226,14 +240,14 @@ class solid:
                             normal = normal.normalise()
                         normals.append(normal)
 
-                alphas = [float(a) for row in [v for k, v in side.dispinfo.alphas.__dict__.items() if k != "_line"] for a in row.split()]
-                self.displacement_vertices[i] = [*zip(side_dispverts, alphas, normals)]
-                self.displacement_triangles[i] = disp_tris(self.displacement_vertices[i], power)
-                # use disp_tris when assembling vertex buffers
-                # only store and update verts (full format)
-                # assemble vertex format (vertex, normal, uv, colour, blend_alpha)
-        if len(self.displacement_triangles) == 0:
-            del self.displacement_triangles
+                self.displacement_vertices[i] = []
+                alpha_rows = [v for k, v in side.dispinfo.alphas.__dict__.items() if k != "_line"]
+                alphas = [float(a) for row in alpha_rows for a in row.split()]
+                for pos, alpha, uv in zip(side_dispverts, alphas, disp_uvs):
+                    assembled_vertex = tuple(itertools.chain(pos, [alpha], uv, self.colour))
+                    self.displacement_vertices[i] += assembled_vertex
+
+        if not self.is_displacement:
             del self.displacement_vertices
 
         # all_x = [v[0].x for v in self.vertices]
