@@ -244,8 +244,8 @@ class solid:
                 alpha_rows = [v for k, v in side.dispinfo.alphas.__dict__.items() if k != "_line"]
                 alphas = [float(a) for row in alpha_rows for a in row.split()]
                 for pos, alpha, uv in zip(side_dispverts, alphas, disp_uvs):
-                    assembled_vertex = tuple(itertools.chain(pos, [alpha], uv, self.colour))
-                    self.displacement_vertices[i] += assembled_vertex
+                    assembled_vertex = tuple(itertools.chain(pos, [alpha, 0.0, 0.0], uv, self.colour))
+                    self.displacement_vertices[i].append(assembled_vertex)
 
         if not self.is_displacement:
             del self.displacement_vertices

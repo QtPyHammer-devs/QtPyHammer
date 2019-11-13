@@ -34,6 +34,7 @@ class Viewport2D(QtWidgets.QOpenGLWidget): # why not QtWidgets.QGraphicsView ?
         # set render resolution?
         self.camera = camera.freecam(None, None, 128)
         self.draw_calls = dict() # shader: (index buffer start, end)
+        self.active_attribs = [] # list of active vertex atrribs
 
     def executeGL(self, func, *args, **kwargs): # best hack ever
         """Execute func(self, *args, **kwargs) in this viewport's glContext"""
@@ -203,13 +204,29 @@ class Viewport3D(Viewport2D):
                 glVertex(-y, -x)
         glEnd()
 
-        for shader, index_map in self.draw_calls.items(): # DRAW CALLS
+        print('-----')
+        for shader, params in self.draw_calls.items(): # DRAW CALLS
+            index_map, vertex_format = params
             start, length = index_map
             glUseProgram(shader)
+
+            for a in vertex_format:
+                if a not in self.active_attribs:
+                    glEnableVertexAttribArray(a)
+                    self.active_attribs.append(a)
+                    print("added", a)
+            for a in self.active_attribs[::]:
+                if a not in vertex_format:
+                    glDisableVertexAttribArray(a)
+                    self.active_attribs.remove(a)
+                    print("removed", a)
+
             if self.GLES_MODE == True:
                 # plug the MVP matrix into the current shader
                 glUniformMatrix4fv(self.uniforms[shader], 1, GL_FALSE, matrix)
+
             glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
+            print("drew")
 
 
     def resizeGL(self, width, height):

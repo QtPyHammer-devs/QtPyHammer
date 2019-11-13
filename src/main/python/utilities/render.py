@@ -83,23 +83,18 @@ def vmf_setup(viewport, vmf_object, ctx):
     vertices = []
     indices = []
     solid_map = dict()
-    displacement_ids = []
-    for brush in solids:
-        if brush.is_displacement:
-            displacement_ids.append(brush.id)
-            # continue
+    for brush in [s for s in solids if not s.is_displacement]:
         solid_map[brush.id] = (len(indices), len(brush.indices))
         indices += [len(vertices) + i for i in brush.indices]
         vertices += brush.vertices
     brush_len = len(indices)
-    # for brush in solids: # displacements
-    #     if brush.id not in displacement_ids:
-    #         continue
-    #     for side, verts in brush.displacement_vertices.items():
-    #         power = int(brush.source.sides[side].dispinfo.power)
-    #         raw_indices = range(len(indices), len(indices) + len(verts))
-    #         indices += solid.disp_tris(raw_indices, power)
-    #         vertices.append(verts)
+    for brush in [s for s in solids if s.is_displacement]: # displacements
+        for side, verts in brush.displacement_vertices.items():
+            power = int(brush.source.sides[side].dispinfo.power)
+            raw_indices = range(len(indices), len(indices) + len(verts))
+            indices += solid.disp_tris(raw_indices, power)
+            vertices += verts
+
     disp_len = len(indices) - brush_len
     vertices = tuple(itertools.chain(*vertices))
 
@@ -112,28 +107,35 @@ def vmf_setup(viewport, vmf_object, ctx):
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * 4,
                  np.array(indices, dtype=np.uint32), GL_STATIC_DRAW)
+    print("buffers pushed to GPU")
     # Vertex Format
     glEnableVertexAttribArray(0) # vertex_position
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
     glEnableVertexAttribArray(1) # vertex_normal (brush only)
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 44, GLvoidp(12))
-    # glEnableVertexAttribArray(5) # blend_alpha (displacement only)
-    glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(12))
+    # glEnableVertexAttribArray(4) # blend_alpha (displacement only)
+    glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(12))
     # ^ replaces vertex_normal if displacement ^
     glEnableVertexAttribArray(2) # vertex_uv
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
-    glEnableVertexAttribArray(4) # editor_colour
-    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
+    glEnableVertexAttribArray(3) # editor_colour
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
+    print("attribs assembled")
 
     # keep handles to the new GL objects
     # dictionaries might be more convenient
     viewport.buffers = [VERTEX_BUFFER, INDEX_BUFFER]
     viewport.programs = [program_flat_brush, program_flat_displacement,
                          program_stripey_brush]
-    viewport.draw_calls[viewport.programs[0]] = (0, brush_len) # brushes, flat
-    viewport.draw_calls[viewport.programs[1]] = (brush_len + 1, disp_len) # displacements
+    # brushes
+    brush_format = (0, 1, 2, 3)
+    viewport.draw_calls[viewport.programs[0]] = ((0, brush_len), brush_format)
+    # displacements
+    disp_format = (0, 4, 2, 3)
+    viewport.draw_calls[viewport.programs[1]] = ((brush_len + 1, disp_len), disp_format)
     viewport.GLES_MODE = GLES_MODE
     if GLES_MODE:
         viewport.uniforms = {program_flat_brush: uniform_brush_matrix,
                              program_stripey_brush: uniform_stripey_matrix,
                              program_flat_displacement: uniform_displacement_matrix}
+    print("draw calls assembled")
