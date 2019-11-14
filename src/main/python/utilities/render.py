@@ -109,6 +109,7 @@ def vmf_setup(viewport, vmf_object, ctx):
                  np.array(indices, dtype=np.uint32), GL_STATIC_DRAW)
     print("buffers pushed to GPU")
     # Vertex Format
+    max_attribs = glGetIntegerv(GL_MAX_VERTEX_ATTRIBS)
     glEnableVertexAttribArray(0) # vertex_position
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
     glEnableVertexAttribArray(1) # vertex_normal (brush only)
