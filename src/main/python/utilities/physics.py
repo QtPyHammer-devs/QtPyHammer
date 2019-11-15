@@ -1,7 +1,7 @@
 from utilities import vector
 
 class plane:
-    def __init__(normal, distance):
+    def __init__(self, normal, distance):
         self.normal = normal
         self.distance = distance
 
