@@ -1,15 +1,18 @@
 import itertools
 from . import vector, vmf, physics
 
+
 def triangle_of(side):
     "extract triangle from string (returns 3 vec3)"
     triangle = [[float(i) for i in xyz.split()] for xyz in side.plane[1:-1].split(') (')]
     return tuple(map(vector.vec3, triangle))
 
+
 def plane_of(A, B, C):
     """returns plane the triangle defined by A, B & C lies on"""
     normal = ((A - B) * (C - B)).normalise()
     return (normal, vector.dot(normal, A)) # normal (vec3), distance (float)
+
 
 def clip(poly, plane):
     normal, distance = plane
@@ -22,19 +25,18 @@ def clip(poly, plane):
         B_behind = round(B_distance, 6) < 0
         if A_behind:
             split_verts["back"].append(A)
-        else:
+        else: # A is in front of the clipping plane
             split_verts["front"].append(A)
+        # does the edge AB intersect the clipping plane?
         if (A_behind and not B_behind) or (B_behind and not A_behind):
-            print("splitting", A_distance, B_distance)
             t = A_distance / (A_distance - B_distance)
             cut_point = vector.lerp(A, B, t)
+            cut_point = [round(a, 2) for a in cut_point]
+            # .vmf floating-point accuracy sucks
             split_verts["back"].append(cut_point)
             split_verts["front"].append(cut_point)
-        if B_behind:
-            split_verts["back"].append(B)
-        else:
-            split_verts["front"].append(B)
     return split_verts
+
 
 def loop_fan(vertices):
     "ploygon to triangle fan"
@@ -43,12 +45,14 @@ def loop_fan(vertices):
         out += [out[0], out[-1], vertex]
     return out
 
+
 def loop_fan_indices(vertices):
     "polygon to triangle fan (indices only) by Exactol"
     indices = []
     for i in range(len(vertices) - 2):
         indices += [0, i + 1, i + 2]
     return indices
+
 
 def disp_tris(verts, power): # copied from snake-biscuits/bsp_tool/bsp_tool.py
     """takes flat array of verts and arranges them in a patterned triangle grid
@@ -78,7 +82,7 @@ def disp_tris(verts, power): # copied from snake-biscuits/bsp_tool/bsp_tool.py
                 tris.append(verts[offset + power2C])
                 tris.append(verts[offset + 2])
                 tris.append(verts[offset + 1])
-            else: #|/|\|
+            else: # |/|\|
                 tris.append(verts[offset + 0])
                 tris.append(verts[offset + power2A])
                 tris.append(verts[offset + power2B])
@@ -96,6 +100,7 @@ def disp_tris(verts, power): # copied from snake-biscuits/bsp_tool/bsp_tool.py
                 tris.append(verts[offset + power2B])
     return tris
 
+
 def square_neighbours(x, y, edge_length): # edge_length = (2^power) + 1
     """yields the indicies of neighbouring points in a displacement"""
     for i in range(x - 1, x + 2):
@@ -106,11 +111,11 @@ def square_neighbours(x, y, edge_length): # edge_length = (2^power) + 1
                         yield i * edge_length + j
 
 
+
 class solid:
-    __slots__ = ('aabb', 'center', 'colour', 'displacement_triangles',
-                 'displacement_vertices', 'faces', 'id', 'index_map', 'indices',
-                 'is_displacement', 'planes', 'planes', 'sides', 'source',
-                 'string_triangles', 'vertices')
+    __slots__ = ('aabb', 'center', 'colour', 'displacement_vertices', 'faces',
+                 'id', 'index_map', 'indices', 'is_displacement', 'planes',
+                 'planes', 'source', 'string_triangles', 'vertices')
 
     def __init__(self, solid_namespace): # THIS IS FOR IMPORTING FROM VMF
         """Initialise from namespace"""
@@ -121,44 +126,30 @@ class solid:
         self.planes = [plane_of(*t) for t in string_planes]
         self.is_displacement = False
 
-##        self.faces = []
-##        for i, plane in enumerate(self.planes):
-##            normal, distance = plane
-##            non_parallel = vector.vec3(z=-1) if normal.z != 1 else vector.vec3(y=-1)
-##            local_y = (non_parallel * normal).normalise()
-##            local_x = (local_y * normal).normalise()
-##            center = normal * distance
-##            radius = 10 ** 12 # larger than any reasonable brush
-##            ngon = [center + ((-local_x + local_y) * radius),
-##                             center + ((local_x + local_y) * radius),
-##                             center + ((local_x + -local_y) * radius),
-##                             center + ((-local_x + -local_y) * radius)]
-##            print('-' * 80)
-##            for other_plane in self.planes:
-##                if other_plane == plane: # what of inverse normal & epsilon?
-##                    continue
-##                offcut, ngon = clip(ngon, other_plane).values()
-##                print(len(ngon), len(offcut))
-##            self.faces.append(ngon)
-##        print('=' * 80)
-##        print(self.faces)
-
-        self.faces = [] # cheap & dirty method
-        string_vertices = list(itertools.chain(*string_planes))
-        for tri, plane in zip(string_planes, self.planes):
-            this_face = [*tri]
+        self.faces = []
+        for i, plane in enumerate(self.planes):
             normal, distance = plane
-            for v in string_vertices:
-                if v not in tri:
-                    v_dist = vector.dot(v, normal)
-                    if distance - .5 < v_dist < distance + .5:
-                        this_face.append(v)
-            this_face = vector.sort_clockwise(this_face, normal)
-            self.faces.append(this_face)
+            non_parallel = vector.vec3(z=-1) if abs(normal.z) != 1 else vector.vec3(y=-1)
+            local_y = (non_parallel * normal).normalise()
+            local_x = (local_y * normal).normalise()
+            center = normal * distance
+            radius = 10 ** 4 # larger than any reasonable brush
+            ngon = [center + ((-local_x + local_y) * radius),
+                             center + ((local_x + local_y) * radius),
+                             center + ((local_x + -local_y) * radius),
+                             center + ((-local_x + -local_y) * radius)]
+            for other_plane in self.planes:
+                if other_plane == plane: # what about the inverse plane?
+                    continue
+                ngon, offcut = clip(ngon, other_plane).values() # back, front
+            self.faces.append(ngon)
 
         self.indices = []
         self.vertices = [] # [((position), (normal), (uv), (colour)), ...]
+        # except it's flat thanks to itertools.chain
         self.index_map = []
+        uvs = {} # side: [(u, v), ...]
+        side_index = 0
         start_index = 0
         for face, side, plane in zip(self.faces, self.source.sides, self.planes):
             face_indices = []
@@ -169,11 +160,13 @@ class solid:
             v_axis = side.vaxis.rpartition(' ')[0::2]
             v_vector = [float(x) for x in v_axis[0][1:-1].split()]
             v_scale = float(v_axis[1])
+            uvs[side_index] = []
             for i, vertex in enumerate(face): # regex might help here
                 uv = [vector.dot(vertex, u_vector[:3]) + u_vector[-1],
                       vector.dot(vertex, v_vector[:3]) + v_vector[-1]]
                 uv[0] /= u_scale
                 uv[1] /= v_scale
+                uvs[side_index].append(uv)
 
                 assembled_vertex = tuple(itertools.chain(vertex, normal, uv, self.colour))
                 if assembled_vertex not in self.vertices:
@@ -182,6 +175,7 @@ class solid:
                 else:
                     face_indices.append(self.vertices.index(assembled_vertex))
 
+            side_index += 1
             face_indices = loop_fan(face_indices)
             self.index_map.append((start_index, len(face_indices)))
             self.indices += face_indices
@@ -189,7 +183,6 @@ class solid:
 
         global square_neighbours
         self.displacement_vertices = {} # {side_index: vertices}
-        self.displacement_triangles = {} # same but repeat verts to make disp shaped triangles
         for i, side in enumerate(self.source.sides):
             if hasattr(side, "dispinfo"):
                 self.source.sides[i].blend_colour = [1 - i for i in self.colour]
@@ -197,31 +190,41 @@ class solid:
                 power = int(side.dispinfo.power)
                 power2 = 2 ** power
                 quad = tuple(vector.vec3(x) for x in self.faces[i])
-                start = vector.vec3(eval(side.dispinfo.startposition.replace(" ", ", ")))
-                if start in quad:
-                    index = quad.index(start) - 1
-                    quad = quad[index:] + quad[:index]
-                else:
-                    raise RuntimeError("Couldn't find start of displacement! (side id {})".format(side.id))
+                if len(quad) != 4:
+                    raise RuntimeError("displacement brush id {} side id {} has {} sides!".format(self.id, side.id, len(quad)))
+                quad_uvs = tuple(vector.vec2(x) for x in uvs[i])
+                disp_uvs = [] # barymetric uvs for each baryvert
+                start = vector.vec3(*map(float, side.dispinfo.startposition[1:-1].split()))
+                if start not in quad:
+                    start = sorted(quad, key=lambda P: (start - P).magnitude())[0]
+                index = quad.index(start) - 1
+                quad = quad[index:] + quad[:index]
+                quad_uvs = quad_uvs[index:] + quad_uvs[:index]
                 side_dispverts = []
                 A, B, C, D = quad
                 DA = D - A
                 CB = C - B
+                Auv, Buv, Cuv, Duv = quad_uvs
+                DAuv = Duv - Auv
+                CBuv = Cuv - Buv
                 distance_rows = [v for k, v in side.dispinfo.distances.__dict__.items() if k != "_line"] # skip line number
                 normal_rows = [v for k, v in side.dispinfo.normals.__dict__.items() if k != "_line"]
-                normals = []
-                alphas = []
                 for y, distance_row, normals_row in zip(itertools.count(), distance_rows, normal_rows):
                     distance_row = [float(x) for x in distance_row.split()]
                     normals_row = [*map(float, normals_row.split())]
                     left_vert = A + (DA * y / power2)
+                    left_uv = Auv + (DAuv * y / power2)
                     right_vert = B + (CB * y / power2)
-                    for x, distance in zip(itertools.count(), distance_row):
-                        k = x * 3
+                    right_uv = Buv + (CBuv * y / power2)
+                    for x, distance in enumerate(distance_row):
+                        k = x * 3 # index
                         normal = vector.vec3(normals_row[k], normals_row[k + 1], normals_row[k + 2])
                         baryvert = vector.lerp(right_vert, left_vert, x / power2)
+                        disp_uvs.append(vector.lerp(right_uv, left_uv, x / power2))
                         side_dispverts.append(vector.vec3(baryvert) + (distance * normal))
 
+                # calculate displacement normals
+                normals = []
                 for x in range(power2 + 1):
                     for y in range(power2 + 1):
                         dispvert = side_dispverts[x * (power2 + 1) + y]
@@ -231,21 +234,21 @@ class solid:
                         except Exception as exc:
                             # f"({x}, {y}) {list(square_neighbours(x, y, power2 + 1))=}") # python 3.8
                             print("({}, {}) {}".format(x, y, list(square_neighbours(x, y, power2 + 1))))
-                            print(exc)
+                            print(exc) # raise traceback instead
                         normal = vector.vec3(0, 0, 1)
                         if len(neighbours) != 0:
                             normal -= dispvert - sum(neighbours, vector.vec3()) / len(neighbours)
                             normal = normal.normalise()
                         normals.append(normal)
 
-                alphas = [float(a) for row in [v for k, v in side.dispinfo.alphas.__dict__.items() if k != "_line"] for a in row.split()]
-                self.displacement_vertices[i] = [*zip(side_dispverts, alphas, normals)]
-                self.displacement_triangles[i] = disp_tris(self.displacement_vertices[i], power)
-                # use disp_tris when assembling vertex buffers
-                # only store and update verts (full format)
-                # assemble vertex format (vertex, normal, uv, colour, blend_alpha)
-        if len(self.displacement_triangles) == 0:
-            del self.displacement_triangles
+                self.displacement_vertices[i] = []
+                alpha_rows = [v for k, v in side.dispinfo.alphas.__dict__.items() if k != "_line"]
+                alphas = [float(a) for row in alpha_rows for a in row.split()]
+                for pos, alpha, uv in zip(side_dispverts, alphas, disp_uvs):
+                    assembled_vertex = tuple(itertools.chain(pos, [alpha, 0.0, 0.0], uv, self.colour))
+                    self.displacement_vertices[i].append(assembled_vertex)
+
+        if not self.is_displacement:
             del self.displacement_vertices
 
         # all_x = [v[0].x for v in self.vertices]

@@ -8,9 +8,9 @@ from time import time
 times = []
 for i in range(16):
     start = time()
-    # vmf = dict_from(open('mapsrc/test.vmf'))
-    # vmf = dict_from(open('mapsrc/test2.vmf'))
-    vmf = dict_from(open('mapsrc/sdk_pl_goldrush.vmf'))
+    # vmf = namespace_from(open('mapsrc/test.vmf'))
+    # vmf = namespace_from(open('mapsrc/test2.vmf'))
+    vmf = namespace_from(open('mapsrc/sdk_pl_goldrush.vmf'))
     time_taken = time() - start
     print(f'import took {time_taken:.3f} seconds')
     times.append(time_taken)
