@@ -76,7 +76,7 @@ def namespace_from(text_file):
         try:
             new_namespace = namespace({'_line': line_number})
             line = line.rstrip('\n')
-            line = textwrap.shorten(line, width=200) # cleanup spacing, may break at 200+ chars
+            line = textwrap.shorten(line, width=2000) # cleanup spacing, broke at 200+ chars, not the right tool for the job
             if line == '' or line.startswith('//'): # ignore blank / comments
                 continue
             elif line =='{': # START declaration

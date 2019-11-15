@@ -31,6 +31,8 @@ def clip(poly, plane):
         if (A_behind and not B_behind) or (B_behind and not A_behind):
             t = A_distance / (A_distance - B_distance)
             cut_point = vector.lerp(A, B, t)
+            cut_point = [round(a, 2) for a in cut_point]
+            # .vmf floating-point accuracy sucks
             split_verts["back"].append(cut_point)
             split_verts["front"].append(cut_point)
     return split_verts
@@ -188,21 +190,16 @@ class solid:
                 power = int(side.dispinfo.power)
                 power2 = 2 ** power
                 quad = tuple(vector.vec3(x) for x in self.faces[i])
+                if len(quad) != 4:
+                    raise RuntimeError("displacement brush id {} side id {} has {} sides!".format(self.id, side.id, len(quad)))
                 quad_uvs = tuple(vector.vec2(x) for x in uvs[i])
                 disp_uvs = [] # barymetric uvs for each baryvert
                 start = vector.vec3(*map(float, side.dispinfo.startposition[1:-1].split()))
-                if start in quad:
-                    index = quad.index(start) - 1
-                    quad = quad[index:] + quad[:index]
-                    quad_uvs = quad_uvs[index:] + quad_uvs[:index]
-                else:
-                    print(start)
-                    print(quad)
-                    raise RuntimeError("Couldn't find start of displacement! (side id {})".format(side.id))
-                    # this error seems to come from rounding errors
-                    # fix solids with vertices off grid by .1e-16
-                    # then this will catch poorly saved disps instead
-                    # .vmfs seem to stick to a .2f accuracy
+                if start not in quad:
+                    start = sorted(quad, key=lambda P: (start - P).magnitude())[0]
+                index = quad.index(start) - 1
+                quad = quad[index:] + quad[:index]
+                quad_uvs = quad_uvs[index:] + quad_uvs[:index]
                 side_dispverts = []
                 A, B, C, D = quad
                 DA = D - A
