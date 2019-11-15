@@ -199,6 +199,10 @@ class solid:
                     print(start)
                     print(quad)
                     raise RuntimeError("Couldn't find start of displacement! (side id {})".format(side.id))
+                    # this error seems to come from rounding errors
+                    # fix solids with vertices off grid by .1e-16
+                    # then this will catch poorly saved disps instead
+                    # .vmfs seem to stick to a .2f accuracy
                 side_dispverts = []
                 A, B, C, D = quad
                 DA = D - A

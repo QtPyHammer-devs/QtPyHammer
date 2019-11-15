@@ -107,7 +107,6 @@ def vmf_setup(viewport, vmf_object, ctx):
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * 4,
                  np.array(indices, dtype=np.uint32), GL_STATIC_DRAW)
-    print("buffers pushed to GPU")
     # Vertex Format
     max_attribs = glGetIntegerv(GL_MAX_VERTEX_ATTRIBS)
     glEnableVertexAttribArray(0) # vertex_position
@@ -121,7 +120,6 @@ def vmf_setup(viewport, vmf_object, ctx):
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
     glEnableVertexAttribArray(3) # editor_colour
     glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
-    print("attribs assembled")
 
     # keep handles to the new GL objects
     # dictionaries might be more convenient
@@ -129,14 +127,13 @@ def vmf_setup(viewport, vmf_object, ctx):
     viewport.programs = [program_flat_brush, program_flat_displacement,
                          program_stripey_brush]
     # brushes
-    brush_format = (0, 1, 2, 3)
-    viewport.draw_calls[viewport.programs[0]] = ((0, brush_len), brush_format)
+    # brush_format = (0, 1, 2, 3)
+    viewport.draw_calls[viewport.programs[0]] = (0, brush_len) #, brush_format)
     # displacements
-    disp_format = (0, 4, 2, 3)
-    viewport.draw_calls[viewport.programs[1]] = ((brush_len + 1, disp_len), disp_format)
-    viewport.GLES_MODE = GLES_MODE
+    # disp_format = (0, 4, 2, 3)
+    # viewport.draw_calls[viewport.programs[1]] = ((brush_len + 1, disp_len), disp_format)
+    # viewport.GLES_MODE = GLES_MODE
     if GLES_MODE:
         viewport.uniforms = {program_flat_brush: uniform_brush_matrix,
                              program_stripey_brush: uniform_stripey_matrix,
                              program_flat_displacement: uniform_displacement_matrix}
-    print("draw calls assembled")
