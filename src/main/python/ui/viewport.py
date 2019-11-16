@@ -133,11 +133,13 @@ class Viewport3D(Viewport2D):
             if self.camera_moving:
                 self.setMouseTracking(True)
                 self.grabMouse()
+                # note where we grabbed the cursor from
                 self.setCursor(QtCore.Qt.BlankCursor)
                 # keep teleporting the mouse back to the center
                 # teleport to entry point when free
             else:
                 self.setMouseTracking(False)
+                # return the cursor to where we grabbed it from
                 self.unsetCursor()
                 self.releaseMouse()
         if event.key() == QtCore.Qt.Key_Escape and self.camera_moving:
