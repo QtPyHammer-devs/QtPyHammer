@@ -132,7 +132,7 @@ def vmf_setup(viewport, vmf_object, ctx):
     # displacements
     # disp_format = (0, 4, 2, 3)
     # viewport.draw_calls[viewport.programs[1]] = ((brush_len + 1, disp_len), disp_format)
-    # viewport.GLES_MODE = GLES_MODE
+    viewport.GLES_MODE = GLES_MODE
     if GLES_MODE:
         viewport.uniforms = {program_flat_brush: uniform_brush_matrix,
                              program_stripey_brush: uniform_stripey_matrix,
