@@ -132,7 +132,7 @@ class solid:
             non_parallel = vector.vec3(z=-1) if abs(normal.z) != 1 else vector.vec3(y=-1)
             local_y = (non_parallel * normal).normalise()
             local_x = (local_y * normal).normalise()
-            center = normal * distance
+            center = normal * distance # Center on string triangle
             radius = 10 ** 4 # larger than any reasonable brush
             ngon = [center + ((-local_x + local_y) * radius),
                              center + ((local_x + local_y) * radius),
