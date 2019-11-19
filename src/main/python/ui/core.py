@@ -26,7 +26,7 @@ class MainWindow(QtWidgets.QMainWindow):
         ... # objects for holding map & session data
         self.actions = {} # {"identifier": action}
         # map all actions so we can rebind EVERYTHING
-        self.open_vmf = ops.import_vmf(ctx.get_resource("vmfs/test2.vmf"))
+        self.vmf = ops.import_vmf(ctx.get_resource("vmfs/test2.vmf"))
 
         self.setTabPosition(QtCore.Qt.TopDockWidgetArea, QtWidgets.QTabWidget.North)
         self.main_menu = QtWidgets.QMenuBar()
@@ -37,11 +37,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["File>Open"] = file_menu.addAction('&Open')
         def set_open_vmf(): # should really be in ops/__init__
             new_path = ops.open_vmf()
-            print("Opening", new_path)
-            self.open_vmf = new_path
+            self.vmf = new_path
             # connect to objects that hold vmf data for editing
             # maybe even make a new tab
-            self.viewport.executeGL(render.vmf_setup, self.open_vmf, self.ctx)
+            self.viewport.executeGL(render.vmf_setup, self.vmf, self.ctx)
+            # ^ bad
         self.actions["File>Open"].triggered.connect(set_open_vmf)
         self.actions["File>Save"] = file_menu.addAction('&Save')
         self.actions["File>Save"].setEnabled(False)
@@ -332,7 +332,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def viewport_setup(self):
         self.viewport.sharedGLsetup() # setup shared GLcontexts
-        self.viewport.executeGL(render.vmf_setup, self.open_vmf, self.ctx)
+        self.viewport.executeGL(render.vmf_setup, self.vmf, self.ctx)
 
     def show(self):
         super(MainWindow, self).show()
