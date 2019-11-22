@@ -100,6 +100,7 @@ class Viewport3D(Viewport2D):
         self.camera_keys = list()
         self.camera_moving = False
         self.cursor_start = QtCore.QPoint()
+        self.moved_last_tick = False
         self.draw_calls = dict() # shader: (start, length)
         self.GLES_MODE = False
         self.keys = set()
@@ -152,9 +153,10 @@ class Viewport3D(Viewport2D):
     def mouseMoveEvent(self, event):
         center = QtCore.QPoint(self.width() / 2, self.height() / 2)
         self.current_mouse_position = vector.vec2(event.pos().x(), event.pos().y())
-        # if self.current_mouse_position == center:
         self.mouse_vector = self.current_mouse_position - vector.vec2(center.x(), center.y())
         QtGui.QCursor.setPos(self.mapToGlobal(center)) # center cursor
+        self.moved_last_tick = True
+        super(Viewport3D, self).mouseMoveEvent(event)
 
     def wheelEvent(self, event):
         if self.camera_moving:
@@ -238,12 +240,14 @@ class Viewport3D(Viewport2D):
 
     def update(self):
         super(Viewport3D, self).update()
-        if self.camera_moving:
+        if self.camera_moving: # TOGGLED ON: take user inputs
             self.camera.update(self.mouse_vector, self.keys, self.dt)
-            self.mouse_vector = vector.vec2()
-            # teleport mouse to screen center instead ([0, 0] or something else?)
+            if self.moved_last_tick == False:
+                self.mouse_vector = vector.vec2()
+            self.moved_last_tick = False
 
 ### === ????? WHY AREN'T CONTEXTS SHARING ?????? === ###
+# can we just share GL objects between contexts?
 class QuadViewport(QtWidgets.QWidget): # busted, borked, no work good
     def __init__(self, parent=None):
         super(QuadViewport, self).__init__(parent)
