@@ -18,6 +18,7 @@ camera.keybinds = {'FORWARD': [QtCore.Qt.Key_W], 'BACK': [QtCore.Qt.Key_S],
                    'UP': [QtCore.Qt.Key_Q, QtCore.Qt.UpArrow],
                    'DOWN': [QtCore.Qt.Key_E, QtCore.Qt.DownArrow]}
 camera.sensitivity = 2
+# ^ connect to settings ^
 
 view_modes = ['flat', 'textured', 'wireframe']
 # "silhouette" view mode, lights on flat gray brushwork & props
@@ -96,13 +97,13 @@ class Viewport3D(Viewport2D):
         super(Viewport3D, self).__init__(fps=fps, parent=parent)
         self.view_mode = view_mode
         self.fov = 90 # how do users change this?
-        self.camera_moving = False
         self.camera_keys = list()
+        self.camera_moving = False
+        self.cursor_start = QtCore.QPoint()
         self.draw_calls = dict() # shader: (start, length)
         self.GLES_MODE = False
         self.keys = set()
         self.current_mouse_position = vector.vec2()
-        self.previous_mouse_position = vector.vec2()
         self.mouse_vector = vector.vec2()
         self._perspective = (90, 0.1, 10234)
 
@@ -127,19 +128,17 @@ class Viewport3D(Viewport2D):
         self.keys.add(event.key())
         if event.key() == QtCore.Qt.Key_Z:
             self.camera_moving = False if self.camera_moving else True
-            # remember where the cursor was when tracking
-            # move to center while hidden (move back after every update)
-            # move mouse back to starting position once finished
+            # https://stackoverflow.com/questions/9774929/qt-keeping-mouse-centered
             if self.camera_moving:
                 self.setMouseTracking(True)
+                self.cursor_start = QtGui.QCursor.pos()
+                center = QtCore.QPoint(self.width() / 2, self.height() / 2)
+                QtGui.QCursor.setPos(self.mapToGlobal(center))
                 self.grabMouse()
-                # note where we grabbed the cursor from
                 self.setCursor(QtCore.Qt.BlankCursor)
-                # keep teleporting the mouse back to the center
-                # teleport to entry point when free
             else:
                 self.setMouseTracking(False)
-                # return the cursor to where we grabbed it from
+                QtGui.QCursor.setPos(self.cursor_start)
                 self.unsetCursor()
                 self.releaseMouse()
         if event.key() == QtCore.Qt.Key_Escape and self.camera_moving:
@@ -151,9 +150,11 @@ class Viewport3D(Viewport2D):
         self.keys.discard(event.key())
 
     def mouseMoveEvent(self, event):
-        self.previous_mouse_position = self.current_mouse_position # use center (we teleport back there after each camera.update())
+        center = QtCore.QPoint(self.width() / 2, self.height() / 2)
         self.current_mouse_position = vector.vec2(event.pos().x(), event.pos().y())
-        self.mouse_vector = self.current_mouse_position - self.previous_mouse_position
+        # if self.current_mouse_position == center:
+        self.mouse_vector = self.current_mouse_position - vector.vec2(center.x(), center.y())
+        QtGui.QCursor.setPos(self.mapToGlobal(center)) # center cursor
 
     def wheelEvent(self, event):
         if self.camera_moving:
