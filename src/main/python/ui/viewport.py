@@ -102,28 +102,41 @@ class Viewport3D(Viewport2D):
         self.cursor_start = QtCore.QPoint()
         self.moved_last_tick = False
         self.draw_calls = dict() # shader: (start, length)
-        self.GLES_MODE = False
+        self.draw_funcs = [] # argless blocks of GL
+        self.GLES_MODE = False # store full GL version instead?
         self.keys = set()
         self.current_mouse_position = vector.vec2()
         self.mouse_vector = vector.vec2()
-        self._perspective = (90, 0.1, 10234)
+        self.draw_distance = 4096 * 4 # Z-plane cull
+        # ^ to be set & changed in settings ^
+        # model draw distance
+        self.ray = [] # origin, dir
+        def draw_ray(viewport):
+            if viewport.ray == []:
+                return
+            glColor(1, .75, .25)
+            glBegin(GL_LINES)
+            glVertex(*viewport.ray[0])
+            glVertex(*(viewport.ray[1] * viewport.draw_distance))
+            glEnd()
+        self.draw_funcs.append(draw_ray)
 
     def changeViewMode(self, view_mode): # overlay viewmode button
-        # if GLES_MODE = True
-        # shaders MUST be used
         if self.view_mode == view_mode:
             return # exit, no changes needed
-        if self.view_mode == 'wireframe':
+        if self.view_mode == "flat":
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
-        if view_mode == 'textured':
-            glEnable(GL_TEXTURE_2D)
-        else:
             glDisable(GL_TEXTURE_2D)
-        if view_mode == 'wireframe':
+            # flat shaders
+        elif view_mode == "textured":
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
+            glEnable(GL_TEXTURE_2D)
+            # textured shaders
+            # how do textures get looked up?
+        elif view_mode == "wireframe":
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
-            return # polygon mode, shaders off, textures off
-        # change shader to flat (flat / wireframe)
-        # or to complex (textured)
+            glDisable(GL_TEXTURE_2D)
+            # flat shaders
 
     def keyPressEvent(self, event):
         self.keys.add(event.key())
@@ -158,6 +171,23 @@ class Viewport3D(Viewport2D):
         self.moved_last_tick = True
         super(Viewport3D, self).mouseMoveEvent(event)
 
+    def mousePressEvent(self, event):
+        button = event.button()
+        position = event.pos()
+        super(Viewport3D, self).mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        if event.button() == QtCore.Qt.LeftButton:
+            click_pos = vector.vec2(event.pos().x(), event.pos().y())
+            max_coords = vector.vec2(self.width(), self.height())
+            click_coords = [((a / b) * 2) - 1 for a, b in zip(click_pos, max_coords)]
+            click_vector = vector.vec3(click_coords[0], 0, click_coords[1])
+            ray_origin = vector.vec3(*click_coords).rotate(*self.camera.rotation) + self.camera.position
+            ray_direction = vector.vec3(y=1).rotate(*-self.camera.rotation)
+            # ^ apply perspective ^
+            self.ray = [ray_origin, ray_direction]
+        super(Viewport3D, self).mouseReleaseEvent(event)
+
     def wheelEvent(self, event):
         if self.camera_moving:
             self.camera.speed += event.angleDelta().y()
@@ -166,7 +196,7 @@ class Viewport3D(Viewport2D):
         glClearColor(0, 0, 0, 0)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        gluPerspective(self.fov, self.width() / self.height(), 0.1, 4096 * 4)
+        gluPerspective(self.fov, self.width() / self.height(), 0.1, self.draw_distance)
         glEnable(GL_DEPTH_TEST)
 ##        glEnable(GL_CULL_FACE)
         glPolygonMode(GL_BACK, GL_LINE)
@@ -175,22 +205,22 @@ class Viewport3D(Viewport2D):
 
     def paintGL(self):
         glLoadIdentity()
-        gluPerspective(self.fov, self.width() / self.height(), 0.1, 4096 * 4)
+        gluPerspective(self.fov, self.width() / self.height(), 0.1, self.draw_distance)
         self.camera.set()
         if self.GLES_MODE:
-            # far, near = 0.1, 4096 # same as gluPerspective args ^^^
+            # far, near = 0.1, self.draw_distance
             # s = 1 / math.tan(self.fov / 2)
-            # ModelView * Perspective
+            # position = self.camera.position
+            ## ModelView * Perspective
             # MVP = np.array([[s, 0, 0, 0],
             #                 [0, s, 0, 0],
             #                 [0, 0, -far / (far - near), -1],
-            #                 [self.camera.position.x, self.camera.position.y, (-far * near / (far - near)) + self.camera.position.z, 0]], np.float32)
-            # position = self.camera.position
+            #                 [position.x, position.y, (-far * near / (far - near)) + position.z, 0]], np.float32)
             # T = np.array([[1, 0, 0, -position.x],
             #               [0, 1, 0, -position.y],
             #               [0, 0, 1, -position.z],
             #               [0, 0, 0, 1]], np.float32)
-            # self.camera.rotation -> 4x4 matrix
+            ## self.camera.rotation -> 4x4 matrix
             # matrix = MVP * T # * R
             matrix = glGetFloatv(GL_PROJECTION_MATRIX)
 
@@ -214,7 +244,6 @@ class Viewport3D(Viewport2D):
             # index_map, vertex_format = params
             start, length = params # index_map
             glUseProgram(shader)
-
             # for a in vertex_format:
             #     if a not in self.active_attribs:
             #         glEnableVertexAttribArray(a)
@@ -225,13 +254,15 @@ class Viewport3D(Viewport2D):
             #         glDisableVertexAttribArray(a)
             #         self.active_attribs.remove(a)
             #         print("removed", a)
-
             if self.GLES_MODE == True:
                 # plug the MVP matrix into the current shader
                 glUniformMatrix4fv(self.uniforms[shader], 1, GL_FALSE, matrix)
-
             glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
             # print("<<< draw call done >>>")
+
+        glUseProgram(0)
+        for f in self.draw_funcs:
+            f(self)
 
 
     def resizeGL(self, width, height):
