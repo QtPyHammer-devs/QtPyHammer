@@ -115,10 +115,12 @@ class Viewport3D(Viewport2D):
             if viewport.ray == []:
                 return
             glColor(1, .75, .25)
+            glLineWidth(2)
             glBegin(GL_LINES)
             glVertex(*viewport.ray[0])
-            glVertex(*(viewport.ray[1] * viewport.draw_distance))
+            glVertex(*(viewport.ray[1] * viewport.draw_distance) + viewport.ray[0])
             glEnd()
+            glLineWidth(1)
         self.draw_funcs.append(draw_ray)
 
     def changeViewMode(self, view_mode): # overlay viewmode button
@@ -178,13 +180,11 @@ class Viewport3D(Viewport2D):
 
     def mouseReleaseEvent(self, event):
         if event.button() == QtCore.Qt.LeftButton:
-            click_pos = vector.vec2(event.pos().x(), event.pos().y())
-            max_coords = vector.vec2(self.width(), self.height())
-            click_coords = [((a / b) * 2) - 1 for a, b in zip(click_pos, max_coords)]
-            click_vector = vector.vec3(click_coords[0], 0, click_coords[1])
+            click_coords = [((event.pos().x() / self.width()) * 2) - 1,
+                            ((event.pos().y() / self.height()) * 2) - 1]
+            click_vector = vector.vec3(click_coords[0], 0, -click_coords[1])
             ray_origin = vector.vec3(*click_coords).rotate(*self.camera.rotation) + self.camera.position
-            ray_direction = vector.vec3(y=1).rotate(*-self.camera.rotation)
-            # ^ apply perspective ^
+            ray_direction = vector.vec3(y=1).rotate(*self.camera.rotation)
             self.ray = [ray_origin, ray_direction]
         super(Viewport3D, self).mouseReleaseEvent(event)
 
