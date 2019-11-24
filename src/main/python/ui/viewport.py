@@ -32,10 +32,9 @@ class Viewport2D(QtWidgets.QOpenGLWidget): # why not QtWidgets.QGraphicsView ?
         self.timer.start(1000 / fps)
         self.dt = 1 / fps # will desynchronise, use time.time()
         self.fps = fps
-        # set render resolution?
+        # lower resolution and scale up option
         self.camera = camera.freecam(None, None, 128)
-        self.draw_calls = dict() # shader: (index buffer start, end)
-        self.active_attribs = [] # list of active vertex atrribs
+        self.draw_calls = dict() # function: {**kwargs}
 
     def executeGL(self, func, *args, **kwargs): # best hack ever
         """Execute func(self, *args, **kwargs) in this viewport's glContext"""
@@ -85,11 +84,8 @@ class Viewport2D(QtWidgets.QOpenGLWidget): # why not QtWidgets.QGraphicsView ?
         glEnd()
         # do draw_calls
 
-    def update(self):
-        super(Viewport2D, self).update()
-        # update animations (TICKS)
-        # just to keep logic seperate
-        # super().update() calls paintGL
+    def update(self): # once every tick
+        super(Viewport2D, self).update() # calls paintGL
 
 
 class Viewport3D(Viewport2D):
@@ -97,19 +93,19 @@ class Viewport3D(Viewport2D):
         super(Viewport3D, self).__init__(fps=fps, parent=parent)
         self.view_mode = view_mode
         self.fov = 90 # how do users change this?
+        self.draw_distance = 4096 * 4 # Z-plane cull
+        # model draw distance
+        # ^ to be set & changed in settings ^
+        
+        self.draw_calls = dict() # function: {**kwargs}
+        self.GLES_MODE = False # store full GL version instead?
         self.camera_keys = list()
         self.camera_moving = False
         self.cursor_start = QtCore.QPoint()
         self.moved_last_tick = False
-        self.draw_calls = dict() # shader: (start, length)
-        self.draw_funcs = [] # argless blocks of GL
-        self.GLES_MODE = False # store full GL version instead?
         self.keys = set()
         self.current_mouse_position = vector.vec2()
         self.mouse_vector = vector.vec2()
-        self.draw_distance = 4096 * 4 # Z-plane cull
-        # ^ to be set & changed in settings ^
-        # model draw distance
         self.ray = [] # origin, dir
         def draw_ray(viewport):
             if viewport.ray == []:
@@ -121,7 +117,7 @@ class Viewport3D(Viewport2D):
             glVertex(*(viewport.ray[1] * viewport.draw_distance) + viewport.ray[0])
             glEnd()
             glLineWidth(1)
-        self.draw_funcs.append(draw_ray)
+        self.draw_calls[draw_ray] = {}
 
     def changeViewMode(self, view_mode): # overlay viewmode button
         if self.view_mode == view_mode:

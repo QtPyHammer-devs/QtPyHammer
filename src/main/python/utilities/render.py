@@ -11,6 +11,16 @@ from OpenGL.GL.shaders import compileShader, compileProgram
 from . import camera, solid, vector, vmf
 
 
+def draw_brushes(viewport, hidden=[], selection=[], program=0):
+    glUseProgram(program)
+    if self.GLES_MODE == True:
+        matrix = glGetFloatv(GL_PROJECTION_MATRIX)
+        # ^ grabbing cpu memory would be better ^
+        glUniformMatrix4fv(self.uniforms[shader], 1, GL_FALSE, matrix)
+    # set vertex format
+    glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
+
+
 def vmf_setup(viewport, vmf_object, ctx):
     string_solids = [] # need per solid line numbers for snappy updates
     if hasattr(vmf_object.world, "solid"):
@@ -46,22 +56,19 @@ def vmf_setup(viewport, vmf_object, ctx):
     minor = glGetIntegerv(GL_MINOR_VERSION)
     GLES_MODE = False
     if major >= 4 and minor >= 5: # GLSL 450
-        # Vertex Shaders
-        vert_shader_brush = compileShader(open(ctx.get_resource("shaders/GLSL_450/brush.vert"), "rb"), GL_VERTEX_SHADER)
-        vert_shader_displacement = compileShader(open(ctx.get_resource("shaders/GLSL_450/displacement.vert"), "rb"), GL_VERTEX_SHADER)
-        # Fragment Shaders
-        frag_shader_flat_brush = compileShader(open(ctx.get_resource("shaders/GLSL_450/flat_brush.frag"), "rb"), GL_FRAGMENT_SHADER)
-        frag_shader_flat_displacement = compileShader(open(ctx.get_resource("shaders/GLSL_450/flat_displacement.frag"), "rb"), GL_FRAGMENT_SHADER)
-        frag_shader_stripey_brush = compileShader(open(ctx.get_resource("shaders/GLSL_450/stripey_brush.frag"), "rb"), GL_FRAGMENT_SHADER)
+        version = "450"
     elif major >= 3 and minor >= 0: # GLES 3.00
         GLES_MODE = True
-        # Vertex Shaders
-        vert_shader_brush = compileShader(open(ctx.get_resource("shaders/GLES_300/brush.vert"), "rb"), GL_VERTEX_SHADER)
-        vert_shader_displacement = compileShader(open(ctx.get_resource("shaders/GLES_300/displacement.vert"), "rb"), GL_VERTEX_SHADER)
-        # Fragment Shaders
-        frag_shader_flat_brush = compileShader(open(ctx.get_resource("shaders/GLES_300/flat_brush.frag"), "rb"), GL_FRAGMENT_SHADER)
-        frag_shader_flat_displacement = compileShader(open(ctx.get_resource("shaders/GLES_300/flat_displacement.frag"), "rb"), GL_FRAGMENT_SHADER)
-        frag_shader_stripey_brush = compileShader(open(ctx.get_resource("shaders/GLES_300/stripey_brush.frag"), "rb"), GL_FRAGMENT_SHADER)
+        version = "300"
+    shader_folder = "shaders/GLSL_{}/".format(version)
+    compile_shader = lambda s, t: compileShader(open(ctx.get_resource(shader_folder + s), "rb"), t)
+    # Vertex Shaders
+    vert_shader_brush =  compile_shader("brush.vert", GL_VERTEX_SHADER)
+    vert_shader_displacement = compile_shader("displacement.vert", GL_VERTEX_SHADER)
+    # Fragment Shaders
+    frag_shader_flat_brush = compile_shader("flat_brush.frag", GL_FRAGMENT_SHADER)
+    frag_shader_flat_displacement = compile_shader("flat_displacement.frag", GL_FRAGMENT_SHADER)
+    frag_shader_stripey_brush = compile_shader("stripey_brush.frag", GL_FRAGMENT_SHADER)
     # Programs
     program_flat_brush = compileProgram(vert_shader_brush, frag_shader_flat_brush)
     program_flat_displacement = compileProgram(vert_shader_displacement, frag_shader_flat_displacement)
@@ -109,6 +116,7 @@ def vmf_setup(viewport, vmf_object, ctx):
                  np.array(indices, dtype=np.uint32), GL_STATIC_DRAW)
     # Vertex Format
     max_attribs = glGetIntegerv(GL_MAX_VERTEX_ATTRIBS)
+    # grab indices from the shaders?
     glEnableVertexAttribArray(0) # vertex_position
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
     glEnableVertexAttribArray(1) # vertex_normal (brush only)
@@ -127,11 +135,11 @@ def vmf_setup(viewport, vmf_object, ctx):
     viewport.programs = [program_flat_brush, program_flat_displacement,
                          program_stripey_brush]
     # brushes
-    # brush_format = (0, 1, 2, 3)
-    viewport.draw_calls[viewport.programs[0]] = (0, brush_len) #, brush_format)
+    viewport.draw_calls[draw_brushes] = {"hidden": [], "selection": [],
+                                         "program": program_flat_brush}
     # displacements
-    # disp_format = (0, 4, 2, 3)
-    # viewport.draw_calls[viewport.programs[1]] = ((brush_len + 1, disp_len), disp_format)
+    # viewport.draw_calls[draw_disps] = {"hidden": [], "selection": [],
+    #                                    "program": program_flat_displacement}
     viewport.GLES_MODE = GLES_MODE
     if GLES_MODE:
         viewport.uniforms = {program_flat_brush: uniform_brush_matrix,
