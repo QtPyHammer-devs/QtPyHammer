@@ -38,10 +38,9 @@ class MainWindow(QtWidgets.QMainWindow):
         def set_open_vmf(): # should really be in ops/__init__
             new_path = ops.open_vmf()
             self.vmf = new_path
-            # connect to objects that hold vmf data for editing
-            # maybe even make a new tab
+            # make a new tab
             self.viewport.executeGL(render.vmf_setup, self.vmf, self.ctx)
-            # ^ bad
+            # ^ executeGL sometimes breaks (async?)
         self.actions["File>Open"].triggered.connect(set_open_vmf)
         self.actions["File>Save"] = file_menu.addAction('&Save')
         self.actions["File>Save"].setEnabled(False)
@@ -327,17 +326,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # # compile helpers 2D_models fade CM prop_detail NO_DRAW
 
         self.viewport = viewport.Viewport3D(60)
+        self.initializeGL = lambda v: render.vmf_setup(v, self.vmf, self.ctx)
+        # do we need to pass the context down?
         self.setCentralWidget(self.viewport)
         self.viewport.setFocus()
-
-    def viewport_setup(self):
-        self.viewport.sharedGLsetup() # setup shared GLcontexts
-        self.viewport.executeGL(render.vmf_setup, self.vmf, self.ctx)
-
-    def show(self):
-        super(MainWindow, self).show()
-        self.viewport_setup()
-
-    def showMaximized(self):
-        super(MainWindow, self).showMaximized()
-        self.viewport_setup()

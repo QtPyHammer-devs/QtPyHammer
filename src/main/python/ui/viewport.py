@@ -269,9 +269,12 @@ class Viewport3D(Viewport2D):
         super(Viewport3D, self).update()
         if self.camera_moving: # TOGGLED ON: take user inputs
             self.camera.update(self.mouse_vector, self.keys, self.dt)
-            if self.moved_last_tick == False:
+            if self.moved_last_tick == False: # prevent drift
                 self.mouse_vector = vector.vec2()
             self.moved_last_tick = False
+        # update buffers here while not drawing
+        # any post-startup changes to buffers here
+        # adding a vmf as it loads would be neat
 
 ### === ????? WHY AREN'T CONTEXTS SHARING ?????? === ###
 # can we just share GL objects between contexts?
