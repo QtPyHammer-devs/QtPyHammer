@@ -186,7 +186,8 @@ class Viewport3D(Viewport2D):
                             ((event.pos().y() / self.height()) * 2) - 1]
             click_vector = vector.vec3(click_coords[0], 0, -click_coords[1])
             ray_origin = vector.vec3(*click_coords).rotate(*self.camera.rotation) + self.camera.position
-            ray_direction = vector.vec3(y=1).rotate(*self.camera.rotation)
+            ray_direction = vector.vec3(y=1).rotate(*-self.camera.rotation)
+            # apply perspective since we may not be casting from dead center
             self.ray = [ray_origin, ray_direction]
         super(Viewport3D, self).mouseReleaseEvent(event)
 
