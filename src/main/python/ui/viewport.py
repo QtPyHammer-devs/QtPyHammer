@@ -222,6 +222,10 @@ class Viewport3D(Viewport2D):
             matrix = glGetFloatv(GL_PROJECTION_MATRIX)
         # try to minimise state changes between draw calls
         # i.e. UseProgram(0) once and only once
+        # group by state changes
+        # want to draw as many objects as possible with the fewest states
+        # also reusing functions with alternate states
+        # e.g. dither for flat shading transparency on certain visgroups
         for func, kwargs in self.draw_calls.items():
             func(self, **kwargs)
 
