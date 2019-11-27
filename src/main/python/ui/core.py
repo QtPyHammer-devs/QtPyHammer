@@ -22,6 +22,8 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None, ctx=None):
         super(QtWidgets.QMainWindow, self).__init__(parent)
         self.ctx = ctx # the fbs ApplicationContext
+        self.setWindowTitle("QtPyHammer")
+        self.setMinimumSize(640, 480)
 
         ... # objects for holding map & session data
         self.actions = {} # {"identifier": action}
@@ -36,8 +38,8 @@ class MainWindow(QtWidgets.QMainWindow):
         #self.actions["File>New"].triggered.connect(ops.core.new_file)
         self.actions["File>Open"] = file_menu.addAction('&Open')
         def set_open_vmf(): # should really be in ops/__init__
-            new_path = ops.open_vmf()
-            self.vmf = new_path
+            filename, self.vmf = ops.open_vmf()
+            self.setWindowTitle("QtPyHammer - {}".format(filename))
             # make a new tab
             self.viewport.executeGL(render.vmf_setup, self.vmf, self.ctx)
             # ^ executeGL sometimes breaks (async?)

@@ -13,7 +13,7 @@ sys.excepthook = except_hook
 
 if __name__ == '__main__':
     appctxt = ApplicationContext()       # 1. Instantiate ApplicationContext
-    
+
     # need QSettings to store: (cached_property)
     #  recent files
     #  OpenGL settings
@@ -29,8 +29,6 @@ if __name__ == '__main__':
     # mount & tag custom data (check the gameinfo.txt for paths, accept others)
 
     window = MainWindow(ctx=appctxt)
-    window.setWindowTitle('QtPyHammer')
-    window.setGeometry(1920, 1080, 640, 480)
     window.showMaximized()
 
     exit_code = appctxt.app.exec_()      # 2. Invoke appctxt.app.exec_()
