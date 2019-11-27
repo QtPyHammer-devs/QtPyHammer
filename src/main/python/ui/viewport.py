@@ -168,11 +168,12 @@ class Viewport3D(Viewport2D):
         self.keys.discard(event.key())
 
     def mouseMoveEvent(self, event):
-        center = QtCore.QPoint(self.width() / 2, self.height() / 2)
-        self.current_mouse_position = vector.vec2(event.pos().x(), event.pos().y())
-        self.mouse_vector = self.current_mouse_position - vector.vec2(center.x(), center.y())
-        QtGui.QCursor.setPos(self.mapToGlobal(center)) # center cursor
-        self.moved_last_tick = True
+        if self.camera_moving: # only reset when the cursor is hidden to
+            center = QtCore.QPoint(self.width() / 2, self.height() / 2)
+            self.current_mouse_position = vector.vec2(event.pos().x(), event.pos().y())
+            self.mouse_vector = self.current_mouse_position - vector.vec2(center.x(), center.y())
+            QtGui.QCursor.setPos(self.mapToGlobal(center)) # center cursor
+            self.moved_last_tick = True
         super(Viewport3D, self).mouseMoveEvent(event)
 
     def mousePressEvent(self, event):
