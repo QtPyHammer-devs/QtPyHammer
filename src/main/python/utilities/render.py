@@ -118,11 +118,11 @@ def vmf_setup(viewport, vmf_object, ctx):
     VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
     glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER)
     glBufferData(GL_ARRAY_BUFFER, len(vertices) * 4,
-                 np.array(vertices, dtype=np.float32), GL_STATIC_DRAW)
+                 np.array(vertices, dtype=np.float32), GL_DYNAMIC_DRAW)
     # Index Buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * 4,
-                 np.array(indices, dtype=np.uint32), GL_STATIC_DRAW)
+                 np.array(indices, dtype=np.uint32), GL_DYNAMIC_DRAW)
     # Vertex Format
     max_attribs = glGetIntegerv(GL_MAX_VERTEX_ATTRIBS)
     # grab indices from the shaders?
