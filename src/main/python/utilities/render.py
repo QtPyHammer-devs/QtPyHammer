@@ -184,7 +184,7 @@ def vmf_setup(viewport, vmf_object, ctx):
     viewport.draw_calls[draw_origin] = {"scale": 64}
     if not GLES_MODE:
         global draw_brushes
-        viewport.draw_calls[draw_brushes] = {"program": program_flat_brush,
+        viewport.draw_calls[draw_brushes] = {"program": program_stripey_brush,
                                              "ranges": [(0, brush_len)]}
                                              # ^ split to hide brushes
         # viewport.draw_calls[draw_displacements] = {"program": program_flat_displacement,
