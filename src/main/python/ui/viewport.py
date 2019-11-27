@@ -94,6 +94,9 @@ class Viewport3D(Viewport2D):
         # RENDERING
         self.buffer_updates = []
         self.draw_calls = dict() # function: {**kwargs}
+        # function shouldn't be the keys
+        # {"groupname": [function, [args], {kwargs}], ...}
+        # would allow modifying the args with a simple string key
         self.draw_distance = 4096 * 4 # Z-plane cull (load from a config)
         self.fov = 90 # how do users change this?
         self.GLES_MODE = False # store full GL version instead?
