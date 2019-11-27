@@ -40,9 +40,8 @@ class MainWindow(QtWidgets.QMainWindow):
         def open_vmf(): # should really be in ops/__init__
             filename, self.vmf = ops.open_vmf()
             self.setWindowTitle("QtPyHammer - {}".format(filename))
-            # make a new tab
             self.viewport.executeGL(render.vmf_setup, self.vmf, self.ctx)
-            # ^ executeGL sometimes breaks (async?)
+            # should be using a fresh viewport & context (i.e a new tab)
         self.actions["File>Open"].triggered.connect(open_vmf)
         self.actions["File>Save"] = file_menu.addAction('&Save')
         self.actions["File>Save"].setEnabled(False)
