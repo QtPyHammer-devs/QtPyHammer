@@ -11,14 +11,21 @@ from OpenGL.GL.shaders import compileShader, compileProgram
 from . import camera, solid, vector, vmf
 
 
-def draw_brushes(viewport, hidden=[], selection=[], program=0):
+def draw_brushes(viewport, program=0, ranges=[]):
     glUseProgram(program)
-    if self.GLES_MODE == True:
-        matrix = glGetFloatv(GL_PROJECTION_MATRIX)
-        # ^ grabbing cpu memory would be better ^
-        glUniformMatrix4fv(self.uniforms[shader], 1, GL_FALSE, matrix)
     # set vertex format
-    glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
+    for start, length in ranges:
+        glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
+
+
+def draw_brushes_GLES(viewport, program=0, matrix_loc=0, ranges=[]):
+    glUseProgram(program)
+    matrix = glGetFloatv(GL_PROJECTION_MATRIX)
+    # ^ grabbing from cpu-side memory would be better ^
+    glUniformMatrix4fv(matrix_loc, 1, GL_FALSE, matrix)
+    # set vertex format
+    for start, length in ranges:
+        glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
 
 
 def vmf_setup(viewport, vmf_object, ctx):
@@ -60,6 +67,7 @@ def vmf_setup(viewport, vmf_object, ctx):
     elif major >= 3 and minor >= 0: # GLES 3.00
         GLES_MODE = True
         version = "300"
+    viewport.GLES_MODE = GLES_MODE
     shader_folder = "shaders/GLSL_{}/".format(version)
     compile_shader = lambda s, t: compileShader(open(ctx.get_resource(shader_folder + s), "rb"), t)
     # Vertex Shaders
@@ -80,11 +88,11 @@ def vmf_setup(viewport, vmf_object, ctx):
     # Uniforms
     if GLES_MODE == True:
         glUseProgram(program_flat_brush)
-        uniform_brush_matrix = glGetUniformLocation(program_flat_brush, 'ModelViewProjectionMatrix')
+        uniform_matrix_flat_brush = glGetUniformLocation(program_flat_brush, 'ModelViewProjectionMatrix')
         glUseProgram(program_flat_displacement)
-        uniform_displacement_matrix = glGetUniformLocation(program_flat_displacement, 'ModelViewProjectionMatrix')
+        uniform_matrix_flat_displacement = glGetUniformLocation(program_flat_displacement, 'ModelViewProjectionMatrix')
         glUseProgram(program_stripey_brush)
-        uniform_stripey_matrix = glGetUniformLocation(program_flat_brush, 'ModelViewProjectionMatrix')
+        uniform_matrix_stripey_brush = glGetUniformLocation(program_stripey_brush, 'ModelViewProjectionMatrix')
         glUseProgram(0)
 
     vertices = []
@@ -104,6 +112,7 @@ def vmf_setup(viewport, vmf_object, ctx):
 
     disp_len = len(indices) - brush_len
     vertices = tuple(itertools.chain(*vertices))
+    # remember what index ranges are for "UNHIDE ALL"
 
     # Vertex Buffer
     VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
@@ -117,6 +126,7 @@ def vmf_setup(viewport, vmf_object, ctx):
     # Vertex Format
     max_attribs = glGetIntegerv(GL_MAX_VERTEX_ATTRIBS)
     # grab indices from the shaders?
+    # hand this to the draw functions
     glEnableVertexAttribArray(0) # vertex_position
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
     glEnableVertexAttribArray(1) # vertex_normal (brush only)
@@ -129,19 +139,19 @@ def vmf_setup(viewport, vmf_object, ctx):
     glEnableVertexAttribArray(3) # editor_colour
     glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
 
-    # keep handles to the new GL objects
-    # dictionaries might be more convenient
-    viewport.buffers = [VERTEX_BUFFER, INDEX_BUFFER]
-    viewport.programs = [program_flat_brush, program_flat_displacement,
-                         program_stripey_brush]
-    # brushes
-    viewport.draw_calls[draw_brushes] = {"hidden": [], "selection": [],
-                                         "program": program_flat_brush}
-    # displacements
-    # viewport.draw_calls[draw_disps] = {"hidden": [], "selection": [],
-    #                                    "program": program_flat_displacement}
-    viewport.GLES_MODE = GLES_MODE
-    if GLES_MODE:
-        viewport.uniforms = {program_flat_brush: uniform_brush_matrix,
-                             program_stripey_brush: uniform_stripey_matrix,
-                             program_flat_displacement: uniform_displacement_matrix}
+    # keep handles to the buffers, shaders & uniforms someplace safe
+    # viewport.buffers = [VERTEX_BUFFER, INDEX_BUFFER]
+    # viewport.programs = [program_flat_brush, program_flat_displacement,
+    #                      program_stripey_brush]
+    if not GLES_MODE:
+        global draw_brushes
+        viewport.draw_calls[draw_brushes] = {"program": program_flat_brush,
+                                             "ranges": [(0, brush_len)]}
+                                             # ^ split to hide brushes
+        # viewport.draw_calls[draw_disps] = {"program": program_flat_displacement,
+        #                               "ranges": [(brush_len + 1, disp_len)]}
+    else:
+        global draw_brushes_GLES
+        viewport.draw_calls[draw_brushes_GLES] = {"program": program_flat_brush,
+                                        "ranges": [(0, brush_len)],
+                                        "matrix_loc": uniform_matrix_flat_brush}

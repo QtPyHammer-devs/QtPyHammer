@@ -91,23 +91,26 @@ class Viewport2D(QtWidgets.QOpenGLWidget): # why not QtWidgets.QGraphicsView ?
 class Viewport3D(Viewport2D):
     def __init__(self, fps=30, view_mode='flat', parent=None):
         super(Viewport3D, self).__init__(fps=fps, parent=parent)
-        self.view_mode = view_mode
-        self.fov = 90 # how do users change this?
-        self.draw_distance = 4096 * 4 # Z-plane cull
-        # model draw distance
-        # ^ to be set & changed in settings ^
-        
+        # RENDERING
+        self.buffer_updates = []
         self.draw_calls = dict() # function: {**kwargs}
+        self.draw_distance = 4096 * 4 # Z-plane cull (load from a config)
+        self.fov = 90 # how do users change this?
         self.GLES_MODE = False # store full GL version instead?
-        self.camera_keys = list()
+        # model draw distance (load from a config)
+        self.view_mode = view_mode
+        # INPUTS
         self.camera_moving = False
         self.cursor_start = QtCore.QPoint()
         self.moved_last_tick = False
         self.keys = set()
         self.current_mouse_position = vector.vec2()
         self.mouse_vector = vector.vec2()
+
+        # RAYCAST DEBUG / VISUALISER
         self.ray = [] # origin, dir
         def draw_ray(viewport):
+            glUseProgram(0)
             if viewport.ray == []:
                 return
             glColor(1, .75, .25)
@@ -235,30 +238,8 @@ class Viewport3D(Viewport2D):
                 glVertex(-y, -x)
         glEnd()
 
-        # print('<<< -- start frame -- >>>')
-        for shader, params in self.draw_calls.items(): # DRAW CALLS
-            # index_map, vertex_format = params
-            start, length = params # index_map
-            glUseProgram(shader)
-            # for a in vertex_format:
-            #     if a not in self.active_attribs:
-            #         glEnableVertexAttribArray(a)
-            #         self.active_attribs.append(a)
-            #         print("added", a)
-            # for a in self.active_attribs[::]:
-            #     if a not in vertex_format:
-            #         glDisableVertexAttribArray(a)
-            #         self.active_attribs.remove(a)
-            #         print("removed", a)
-            if self.GLES_MODE == True:
-                # plug the MVP matrix into the current shader
-                glUniformMatrix4fv(self.uniforms[shader], 1, GL_FALSE, matrix)
-            glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
-            # print("<<< draw call done >>>")
-
-        glUseProgram(0)
-        for f in self.draw_funcs:
-            f(self)
+        for func, kwargs in self.draw_calls.items():
+            func(self, **kwargs)
 
 
     def resizeGL(self, width, height):
@@ -272,9 +253,9 @@ class Viewport3D(Viewport2D):
             if self.moved_last_tick == False: # prevent drift
                 self.mouse_vector = vector.vec2()
             self.moved_last_tick = False
-        # update buffers here while not drawing
-        # any post-startup changes to buffers here
-        # adding a vmf as it loads would be neat
+        for func in self.buffer_updates[::]:
+            func(self)
+            self.buffer_updates.remove(func)
 
 ### === ????? WHY AREN'T CONTEXTS SHARING ?????? === ###
 # can we just share GL objects between contexts?
