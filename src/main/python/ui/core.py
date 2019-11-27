@@ -37,13 +37,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["File>New"].setEnabled(False)
         #self.actions["File>New"].triggered.connect(ops.core.new_file)
         self.actions["File>Open"] = file_menu.addAction('&Open')
-        def set_open_vmf(): # should really be in ops/__init__
+        def open_vmf(): # should really be in ops/__init__
             filename, self.vmf = ops.open_vmf()
             self.setWindowTitle("QtPyHammer - {}".format(filename))
             # make a new tab
             self.viewport.executeGL(render.vmf_setup, self.vmf, self.ctx)
             # ^ executeGL sometimes breaks (async?)
-        self.actions["File>Open"].triggered.connect(set_open_vmf)
+        self.actions["File>Open"].triggered.connect(open_vmf)
         self.actions["File>Save"] = file_menu.addAction('&Save')
         self.actions["File>Save"].setEnabled(False)
         # opens browser on first save / save_as & otherwise is silent
