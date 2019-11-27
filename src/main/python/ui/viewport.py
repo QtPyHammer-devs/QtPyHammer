@@ -183,12 +183,19 @@ class Viewport3D(Viewport2D):
 
     def mouseReleaseEvent(self, event):
         if event.button() == QtCore.Qt.LeftButton:
-            click_coords = [((event.pos().x() / self.width()) * 2) - 1,
-                            ((event.pos().y() / self.height()) * 2) - 1]
-            click_vector = vector.vec3(click_coords[0], 0, -click_coords[1])
-            ray_origin = vector.vec3(*click_coords).rotate(*self.camera.rotation) + self.camera.position
+            # cast from center
+            ray_origin = self.camera.position
             ray_direction = vector.vec3(y=1).rotate(*-self.camera.rotation)
-            # apply perspective since we may not be casting from dead center
+            if not self.camera_moving: # ray may be off-center
+                click_coords = [((event.pos().x() / self.width()) * 2) - 1,
+                                ((event.pos().y() / self.height()) * 2) - 1]
+                click_vector = vector.vec3(click_coords[0], 0, -click_coords[1])
+                ray_origin += vector.vec3(*click_coords).rotate(*self.camera.rotation)
+                self.makeCurrent()
+                matrix = glGetFloatv(GL_PROJECTION_MATRIX)
+                self.doneCurrent()
+                perspective_dir = np.matmul(matrix, [0, 1, 0, 1])
+                # ray_direction = vector.vec3(*perspective_dir[:3])
             self.ray = [ray_origin, ray_direction]
         super(Viewport3D, self).mouseReleaseEvent(event)
 
@@ -212,40 +219,11 @@ class Viewport3D(Viewport2D):
         gluPerspective(self.fov, self.width() / self.height(), 0.1, self.draw_distance)
         self.camera.set()
         if self.GLES_MODE:
-            # far, near = 0.1, self.draw_distance
-            # s = 1 / math.tan(self.fov / 2)
-            # position = self.camera.position
-            ## ModelView * Perspective
-            # MVP = np.array([[s, 0, 0, 0],
-            #                 [0, s, 0, 0],
-            #                 [0, 0, -far / (far - near), -1],
-            #                 [position.x, position.y, (-far * near / (far - near)) + position.z, 0]], np.float32)
-            # T = np.array([[1, 0, 0, -position.x],
-            #               [0, 1, 0, -position.y],
-            #               [0, 0, 1, -position.z],
-            #               [0, 0, 0, 1]], np.float32)
-            ## self.camera.rotation -> 4x4 matrix
-            # matrix = MVP * T # * R
             matrix = glGetFloatv(GL_PROJECTION_MATRIX)
-
-        glUseProgram(0)
-        glBegin(GL_LINES) # GRID
-        glColor(.25, .25, .25)
-        for x in range(-512, 1, 64): # break up to avoid clipping plane warp
-            for y in range(-512, 1, 64):
-                glVertex(x, y)
-                glVertex(x, -y)
-                glVertex(-x, y)
-                glVertex(-x, -y)
-                glVertex(y, x)
-                glVertex(-y, x)
-                glVertex(y, -x)
-                glVertex(-y, -x)
-        glEnd()
-
+        # try to minimise state changes between draw calls
+        # i.e. UseProgram(0) once and only once
         for func, kwargs in self.draw_calls.items():
             func(self, **kwargs)
-
 
     def resizeGL(self, width, height):
         glLoadIdentity()

@@ -17,7 +17,6 @@ def draw_brushes(viewport, program=0, ranges=[]):
     for start, length in ranges:
         glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
 
-
 def draw_brushes_GLES(viewport, program=0, matrix_loc=0, ranges=[]):
     glUseProgram(program)
     matrix = glGetFloatv(GL_PROJECTION_MATRIX)
@@ -27,6 +26,43 @@ def draw_brushes_GLES(viewport, program=0, matrix_loc=0, ranges=[]):
     for start, length in ranges:
         glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
 
+def draw_displacements(viewport, program=0, ranges=[]):
+    ... # WIP
+
+def yield_grid(limit, step): # get 'step' from Grid Scale action (MainWindow)
+    for i in range(0, limit + 1, step): # centers on 0, centering on a vertex / edge would be helpful for uneven grids
+        yield i, -limit
+        yield i, limit
+        yield -limit, i
+        yield limit, i
+        yield limit, -i
+        yield -limit, -i
+        yield -i, limit
+        yield -i, -limit
+
+def draw_grid(viewport, limit=2048, grid_scale=64, colour=(.5, .5, .5)):
+    glUseProgram(0)
+    glLineWidth(1)
+    glBegin(GL_LINES)
+    glColor(*colour)
+    for x, y in yield_grid(limit, grid_scale):
+        glVertex(x, y)
+    glEnd()
+
+def draw_origin(viewport, scale=64):
+    glUseProgram(0)
+    glLineWidth(2)
+    glBegin(GL_LINES)
+    glColor(1, 0, 0)
+    glVertex(0, 0, 0)
+    glVertex(scale, 0, 0)
+    glColor(0, 1, 0)
+    glVertex(0, 0, 0)
+    glVertex(0, scale, 0)
+    glColor(0, 0, 1)
+    glVertex(0, 0, 0)
+    glVertex(0, 0, scale)
+    glEnd()
 
 def vmf_setup(viewport, vmf_object, ctx):
     string_solids = [] # need per solid line numbers for snappy updates
@@ -143,12 +179,15 @@ def vmf_setup(viewport, vmf_object, ctx):
     # viewport.buffers = [VERTEX_BUFFER, INDEX_BUFFER]
     # viewport.programs = [program_flat_brush, program_flat_displacement,
     #                      program_stripey_brush]
+
+    viewport.draw_calls[draw_grid] = {"limit": 2048, "grid_scale":64, "colour": (.5,) * 3}
+    viewport.draw_calls[draw_origin] = {"scale": 64}
     if not GLES_MODE:
         global draw_brushes
         viewport.draw_calls[draw_brushes] = {"program": program_flat_brush,
                                              "ranges": [(0, brush_len)]}
                                              # ^ split to hide brushes
-        # viewport.draw_calls[draw_disps] = {"program": program_flat_displacement,
+        # viewport.draw_calls[draw_displacements] = {"program": program_flat_displacement,
         #                               "ranges": [(brush_len + 1, disp_len)]}
     else:
         global draw_brushes_GLES
