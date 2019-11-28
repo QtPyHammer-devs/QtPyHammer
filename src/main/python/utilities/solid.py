@@ -134,6 +134,7 @@ class solid:
             local_x = (local_y * normal).normalise()
             base = normal * distance
             center = sum(string_tris[i], vector.vec3()) / 3
+            # ^ centered on string triangle, but rounding errors abound ^
             radius = 10 ** 4 # larger than any reasonable brush
             ngon = [center + ((-local_x + local_y) * radius),
                              center + ((local_x + local_y) * radius),
