@@ -187,15 +187,16 @@ class Viewport3D(Viewport2D):
             ray_origin = self.camera.position
             ray_direction = vector.vec3(y=1).rotate(*-self.camera.rotation)
             if not self.camera_moving: # ray may be off-center
-                click_coords = [((event.pos().x() / self.width()) * 2) - 1,
-                                ((event.pos().y() / self.height()) * 2) - 1]
-                click_vector = vector.vec3(click_coords[0], 0, click_coords[1])
-                ray_origin += vector.vec3(*click_coords).rotate(*-self.camera.rotation)
+                click = vector.vec2(((event.pos().x() / self.width()) * 2) - 1,
+                                    ((event.pos().y() / self.height()) * 2) - 1)
+                # doesn't appear to compensate for aspect ratio
+                ray_origin += vector.vec3(click.x, 0, -click.y).rotate(*-self.camera.rotation)
                 self.makeCurrent()
                 matrix = glGetFloatv(GL_PROJECTION_MATRIX)
                 self.doneCurrent()
-                perspective_dir = np.matmul(matrix, [0, 1, 0, 1])
-                # ray_direction = vector.vec3(*perspective_dir[:3])
+                perspective_dir = np.matmul(matrix, [click.x, -click.y, 1, 1])
+                # ^ aligns with camera but doesn't shift out far enough
+                ray_direction = vector.vec3(*perspective_dir[:3]).normalise()
             self.ray = [ray_origin, ray_direction]
         super(Viewport3D, self).mouseReleaseEvent(event)
 
