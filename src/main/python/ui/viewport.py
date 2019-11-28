@@ -18,6 +18,7 @@ camera.keybinds = {'FORWARD': [QtCore.Qt.Key_W], 'BACK': [QtCore.Qt.Key_S],
                    'UP': [QtCore.Qt.Key_Q, QtCore.Qt.UpArrow],
                    'DOWN': [QtCore.Qt.Key_E, QtCore.Qt.DownArrow]}
 camera.sensitivity = 2
+# ^ connect to settings ^
 
 view_modes = ['flat', 'textured', 'wireframe']
 # "silhouette" view mode, lights on flat gray brushwork & props
@@ -31,10 +32,9 @@ class Viewport2D(QtWidgets.QOpenGLWidget): # why not QtWidgets.QGraphicsView ?
         self.timer.start(1000 / fps)
         self.dt = 1 / fps # will desynchronise, use time.time()
         self.fps = fps
-        # set render resolution?
+        # lower resolution and scale up option
         self.camera = camera.freecam(None, None, 128)
-        self.draw_calls = dict() # shader: (index buffer start, end)
-        self.active_attribs = [] # list of active vertex atrribs
+        self.draw_calls = dict() # function: {**kwargs}
 
     def executeGL(self, func, *args, **kwargs): # best hack ever
         """Execute func(self, *args, **kwargs) in this viewport's glContext"""
@@ -84,60 +84,79 @@ class Viewport2D(QtWidgets.QOpenGLWidget): # why not QtWidgets.QGraphicsView ?
         glEnd()
         # do draw_calls
 
-    def update(self):
-        super(Viewport2D, self).update()
-        # update animations (TICKS)
-        # just to keep logic seperate
-        # super().update() calls paintGL
+    def update(self): # once every tick
+        super(Viewport2D, self).update() # calls paintGL
 
 
 class Viewport3D(Viewport2D):
     def __init__(self, fps=30, view_mode='flat', parent=None):
         super(Viewport3D, self).__init__(fps=fps, parent=parent)
-        self.view_mode = view_mode
+        # RENDERING
+        self.buffer_updates = []
+        self.draw_calls = dict() # function: {**kwargs}
+        # function shouldn't be the keys
+        # {"groupname": [function, [args], {kwargs}], ...}
+        # would allow modifying the args with a simple string key
+        self.draw_distance = 4096 * 4 # Z-plane cull (load from a config)
         self.fov = 90 # how do users change this?
+        self.GLES_MODE = False # store full GL version instead?
+        # model draw distance (load from a config)
+        self.view_mode = view_mode
+        # INPUTS
         self.camera_moving = False
-        self.camera_keys = list()
-        self.draw_calls = dict() # shader: (start, length)
-        self.GLES_MODE = False
+        self.cursor_start = QtCore.QPoint()
+        self.moved_last_tick = False
         self.keys = set()
         self.current_mouse_position = vector.vec2()
-        self.previous_mouse_position = vector.vec2()
         self.mouse_vector = vector.vec2()
-        self._perspective = (90, 0.1, 10234)
+
+        # RAYCAST DEBUG / VISUALISER
+        self.ray = [] # origin, dir
+        def draw_ray(viewport):
+            glUseProgram(0)
+            if viewport.ray == []:
+                return
+            glColor(1, .75, .25)
+            glLineWidth(2)
+            glBegin(GL_LINES)
+            glVertex(*viewport.ray[0])
+            glVertex(*(viewport.ray[1] * viewport.draw_distance) + viewport.ray[0])
+            glEnd()
+            glLineWidth(1)
+        self.draw_calls[draw_ray] = {}
 
     def changeViewMode(self, view_mode): # overlay viewmode button
-        # if GLES_MODE = True
-        # shaders MUST be used
         if self.view_mode == view_mode:
             return # exit, no changes needed
-        if self.view_mode == 'wireframe':
+        if self.view_mode == "flat":
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
-        if view_mode == 'textured':
-            glEnable(GL_TEXTURE_2D)
-        else:
             glDisable(GL_TEXTURE_2D)
-        if view_mode == 'wireframe':
+            # flat shaders
+        elif view_mode == "textured":
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
+            glEnable(GL_TEXTURE_2D)
+            # textured shaders
+            # how do textures get looked up?
+        elif view_mode == "wireframe":
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
-            return # polygon mode, shaders off, textures off
-        # change shader to flat (flat / wireframe)
-        # or to complex (textured)
+            glDisable(GL_TEXTURE_2D)
+            # flat shaders
 
     def keyPressEvent(self, event):
         self.keys.add(event.key())
         if event.key() == QtCore.Qt.Key_Z:
             self.camera_moving = False if self.camera_moving else True
-            # remember where the cursor was when tracking
-            # move to center while hidden (move back after every update)
-            # move mouse back to starting position once finished
+            # https://stackoverflow.com/questions/9774929/qt-keeping-mouse-centered
             if self.camera_moving:
                 self.setMouseTracking(True)
+                self.cursor_start = QtGui.QCursor.pos()
+                center = QtCore.QPoint(self.width() / 2, self.height() / 2)
+                QtGui.QCursor.setPos(self.mapToGlobal(center))
                 self.grabMouse()
                 self.setCursor(QtCore.Qt.BlankCursor)
-                # keep teleporting the mouse back to the center
-                # teleport to entry point when free
             else:
                 self.setMouseTracking(False)
+                QtGui.QCursor.setPos(self.cursor_start)
                 self.unsetCursor()
                 self.releaseMouse()
         if event.key() == QtCore.Qt.Key_Escape and self.camera_moving:
@@ -149,9 +168,37 @@ class Viewport3D(Viewport2D):
         self.keys.discard(event.key())
 
     def mouseMoveEvent(self, event):
-        self.previous_mouse_position = self.current_mouse_position # use center (we teleport back there after each camera.update())
-        self.current_mouse_position = vector.vec2(event.pos().x(), event.pos().y())
-        self.mouse_vector = self.current_mouse_position - self.previous_mouse_position
+        if self.camera_moving: # only reset when the cursor is hidden to
+            center = QtCore.QPoint(self.width() / 2, self.height() / 2)
+            self.current_mouse_position = vector.vec2(event.pos().x(), event.pos().y())
+            self.mouse_vector = self.current_mouse_position - vector.vec2(center.x(), center.y())
+            QtGui.QCursor.setPos(self.mapToGlobal(center)) # center cursor
+            self.moved_last_tick = True
+        super(Viewport3D, self).mouseMoveEvent(event)
+
+    def mousePressEvent(self, event):
+        button = event.button()
+        position = event.pos()
+        super(Viewport3D, self).mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        if event.button() == QtCore.Qt.LeftButton:
+            # cast from center
+            ray_origin = self.camera.position
+            ray_direction = vector.vec3(y=1).rotate(*-self.camera.rotation)
+            if not self.camera_moving: # ray may be off-center
+                click = vector.vec2(((event.pos().x() / self.width()) * 2) - 1,
+                                    ((event.pos().y() / self.height()) * 2) - 1)
+                # doesn't appear to compensate for aspect ratio
+                ray_origin += vector.vec3(click.x, 0, -click.y).rotate(*-self.camera.rotation)
+                self.makeCurrent()
+                matrix = glGetFloatv(GL_PROJECTION_MATRIX)
+                self.doneCurrent()
+                perspective_dir = np.matmul(matrix, [click.x, -click.y, 1, 1])
+                # ^ aligns with camera but doesn't shift out far enough
+                ray_direction = vector.vec3(*perspective_dir[:3]).normalise()
+            self.ray = [ray_origin, ray_direction]
+        super(Viewport3D, self).mouseReleaseEvent(event)
 
     def wheelEvent(self, event):
         if self.camera_moving:
@@ -161,7 +208,7 @@ class Viewport3D(Viewport2D):
         glClearColor(0, 0, 0, 0)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        gluPerspective(self.fov, self.width() / self.height(), 0.1, 4096 * 4)
+        gluPerspective(self.fov, self.width() / self.height(), 0.1, self.draw_distance)
         glEnable(GL_DEPTH_TEST)
 ##        glEnable(GL_CULL_FACE)
         glPolygonMode(GL_BACK, GL_LINE)
@@ -170,64 +217,18 @@ class Viewport3D(Viewport2D):
 
     def paintGL(self):
         glLoadIdentity()
-        gluPerspective(self.fov, self.width() / self.height(), 0.1, 4096 * 4)
+        gluPerspective(self.fov, self.width() / self.height(), 0.1, self.draw_distance)
         self.camera.set()
         if self.GLES_MODE:
-            # far, near = 0.1, 4096 # same as gluPerspective args ^^^
-            # s = 1 / math.tan(self.fov / 2)
-            # ModelView * Perspective
-            # MVP = np.array([[s, 0, 0, 0],
-            #                 [0, s, 0, 0],
-            #                 [0, 0, -far / (far - near), -1],
-            #                 [self.camera.position.x, self.camera.position.y, (-far * near / (far - near)) + self.camera.position.z, 0]], np.float32)
-            # position = self.camera.position
-            # T = np.array([[1, 0, 0, -position.x],
-            #               [0, 1, 0, -position.y],
-            #               [0, 0, 1, -position.z],
-            #               [0, 0, 0, 1]], np.float32)
-            # self.camera.rotation -> 4x4 matrix
-            # matrix = MVP * T # * R
             matrix = glGetFloatv(GL_PROJECTION_MATRIX)
-
-        glUseProgram(0)
-        glBegin(GL_LINES) # GRID
-        glColor(.25, .25, .25)
-        for x in range(-512, 1, 64): # break up to avoid clipping plane warp
-            for y in range(-512, 1, 64):
-                glVertex(x, y)
-                glVertex(x, -y)
-                glVertex(-x, y)
-                glVertex(-x, -y)
-                glVertex(y, x)
-                glVertex(-y, x)
-                glVertex(y, -x)
-                glVertex(-y, -x)
-        glEnd()
-
-        # print('<<< -- start frame -- >>>')
-        for shader, params in self.draw_calls.items(): # DRAW CALLS
-            # index_map, vertex_format = params
-            start, length = params # index_map
-            glUseProgram(shader)
-
-            # for a in vertex_format:
-            #     if a not in self.active_attribs:
-            #         glEnableVertexAttribArray(a)
-            #         self.active_attribs.append(a)
-            #         print("added", a)
-            # for a in self.active_attribs[::]:
-            #     if a not in vertex_format:
-            #         glDisableVertexAttribArray(a)
-            #         self.active_attribs.remove(a)
-            #         print("removed", a)
-
-            if self.GLES_MODE == True:
-                # plug the MVP matrix into the current shader
-                glUniformMatrix4fv(self.uniforms[shader], 1, GL_FALSE, matrix)
-
-            glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
-            # print("<<< draw call done >>>")
-
+        # try to minimise state changes between draw calls
+        # i.e. UseProgram(0) once and only once
+        # group by state changes
+        # want to draw as many objects as possible with the fewest states
+        # also reusing functions with alternate states
+        # e.g. dither for flat shading transparency on certain visgroups
+        for func, kwargs in self.draw_calls.items():
+            func(self, **kwargs)
 
     def resizeGL(self, width, height):
         glLoadIdentity()
@@ -235,12 +236,17 @@ class Viewport3D(Viewport2D):
 
     def update(self):
         super(Viewport3D, self).update()
-        if self.camera_moving:
+        if self.camera_moving: # TOGGLED ON: take user inputs
             self.camera.update(self.mouse_vector, self.keys, self.dt)
-            self.mouse_vector = vector.vec2()
-            # teleport mouse to screen center instead ([0, 0] or something else?)
+            if self.moved_last_tick == False: # prevent drift
+                self.mouse_vector = vector.vec2()
+            self.moved_last_tick = False
+        for func in self.buffer_updates[::]:
+            func(self)
+            self.buffer_updates.remove(func)
 
 ### === ????? WHY AREN'T CONTEXTS SHARING ?????? === ###
+# can we just share GL objects between contexts?
 class QuadViewport(QtWidgets.QWidget): # busted, borked, no work good
     def __init__(self, parent=None):
         super(QuadViewport, self).__init__(parent)

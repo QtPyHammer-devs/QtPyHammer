@@ -122,8 +122,8 @@ class solid:
         self.source = solid_namespace # preserve (for debug & accuracy)
         self.id = int(self.source.id)
         self.colour = tuple(int(x) / 255 for x in solid_namespace.editor.color.split())
-        string_planes = [triangle_of(s) for s in solid_namespace.sides]
-        self.planes = [plane_of(*t) for t in string_planes]
+        string_tris = [triangle_of(s) for s in solid_namespace.sides]
+        self.planes = [plane_of(*t) for t in string_tris]
         self.is_displacement = False
 
         self.faces = []
@@ -132,14 +132,16 @@ class solid:
             non_parallel = vector.vec3(z=-1) if abs(normal.z) != 1 else vector.vec3(y=-1)
             local_y = (non_parallel * normal).normalise()
             local_x = (local_y * normal).normalise()
-            center = normal * distance # Center on string triangle
+            base = normal * distance
+            center = sum(string_tris[i], vector.vec3()) / 3
+            # ^ centered on string triangle, but rounding errors abound ^
             radius = 10 ** 4 # larger than any reasonable brush
             ngon = [center + ((-local_x + local_y) * radius),
                              center + ((local_x + local_y) * radius),
                              center + ((local_x + -local_y) * radius),
                              center + ((-local_x + -local_y) * radius)]
             for other_plane in self.planes:
-                if other_plane == plane: # what about the inverse plane?
+                if other_plane == plane or plane[0] == -other_plane[0]:
                     continue
                 ngon, offcut = clip(ngon, other_plane).values() # back, front
             self.faces.append(ngon)
