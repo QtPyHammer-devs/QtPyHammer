@@ -99,12 +99,12 @@ def vmf_setup(viewport, vmf_object, ctx):
     minor = glGetIntegerv(GL_MINOR_VERSION)
     GLES_MODE = False
     if major >= 4 and minor >= 5: # GLSL 450
-        version = "450"
+        version = "GLSL_450"
     elif major >= 3 and minor >= 0: # GLES 3.00
         GLES_MODE = True
-        version = "300"
+        version = "GLES_300"
     viewport.GLES_MODE = GLES_MODE
-    shader_folder = "shaders/GLSL_{}/".format(version)
+    shader_folder = "shaders/{}/".format(version)
     compile_shader = lambda s, t: compileShader(open(ctx.get_resource(shader_folder + s), "rb"), t)
     # Vertex Shaders
     vert_shader_brush =  compile_shader("brush.vert", GL_VERTEX_SHADER)
