@@ -65,24 +65,8 @@ def draw_origin(viewport, scale=64):
     glEnd()
 
 def vmf_setup(viewport, vmf_object, ctx):
-    string_solids = [] # need per solid line numbers for snappy updates
-    if hasattr(vmf_object.world, "solid"):
-        vmf_object.world.solids = [vmf_object.world.solid]
-    if not hasattr(vmf_object.world, "solids"):
-        vmf_object.world.solids = []
-    for brush in vmf_object.world.solids:
-        string_solids.append(brush)
-    if hasattr(vmf_object, "entity"):
-        vmf_object.entities = [vmf_object.world.entity]
-    if not hasattr(vmf_object, "entities"):
-        vmf_object.entities = []
-    for entity in vmf_object.entities: # do some of these cases never occur?
-        if hasattr(entity, "solid"):
-            if isinstance(entity.solid, vmf.namespace):
-                string_solids.append(entity.solid)
-        if hasattr(entity, "solids"):
-            if isinstance(entity.solids[0], vmf.namespace):
-                string_solids += entity.solids
+    string_solids = []
+    ... # passed in by MapTab
 
     solids = []
     global solid

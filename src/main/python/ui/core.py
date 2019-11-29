@@ -13,10 +13,6 @@ sys.path.insert(0, "../") # sibling packages
 import ops # connects buttons to functions
 from utilities import render
 
-def except_hook(cls, exception, traceback): # nessecary for debugging SLOTS
-    sys.__excepthook__(cls, exception, traceback)
-sys.excepthook = except_hook
-
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None, ctx=None):

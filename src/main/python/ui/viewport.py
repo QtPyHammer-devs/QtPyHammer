@@ -182,7 +182,8 @@ class Viewport3D(Viewport2D):
         super(Viewport3D, self).mousePressEvent(event)
 
     def mouseReleaseEvent(self, event):
-        if event.button() == QtCore.Qt.LeftButton:
+        if event.button() == QtCore.Qt.LeftButton: # register as a QAction? rebindable
+            # send a signal / slot
             # cast from center
             ray_origin = self.camera.position
             ray_direction = vector.vec3(y=1).rotate(*-self.camera.rotation)
