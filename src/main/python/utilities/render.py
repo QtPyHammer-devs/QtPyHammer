@@ -65,24 +65,8 @@ def draw_origin(viewport, scale=64):
     glEnd()
 
 def vmf_setup(viewport, vmf_object, ctx):
-    string_solids = [] # need per solid line numbers for snappy updates
-    if hasattr(vmf_object.world, "solid"):
-        vmf_object.world.solids = [vmf_object.world.solid]
-    if not hasattr(vmf_object.world, "solids"):
-        vmf_object.world.solids = []
-    for brush in vmf_object.world.solids:
-        string_solids.append(brush)
-    if hasattr(vmf_object, "entity"):
-        vmf_object.entities = [vmf_object.world.entity]
-    if not hasattr(vmf_object, "entities"):
-        vmf_object.entities = []
-    for entity in vmf_object.entities: # do some of these cases never occur?
-        if hasattr(entity, "solid"):
-            if isinstance(entity.solid, vmf.namespace):
-                string_solids.append(entity.solid)
-        if hasattr(entity, "solids"):
-            if isinstance(entity.solids[0], vmf.namespace):
-                string_solids += entity.solids
+    string_solids = []
+    ... # passed in by MapTab
 
     solids = []
     global solid
@@ -99,12 +83,12 @@ def vmf_setup(viewport, vmf_object, ctx):
     minor = glGetIntegerv(GL_MINOR_VERSION)
     GLES_MODE = False
     if major >= 4 and minor >= 5: # GLSL 450
-        version = "450"
+        version = "GLSL_450"
     elif major >= 3 and minor >= 0: # GLES 3.00
         GLES_MODE = True
-        version = "300"
+        version = "GLES_300"
     viewport.GLES_MODE = GLES_MODE
-    shader_folder = "shaders/GLSL_{}/".format(version)
+    shader_folder = "shaders/{}/".format(version)
     compile_shader = lambda s, t: compileShader(open(ctx.get_resource(shader_folder + s), "rb"), t)
     # Vertex Shaders
     vert_shader_brush =  compile_shader("brush.vert", GL_VERTEX_SHADER)
