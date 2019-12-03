@@ -20,9 +20,9 @@ class selection_mode(Enum):
 
 
 class MapTab(QtWidgets.QTabWidget):
-    def __init__(self, vmf_file, parent=None):
+    def __init__(self, vmf_namespace, parent=None):
         super(MapTab, self).__init__(parent)
-        self.vmf = ops.vmf.interface(vmf_file)
+        self.vmf = ops.vmf.interface(vmf_namespace)
         self.render_manager = render.manager() # holds a map of render state and buffers
         # warn if memory low
         # 2nd progress bar

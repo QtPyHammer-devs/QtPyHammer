@@ -242,12 +242,20 @@ class manager:
         glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
 
         # Buffers
-        # Vertex Buffer
+        KB = 1024
+        MB = 1024 * 1024
+        memory_limit = 512 * MB # defined in settings
         VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
-        glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER)
-        # glBufferData(GL_ARRAY_BUFFER, len(vertices) * 4,
-        #              np.array(vertices, dtype=np.float32), GL_DYNAMIC_DRAW)
+        # Vertex Buffer
+        glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER) # GL_DYNAMIC_DRAW
         # Index Buffer
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
-        # glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * 4,
-        #              np.array(indices, dtype=np.uint32), GL_DYNAMIC_DRAW)
+
+    def add_brushes(self, *brushes):
+        vertices = []
+        indices = []
+        for brush in brushes:
+            vertices.append(brush.vertices)
+            # add greatest current index to indices
+            indices.append(brush.indices)
+            # add brush to buffer map
