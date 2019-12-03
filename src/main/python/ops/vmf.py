@@ -3,14 +3,13 @@ sys.path.insert(0, "../") # sibling packages
 # import ops.timeline as timeline
 # from utilities import entity
 from utilities import solid
+from utilities.vmf import namespace_from
 
 
 class interface:
     def __init__(self, parent, vmf_file):
         self.parent = parent # MapTab holding this interface
-        # start progress bar
-        vmf = utilities.vmf.load(vmf_file) # len(lines) / i -> progress
-        self.source_vmf = vmf
+        self.source_vmf = namespace_from(vmf_file) # len(lines) / i -> progress
         self.skybox = vmf.world.skyname
         self.detail_material = vmf.world.detailmaterial
         self.detail_vbsp = vmf.world.detailvbsp
@@ -35,13 +34,14 @@ class interface:
         #     self.entities.append(vmf.world.entity)
         # self.entities = [entity.import(e) for e in self.entities] # len() / i -> progress
 
-    def add_brush(self, brush):
-        # self.parent.edit_timeline.add(timeline.op.BRUSH_ADD, brush, index)
-        self.brushes.append(brush)
-        # self.parent.render_manager
+    def add_brushes(self, *brushes):
+        # self.parent.edit_timeline.add(timeline.op.BRUSH_ADD, brushes)
+        for brush in brushes:
+            self.brushes.append(brush)
+        # self.parent.render_manager.add_brushes(*brushes)
 
     def delete_brush(self, index):
-        # self.parent.edit_timeline.add(timeline.op.BRUSH_DEL, brush, index)
+        # self.parent.edit_timeline.add(timeline.op.BRUSH_DEL, brushes)
         self.brushes.pop(index)
 
     def modify_brush(self, index, modifier, *args, **kwargs): # triggered by QActions

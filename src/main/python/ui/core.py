@@ -325,5 +325,16 @@ class MainWindow(QtWidgets.QMainWindow):
         # self.viewport = viewport.Viewport3D(60)
         # self.viewport.buffer_updates.append(lambda v: render.vmf_setup(v, self.vmf, self.ctx))
         # # do we need to pass the context down?
+        self.tabmaster = QtWidgets.QTabWidget()
+        self.setCentralWidget(self.tabmaster)
         # self.setCentralWidget(self.viewport)
         # self.viewport.setFocus()
+
+    def new_tab(self, vmf_path=None):
+        if vmf_path != None:
+            filename = os.path.basename(vmf_path)
+        else:
+            filename = "untitled"
+            vmf_path = self.ctx.get_resource("vmfs/blank.vmf")
+        tab = tabs.Workspace(vmf_path)
+        self.tabmaster.addTab(tab, filename)

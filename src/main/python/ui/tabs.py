@@ -9,7 +9,7 @@ sys.path.insert(0, "../") # sibling packages
 import ops
 # import ops.timeline
 # from utilities import entity
-from utilities import render, solid
+from utilities import render, solid, vmf
 
 
 class selection_mode(Enum):
@@ -19,10 +19,10 @@ class selection_mode(Enum):
     face = 3
 
 
-class MapTab(QtWidgets.QTabWidget):
-    def __init__(self, vmf_namespace, parent=None):
-        super(MapTab, self).__init__(parent)
-        self.vmf = ops.vmf.interface(vmf_namespace)
+class Workspace(QtWidgets.QWidget):
+    def __init__(self, vmf_path, parent=None):
+        super(Workspace, self).__init__(parent)
+        self.vmf = ops.vmf.interface(vmf_path)
         self.render_manager = render.manager() # holds a map of render state and buffers
         # warn if memory low
         # 2nd progress bar
