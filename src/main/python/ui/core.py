@@ -322,8 +322,8 @@ class MainWindow(QtWidgets.QMainWindow):
         # # cut copy paste | cordon radius | TL <TL> | DD 3D DW DA |
         # # compile helpers 2D_models fade CM prop_detail NO_DRAW
 
-        self.viewport = viewport.Viewport3D(60)
-        self.viewport.buffer_updates.append(lambda v: render.vmf_setup(v, self.vmf, self.ctx))
-        # do we need to pass the context down?
-        self.setCentralWidget(self.viewport)
-        self.viewport.setFocus()
+        # self.viewport = viewport.Viewport3D(60)
+        # self.viewport.buffer_updates.append(lambda v: render.vmf_setup(v, self.vmf, self.ctx))
+        # # do we need to pass the context down?
+        # self.setCentralWidget(self.viewport)
+        # self.viewport.setFocus()

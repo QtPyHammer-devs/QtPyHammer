@@ -10,16 +10,24 @@ class interface:
         self.parent = parent # MapTab holding this interface
         # start progress bar
         vmf = utilities.vmf.load(vmf_file) # len(lines) / i -> progress
-        self.raw = vmf
+        self.source_vmf = vmf
         self.skybox = vmf.world.skyname
         self.detail_material = vmf.world.detailmaterial
         self.detail_vbsp = vmf.world.detailvbsp
-        self.brushes = []
+        raw_brushes = []
         if hasattr(vmf.world, "solids"):
-            self.brushes = vmf.world.solids
+            raw_brushes = vmf.world.solids
         elif hasattr(vmf.world, "solid"):
-            self.brushes.append(vmf.world.solid)
-        self.solids = [solid.import(b) for b in self.brushes] # len() / i -> progress
+            raw_brushes.append(vmf.world.solid)
+        self.brushes = [] # len() / i -> progress
+        for i, brush in enumerate(raw_brushes):
+            try:
+                valid_solid = solid.import(brush)
+            except Exception as exc:
+                report = "Solid #{} id: {} is invalid.\n{}".format(i, brush.id, exc)
+                self.import_log.append(report)
+            else:
+                self.brushes.append(valid_solid)
         # self.entities = []
         # if hasattr(vmf, "entities"):
         #     self.entities = vmf.world.entities

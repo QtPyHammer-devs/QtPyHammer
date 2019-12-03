@@ -1,5 +1,6 @@
 """QtPyHammer MapTab that holds and manages an open .vmf"""
 from enum import Enum
+import sys
 # Third-party
 from PyQt5 import QtWidgets, QtCore
 # Local
@@ -18,9 +19,9 @@ class selection_mode(Enum):
     face = 3
 
 
-class MapTab(QTabWidget):
+class MapTab(QtWidgets.QTabWidget):
     def __init__(self, vmf_file, parent=None):
-        super(QTabWidget, self).__init__(parent)
+        super(MapTab, self).__init__(parent)
         self.vmf = ops.vmf.interface(vmf_file)
         self.render_manager = render.manager() # holds a map of render state and buffers
         # warn if memory low
@@ -32,6 +33,7 @@ class MapTab(QTabWidget):
         self.viewport = viewport.Viewport3D(60) # grab all render updates from viewport.parent.render_manager
         # self.viewport.raycast.connect(self.raycast)
         self.setCentralWidget(self.viewport)
+        self.viewport.setFocus()
         # Viewport splitter(s)
         # tab toolbar (grid controls)
         self.selection_mode = selection_mode.group

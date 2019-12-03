@@ -178,3 +178,76 @@ def vmf_setup(viewport, vmf_object, ctx):
         viewport.draw_calls[draw_brushes_GLES] = {"program": program_flat_brush,
                                         "ranges": [(0, brush_len)],
                                         "matrix_loc": uniform_matrix_flat_brush}
+
+def merge_spans(*spans):
+    spans = sorted(spans, key=lambda s: s[0]) # order by start
+    start = spans[0][0] # start of first span
+    for span in spans:
+        start, length = span
+
+
+class manager:
+    def __init__(self, ctx):
+        major = glGetIntegerv(GL_MAJOR_VERSION)
+        minor = glGetIntegerv(GL_MINOR_VERSION)
+        GLES_MODE = False
+        if major >= 4 and minor >= 5:
+            self.shader_version = "GLSL_450"
+        elif major >= 3 and minor >= 0:
+            GLES_MODE = True
+            self.shader_version = "GLES_300"
+        viewport.GLES_MODE = GLES_MODE
+        shader_folder = "shaders/{}/".format(self.shader_version)
+        compile_shader = lambda s, t: compileShader(open(ctx.get_resource(shader_folder + s), "rb"), t)
+        # Vertex Shaders
+        vert_brush =  compile_shader("brush.vert", GL_VERTEX_SHADER)
+        vert_displacement = compile_shader("displacement.vert", GL_VERTEX_SHADER)
+        # Fragment Shaders
+        frag_flat_brush = compile_shader("flat_brush.frag", GL_FRAGMENT_SHADER)
+        frag_flat_displacement = compile_shader("flat_displacement.frag", GL_FRAGMENT_SHADER)
+        frag_stripey_brush = compile_shader("stripey_brush.frag", GL_FRAGMENT_SHADER)
+        # Programs
+        self.shaders = {} # name: program
+        self.shader["brush_flat"] = compileProgram(vert_brush, frag_flat_brush)
+        self.shader["displacement_flat"] = compileProgram(vert_displacement, frag_flat_displacement)
+        self.shader["brush_stripey"] = compileProgram(vert_brush, frag_stripey_brush)
+        glLinkProgram(self.shader["brush_flat"])
+        glLinkProgram(self.shader["displacement_flat"])
+        glLinkProgram(self.shader["brush_stripey"])
+
+        # Uniforms
+        self.uniforms = {} # shader: {uniform_name: location, ...}
+        if GLES_MODE == True:
+            glUseProgram(program_flat_brush)
+            self.uniforms["brush_flat"]["matrix"] = glGetUniformLocation(self.shader["brush_flat"], 'ModelViewProjectionMatrix')
+            glUseProgram(program_flat_displacement)
+            self.uniforms["displacement_flat"]["matrix"] = glGetUniformLocation(self.shader["displacement_flat"], 'ModelViewProjectionMatrix')
+            glUseProgram(program_stripey_brush)
+            self.uniforms["brush_stripey"]["matrix"] = glGetUniformLocation(self.shader["brush_stripey"], 'ModelViewProjectionMatrix')
+            glUseProgram(0)
+
+        # Vertex Formats
+        max_attribs = glGetIntegerv(GL_MAX_VERTEX_ATTRIBS)
+        # grab indices from the shaders?
+        glEnableVertexAttribArray(0) # vertex_position
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
+        glEnableVertexAttribArray(1) # vertex_normal (brush only)
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 44, GLvoidp(12))
+        # glEnableVertexAttribArray(4) # blend_alpha (displacement only)
+        glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(12))
+        # ^ replaces vertex_normal if displacement ^
+        glEnableVertexAttribArray(2) # vertex_uv
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
+        glEnableVertexAttribArray(3) # editor_colour
+        glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
+
+        # Buffers
+        # Vertex Buffer
+        VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
+        glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER)
+        # glBufferData(GL_ARRAY_BUFFER, len(vertices) * 4,
+        #              np.array(vertices, dtype=np.float32), GL_DYNAMIC_DRAW)
+        # Index Buffer
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
+        # glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * 4,
+        #              np.array(indices, dtype=np.uint32), GL_DYNAMIC_DRAW)
