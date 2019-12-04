@@ -2,7 +2,7 @@
 from enum import Enum
 import sys
 # Third-party
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtCore, QtGui, QtWidgets
 # Local
 from . import viewport # ui
 sys.path.insert(0, "../") # sibling packages
@@ -22,8 +22,8 @@ class selection_mode(Enum):
 class Workspace(QtWidgets.QWidget):
     def __init__(self, vmf_path, parent=None):
         super(Workspace, self).__init__(parent)
-        self.vmf = ops.vmf.interface(vmf_path)
-        self.render_manager = render.manager() # holds a map of render state and buffers
+        self.vmf = ops.vmf.interface(self, open(vmf_path))
+        self.render_manager = render.manager(parent.ctx)
         # warn if memory low
         # 2nd progress bar
         for b in self.vmf.brushes: # len() / i -> progress

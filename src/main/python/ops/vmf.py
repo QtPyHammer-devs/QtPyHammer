@@ -1,4 +1,5 @@
 """Interface for editing .vmf files and updating the associated edit timeline"""
+import sys
 sys.path.insert(0, "../") # sibling packages
 # import ops.timeline as timeline
 # from utilities import entity
@@ -8,20 +9,20 @@ from utilities.vmf import namespace_from
 
 class interface:
     def __init__(self, parent, vmf_file):
-        self.parent = parent # MapTab holding this interface
+        self.parent = parent # to update the MapTab's render manager
         self.source_vmf = namespace_from(vmf_file) # len(lines) / i -> progress
-        self.skybox = vmf.world.skyname
-        self.detail_material = vmf.world.detailmaterial
-        self.detail_vbsp = vmf.world.detailvbsp
+        self.skybox = self.source_vmf.world.skyname
+        self.detail_material = self.source_vmf.world.detailmaterial
+        self.detail_vbsp = self.source_vmf.world.detailvbsp
         raw_brushes = []
-        if hasattr(vmf.world, "solids"):
-            raw_brushes = vmf.world.solids
-        elif hasattr(vmf.world, "solid"):
-            raw_brushes.append(vmf.world.solid)
+        if hasattr(self.source_vmf.world, "solids"):
+            raw_brushes = self.source_vmf.world.solids
+        elif hasattr(self.source_vmf.world, "solid"):
+            raw_brushes.append(self.source_vmf.world.solid)
         self.brushes = [] # len() / i -> progress
         for i, brush in enumerate(raw_brushes):
             try:
-                valid_solid = solid.import(brush)
+                valid_solid = solid.load(brush)
             except Exception as exc:
                 report = "Solid #{} id: {} is invalid.\n{}".format(i, brush.id, exc)
                 self.import_log.append(report)
@@ -40,9 +41,11 @@ class interface:
             self.brushes.append(brush)
         # self.parent.render_manager.add_brushes(*brushes)
 
-    def delete_brush(self, index):
+    def delete_brushes(self, *indices):
         # self.parent.edit_timeline.add(timeline.op.BRUSH_DEL, brushes)
-        self.brushes.pop(index)
+        indices = sorted(indices)
+        for i, index in enumerate(indices):
+            self.brushes.pop(index - i)
 
     def modify_brush(self, index, modifier, *args, **kwargs): # triggered by QActions
         # self.parent.edit_timeline.add(timeline.op.BRUSH_MOD, brush, index, mod, args, kwargs)

@@ -7,6 +7,7 @@ import traceback
 import numpy as np
 from OpenGL.GL import *
 from OpenGL.GL.shaders import compileShader, compileProgram
+from PyQt5 import QtGui
 
 from . import camera, solid, vector, vmf
 
@@ -188,6 +189,14 @@ def merge_spans(*spans):
 
 class manager:
     def __init__(self, ctx):
+        self.gl_context = QtGui.QOpenGLContext()
+        self.offscreen_surface = QtGui.QOffscreenSurface()
+        if not self.offscreen_surface.supportsOpenGL():
+            raise RuntimeError("Can't run OpenGL")
+        self.gl_context.setFormat(self.offscreen_surface.format())
+        self.gl_context.create()
+        print(self.gl_context.makeCurrent(self.offscreen_surface))
+
         major = glGetIntegerv(GL_MAJOR_VERSION)
         minor = glGetIntegerv(GL_MINOR_VERSION)
         GLES_MODE = False
@@ -250,6 +259,7 @@ class manager:
         glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER) # GL_DYNAMIC_DRAW
         # Index Buffer
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
+        self.gl_context.doneCurrent()
 
     def add_brushes(self, *brushes):
         vertices = []
