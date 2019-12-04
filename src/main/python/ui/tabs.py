@@ -23,23 +23,20 @@ class Workspace(QtWidgets.QWidget):
     def __init__(self, vmf_path, parent=None):
         super(Workspace, self).__init__(parent)
         self.vmf = ops.vmf.interface(self, open(vmf_path))
-        self.render_manager = render.manager(parent.ctx)
-        # warn if memory low
-        # 2nd progress bar
-        for b in self.vmf.brushes: # len() / i -> progress
-            self.vmf.render_manager.add_brush(b)
-        # for e in self.entities: # len() / i -> progress
-        #     self.render_manager.add_entity(e)
-        self.viewport = viewport.Viewport3D(60) # grab all render updates from viewport.parent.render_manager
-        # self.viewport.raycast.connect(self.raycast)
-        self.setCentralWidget(self.viewport)
+        self.viewport = viewport.Viewport3D(60)
+        self.render_manager = render.manager(self.viewport, parent.ctx) # know memory limits
+        self.render_manager.add_brushes(*self.vmf.brushes) # len() / i -> progress
+        # self.render_manager.add_entities(*self.vmf.entities) # also track loading progress
+        layout = QtWidgets.QVBoxLayout()
+        layout.addWidget(self.viewport)
+        self.setLayout(layout)
         self.viewport.setFocus()
+        # self.viewport.raycast.connect(self.raycast)
         # Viewport splitter(s)
-        # tab toolbar (grid controls)
+        # toolbar (grid controls etc.)
+        # selection mode widget / hotkeys
         self.selection_mode = selection_mode.group
-        self.selection = {"brushes": [], "faces": [], "entities": [], "object": []}
-        # self.selection.object is non-vmf objects i.e. a reference model / image
-        # use set() or remember active selected object?
+        self.selection = {"brushes": set(), "faces": set(), "entities": set()}
         # self.timeline = ops.timeline.edit_history() # also handles multiplayer
         ### EDIT TIMELINE NOTES ###
         # what happens when a user brings "logs in" and pushes all their changes to the shared state?
