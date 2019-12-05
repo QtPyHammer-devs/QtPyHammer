@@ -26,16 +26,16 @@ def draw_buffer_ranges_GLES(program=0, ranges=[], matrix_loc=0):
     for start, length in ranges:
         glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
 
-def yield_grid(limit, step): # get 'step' from Grid Scale action (MainWindow)
+def yield_grid(limit, step): # get "step" from Grid Scale action (MainWindow)
     for i in range(0, limit + 1, step): # centers on 0, centering on a vertex / edge would be helpful for uneven grids
         yield i, -limit
-        yield i, limit
+        yield i, limit # edge +NS
         yield -limit, i
-        yield limit, i
+        yield limit, i # edge +EW
         yield limit, -i
-        yield -limit, -i
+        yield -limit, -i # edge -WE
         yield -i, limit
-        yield -i, -limit
+        yield -i, -limit # edge -SN
 
 def draw_grid(viewport, limit=2048, grid_scale=64, colour=(.5, .5, .5)):
     glUseProgram(0)
@@ -107,11 +107,11 @@ class manager:
         self.uniform = {} # shader: {uniform_name: location, ...}
         if GLES_MODE == True:
             glUseProgram(program_flat_brush)
-            self.uniform["brush_flat"]["matrix"] = glGetUniformLocation(self.shader["brush_flat"], 'ModelViewProjectionMatrix')
+            self.uniform["brush_flat"]["matrix"] = glGetUniformLocation(self.shader["brush_flat"], "ModelViewProjectionMatrix")
             glUseProgram(program_flat_displacement)
-            self.uniform["displacement_flat"]["matrix"] = glGetUniformLocation(self.shader["displacement_flat"], 'ModelViewProjectionMatrix')
+            self.uniform["displacement_flat"]["matrix"] = glGetUniformLocation(self.shader["displacement_flat"], "ModelViewProjectionMatrix")
             glUseProgram(program_stripey_brush)
-            self.uniform["brush_stripey"]["matrix"] = glGetUniformLocation(self.shader["brush_stripey"], 'ModelViewProjectionMatrix')
+            self.uniform["brush_stripey"]["matrix"] = glGetUniformLocation(self.shader["brush_stripey"], "ModelViewProjectionMatrix")
             glUseProgram(0)
 
         # Vertex Formats
@@ -130,8 +130,9 @@ class manager:
         glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
 
         # Buffers
-        KB = 1024
-        MB = 1024 * 1024
+        KB = 10 ** 3
+        MB = 10 ** 6
+        GB = 10 ** 9 # INSANE
         self.memory_limit = 512 * MB # defined in settings
         VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
         # why do we generate and bind these buffers?
@@ -142,54 +143,60 @@ class manager:
         # Index Buffer
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.memory_limit // 2, None, GL_DYNAMIC_DRAW)
-        self.buffer_map = {} # (start, len): object, ...
-        # ^ this only refers to the index buffer
-        # since we don't share vertices between objects
-        self.cursor = {"vertices": 0, "indices": 0}
-        self.greatest_index = 0
+        # VRAM memory management
+        self.buffer_map = {"vertex": {}, "index": {}} # buffer: {object: (start, len)}
+        # assess all gaps in the given buffers
+        # preferably neighbouring an object of the same type (index buffer only)
+        # MALLOC *shudders*
+        # a buffer_map class may be easier
+        # buffer_map.get_best_gap(type, size) -> start of gap (/44 for index)
+        self.buffer_gaps = {"vertex": set(), "index": set()} # buffer: {(start, len),}
+        self.abstract_buffer_map = {"vertex": {"brushes": [], "displacements": [], "models": []},
+                                    "index": {"brushes": [], "displacements": [], "models": []}}
+        # buffer: {type: [(start, length)]}
+        # merged into fewer stretches to help optimize malloc / defrag
+        # we need to semi-regularly check how fragmented each section is
+        # allow the user to set the GPU defragment rate in settings
 
-        viewport.draw_calls[draw_grid] = {"limit": 2048, "grid_scale":64, "colour": (.5,) * 3}
-        viewport.draw_calls[draw_origin] = {"scale": 64}
-        if not GLES_MODE:
-            global draw_brushes
-            viewport.draw_calls[draw_brushes] = {"program": program_stripey_brush,
-                                                 "ranges": [(0, brush_len)]}
-                                                 # ^ split to hide brushes
-            # viewport.draw_calls[draw_displacements] = {"program": program_flat_displacement,
-            #                               "ranges": [(brush_len + 1, disp_len)]}
-        else:
-            global draw_brushes_GLES
-            viewport.draw_calls[draw_brushes_GLES] = {"program": program_flat_brush,
-                                            "ranges": [(0, brush_len)],
-                                            "matrix_loc": uniform_matrix_flat_brush}
+        # collate an ordered list of functions to call each frame to give to viewports
+        # set program, drawElements (start, len), update "live" uniforms
+        # (func, {**kwargs}) -> func(**kwargs)
+        # draw_calls.append((draw_grid, {"limit": 2048, "grid_scale": 64, "colour": (.5,) * 3}))
+        # draw_calls.append((draw_origin, {"scale": 64}))
+            # SET STATE: brushes
+            # for S, L in abstract_buffer_map[index][brushes]
+            # drawElements(GL_TRIANGLES, S, L)
         self.gl_context.doneCurrent()
 
-    def defrag_buffer(self):
-        gaps = []
-        gap_start = 0
-        for start, length in self.buffer_map:
-            if start > gap_start:
-                gaps.append((gap_start, start))
-            gap_start = start + length
-        return gaps
-        # grab from the tail and shift into the gaps
-        # shifting vertices would mean changing a bunch of indices
-        # if updating a brush you may want to keep old verts and add some more in a gap
+    def compress_startlens(startlens):
+        new_startlens = []
+        prev_start = startlens[0][0] # first start
+        prev_end = 0
+        for start, length in startlens:
+            if start + length > prev_end: # does not overlap
+                new_startlens.append((prev_start, prev_end))
+                prev_start = start
+            prev_end = start + length
+        return new_startlens
 
     def add_brushes(self, *brushes):
         vertices = []
         indices = []
+        updates_map = {"vertices": {}, "indices": {}}
         for brush in brushes:
-            self.buffer_map[brush] = (self.greatest_index, len(brush.indices))
+            # where we droppin' gender neutral collective?
+            updates_map["vertices"][brush] = (0, len(brush.indices))
+            updates_map["indices"][brush] = (0, len(brush.indices))
             vertices.append(brush.vertices)
             indices.append([i + self.latest_index for i in brush.indices])
             self.latest_index += len(brush.indices)
         vertices = tuple(itertools.chain(*vertices))
         indices = tuple(itertools.chain(*indices))
         self.gl_context.makeCurrent(self.offscreen_surface)
-        glBufferSubData(GL_ARRAY_BUFFER, GLvoidp(self.cursor["vertices"]),
+        data len = ...
+        glBufferSubData(GL_ARRAY_BUFFER, GLvoidp(...),
                         len(vertices) * 44, np.array(vertices, dtype=np.float32))
-        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, GLvoidp(self.cursor["indices"]),
-                        len(vertices) * 44, np.array(indices, dtype=np.uint32))
+        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, GLvoidp(...),
+                        len(indices) * 4, np.array(indices, dtype=np.uint32))
         self.gl_context.doneCurrent()
         # displacements
