@@ -36,12 +36,6 @@ class Viewport2D(QtWidgets.QOpenGLWidget): # why not QtWidgets.QGraphicsView ?
         self.camera = camera.freecam(None, None, 128)
         self.draw_calls = dict() # function: {**kwargs}
 
-    def executeGL(self, func, *args, **kwargs): # best hack ever
-        """Execute func(self, *args, **kwargs) in this viewport's glContext"""
-        self.makeCurrent()
-        func(self, *args, **kwargs)
-        self.doneCurrent()
-
     def resizeGL(self, width, height):
         x_scale = width / height
         glLoadIdentity()
