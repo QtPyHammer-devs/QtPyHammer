@@ -9,3 +9,8 @@ https://github.com/pyinstaller/pyinstaller/wiki/How-to-Report-Bugs#make-sure-eve
 https://github.com/pyinstaller/pyinstaller/pull/3620
 https://github.com/pyinstaller/pyinstaller/pull/3568
 
+GDC 2016: High-performance, Low-Overhead Rendering with OpenGL and Vulkan
+https://www.youtube.com/watch?v=PPWysKFHq9c 
+
+Bringing Fortnite to Mobile with Vulkan and OpenGL ES - GDC 2019
+https://www.youtube.com/watch?v=XCUfk5vRblo
