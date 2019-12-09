@@ -14,3 +14,19 @@ https://www.youtube.com/watch?v=PPWysKFHq9c
 
 Bringing Fortnite to Mobile with Vulkan and OpenGL ES - GDC 2019
 https://www.youtube.com/watch?v=XCUfk5vRblo
+
+https://en.wikipedia.org/wiki/Ray_tracing_(graphics)#Calculate_rays_for_rectangular_viewport
+
+PyInstaller
+Hooks: Include OpenGL fallback DLLs for PyQt5. Fixes #3458. #3568
+https://github.com/pyinstaller/pyinstaller/pull/3568
+Merged Jun 16, 2018. Listed in 3.4 feature list
+v3.4 released Sep 10, 2018
+v3.5 released Jul 10, 2019
+
+PySide2 missing ./plugins/xcbglintegrations/libqxcb-glx-integration.so in linux. #3620
+https://github.com/pyinstaller/pyinstaller/pull/3620
+
+# where is this .so and how do we link it to compile on linux?
+
+https://readthedocs.org/projects/pyinstaller/downloads/pdf/stable/
