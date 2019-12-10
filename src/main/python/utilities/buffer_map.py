@@ -29,10 +29,10 @@ class span:
         return self.start + self.length
 
     def __add__(self, other):
-        if hasattr(other, "__iter_"):
+        if hasattr(other, "__iter__"):
             return sum(other, start=self)
-        if self.end < other.start or other.end < self.start:
-            return self, other # no overlap
+        elif self.end < other.start or other.end < self.start: # no overlap
+            return self, other
         else:
             start = min([self.start, other.start])
             end = max([self.end, other.end])
@@ -43,34 +43,27 @@ class span:
             return True
         else:
             return False
-    
+
     def __repr__(self):
         return f"{self.__class__.__name__}({self.start}, {self.length})"
 
     def __sub__(self, other):
-        out = span(self.start, 0)
-	if self.start == other.start:
-            length_remaining = max([self.length - other.length, 0])
-            out = span(other.end, length_remaining)
+        if self.start < other.start < self.end: # TAIL OVERLAP
+            out = span(self.start, other.start - self.start)
+            if self.end < other.end: # MIDDLE OVERLAP
+                return (out, span(other.end, self.end - other.end))
+        elif other.start < self.start < other.end: # HEAD OVERLAP
             if other.end < self.end:
-                out = (out, span(other.end, self.end - other.end))
-                return out
-	elif self.start < other.start < other.end <= self.end:
-            out = (self.start, other.start - self.start)
-	return out
-    # CASES
-    # other.start <= self.start, return 1 span (tail)
-    # self.start < other.start and self.end < other.end, return 2 spans (head & tail)
-    # self.start < other.start and other.end <=
+                out = span(other.end, self.end - other.end)
+            else:
+                out = span(self.start, 0)
 
     def is_in(self, other):
-        self_end = self.start + self.length
-        other_end = other.start + other.length
-        if other.start <= self.start < self_end <= other_end:
+        if other.start <= self.start < self.end <= other.end:
             return True
         else:
             return False
-    
+
 
 class buffer_map:
     def __init__(self, limit):
@@ -120,3 +113,10 @@ if __name__ == "__main__":
     E = span(-1, 4) # OVERLAP BEFORE
     F = span(8, 4) # OVERLAP AFTER
     G = span(-1, 12) # OVERLAP ALL
+
+    print(f"{A} - {B} = ", A - B) # (0, 3), (6, 3)
+    print(f"{A} - {C} = ", A - C) # A
+    print(f"{A} - {D} = ", A - D) # A
+    print(f"{A} - {E} = ", A - E) # (3, 6)
+    print(f"{A} - {F} = ", A - F) # (0, 6)
+    print(f"{A} - {G} = ", A - G) # (?, 0)

@@ -145,11 +145,20 @@ class manager:
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.memory_limit // 2, None, GL_DYNAMIC_DRAW)
         # VRAM memory management
         self.buffer_map = {"vertex": {}, "index": {}} # buffer: {object: (start, len)}
-        # assess all gaps in the given buffers
-        # preferably neighbouring an object of the same type (index buffer only)
-        # MALLOC *shudders*
-        # a buffer_map class may be easier
-        # buffer_map.get_best_gap(type, size) -> start of gap (/44 for index)
+        # ^ record indices per brush to free on deletion / edit & removing from draw_calls
+        # VERTICES: needed for deletion, start of object in vertices informs offset of Indices
+        # INDICES: needed for rendering, remove (start, length) span from render to hide
+        # ADDING NEW BufferSubData:
+        # preferably neighbouring an object of the same type (INDEX BUFFER ONLY)
+        # buffer_map.get_gap(preferred_type, minimum_size) -> start of gap (/44 for index), length of gap
+        # preferred_type: left neighbour is a sequence of at least 1 of the preferred_type
+        # if no such gap exists give the first gap which meets min size requirements
+        # if VRAM is full give an alert / error
+        ### A Qt Debug visalisation which shows the state of each buffer would be handy
+        # VERTICES 0 | Brush1 | Brush2 | Displacement1 |     | LIMIT
+        # INDICES  0 | B1 | B2 | Disp1 |                     | LIMIT
+        # TEXTURES 0 |                                       | LIMIT
+        # A tool like this would also be useful for fine tuning memory limits
         self.buffer_gaps = {"vertex": set(), "index": set()} # buffer: {(start, len),}
         self.abstract_buffer_map = {"vertex": {"brushes": [], "displacements": [], "models": []},
                                     "index": {"brushes": [], "displacements": [], "models": []}}
@@ -157,6 +166,11 @@ class manager:
         # merged into fewer stretches to help optimize malloc / defrag
         # we need to semi-regularly check how fragmented each section is
         # allow the user to set the GPU defragment rate in settings
+        # double duffer each buffer and defrag in the background
+        # switch to the other at the end of each defrag cycle
+        # would need to take great care to ensure updates carry while changing
+        # adding the switch to a "hands off" operation like saving could help...
+        # to make the experience seamless
 
         # collate an ordered list of functions to call each frame to give to viewports
         # set program, drawElements (start, len), update "live" uniforms
@@ -168,30 +182,51 @@ class manager:
             # drawElements(GL_TRIANGLES, S, L)
         self.gl_context.doneCurrent()
 
-    def compress_startlens(startlens):
-        new_startlens = []
-        prev_start = startlens[0][0] # first start
-        prev_end = 0
-        for start, length in startlens:
-            if start + length > prev_end: # does not overlap
-                new_startlens.append((prev_start, prev_end))
-                prev_start = start
-            prev_end = start + length
-        return new_startlens
+    def compress(spans):
+        spans = list(sorted(spans, key=lambda x: x[0]))
+        start, length = spans[0]
+        prev_end = start + length
+        out = []
+        current = [start, length]
+        for start, length in spans[1:]:
+            end = start + length
+            if start <= prev_end:
+                current[1] = end - current[0]
+            else:
+                out.append(tuple(current))
+                current = [start, length]
+            prev_end = end
+        out.append(tuple(current))
+        return out
 
     def add_brushes(self, *brushes):
         """add *brushes to the appropriate GPU buffers"""
-        # also tracking so we can hide
-        # look up already mapped memory to find the most appropriate free spaces
-        # remembering the recently freed is handy for undos
-        # but remembering freed objects once they have been overwritten is pointless
-        # need to find the start & length of the indices of a given brush
-        # a dictionary seems perfect for this
-        # though tracking the recently deleted could be expensive
-        # and considering the volume of brushes that could be created with copies
-        # / mirroring creating large amounts of new brushes should be fast
-        # the most common intense case is loading a fresh file
-        # all brushes should be loaded in order in this case
+        # the most common case is loading a fresh file
+        # this should not be overly expensive
+        # we should have a long stretch of free memory
+
+        # order of operations:
+        # find a good gap for INDICES
+        # fill this gap brush by brush until gap is filled
+        # find gap(s) for the associated sets of VERITCES
+        # add offsets to each set of INDICES
+        # glBufferSubData(itertools.chain(*INDICES))
+        # foreach consecutiveVERTICES:
+        # glBufferSubData(itertools.chain(*consecutiveVERTICES))
+        # repeat until all brushes are in buffers
+
+        # do the same for displacements
+        # the INDICES & VERTICES can be collected earlier
+        # find gaps
+        # add offsets to each set of INDICES
+        # glBufferSubData(itertools.chain(*INDICES))
+        # foreach consecutiveVERTICES:
+        # glBufferSubData(itertools.chain(*consecutiveVERTICES))
+        # note indices are a fixed length based on power
+        # and INDICES can be generated as we bind them to the GPU
+
+        # it would be nice if we could do this asyncronously
+        # look into that when doing DOUBLE BUFFER DEFRAG & LOADING BARS
         vertices = []
         indices = []
         updates_map = {"vertices": {}, "indices": {}} # self.buffer_map.update(this)
@@ -213,7 +248,7 @@ class manager:
         vertices = tuple(itertools.chain(*vertices))
         indices = tuple(itertools.chain(*indices))
         self.gl_context.makeCurrent(self.offscreen_surface)
-        
+
         glBufferSubData(GL_ARRAY_BUFFER, GLvoidp(...),
                         len(vertices) * 44, np.array(vertices, dtype=np.float32))
         glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, GLvoidp(...),
