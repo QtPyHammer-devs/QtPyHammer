@@ -12,18 +12,8 @@ from PyQt5 import QtGui
 from . import camera, solid, vector, vmf
 
 
-def draw_buffer_ranges(program=0, ranges=[]):
-    glUseProgram(program)
-    # set vertex format
-    for start, length in ranges:
-        glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
-
-def draw_buffer_ranges_GLES(program=0, ranges=[], matrix_loc=0):
-    glUseProgram(program)
-    # matrix = glGetFloatv(GL_PROJECTION_MATRIX)
-    # # ^ grabbing from cpu-side memory would be better ^
-    glUniformMatrix4fv(matrix_loc, 1, GL_FALSE, matrix)
-    for start, length in ranges:
+def draw_elements(spans=[]):
+    for start, length in spans:
         glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
 
 def yield_grid(limit, step): # get "step" from Grid Scale action (MainWindow)
@@ -132,18 +122,16 @@ class manager:
         # Buffers
         KB = 10 ** 3
         MB = 10 ** 6
-        GB = 10 ** 9 # INSANE
-        self.memory_limit = 512 * MB # defined in settings
+        GB = 10 ** 9
+        self.memory_limit = 512 * MB # user defined in settings
         VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
-        # why do we generate and bind these buffers?
-        # could we detatch them to affect other buffers?
         # Vertex Buffer
         glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER)
         glBufferData(GL_ARRAY_BUFFER, self.memory_limit // 2, None, GL_DYNAMIC_DRAW)
         # Index Buffer
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.memory_limit // 2, None, GL_DYNAMIC_DRAW)
-        # VRAM memory management
+        # VRAM Memory Management
         self.buffer_map = {"vertex": {}, "index": {}} # buffer: {object: (start, len)}
         # ^ record indices per brush to free on deletion / edit & removing from draw_calls
         # VERTICES: needed for deletion, start of object in vertices informs offset of Indices
@@ -159,14 +147,20 @@ class manager:
         # INDICES  0 | B1 | B2 | Disp1 |                     | LIMIT
         # TEXTURES 0 |                                       | LIMIT
         # A tool like this would also be useful for fine tuning memory limits
-        self.buffer_gaps = {"vertex": set(), "index": set()} # buffer: {(start, len),}
         self.abstract_buffer_map = {"vertex": {"brushes": [], "displacements": [], "models": []},
                                     "index": {"brushes": [], "displacements": [], "models": []}}
         # buffer: {type: [(start, length)]}
+
+        # update method:
+        # self.abstract_buffer_map = ...
+        # compress([*self.abstract_buffer_map["brushes"], *adding_span])
+        # free(self.abstract_buffer_map["brushes"], deleting_span)
+        
         # merged into fewer stretches to help optimize malloc / defrag
         # we need to semi-regularly check how fragmented each section is
         # allow the user to set the GPU defragment rate in settings
-        # double duffer each buffer and defrag in the background
+        
+        # double buffer each buffer and defrag in the background?
         # switch to the other at the end of each defrag cycle
         # would need to take great care to ensure updates carry while changing
         # adding the switch to a "hands off" operation like saving could help...
@@ -182,7 +176,7 @@ class manager:
             # drawElements(GL_TRIANGLES, S, L)
         self.gl_context.doneCurrent()
 
-    def compress(spans):
+    def compress(spans): # simplify memory map
         spans = list(sorted(spans, key=lambda x: x[0]))
         start, length = spans[0]
         prev_end = start + length
@@ -197,6 +191,23 @@ class manager:
                 current = [start, length]
             prev_end = end
         out.append(tuple(current))
+        return out
+
+    def free(spans, span_to_remove): # remove from memory map
+        r_start, r_length = span_to_remove # R
+        r_end = r_start + r_length
+        out = []
+        for start, length in spans: # current span
+            end = start + length # current end
+            if r_start <= start < end <= r_end:
+                continue # R eclipses current span
+            else:
+                if start < r_start:
+                    n_end = min([end, r_start])
+                    out.append((start, n_end - start)) # segment before R
+                if r_end < end:
+                    n_start = max([start, r_end])
+                    out.append((n_start, end - n_start)) # segment after R
         return out
 
     def add_brushes(self, *brushes):
