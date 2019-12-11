@@ -16,6 +16,7 @@ def free(spans, neg):
     return out
 
 if __name__ == "__main__":
+    # use render_manager.free
     Ss1 = [(0, 9)]
 
     A = (0, 3) # overlaps and touches head
@@ -39,12 +40,13 @@ if __name__ == "__main__":
     print("-" * 20)
     Ss2 = [(0, 3), (3, 3), (6, 3)]
 
-    print(free(Ss2, A)) # (3, 3), (6, 3) FAIL
-    print(free(Ss2, B)) # (0, 3), (3, 3) FAIL
-    print(free(Ss2, C)) # (0, 3), (3, 3), (6, 3) FAIL
-    print(free(Ss2, D)) # (0, 3), (3, 3), (6, 3) FAIL
+    print(free(Ss2, A)) # (3, 3), (6, 3)
+    print(free(Ss2, B)) # (0, 3), (3, 3)
+    print(free(Ss2, C)) # (0, 3), (3, 3), (6, 3)
+    print(free(Ss2, D)) # (0, 3), (3, 3), (6, 3)
     print(free(Ss2, E)) # nothing
     print(free(Ss2, F)) # nothing
-    print(free(Ss2, G)) # (2, 1), (3, 3), (6, 3) FAIL
-    print(free(Ss2, H)) # (0, 3), (3, 3), (6, 2) FAIL
-    
+    print(free(Ss2, G)) # (2, 1), (3, 3), (6, 3)
+    print(free(Ss2, H)) # (0, 3), (3, 3), (6, 2)
+
+    # use render_manager.compress
