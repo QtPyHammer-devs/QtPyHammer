@@ -1,11 +1,12 @@
 #!/usr/bin/env python
-# stock
 import ctypes
 
+# third party imports
 import numpy as np
 from OpenGL.GL import *
 from OpenGL.GL.shaders import compileShader, compileProgram
-from sdl2 import *
+from sdl2 import * # Try with an SDL2 glContext
+
 
 def main(width=512, height=512):
         window = glCreateWindow(b'test', SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS)

@@ -53,6 +53,8 @@ def draw_origin(viewport, scale=64):
 
 # BUFFER TOOLS
 def compress(spans): # simplify memory map
+    """Combine a series of spans into as few (start, length) spans as possible
+    This is to minimise calls read, write & draw calls to OpenGL buffers"""
     spans = list(sorted(spans, key=lambda x: x[0]))
     start, length = spans[0]
     prev_end = start + length
@@ -70,6 +72,7 @@ def compress(spans): # simplify memory map
     return out
 
 def free(spans, span_to_remove): # remove from memory map
+    """remove a (start, length) span from a series of spans"""
     r_start, r_length = span_to_remove # R
     r_end = r_start + r_length
     out = []
@@ -79,11 +82,11 @@ def free(spans, span_to_remove): # remove from memory map
             continue # R eclipses current span
         else:
             if start < r_start:
-                n_end = min([end, r_start])
-                out.append((start, n_end - start)) # segment before R
+                new_end = min([end, r_start])
+                out.append((start, new_end - start)) # segment before R
             if r_end < end:
-                n_start = max([start, r_end])
-                out.append((n_start, end - n_start)) # segment after R
+                new_start = max([start, r_end])
+                out.append((new_start, end - new_start)) # segment after R
     return out
 
 
@@ -191,49 +194,55 @@ class manager:
         GB = 10 ** 9
         self.memory_limit = 512 * MB # user defined in settings
         VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
+        self.vertex_buffer_size = self.memory_limit // 2 # halve again if double buffering
+        self.index_buffer_size = self.memory_limit // 2 # could change the ratio
         # Vertex Buffer
         glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER)
-        glBufferData(GL_ARRAY_BUFFER, self.memory_limit // 2, None, GL_DYNAMIC_DRAW)
+        glBufferData(GL_ARRAY_BUFFER, self.vertex_buffer_size, None, GL_DYNAMIC_DRAW)
         # Index Buffer
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.memory_limit // 2, None, GL_DYNAMIC_DRAW)
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.index_buffer_size, None, GL_DYNAMIC_DRAW)
         # VRAM Memory Management
         self.buffer_map = {"vertex": {}, "index": {}} # buffer: {object: (start, len)}
-        # ^ record indices per brush to free on deletion / edit & removing from draw_calls
-        # VERTICES: needed for deletion, start of object in vertices informs offset of Indices
+        # ^ index span of each brush ^
+        # recording this makes hiding, deleting and adding geometry easy
+        # this system is good for brushes & displacements but for instances...
+        # we should only store models & other often duplicated geometry once
+        # we key the hash (a pointer if using CPython) of each brush
+        # how do we key displacements? brush.faces[i].dispinfo ?
+        # it needs to be sensible for singling out when deleting & selecting
+        # hiding individual faces seems like a bad idea
+        # knowing the offset of the INDICES a brush and using that brush's ...
+        # internal map of it's indices should make "highlighting" a face easy
+
+        # VERTICES: needed for deletion, start of object in VERTICES informs offset of INDICES
         # INDICES: needed for rendering, remove (start, length) span from render to hide
-        # ADDING NEW BufferSubData:
-        # preferably neighbouring an object of the same type (INDEX BUFFER ONLY)
-        # buffer_map.get_gap(preferred_type, minimum_size) -> start of gap (/44 for index), length of gap
-        # preferred_type: left neighbour is a sequence of at least 1 of the preferred_type
-        # if no such gap exists give the first gap which meets min size requirements
-        # if VRAM is full give an alert / error
+
         ### A Qt Debug visalisation which shows the state of each buffer would be handy
         # VERTICES 0 | Brush1 | Brush2 | Displacement1 |     | LIMIT
         # INDICES  0 | B1 | B2 | Disp1 |                     | LIMIT
         # TEXTURES 0 |                                       | LIMIT
         # A tool like this would also be useful for fine tuning memory limits
-        self.abstract_buffer_map = {"vertex": {"brushes": [], "displacements": [], "models": []},
-                                    "index": {"brushes": [], "displacements": [], "models": []}}
+        self.abstract_buffer_map = {"vertex": {"brush": [], "displacement": [], "model": []},
+                                    "index": {"brush": [], "displacement": [], "model": []}}
         # buffer: {type: [(start, length)]}
+        # used to simplify draw calls and keep track of any fragmentation
+        # fragmentation would lead to a lot of draw calls with identical state
 
         # update method:
         # self.abstract_buffer_map = ...
         # compress([*self.abstract_buffer_map["brushes"], *adding_span])
         # free(self.abstract_buffer_map["brushes"], deleting_span)
-        
-        # merged into fewer stretches to help optimize malloc / defrag
-        # we need to semi-regularly check how fragmented each section is
-        # allow the user to set the GPU defragment rate in settings
-        
-        # double buffer each buffer and defrag in the background?
-        # switch to the other at the end of each defrag cycle
-        # would need to take great care to ensure updates carry while changing
+
+        # should we double buffer each buffer and defragment in the background?
+        # switching to the other at the end of each complete defrag cycle
+        # leaving generous gaps between types would be clever
         # adding the switch to a "hands off" operation like saving could help...
         # to make the experience seamless
 
         # collate an ordered list of functions to call each frame to give to viewports
-        # set program, drawElements (start, len), update "live" uniforms
+        # draw calls need to ask the render manager what is hidden
+        # set program, drawElements (start, len), [update uniform(s)]
         # (func, {**kwargs}) -> func(**kwargs)
         # draw_calls.append((draw_grid, {"limit": 2048, "grid_scale": 64, "colour": (.5,) * 3}))
         # draw_calls.append((draw_origin, {"scale": 64}))
@@ -242,12 +251,42 @@ class manager:
             # drawElements(GL_TRIANGLES, S, L)
         self.gl_context.doneCurrent()
 
-    def find_gap(self, preffered_type=None, minimum_size=1):
+    def find_gap(self, buffer="vertex", preferred_type=None, minimum_size=1):
+        # return (start, length) of gap
+        # start of VERTEX gap /44 for gives INDICES offset
+        # preferred_type: left neighbour is a sequence of at least 1 of the preferred_type
+        # if preferred_type cannot be satistifed, default to first map of length > minimum size
+        # if VRAM is full give an alert / error
+        # self.abstract_buffer_map[buffer] = {"type": spans}
+        # inverse map would be {span: "type"}
         if minimum_size < 1:
             raise RuntimeError("Can't search for gap smaller than 1 byte")
         if preffered_type not in (None, "brush", "displacement", "model"):
             raise RuntimeError("Can't search for gap of type {}".format(preferred_type))
-        self.abstract_buffer_map ...
+        if buffer == "vertex":
+            limit = self.vertex_buffer_size
+        elif buffer == "index":
+            limit = self.index_buffer_size
+        else:
+            raise RuntimeError("Buffer {} is not mapped".format(buffer))
+        buffer_map = self.abstract_buffer_map[buffer]
+        if preffered_type != None:
+            good_neighbours = buffer_map[preffered_type]
+            other_neighbours = itertools.chain(v for k, v in buffer_map if k != preffered_type)
+        else:
+            good_neighbours = itertools.chain(*buffer_map.values())
+            other_neighbours = []
+        good_neighbours = list(sorted(good_neighbours, key=lambda s: s[0]))
+        prev_span = (0, 0)
+        prev_end = 0
+        for span in good_neighbours:
+            # gap BEFORE
+            # IS THERE A GAP HERE?
+            # need to know nearest < LESS THAN end
+            gap_length = start - prev_end
+            # gap AFTER
+            # IS THERE A GAP HERE?
+            ...
 
     def add_brushes(self, *brushes):
         """add *brushes to the appropriate GPU buffers"""
@@ -257,10 +296,15 @@ class manager:
 
         # order of operations:
         # find a good gap for INDICES
+
         # fill this gap brush by brush until gap is filled
         # find gap(s) for the associated sets of VERITCES
-        # add offsets to each set of INDICES
-        # glBufferSubData(itertools.chain(*INDICES))
+        # add vertices to the buffer_map & abstract_buffer_map
+        # assemble vertex data until gap is full
+        # add offsets to each set of INDICES matched with each set of VERTICES
+        # glBufferSubData(itertools.chain(*VERTICES))
+        # find gaps for indices
+        # aim for keeping same types close
         # foreach consecutiveVERTICES:
         # glBufferSubData(itertools.chain(*consecutiveVERTICES))
         # repeat until all brushes are in buffers
