@@ -150,8 +150,10 @@ class manager:
         ## 1 Tri  == 132 bytes VERTICES +  12 bytes INDICES
         ## 1 Quad == 176 bytes VERTICES +  24 bytes INDICES
         ## 1 Cube == 352 bytes VERTICES + 144 bytes INDICES
-        ## 200 Cube Solids = 70 400 ~ 71MB VERTICES
-        ##                   28 800 ~ 29MB VERTICES
+        ## 200 Cube Solids = 70 400 ~ 71KB VERTICES
+        ##                   28 800 ~ 29KB INDICES
+        ##                   99 200 ~100KB VERTICES & INDICES
+
 
         ### --- 44 bytes DISPLACEMENT VERTEX FORMAT --- ###
         # -- 12 bytes  (3 float32)  Position
@@ -159,19 +161,61 @@ class manager:
         # -- 8  bytes  (2 padding)  0x0000
         # -- 8  bytes  (2 float32)  UV
         # -- 12 bytes  (3 float32)  Colour
+
+        ## |\|/|\|/|\|/|\|/|
+        ## |/|\|/|\|/|\|/|\|
+        ## |\|/|\|/|\|/|\|/|  Power 3
+        ## |/|\|/|\|/|\|/|\|
+        ## |\|/|\|/|\|/|\|/|  |\|/|\|/|  Power 2
+        ## |/|\|/|\|/|\|/|\|  |/|\|/|\|
+        ## |\|/|\|/|\|/|\|/|  |\|/|\|/|  |\|/| Power 1
+        ## |/|\|/|\|/|\|/|\|  |/|\|/|\|  |/|\|
+
+        ## 2 ^ power = quads per row
+        ## 2 ^ power * 2 = tris per row
+        ## 2 ^ power * 2 * 2^power = tris per displacement
+        ## 2 ^ power * 2 * 2^power * 3 = vertices referenced per displacement
+
+        ## GL_TRIANGLES
+        ## 2^power * 2 triangles * 2^power rows * 3 vertices * 4 bytes
+        ## lambda power: ((2 ** power) ** 2) * 24
+
+        ## GL_TRIANGLE STRIP
+        ## (2^power + 1) * 2 vertices * 2^power rows * 4 bytes
+        ## lambda power: ((2 ** power) + 1) * (2 ** power) * 8
+
+        ## to draw need (start, length) per row per displacement
+        
+        
         ##   9 * 44 Power1 ==   396 bytes VERTICES + 96 bytes INDICES
-        ##               (48 bytes INDICES if using GL_TRIANGLE_STRIP)
+        ##                       48 bytes INDICES GL_TRIANGLE_STRIP
+        
         ##  25 * 44 Power2 ==  1100 bytes VERTICES + 384 bytes INDICES
-        ##              (160 bytes INDICES if using GL_TRIANGLE_STRIP)
-        ##  81 * 44 Power3 ==  3564 bytes VERTICES + XXX bytes INDICES
-        ##              (XXX bytes INDICES if using GL_TRIANGLE_STRIP)
-        ## 289 * 44 Power4 == 12716 bytes VERTICES + ...
+        ##                      160 bytes INDICES GL_TRIANGLE_STRIP
+        
+        ##  81 * 44 Power3 ==  3564 bytes VERTICES + 864 bytes INDICES
+        ##                      576 bytes INDICES GL_TRIANGLE_STRIP
+        
+        ## 289 * 44 Power4 == 12716 bytes VERTICES + 2176 bytes INDICES
+        ##                     6144 bytes INDICES GL_TRIANGLE_STRIP
 
-        ### 100 Power 2 Displacements = 110 000 ~ 110MB
-        ### 100 Power 3 Displacements = 35 6400 ~ 360MB
-        ### 100 Power2 + 100 Power3 = ~ 470MB
+        ## 100 Power 2 Displacements = 110 000 ~110KB VERTICES
+        ##                              16 000 ~ 16KB INDICES
+        ##                             126 000 ~126KB VERTICES & INDICES
+        ## 100 Power 3 Displacements = 356 400 ~360KB VERTICES
+        
+        ## 100 Power2 + 100 Power3 = 110 000 + 356 400 = 466 400
+        ##                          ~467KB VERTICES
+        ##                            16 000 +  57 600 =  73 600
+        ##                           ~74KB INDICES
+        ##                           466 400 +  73 600 = 540 000
+        ##                          ~540KB VERTICES & INDICES
 
-        # ~576MB = 200 Cube Solids
+        ## 200 Cube Brushes + 100 Power2 Displacement + 100 Power3 DIsplacements
+        ## ~640KB of VRAM (536.8KB VERTICES + 102.4KB INDICES)
+
+        # pl_upward_d.vmf
+        # 558 Displacement Brushes & 1890 Non-Displacement Brushes
 
         # Vertex Formats
         max_attribs = glGetIntegerv(GL_MAX_VERTEX_ATTRIBS)
