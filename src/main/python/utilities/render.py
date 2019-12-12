@@ -51,6 +51,41 @@ def draw_origin(viewport, scale=64):
     glVertex(0, 0, scale)
     glEnd()
 
+# BUFFER TOOLS
+def compress(spans): # simplify memory map
+    spans = list(sorted(spans, key=lambda x: x[0]))
+    start, length = spans[0]
+    prev_end = start + length
+    out = []
+    current = [start, length]
+    for start, length in spans[1:]:
+        end = start + length
+        if start <= prev_end:
+            current[1] = end - current[0]
+        else:
+            out.append(tuple(current))
+            current = [start, length]
+        prev_end = end
+    out.append(tuple(current))
+    return out
+
+def free(spans, span_to_remove): # remove from memory map
+    r_start, r_length = span_to_remove # R
+    r_end = r_start + r_length
+    out = []
+    for start, length in spans: # current span
+        end = start + length # current end
+        if r_start <= start < end <= r_end:
+            continue # R eclipses current span
+        else:
+            if start < r_start:
+                n_end = min([end, r_start])
+                out.append((start, n_end - start)) # segment before R
+            if r_end < end:
+                n_start = max([start, r_end])
+                out.append((n_start, end - n_start)) # segment after R
+    return out
+
 
 class manager:
     def __init__(self, viewport, ctx):
@@ -207,39 +242,12 @@ class manager:
             # drawElements(GL_TRIANGLES, S, L)
         self.gl_context.doneCurrent()
 
-    def compress(spans): # simplify memory map
-        spans = list(sorted(spans, key=lambda x: x[0]))
-        start, length = spans[0]
-        prev_end = start + length
-        out = []
-        current = [start, length]
-        for start, length in spans[1:]:
-            end = start + length
-            if start <= prev_end:
-                current[1] = end - current[0]
-            else:
-                out.append(tuple(current))
-                current = [start, length]
-            prev_end = end
-        out.append(tuple(current))
-        return out
-
-    def free(spans, span_to_remove): # remove from memory map
-        r_start, r_length = span_to_remove # R
-        r_end = r_start + r_length
-        out = []
-        for start, length in spans: # current span
-            end = start + length # current end
-            if r_start <= start < end <= r_end:
-                continue # R eclipses current span
-            else:
-                if start < r_start:
-                    n_end = min([end, r_start])
-                    out.append((start, n_end - start)) # segment before R
-                if r_end < end:
-                    n_start = max([start, r_end])
-                    out.append((n_start, end - n_start)) # segment after R
-        return out
+    def find_gap(self, preffered_type=None, minimum_size=1):
+        if minimum_size < 1:
+            raise RuntimeError("Can't search for gap smaller than 1 byte")
+        if preffered_type not in (None, "brush", "displacement", "model"):
+            raise RuntimeError("Can't search for gap of type {}".format(preferred_type))
+        self.abstract_buffer_map ...
 
     def add_brushes(self, *brushes):
         """add *brushes to the appropriate GPU buffers"""
