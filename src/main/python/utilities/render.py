@@ -104,6 +104,37 @@ class manager:
             self.uniform["brush_stripey"]["matrix"] = glGetUniformLocation(self.shader["brush_stripey"], "ModelViewProjectionMatrix")
             glUseProgram(0)
 
+        ### --- 44 bytes SOLID FACE VERTEX FORMAT --- ###
+        # -- 12 bytes  (3 float32)  Position
+        # -- 12 bytes  (3 float32)  Normal
+        # -- 8  bytes  (2 float32)  UV
+        # -- 12 bytes  (3 float32)  Colour
+        ## 1 Tri  == 132 bytes VERTICES +  12 bytes INDICES
+        ## 1 Quad == 176 bytes VERTICES +  24 bytes INDICES
+        ## 1 Cube == 352 bytes VERTICES + 144 bytes INDICES
+        ## 200 Cube Solids = 70 400 ~ 71MB VERTICES
+        ##                   28 800 ~ 29MB VERTICES
+
+        ### --- 44 bytes DISPLACEMENT VERTEX FORMAT --- ###
+        # -- 12 bytes  (3 float32)  Position
+        # -- 4  bytes  (1 float32)  Alpha
+        # -- 8  bytes  (2 padding)  0x0000
+        # -- 8  bytes  (2 float32)  UV
+        # -- 12 bytes  (3 float32)  Colour
+        ##   9 * 44 Power1 ==   396 bytes VERTICES + 96 bytes INDICES
+        ##               (48 bytes INDICES if using GL_TRIANGLE_STRIP)
+        ##  25 * 44 Power2 ==  1100 bytes VERTICES + 384 bytes INDICES
+        ##              (160 bytes INDICES if using GL_TRIANGLE_STRIP)
+        ##  81 * 44 Power3 ==  3564 bytes VERTICES + XXX bytes INDICES
+        ##              (XXX bytes INDICES if using GL_TRIANGLE_STRIP)
+        ## 289 * 44 Power4 == 12716 bytes VERTICES + ...
+
+        ### 100 Power 2 Displacements = 110 000 ~ 110MB
+        ### 100 Power 3 Displacements = 35 6400 ~ 360MB
+        ### 100 Power2 + 100 Power3 = ~ 470MB
+
+        # ~576MB = 200 Cube Solids
+
         # Vertex Formats
         max_attribs = glGetIntegerv(GL_MAX_VERTEX_ATTRIBS)
         # grab indices from the shaders?
