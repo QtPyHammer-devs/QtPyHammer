@@ -25,8 +25,8 @@ def singularise(word):
         return word[:-4] + 'ex'
     elif word.endswith('s'): # side <-  sides
         return word[:-1]
-    else: # assume word is already singular
-        return word # in the face of ambiguity, refuse the temptaion to guess
+    else: # in the face of ambiguity, refuse the temptation to guess
+        return word # assume word is already singular
 
 class scope:
     """Handles a string used to index a multi-dimensional dictionary, correctly reducing nested lists of dictionaries"""
