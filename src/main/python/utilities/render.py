@@ -89,6 +89,10 @@ def free(spans, span_to_remove): # remove from memory map
                 out.append((new_start, end - new_start)) # segment after R
     return out
 
+# A third function to find free segments to assign too
+# The render.manager class method find_gap does this
+# However, it also check the types of neighbours for optimisation purposes
+
 
 class manager:
     def __init__(self, viewport, ctx):
@@ -295,17 +299,12 @@ class manager:
             # drawElements(GL_TRIANGLES, S, L)
         self.gl_context.doneCurrent()
 
-    def find_gap(self, buffer="vertex", preferred_type=None, minimum_size=1):
-        # return (start, length) of gap
-        # start of VERTEX gap /44 for gives INDICES offset
-        # preferred_type: left neighbour is a sequence of at least 1 of the preferred_type
-        # if preferred_type cannot be satistifed, default to first map of length > minimum size
-        # if VRAM is full give an alert / error
-        # self.abstract_buffer_map[buffer] = {"type": spans}
-        # inverse map would be {span: "type"}
+    def find_gaps(self, buffer="vertex", preferred_type=None, minimum_size=1):
+        """Generator which yeilds a (start, length) span for each gap which meets requirements"""
         if minimum_size < 1:
             raise RuntimeError("Can't search for gap smaller than 1 byte")
-        if preffered_type not in (None, "brush", "displacement", "model"):
+        buffer_map = self.abstract_buffer_map[buffer]
+        if preffered_type not in (None, *buffer_map.keys()):
             raise RuntimeError("Can't search for gap of type {}".format(preferred_type))
         if buffer == "vertex":
             limit = self.vertex_buffer_size
@@ -313,45 +312,76 @@ class manager:
             limit = self.index_buffer_size
         else:
             raise RuntimeError("Buffer {} is not mapped".format(buffer))
-        buffer_map = self.abstract_buffer_map[buffer]
-        if preffered_type != None:
-            good_neighbours = buffer_map[preffered_type]
-            other_neighbours = itertools.chain(v for k, v in buffer_map if k != preffered_type)
-        else:
-            good_neighbours = itertools.chain(*buffer_map.values())
-            other_neighbours = []
-        good_neighbours = list(sorted(good_neighbours, key=lambda s: s[0]))
+        span_type = {span: _type for _type in buffer_map for span in buffer_map[_type]}
+        # ^ {"type": [*spans]} -> {span: "type"}
+        filled_spans = sorted(span_type, key=lambda s: s[0])
+        # ^ all spans filled by objects of all types, sorted by span[0] (start)
         prev_span = (0, 0)
-        prev_end = 0
-        for span in good_neighbours:
-            # gap BEFORE
-            # IS THERE A GAP HERE?
-            # need to know nearest < LESS THAN end
-            gap_length = start - prev_end
-            # gap AFTER
-            # IS THERE A GAP HERE?
-            ...
+        prev_span_end = 0
+        prev_gap = (0, 0)
+        for span in filled_spans:
+            span_start, span_length = span
+            gap_start = prev_span_end + 1
+            gap_length = span_start - gap_start
+            if gap_length >= minimum_size:
+                gap = (gap_start, gap_length)
+                if preffered_type in (None, span_type[span], span_type[prev_span]):
+                    yield gap
+            prev_span = span
+            prev_span_end = span_start + span_length
+        if prev_gap_end != limit:
+            gap_start = prev_gap_end + 1
+            gap = (gap_start, limit - gap_start)
+            if preffered_type in (None, span_type[prev_span]):
+                    yield gap
 
     def add_brushes(self, *brushes):
         """add *brushes to the appropriate GPU buffers"""
         # the most common case is loading a fresh file
         # this should not be overly expensive
         # we should have a long stretch of free memory
-
         # order of operations:
         # find a good gap for INDICES
+        offset = {} # {brush: index_offset}
+        buffer_map = self.abstract_buffer_map["vertices"]["brushes"]
+        vertex_writes = {} # {(start, length): data}
+        for gap in self.find_gaps(buffer="vertices", preferred_type="brush"):
+            vertex_writes[gap] = [] # np.array(..., dtype=np.float32)
+            gap_start, free_length = gap
+            vertex_bundle = [] # [brush1.vertices, brush2.vertices, ...]
+            gap_sufficient = True
+            while gap_sufficient:
+                brush = brushes[0]
+                brush_span_length = len(brush.vertices) * 44 # bytes per vert
+                if brush_span_length <= gap_length: # fits in remaining gap
+                    buffer_map[brush] = (gap_start, brush_span_length)
+                    vertex_bundle.append(vertices)
+                    offset[brush] = gap_start # remember index offset
+                    gap_start += brush_vertices_size
+                    free_length -= brush_vertices_size
+                    brushes.pop(0) # this brush will be written, next brush
+                else:
+                    gap_sufficient = False # go to next gap
+            vertex_writes[gap] += itertools.chain(*vertex_bundle)
+        # take remaining brushes, if any, and pack as best as possible
+        # if any brush is too large for any gap
+        # not any(gap.length >= brush.span.length)
+        # we are out of VRAM, raise Error OR
+        # if sum(gap.lengths) == sum(brush.lengths): ADD ON NEXT DEFRAG
 
-        # fill this gap brush by brush until gap is filled
-        # find gap(s) for the associated sets of VERITCES
+        # float16 (vertexformat + blend_alpha) would make 24 bytes
+            
+        
         # add vertices to the buffer_map & abstract_buffer_map
-        # assemble vertex data until gap is full
-        # add offsets to each set of INDICES matched with each set of VERTICES
-        # glBufferSubData(itertools.chain(*VERTICES))
         # find gaps for indices
         # aim for keeping same types close
         # foreach consecutiveVERTICES:
         # glBufferSubData(itertools.chain(*consecutiveVERTICES))
         # repeat until all brushes are in buffers
+
+        # WRITABLE CHUNK:
+        # chunk_start, chunk_length, itertools.chain(*data)
+        # where data is either indices + offsets OR vertices
 
         # do the same for displacements
         # the INDICES & VERTICES can be collected earlier
