@@ -89,7 +89,7 @@ def free(spans, span_to_remove): # remove from memory map
                 out.append((new_start, end - new_start)) # segment after R
     return out
 
-# A third function to find free segments to assign too
+# These two funtions work with a third to find free segments to assign to
 # The render.manager class method find_gap does this
 # However, it also check the types of neighbours for optimisation purposes
 
@@ -207,6 +207,10 @@ class manager:
         ##                              16 000 ~ 16KB INDICES
         ##                             126 000 ~126KB VERTICES & INDICES
         ## 100 Power 3 Displacements = 356 400 ~360KB VERTICES
+        ##                              57 600 ~ 58KB INDICES
+        ##                             414 000 ~414KB VERTICES & INDICES
+
+        ## GL_TRIANGLE_STRIP instanced draw calls
         
         ## 100 Power2 + 100 Power3 = 110 000 + 356 400 = 466 400
         ##                          ~467KB VERTICES
@@ -338,8 +342,8 @@ class manager:
     def add_brushes(self, *brushes):
         """add *brushes to the appropriate GPU buffers"""
         # the most common case is loading a fresh file
-        # this should not be overly expensive
-        # we should have a long stretch of free memory
+        # which should not be overly expensive
+        # as we should have a long stretch of free memory
         # order of operations:
         # find a good gap for INDICES
         offset = {} # {brush: index_offset}
