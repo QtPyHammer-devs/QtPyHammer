@@ -123,7 +123,22 @@ class scope:
                 target[tier] = value # could be creating this value
             else:
                 target = target[tier]
-    
+
+# LOADING BAR IMPLEMENTATION
+# every X (kwarg) lines call progress function (kwarg)
+# -- likely lambda p: loading_bar.setProgress(p)
+# def parse(lines, loading_func=loading_bar.set_progress, update_freq=100,
+#           log=vmf_interface.log, extra_tasks={"solid": ...})
+
+# on close ("}"):
+# completed object = current.scope.tiers[-1]
+# if completed_object in loading_funcs:
+#       loading_funcs[completed_object].__call__(complete_object)
+# where: loading_funcs = {"solid": load_brush,
+#                        "entity": load_entitiy}
+# and:
+# load_brush = lambda b: vmf_interface.add_brushes(utilities.solids.import(b))
+# load_entity = lambda e: vmf_interface.add_entities(utilities.entities.import(e))
 
 def parse_lines(iterable):
     """String or .vmf file to nested namespace"""
