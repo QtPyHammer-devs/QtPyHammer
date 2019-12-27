@@ -24,9 +24,11 @@ class Workspace(QtWidgets.QWidget):
         super(Workspace, self).__init__(parent)
         self.vmf = ops.vmf.interface(self, open(vmf_path))
         self.viewport = viewport.Viewport3D(60)
-        self.render_manager = render.manager(self.viewport, parent.ctx) # know memory limits
-        self.render_manager.add_brushes(*self.vmf.brushes) # len() / i -> progress
-        # self.render_manager.add_entities(*self.vmf.entities) # also track loading progress
+        self.render_manager = render.manager(self.viewport, parent.ctx)
+        self.render_manager.add_brushes(*self.vmf.brushes)
+        # ^ use a loading bar
+        # self.render_manager.add_entities(*self.vmf.entities)
+        # ^ use a loading bar
         layout = QtWidgets.QVBoxLayout()
         layout.addWidget(self.viewport)
         self.setLayout(layout)

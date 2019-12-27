@@ -1,5 +1,6 @@
 """Interface for editing .vmf files and updating the associated edit timeline"""
 import sys
+
 sys.path.insert(0, "../") # sibling packages
 # import ops.timeline as timeline
 # from utilities import entity
@@ -24,7 +25,7 @@ class interface:
         self.brushes = []
         for i, brush in enumerate(raw_brushes):
             try:
-                valid_solid = solid.load(brush)
+                valid_solid = solid.solid(brush)
             except Exception as exc:
                 report = "Solid #{} id: {} is invalid.\n{}".format(i, brush.id, exc)
                 self.log.append(report)
@@ -37,7 +38,7 @@ class interface:
         # self.parent.edit_timeline.add(timeline.op.BRUSH_ADD, brushes)
         for brush in brushes:
             self.brushes.append(brush)
-        # self.parent.render_manager.add_brushes(*brushes)
+        self.parent.render_manager.add_brushes(*brushes)
 
     def delete_brushes(self, *indices):
         # self.parent.edit_timeline.add(timeline.op.BRUSH_DEL, brushes)

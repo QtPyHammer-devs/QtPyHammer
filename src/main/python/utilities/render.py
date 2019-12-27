@@ -304,7 +304,7 @@ class manager:
         # draw_calls.append((draw_grid, {"limit": 2048, "grid_scale": 64, "colour": (.5,) * 3}))
         # draw_calls.append((draw_origin, {"scale": 64}))
             # SET STATE: brushes
-            # for S, L in abstract_buffer_map[index][brushes]
+            # for S, L in abstract_buffer_map["index"]["brush"]
             # drawElements(GL_TRIANGLES, S, L)
         self.gl_context.doneCurrent()
 
@@ -313,7 +313,7 @@ class manager:
         if minimum_size < 1:
             raise RuntimeError("Can't search for gap smaller than 1 byte")
         buffer_map = self.abstract_buffer_map[buffer]
-        if preffered_type not in (None, *buffer_map.keys()):
+        if preferred_type not in (None, *buffer_map.keys()):
             raise RuntimeError("Can't search for gap of type {}".format(preferred_type))
         if buffer == "vertex":
             limit = self.vertex_buffer_size
@@ -325,7 +325,11 @@ class manager:
         # ^ {"type": [*spans]} -> {span: "type"}
         filled_spans = sorted(span_type, key=lambda s: s[0])
         # ^ all spans filled by objects of all types, sorted by span[0] (start)
+        # spans are spaces with data assigned
+        # gaps are free spaces data can be assigned to
         prev_span = (0, 0)
+        span_type[prev_span] = preferred_type
+        # ^ if buffer is empty, use it
         prev_span_end = 0
         prev_gap = (0, 0)
         for span in filled_spans:
@@ -334,14 +338,14 @@ class manager:
             gap_length = span_start - gap_start
             if gap_length >= minimum_size:
                 gap = (gap_start, gap_length)
-                if preffered_type in (None, span_type[span], span_type[prev_span]):
+                if preferred_type in (None, span_type[span], span_type[prev_span]):
                     yield gap
             prev_span = span
             prev_span_end = span_start + span_length
-        if prev_gap_end != limit:
-            gap_start = prev_gap_end + 1
+        if prev_span_end < limit: # final gap
+            gap_start = prev_span_end
             gap = (gap_start, limit - gap_start)
-            if preffered_type in (None, span_type[prev_span]):
+            if preferred_type in (None, span_type[prev_span]):
                     yield gap
 
     def add_brushes(self, *brushes):
@@ -349,28 +353,31 @@ class manager:
         # the most important case is loading a fresh file
         # which should not be overly expensive
         # as we should have a long stretch of free memory
+        brushes = list(brushes) # for pop method
         vertex_writes = {} # {(start, length): data}
         offset_indices = {} # brush: indices + offset
         for gap in self.find_gaps(buffer="vertex"):
             gap_start, gap_length = gap
+            true_gap_start = gap_start
+            # gap must start on a multiple of 44
             gap_sufficient = True
             data = [] # itertools.chain([brush.vertices])
             while gap_sufficient and len(brushes) > 0:
                 brush = brushes[0]
                 # does brush have displacement data?
                 # if so, assign its verts and offset its indices too
-                brush_vertices_size = len(brush.vertices) * 44 # bytes per vertex
-                if brush_vertices_size > gap_length:
+                vertices_size = len(brush.vertices) * 44 # bytes per vertex
+                if vertices_size > gap_length:
                     gap_sufficient = False
                     continue # go to next gap
                 data += brush.vertices
-                self.buffer_map["vertex"][brush] = (gap_start, brush_vertices_size)
+                self.buffer_map["vertex"][brush] = (gap_start, vertices_size)
                 offset = lambda i: i + (gap_start // 44)
                 offset_indices[brush] = list(map(offset, brush.indices))
-                gap_start += brush_vertices_size
-                gap_length -= brush_vertices_size
+                gap_start += vertices_size
+                gap_length -= vertices_size
                 brushes.pop(0) # this brush will be written, go to next brush
-            vertex_writes[(gap_start, len(data) * 4)] = data
+            vertex_writes[(true_gap_start, len(data) * 4)] = data
         if len(brushes) > 0: # couldn't pack all brushes with above method
             gaps = [g for g in self.find_gaps(buffer="vertex")]
             # take remaining brushes, if any, and pack as best as possible
@@ -378,23 +385,29 @@ class manager:
             # not any(gap.length >= brush.span.length)
             # we are out of VRAM, raise Error OR
             # if sum(gap.lengths) == sum(brush.lengths): ADD ON NEXT DEFRAG
-        self.abstract_buffer_map["vertex"]["brush"] = compress([*self.abstract_buffer_map["vertex"]["brush"], *vertex_writes.keys()])
+        vertex_spans = [*self.abstract_buffer_map["vertex"]["brush"],
+                        *vertex_writes.keys()]
+        self.abstract_buffer_map["vertex"]["brush"] = compress(vertex_spans)
 
         self.gl_context.makeCurrent(self.offscreen_surface)
-        for span, vertices in vertex_writes:
+        for span, data in vertex_writes.items():
             start, length = span
-            data = itertools.chain(*vertices)
-            glBufferSubData(GL_ARRAY_BUFFER, GLvoidp(start), length, np.array(data, dtype=np.float32))
+            data = list(itertools.chain(*data))
+            # ^ [(*position, *normal, *uv, *colour)] => [*vertex]
+            glBufferSubData(GL_ARRAY_BUFFER, start, length,
+                            np.array(data, dtype=np.float32))
         self.gl_context.doneCurrent()
+        del vertex_writes
 
-        # index bundles {brush: indices + offset}
+        # ^^ offset_indices = {brush: indices + offset} ^^
         index_writes = {} # {(start, length): data}
         for gap in self.find_gaps(buffer="index", preferred_type="brush"):
             gap_start, gap_length = gap
+            true_gap_start = gap_start
             gap_sufficient = True
             data = [] # itertools.chain([brush.indices + offset])
-            while gap_sufficient and len(index_bundles) > 0:
-                brush, indices = list(index_bundles.items())[0]
+            while gap_sufficient and len(offset_indices) > 0:
+                brush, indices = list(offset_indices.items())[0]
                 indices_size = len(indices) * 4 # sizeof(np.uint32)
                 if indices_size > gap_length:
                     gap_sufficient = False
@@ -404,22 +417,27 @@ class manager:
                 data.append(indices)
                 gap_start += indices_size
                 gap_length -= indices_size
-                index_bundles.pop(brush) # data for brush has been allocated
-            index_writes[(gap_start, len(data) * 4)] = data
+                offset_indices.pop(brush) # data for brush has been allocated
+            index_writes[(true_gap_start, len(data) * 4)] = data
         if len(offset_indices) > 0: # lazy method couldn't pack every brush
             gaps = [g for g in self.find_gaps(buffer="index")]
             # check total_gap_length < remaining_data_length
-        self.abstract_buffer_map["index"]["brush"] = compress(*self.abstract_buffer_map["index"]["brush"], *index_writes.keys())
+        index_spans = [*self.abstract_buffer_map["index"]["brush"],
+                       *index_writes.keys()]
+        self.abstract_buffer_map["index"]["brush"] = compress(index_spans)
 
-        # do the same for displacements
-        # the INDICES & VERTICES can be collected earlier
-        # find gaps
-        # add offsets to each set of INDICES
-        # glBufferSubData(itertools.chain(*INDICES))
-        # foreach consecutiveVERTICES:
-        # glBufferSubData(itertools.chain(*consecutiveVERTICES))
-        # note indices are a fixed length based on power
-        # and INDICES can be generated as we bind them to the GPU
+        self.gl_context.makeCurrent(self.offscreen_surface)
+        for span, data in index_writes.items():
+            start, length = span
+            data = list(itertools.chain(*data))
+            # ^ [[brush.indices], [brush.indices]] => [*brush.indices]
+            glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, start, length,
+                            np.array(data, dtype=np.float32))
+        self.gl_context.doneCurrent()
+        del index_writes
+        
+        # now do the displacements
+        # VERTICES & INDICES collected & offset in vertex assignment loop
 
         # it would be nice if we could do all this asyncronously
         # double buffering and/or using a separate thread, awaits etc.

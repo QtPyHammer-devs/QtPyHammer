@@ -325,10 +325,10 @@ class MainWindow(QtWidgets.QMainWindow):
         # self.viewport.setFocus()
 
     def new_tab(self, vmf_path=False):
-        if vmf_path != False: # for some reason Qt passes "False" to new_tab
-            filename = os.path.basename(vmf_path)
-        else:
+        if vmf_path in (False, ""): # or vmf_path does not exist
             filename = "untitled"
             vmf_path = self.ctx.get_resource("vmfs/blank.vmf")
+        else:
+            filename = os.path.basename(vmf_path)
         tab = tabs.Workspace(vmf_path, parent=self) # parent gives appctxt
         self.tabmaster.addTab(tab, filename)
