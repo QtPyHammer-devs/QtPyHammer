@@ -9,12 +9,8 @@ from OpenGL.GL import *
 from OpenGL.GL.shaders import compileShader, compileProgram
 from PyQt5 import QtGui
 
-from . import camera, solid, vector, vmf
+from . import camera, solid, vector
 
-
-def draw_elements(spans=[]):
-    for start, length in spans:
-        glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
 
 def yield_grid(limit, step): # get "step" from Grid Scale action (MainWindow)
     for i in range(0, limit + 1, step): # centers on 0, centering on a vertex / edge would be helpful for uneven grids
@@ -27,7 +23,7 @@ def yield_grid(limit, step): # get "step" from Grid Scale action (MainWindow)
         yield -i, limit
         yield -i, -limit # edge -SN
 
-def draw_grid(viewport, limit=2048, grid_scale=64, colour=(.5, .5, .5)):
+def draw_grid(limit=2048, grid_scale=64, colour=(.5, .5, .5)):
     glUseProgram(0)
     glLineWidth(1)
     glBegin(GL_LINES)
@@ -36,7 +32,7 @@ def draw_grid(viewport, limit=2048, grid_scale=64, colour=(.5, .5, .5)):
         glVertex(x, y)
     glEnd()
 
-def draw_origin(viewport, scale=64):
+def draw_origin(scale=64):
     glUseProgram(0)
     glLineWidth(2)
     glBegin(GL_LINES)
@@ -95,10 +91,11 @@ def free(spans, span_to_remove): # remove from memory map
 
 
 class manager:
-    def __init__(self, viewport, ctx):
+    def __init__(self, ctx):
+        # set a proper format for gl context
+        # double buffer etc
         self.gl_context = QtGui.QOpenGLContext()
-        self.gl_context.setShareContext(viewport.context())
-        # self.gl_context.setFormat( some format )
+        self.gl_context.setShareContext(QtGui.QOpenGLContext.globalShareContext())
         self.gl_context.create()
         self.offscreen_surface = QtGui.QOffscreenSurface()
         self.offscreen_surface.setFormat(self.gl_context.format())
@@ -106,8 +103,8 @@ class manager:
         if not self.offscreen_surface.supportsOpenGL():
             raise RuntimeError("Can't run OpenGL")
         if not self.gl_context.makeCurrent(self.offscreen_surface):
-            raise RuntimeError("Couldn't Initialise open GL")
-
+            raise RuntimeError("Couldn't Initialise OpenGL")
+        # would be easier to set and note format earlier
         major = glGetIntegerv(GL_MAJOR_VERSION)
         minor = glGetIntegerv(GL_MINOR_VERSION)
         GLES_MODE = False
@@ -127,109 +124,32 @@ class manager:
         frag_flat_displacement = compile_shader("flat_displacement.frag", GL_FRAGMENT_SHADER)
         frag_stripey_brush = compile_shader("stripey_brush.frag", GL_FRAGMENT_SHADER)
         # Programs
-        self.shader = {} # name: program
-        self.shader["brush_flat"] = compileProgram(vert_brush, frag_flat_brush)
-        self.shader["displacement_flat"] = compileProgram(vert_displacement, frag_flat_displacement)
-        self.shader["brush_stripey"] = compileProgram(vert_brush, frag_stripey_brush)
-        glLinkProgram(self.shader["brush_flat"])
-        glLinkProgram(self.shader["displacement_flat"])
-        glLinkProgram(self.shader["brush_stripey"])
+        self.shader = {"flat": {}, "stripey": {}, "textured": {}, "shaded": {}}
+        # ^ style: {target: program} ^ shaded is textured & shaded
+        self.shader["flat"]["brush"] = compileProgram(vert_brush, frag_flat_brush)
+        self.shader["flat"]["displacement"] = compileProgram(vert_displacement, frag_flat_displacement)
+        self.shader["stripey"]["brush"] = compileProgram(vert_brush, frag_stripey_brush)
+        for style in self.shader.values():
+            for program in style.values():
+                glLinkProgram(program)
+        # would QtGui.QOpenGLShaderProgram share easier?
 
         # Uniforms
-        self.uniform = {"brush_flat": {}, "displacement_flat": {},
-                        "brush_stripey": {}}
-        # shader: {uniform_name: location, ...}
+        self.uniform = {"flat": {"brush": {}, "displacement": {}},
+                        "stripey": {"brush": {}},
+                        "textured": {},
+                        "shaded": {}}
+        # ^ style: {target: {uniform: location}}
         if GLES_MODE == True:
-            glUseProgram(self.shader["brush_flat"])
-            self.uniform["brush_flat"]["matrix"] = glGetUniformLocation(self.shader["brush_flat"], "ModelViewProjectionMatrix")
-            glUseProgram(self.shader["displacement_flat"])
-            self.uniform["displacement_flat"]["matrix"] = glGetUniformLocation(self.shader["displacement_flat"], "ModelViewProjectionMatrix")
-            glUseProgram(self.shader["brush_stripey"])
-            self.uniform["brush_stripey"]["matrix"] = glGetUniformLocation(self.shader["brush_stripey"], "ModelViewProjectionMatrix")
+            for style, targets in self.uniform.items():
+                for target in targets:
+                    glUseProgram(self.shader[style][target])
+                    self.uniform[style][target]["matrix"] = glGetUniformLocation(self.shader[style][target], "ModelViewProjectionMatrix")
             glUseProgram(0)
-
-        ### --- 44 bytes SOLID FACE VERTEX FORMAT --- ###
-        # -- 12 bytes  (3 float32)  Position
-        # -- 12 bytes  (3 float32)  Normal
-        # -- 8  bytes  (2 float32)  UV
-        # -- 12 bytes  (3 float32)  Colour
-        ## 1 Tri  == 132 bytes VERTICES +  12 bytes INDICES
-        ## 1 Quad == 176 bytes VERTICES +  24 bytes INDICES
-        ## 1 Cube == 352 bytes VERTICES + 144 bytes INDICES
-        ## 200 Cube Solids = 70 400 ~ 71KB VERTICES
-        ##                   28 800 ~ 29KB INDICES
-        ##                   99 200 ~100KB VERTICES & INDICES
-
-
-        ### --- 44 bytes DISPLACEMENT VERTEX FORMAT --- ###
-        # -- 12 bytes  (3 float32)  Position
-        # -- 4  bytes  (1 float32)  Alpha
-        # -- 8  bytes  (2 padding)  0x0000
-        # -- 8  bytes  (2 float32)  UV
-        # -- 12 bytes  (3 float32)  Colour
-
-        ## |\|/|\|/|\|/|\|/|
-        ## |/|\|/|\|/|\|/|\|
-        ## |\|/|\|/|\|/|\|/|  Power 3
-        ## |/|\|/|\|/|\|/|\|
-        ## |\|/|\|/|\|/|\|/|  |\|/|\|/|  Power 2
-        ## |/|\|/|\|/|\|/|\|  |/|\|/|\|
-        ## |\|/|\|/|\|/|\|/|  |\|/|\|/|  |\|/| Power 1
-        ## |/|\|/|\|/|\|/|\|  |/|\|/|\|  |/|\|
-
-        ## 2 ^ power = quads per row
-        ## 2 ^ power * 2 = tris per row
-        ## 2 ^ power * 2 * 2^power = tris per displacement
-        ## 2 ^ power * 2 * 2^power * 3 = vertices referenced per displacement
-
-        ## GL_TRIANGLES
-        ## 2^power * 2 triangles * 2^power rows * 3 vertices * 4 bytes
-        ## lambda power: ((2 ** power) ** 2) * 24
-
-        ## GL_TRIANGLE STRIP
-        ## (2^power + 1) * 2 vertices * 2^power rows * 4 bytes
-        ## lambda power: ((2 ** power) + 1) * (2 ** power) * 8
-
-        ## to draw need (start, length) per row per displacement
-        
-        
-        ##   9 * 44 Power1 ==   396 bytes VERTICES + 96 bytes INDICES
-        ##                       48 bytes INDICES GL_TRIANGLE_STRIP
-        
-        ##  25 * 44 Power2 ==  1100 bytes VERTICES + 384 bytes INDICES
-        ##                      160 bytes INDICES GL_TRIANGLE_STRIP
-        
-        ##  81 * 44 Power3 ==  3564 bytes VERTICES + 864 bytes INDICES
-        ##                      576 bytes INDICES GL_TRIANGLE_STRIP
-        
-        ## 289 * 44 Power4 == 12716 bytes VERTICES + 2176 bytes INDICES
-        ##                     6144 bytes INDICES GL_TRIANGLE_STRIP
-
-        ## 100 Power 2 Displacements = 110 000 ~110KB VERTICES
-        ##                              16 000 ~ 16KB INDICES
-        ##                             126 000 ~126KB VERTICES & INDICES
-        ## 100 Power 3 Displacements = 356 400 ~360KB VERTICES
-        ##                              57 600 ~ 58KB INDICES
-        ##                             414 000 ~414KB VERTICES & INDICES
-
-        ## GL_TRIANGLE_STRIP instanced draw calls
-        
-        ## 100 Power2 + 100 Power3 = 110 000 + 356 400 = 466 400
-        ##                          ~467KB VERTICES
-        ##                            16 000 +  57 600 =  73 600
-        ##                           ~74KB INDICES
-        ##                           466 400 +  73 600 = 540 000
-        ##                          ~540KB VERTICES & INDICES
-
-        ## 200 Cube Brushes + 100 Power2 Displacement + 100 Power3 DIsplacements
-        ## ~640KB of VRAM (536.8KB VERTICES + 102.4KB INDICES)
-
-        # pl_upward_d.vmf
-        # 558 Displacement Brushes & 1890 Non-Displacement Brushes
 
         # Vertex Formats
         max_attribs = glGetIntegerv(GL_MAX_VERTEX_ATTRIBS)
-        # grab indices from the shaders?
+        # should we grab attrib locations from shader(s)?
         glEnableVertexAttribArray(0) # vertex_position
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
         glEnableVertexAttribArray(1) # vertex_normal (brush only)
@@ -241,6 +161,67 @@ class manager:
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
         glEnableVertexAttribArray(3) # editor_colour
         glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
+        ### --- 44 bytes SOLID FACE VERTEX FORMAT --- ###
+        # -- 12 bytes  (3 float32)  Position
+        # -- 12 bytes  (3 float32)  Normal
+        # -- 8  bytes  (2 float32)  UV
+        # -- 12 bytes  (3 float32)  Colour
+        ## 1 Tri  == 132 bytes VERTICES +  12 bytes INDICES
+        ## 1 Quad == 176 bytes VERTICES +  24 bytes INDICES
+        ## 1 Cube == 352 bytes VERTICES + 144 bytes INDICES
+        ## 200 Cube Solids = 70 400 ~ 71KB VERTICES
+        ##                   28 800 ~ 29KB INDICES
+        ##                   99 200 ~100KB VERTICES & INDICES
+        ### --- 44 bytes DISPLACEMENT VERTEX FORMAT --- ###
+        # -- 12 bytes  (3 float32)  Position
+        # -- 4  bytes  (1 float32)  Alpha
+        # -- 8  bytes  (2 padding)  0x0000
+        # -- 8  bytes  (2 float32)  UV
+        # -- 12 bytes  (3 float32)  Colour
+        ## |\|/|\|/|\|/|\|/|
+        ## |/|\|/|\|/|\|/|\|
+        ## |\|/|\|/|\|/|\|/|  Power 3
+        ## |/|\|/|\|/|\|/|\|
+        ## |\|/|\|/|\|/|\|/|  |\|/|\|/|  Power 2
+        ## |/|\|/|\|/|\|/|\|  |/|\|/|\|
+        ## |\|/|\|/|\|/|\|/|  |\|/|\|/|  |\|/| Power 1
+        ## |/|\|/|\|/|\|/|\|  |/|\|/|\|  |/|\|
+        ## 2 ^ power = quads per row
+        ## 2 ^ power * 2 = tris per row
+        ## 2 ^ power * 2 * 2^power = tris per displacement
+        ## 2 ^ power * 2 * 2^power * 3 = vertices referenced per displacement
+        ## GL_TRIANGLES
+        ## 2^power * 2 triangles * 2^power rows * 3 vertices * 4 bytes
+        ## lambda power: ((2 ** power) ** 2) * 24
+        ## GL_TRIANGLE STRIP
+        ## (2^power + 1) * 2 vertices * 2^power rows * 4 bytes
+        ## lambda power: ((2 ** power) + 1) * (2 ** power) * 8
+        ## To draw using GL_TRIANGLE_STRIP you need (start, length)
+        ## per row, per displacement
+        ##   9 vertex Power1 ==   396 bytes VERTICES + 96 bytes INDICES
+        ##                         48 bytes INDICES GL_TRIANGLE_STRIP
+        ##  25 vertex Power2 ==  1100 bytes VERTICES + 384 bytes INDICES
+        ##                        160 bytes INDICES GL_TRIANGLE_STRIP
+        ##  81 vertex Power3 ==  3564 bytes VERTICES + 864 bytes INDICES
+        ##                        576 bytes INDICES GL_TRIANGLE_STRIP
+        ## 289 vertex Power4 == 12716 bytes VERTICES + 2176 bytes INDICES
+        ##                       6144 bytes INDICES GL_TRIANGLE_STRIP
+        ## 100 Power 2 Displacements = 110 000 ~110KB VERTICES
+        ##                              16 000 ~ 16KB INDICES
+        ##                             126 000 ~126KB VERTICES & INDICES
+        ## 100 Power 3 Displacements = 356 400 ~360KB VERTICES
+        ##                              57 600 ~ 58KB INDICES
+        ##                             414 000 ~414KB VERTICES & INDICES
+        ## 100 Power2 + 100 Power3 = 110 000 + 356 400 = 466 400
+        ##                          ~467KB VERTICES
+        ##                            16 000 +  57 600 =  73 600
+        ##                           ~74KB INDICES
+        ##                           466 400 +  73 600 = 540 000
+        ##                          ~540KB VERTICES & INDICES
+        ## 200 Cube Brushes + 100 Power2 Displacement + 100 Power3 DIsplacements
+        ## ~640KB of VRAM (536.8KB VERTICES + 102.4KB INDICES)
+        # pl_upward_d.vmf has:
+        # 558 Displacement Brushes & 1890 Non-Displacement Brushes
 
         # Buffers
         KB = 10 ** 3
@@ -258,10 +239,9 @@ class manager:
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.index_buffer_size, None, GL_DYNAMIC_DRAW)
         # VRAM Memory Management
         self.buffer_map = {"vertex": {}, "index": {}}
-        # buffer: {object: (start, len)}
-        # brush: {side_index: (start, len)} # displacements
+        # buffer: {object: (start, length)}
+        # object = brush: {side_index: (start, length)} for displacements
         # what about mapping by brush id?
-        # ^ index span of each brush ^
         # recording this makes hiding, deleting and adding geometry easy
         # this system is good for brushes & displacements but for instances...
         # we should only store models & other often duplicated geometry once
@@ -284,7 +264,7 @@ class manager:
                                     "index": {"brush": [], "displacement": [], "model": []}}
         # buffer: {type: [(start, length)]}
         # used to simplify draw calls and keep track of any fragmentation
-        # fragmentation would lead to a lot of draw calls with identical state
+        # fragmentation of the index buffer means slower framerate
 
         # update method:
         # self.abstract_buffer_map = ...
@@ -297,8 +277,8 @@ class manager:
         # adding the switch to a "hands off" operation like saving could help...
         # to make the experience seamless
 
-        # collate an ordered list of functions to call each frame to give to viewports
-        # draw calls need to ask the render manager what is hidden
+        # collate an ordered list of draw functions for viewports
+        # draw calls need to ask the render manager what to draw (and what to skip)
         # set program, drawElements (start, len), [update uniform(s)]
         # (func, {**kwargs}) -> func(**kwargs)
         # draw_calls.append((draw_grid, {"limit": 2048, "grid_scale": 64, "colour": (.5,) * 3}))
@@ -441,3 +421,10 @@ class manager:
 
         # it would be nice if we could do all this asyncronously
         # double buffering and/or using a separate thread, awaits etc.
+
+    def share_context(self, other_context):
+        self.gl_context = gl_context = Qt.QOpenGLContext()
+        self.gl_context.setShareContext(Qt.QOpenGLContext.globalShareContext())
+        self.gl_context.setShareContext(other_context)
+        if not self.gl_context.create():
+            raise RuntimeError("sharing gl contexts broke somehow")
