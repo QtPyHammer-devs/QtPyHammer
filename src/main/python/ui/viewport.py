@@ -59,7 +59,10 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
     def show(self): # must show widget to create context
         super(MapViewport3D, self).show() # make a context that can be shared
         self.context().setShareContext(self.render_manager.gl_context) # neds to be shareable
+<<<<<<< HEAD
         self.context().setFormat(...)
+=======
+>>>>>>> 4de1138e1db67b5777c961a327c24a38084aeb7b
         self.context().create() # check sharing has occured
         # INVALID QVARIANT
         # BAD sharing
