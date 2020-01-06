@@ -58,21 +58,25 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
 
     def show(self): # must show widget to create context
         super(MapViewport3D, self).show() # make a context that can be shared
-        self.context().setShareContext(self.render_manager.gl_context) # neds to be shareable
-<<<<<<< HEAD
-        self.context().setFormat(...)
-=======
->>>>>>> 4de1138e1db67b5777c961a327c24a38084aeb7b
-        self.context().create() # check sharing has occured
+        print("viewport GL context")
+        print("isValid", self.context().isValid())
+        self.context().setShareContext(self.render_manager.gl_context)
+        self.context().reset()
+        self.context().create()
+        print("SHARING", self.context().areSharing(self.render_manager.gl_context))
+        # check sharing has occured
         # INVALID QVARIANT
         # BAD sharing
         # SET FORMAT?
         # then use GL objects created by render_manager pre-sharing
         self.set_view_mode("flat")
-        self.start()
+        # ^ view mode must be set so we can grab the correct shaders
+        # self.start()
 
     @QtCore.pyqtSlot(str, name="setViewMode") # connected to UI
     def set_view_mode(self, view_mode): # C++: void setViewMode(QString)
+        print("calling set_view_mode")
+        raise RuntimeError()
         self.view_mode = view_mode
         self.shaders = self.render_manager.shader[view_mode]
         self.uniforms = self.render_manager.uniform[view_mode]
@@ -88,6 +92,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
             glDisable(GL_TEXTURE_2D)
         self.doneCurrent()
+        print("called set_view_mode")
 
     def do_raycast(self):
         if self.camera_moving: # cast the ray from the middle of the camera
@@ -146,7 +151,8 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         # but only if they were pressed here in mousePressEvent
         # (at the start of the mouse action)
         ...
-        # emit a raycast to ui/tabs.py:Workspace
+        # self.do_raycast
+        # emit the ray to ui/tabs.py:Workspace
         # or save the result of the raycast and return with the mouse action
         ...
         # if button == middle mouse:
@@ -170,7 +176,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         super(MapViewport3D, self).mouseReleaseEvent(event)
 
     def initializeGL(self):
-        self.setViewMode(self.view_mode)
+        self.setViewMode(self.view_mode) # IT WAS MEEEEEE
         glClearColor(0, 0, 0, 0)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
@@ -191,8 +197,6 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         render.draw_origin()
         # loop over targets (brush, displacement, model)
         glUseProgram(self.shaders["brush"]) # did not share context?
-        Notes
-
 ## Like buffer and texture objects, the name space for program objects may
 ## be shared across a set of contexts, as long as the server sides of the
 ## contexts share the same address space. If the name space is shared

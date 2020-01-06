@@ -95,8 +95,10 @@ class manager:
         # set a proper format for gl context
         # double buffer etc
         self.gl_context = QtGui.QOpenGLContext()
-        self.gl_context.setShareContext(QtGui.QOpenGLContext.globalShareContext())
+        # self.gl_context.setFormat(...)
         self.gl_context.create()
+        print("render manager GL context")
+        print("isValid", self.gl_context.isValid())
         self.offscreen_surface = QtGui.QOffscreenSurface()
         self.offscreen_surface.setFormat(self.gl_context.format())
         self.offscreen_surface.create()
