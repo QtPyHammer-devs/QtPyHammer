@@ -37,7 +37,6 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.GLES_MODE = False # store GL version instead?
         # model draw distance (defined in settings)
         self.view_mode = "flat" # defined in settings
-        self.set_view_mode("flat")
         self.ray = [] # origin, dir (for debug rendering)
         # INPUT HANDLING
         self.camera = camera.freecam(None, None, 128)
@@ -58,9 +57,14 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.timer.start(1000 / self.fps) # start painting
 
     def show(self): # must show widget to create context
-        super(MapViewport3D, self).show()
-        self.context().setShareContext(self.render_manager.gl_context)
-        self.context().create()
+        super(MapViewport3D, self).show() # make a context that can be shared
+        self.context().setShareContext(self.render_manager.gl_context) # neds to be shareable
+        self.context().create() # check sharing has occured
+        # INVALID QVARIANT
+        # BAD sharing
+        # SET FORMAT?
+        # then use GL objects created by render_manager pre-sharing
+        self.set_view_mode("flat")
         self.start()
 
     @QtCore.pyqtSlot(str, name="setViewMode") # connected to UI
