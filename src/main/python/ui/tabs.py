@@ -28,7 +28,7 @@ class Workspace(QtWidgets.QWidget):
         self.vmf = ops.vmf.interface(self, open(vmf_path))
         self.render_manager = render.manager(self.ctx)
         self.viewport = viewport.MapViewport3D(self)
-        self.viewport.setViewMode("flat") # defined in settings
+        # self.viewport.setViewMode.connect(...)
         self.render_manager.add_brushes(*self.vmf.brushes)
         # ^ use a loading bar
         # self.render_manager.add_entities(*self.vmf.entities)
