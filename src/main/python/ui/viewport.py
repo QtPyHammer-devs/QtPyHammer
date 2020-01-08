@@ -34,7 +34,6 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.render_manager = parent.render_manager
         self.draw_distance = 4096 * 4 # defined in settings
         self.fov = 90 # defined in settings (70 - 120)
-        self.GLES_MODE = False # store GL version instead?
         # model draw distance (defined in settings)
         self.view_mode = "flat" # defined in settings
         self.ray = [] # origin, dir (for debug rendering)
@@ -53,30 +52,10 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.update)
 
-    def start(self):
-        self.timer.start(1000 / self.fps) # start painting
-
-    def show(self): # must show widget to create context
-        super(MapViewport3D, self).show() # make a context that can be shared
-        print("viewport GL context")
-        print("isValid", self.context().isValid())
-        self.context().setShareContext(self.render_manager.gl_context)
-        self.context().reset()
-        self.context().create()
-        print("SHARING", self.context().areSharing(self.render_manager.gl_context))
-        # check sharing has occured
-        # INVALID QVARIANT
-        # BAD sharing
-        # SET FORMAT?
-        # then use GL objects created by render_manager pre-sharing
-        self.set_view_mode("flat")
-        # ^ view mode must be set so we can grab the correct shaders
-        # self.start()
-
+    # calling the slot by it's name creates a QVariant Error
+    # which for some reason does not trace correctly
     @QtCore.pyqtSlot(str, name="setViewMode") # connected to UI
     def set_view_mode(self, view_mode): # C++: void setViewMode(QString)
-        print("calling set_view_mode")
-        raise RuntimeError()
         self.view_mode = view_mode
         self.shaders = self.render_manager.shader[view_mode]
         self.uniforms = self.render_manager.uniform[view_mode]
@@ -92,25 +71,19 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
             glDisable(GL_TEXTURE_2D)
         self.doneCurrent()
-        print("called set_view_mode")
 
-    def do_raycast(self):
-        if self.camera_moving: # cast the ray from the middle of the camera
-            ray_origin = self.camera.position
-            ray_direction = vector.vec3(y=1).rotate(*-self.camera.rotation)
-        else: # cast the ray from the cursor
-            # en.wikipedia.org/wiki/Ray_tracing_(graphics)#Calculate_rays_for_rectangular_viewport
-            click = vector.vec2(event.pos().x() - 1, event.pos().y() - 1)
-            h = vector.vec3(x=1).rotate(*-self.camera.rotation) # camera local X
-            v = vector.vec3(z=1).rotate(*-self.camera.rotation) # camera local Y
-            d = vector.vec3(y=1).rotate(*-self.camera.rotation) # camera local Z
-            hx = math.tan(self.fov/2) # viewport range projected out 1 unit
-            hy = hx * (self.height() / self.width()) # scale by aspect ratio
-            px = (2 * hx) / (self.width() - 1) * h # projected pixel width
-            py = (2 * hy) / (self.height() - 1) * v # projected pixel height
-            top_left_pixel = d - (hx * px) - (hy * py)
-            ray_origin = self.camera.position
-            ray_direction = (top_left_pixel + px * click.x + py * click.y).normalise()
+    def do_raycast(self, x, y):
+        # en.wikipedia.org/wiki/Ray_tracing_(graphics)#Calculate_rays_for_rectangular_viewport
+        h = vector.vec3(x=1).rotate(*-self.camera.rotation) # camera local X
+        v = vector.vec3(z=1).rotate(*-self.camera.rotation) # camera local Y
+        d = vector.vec3(y=1).rotate(*-self.camera.rotation) # camera local Z
+        hx = math.tan(self.fov/2) # viewport range projected out 1 unit
+        hy = hx * (self.height() / self.width()) # scale by aspect ratio
+        px = (2 * hx) / (self.width() - 1) * h # projected pixel width
+        py = (2 * hy) / (self.height() - 1) * v # projected pixel height
+        top_left_pixel = d - (hx * px) - (hy * py)
+        ray_origin = self.camera.position
+        ray_direction = (top_left_pixel + px * (x - 1) + py * (y - 1)).normalise()
         self.ray = [ray_origin, ray_direction] # for debug rendering
         return ray_origin, ray_direction
 
@@ -172,12 +145,23 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
 
     def mouseReleaseEvent(self, event): # end of click
         if event.button() == QtCore.Qt.LeftButton: # defined in settings
-            ray_origin, ray_direction = self.do_raycast()
+            x, y = event.pos.x(), event.pos().y()
+            if self.camera_moving:
+                x = self.width() / 2
+                y = self.height() / 2
+            ray_origin, ray_direction = self.do_raycast(x, y)
             self.raycast.emit(ray_origin, ray_direction)
         super(MapViewport3D, self).mouseReleaseEvent(event)
 
     def initializeGL(self):
-        self.setViewMode(self.view_mode) # IT WAS MEEEEEE
+        print("viewport GL context")
+        print("isValid", self.context().isValid())
+        self.context().setShareContext(self.render_manager.gl_context)
+        self.context().setFormat(self.render_manager.gl_context.format())
+        self.context().create()
+        print("SHARING", self.context().areSharing(self.context(),
+                                        self.render_manager.gl_context))
+        self.set_view_mode("flat") # sets shaders & GL state
         glClearColor(0, 0, 0, 0)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
@@ -187,36 +171,26 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         glPolygonMode(GL_BACK, GL_LINE)
         glFrontFace(GL_CW)
         glPointSize(4)
+        self.timer.start(1000 / self.fps) # start painting
 
     def paintGL(self):
         glLoadIdentity()
         gluPerspective(self.fov, self.width() / self.height(), 0.1, self.draw_distance)
         self.camera.set()
-        if self.GLES_MODE:
+        if self.render_manager.GLES_MODE:
             matrix = glGetFloatv(GL_PROJECTION_MATRIX)
         render.draw_grid()
         render.draw_origin()
         # loop over targets (brush, displacement, model)
-        glUseProgram(self.shaders["brush"]) # did not share context?
-## Like buffer and texture objects, the name space for program objects may
-## be shared across a set of contexts, as long as the server sides of the
-## contexts share the same address space. If the name space is shared
-## across contexts, any attached objects and the data associated with those
-## attached objects are shared as well. Applications are responsible for
-## providing the synchronization across API calls when objects are accessed
-## from different execution threads.
-## ERRORS:
-## GL_INVALID_VALUE : program is neither 0 nor a value generated by OpenGL.
-## GL_INVALID_OPERATION : program is not a program object.
-## GL_INVALID_OPERATION : program could not be made part of current state.
-## GL_INVALID_OPERATION : transform feedback mode is active.
+        glUseProgram(self.shaders["brush"])
         for uniform, location in self.uniforms["brush"].items():
             # {"uniform": [func, *args]} would be better
             # since it allows us to share uniforms across shaders
-            if uniform == "matrix":
-                glUniformMatrix4fv(matrix_loc, 1, GL_FALSE, matrix)
+            # and complex if...else cases make me ;w;
+            if uniform == "matrix" and self.render_manager.GLES_MODE:
+                glUniformMatrix4fv(location, 1, GL_FALSE, matrix)
         # dither for flat shaded transparency on skip & hint
-        for span in self.render_manager.abstract_buffer_map["index"]["brushes"]:
+        for span in self.render_manager.abstract_buffer_map["index"]["brush"]:
             # ^ overly long name for a commonly used array ^
             start, length = span
             glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
