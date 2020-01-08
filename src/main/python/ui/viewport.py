@@ -100,16 +100,17 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
             ray_direction = vector.vec3(y=1).rotate(*-self.camera.rotation)
         else: # cast the ray from the cursor
             # en.wikipedia.org/wiki/Ray_tracing_(graphics)#Calculate_rays_for_rectangular_viewport
-            click = vector.vec2(((event.pos().x() / self.width()) * 2) - 1,
-                                ((event.pos().y() / self.width()) * 2) - 1)
-                                # ^ scale by width because aspect ratio ^
-            ray_origin += vector.vec3(click.x, 0, -click.y).rotate(*-self.camera.rotation)
-            self.makeCurrent()
-            matrix = glGetFloatv(GL_PROJECTION_MATRIX)
-            self.doneCurrent()
-            perspective_dir = np.matmul(matrix, [click.x, -click.y, 1, 1])
-            # ^ aligns with camera but angle is incorrect
-            ray_direction = vector.vec3(*perspective_dir[:3]).normalise()
+            click = vector.vec2(event.pos().x() - 1, event.pos().y() - 1)
+            h = vector.vec3(x=1).rotate(*-self.camera.rotation) # camera local X
+            v = vector.vec3(z=1).rotate(*-self.camera.rotation) # camera local Y
+            d = vector.vec3(y=1).rotate(*-self.camera.rotation) # camera local Z
+            hx = math.tan(self.fov/2) # viewport range projected out 1 unit
+            hy = hx * (self.height() / self.width()) # scale by aspect ratio
+            px = (2 * hx) / (self.width() - 1) * h # projected pixel width
+            py = (2 * hy) / (self.height() - 1) * v # projected pixel height
+            top_left_pixel = d - (hx * px) - (hy * py)
+            ray_origin = self.camera.position
+            ray_direction = (top_left_pixel + px * click.x + py * click.y).normalise()
         self.ray = [ray_origin, ray_direction] # for debug rendering
         return ray_origin, ray_direction
 
