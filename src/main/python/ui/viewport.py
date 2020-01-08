@@ -154,13 +154,13 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         super(MapViewport3D, self).mouseReleaseEvent(event)
 
     def initializeGL(self):
-        print("viewport GL context")
-        print("isValid", self.context().isValid())
         self.context().setShareContext(self.render_manager.gl_context)
         self.context().setFormat(self.render_manager.gl_context.format())
         self.context().create()
-        print("SHARING", self.context().areSharing(self.context(),
-                                        self.render_manager.gl_context))
+        sharing = self.context().areSharing(self.context(),
+                                            self.render_manager.gl_context))
+        if not sharing:
+            raise RuntimeError("GL BROKES, TELL A PROGRAMMER!")
         self.set_view_mode("flat") # sets shaders & GL state
         glClearColor(0, 0, 0, 0)
         glMatrixMode(GL_PROJECTION)

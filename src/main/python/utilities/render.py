@@ -107,9 +107,9 @@ class manager:
         if not self.gl_context.makeCurrent(self.offscreen_surface):
             raise RuntimeError("Couldn't Initialise OpenGL")
         # would be easier to set and note format earlier
-        major = glGetIntegerv(GL_MAJOR_VERSION)
-        minor = glGetIntegerv(GL_MINOR_VERSION)
-        GLES_MODE = False
+        major = glGetIntegerv(GL_MAJOR_VERSION) # could get this from our ...
+        minor = glGetIntegerv(GL_MINOR_VERSION) # Qt QGLContext Format
+        GLES_MODE = False # why not just check the version
         if major >= 4 and minor >= 5:
             self.shader_version = "GLSL_450"
         elif major >= 3 and minor >= 0:
