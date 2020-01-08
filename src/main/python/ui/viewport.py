@@ -145,7 +145,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
 
     def mouseReleaseEvent(self, event): # end of click
         if event.button() == QtCore.Qt.LeftButton: # defined in settings
-            x, y = event.pos.x(), event.pos().y()
+            x, y = event.pos().x(), event.pos().y()
             if self.camera_moving:
                 x = self.width() / 2
                 y = self.height() / 2
@@ -155,6 +155,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
 
     def initializeGL(self):
         self.render_manager.share_context(self.context()) # get buffers
+        # no longer rendering on the viewport's surface
         self.set_view_mode("flat") # sets shaders & GL state
         glClearColor(0, 0, 0, 0)
         glMatrixMode(GL_PROJECTION)
