@@ -92,13 +92,9 @@ def free(spans, span_to_remove): # remove from memory map
 
 class manager:
     def __init__(self, ctx):
-        # set a proper format for gl context
-        # double buffer etc
         self.gl_context = QtGui.QOpenGLContext()
-        # self.gl_context.setFormat(...)
+        # self.gl_context.setFormat(...) # get GLES_MODE here
         self.gl_context.create()
-        print("render manager GL context")
-        print("isValid", self.gl_context.isValid())
         self.offscreen_surface = QtGui.QOffscreenSurface()
         self.offscreen_surface.setFormat(self.gl_context.format())
         self.offscreen_surface.create()
@@ -106,7 +102,6 @@ class manager:
             raise RuntimeError("Can't run OpenGL")
         if not self.gl_context.makeCurrent(self.offscreen_surface):
             raise RuntimeError("Couldn't Initialise OpenGL")
-        # would be easier to set and note format earlier
         major = glGetIntegerv(GL_MAJOR_VERSION) # could get this from our ...
         minor = glGetIntegerv(GL_MINOR_VERSION) # Qt QGLContext Format
         GLES_MODE = False # why not just check the version
@@ -425,8 +420,8 @@ class manager:
         # double buffering and/or using a separate thread, awaits etc.
 
     def share_context(self, other_context):
-        self.gl_context = gl_context = Qt.QOpenGLContext()
-        self.gl_context.setShareContext(Qt.QOpenGLContext.globalShareContext())
-        self.gl_context.setShareContext(other_context)
-        if not self.gl_context.create():
-            raise RuntimeError("sharing gl contexts broke somehow")
+        other_context.setShareContext(self.gl_context)
+        other_context.setFormat(self.gl_context.format())
+        other_context.create()
+        if not self.gl_context.areSharing(self.gl_context, other_context):
+            raise RuntimeError("GL BROKES, TELL A PROGRAMMER!")

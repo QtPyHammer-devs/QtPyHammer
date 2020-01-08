@@ -99,7 +99,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
                 QtGui.QCursor.setPos(self.mapToGlobal(center))
                 self.grabMouse()
                 self.setCursor(QtCore.Qt.BlankCursor)
-            else: # free camera
+            else: # free the mouse
                 self.setMouseTracking(False)
                 QtGui.QCursor.setPos(self.cursor_start)
                 self.unsetCursor()
@@ -154,13 +154,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         super(MapViewport3D, self).mouseReleaseEvent(event)
 
     def initializeGL(self):
-        self.context().setShareContext(self.render_manager.gl_context)
-        self.context().setFormat(self.render_manager.gl_context.format())
-        self.context().create()
-        sharing = self.context().areSharing(self.context(),
-                                            self.render_manager.gl_context))
-        if not sharing:
-            raise RuntimeError("GL BROKES, TELL A PROGRAMMER!")
+        self.render_manager.share_context(self.context()) # get buffers
         self.set_view_mode("flat") # sets shaders & GL state
         glClearColor(0, 0, 0, 0)
         glMatrixMode(GL_PROJECTION)
