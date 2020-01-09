@@ -26,10 +26,10 @@ class Workspace(QtWidgets.QWidget):
         super(Workspace, self).__init__(parent)
         self.ctx = parent.ctx
         self.vmf = ops.vmf.interface(self, open(vmf_path))
-        self.render_manager = render.manager(self.ctx)
         self.viewport = viewport.MapViewport3D(self)
         # self.viewport.setViewMode.connect(...)
-        self.render_manager.add_brushes(*self.vmf.brushes)
+        load_vmf = lambda: self.viewport.render_manager.add_brushes(*self.vmf.brushes)
+        self.viewport.glInitialized.connect(load_vmf)
         # ^ use a loading bar
         # self.render_manager.add_entities(*self.vmf.entities)
         # ^ use a loading bar
@@ -53,6 +53,7 @@ class Workspace(QtWidgets.QWidget):
 
     def raycast(self, ray_origin, ray_direction):
         """Get the object hit by ray"""
+        print("calcualting raycast")
         ray_end = ray_origin + ray_direction
         for brush in self.vmf.brushes:
             states = set()
@@ -62,7 +63,6 @@ class Workspace(QtWidgets.QWidget):
                 states.add(starts_behind + ends_behind) # orderless encoding 012
             if (True + False) in states:
                 print(brush.id, sep="\t")
-        print()
 ##        if ctrl in self.viewport.keys: # add selection key (defined in settings)
 ##            self.selection[hit_type].add(hit_object)
 

@@ -27,11 +27,12 @@ view_modes = ['flat', 'textured', 'wireframe']
 
 class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
     raycast = QtCore.pyqtSignal(vector.vec3, vector.vec3) # emits ray
+    glInitialized = QtCore.pyqtSignal()
     # ^ https://www.riverbankcomputing.com/static/Docs/PyQt5/signals_slots.html
     def __init__(self, parent, fps=60):
         super(MapViewport3D, self).__init__(parent=parent)
+        self.ctx = parent.ctx
         # RENDERING
-        self.render_manager = parent.render_manager
         self.draw_distance = 4096 * 4 # defined in settings
         self.fov = 90 # defined in settings (70 - 120)
         # model draw distance (defined in settings)
@@ -46,6 +47,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.current_mouse_position = vector.vec2()
         self.mouse_vector = vector.vec2()
         self.setFocusPolicy(QtCore.Qt.ClickFocus) # get mouse inputs
+        # ^ user must click on viewport before Z to fly works
         # REFRESH RATE
         self.fps = fps
         self.dt = 1 / fps # will desynchronise, use time.time()
@@ -72,7 +74,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
             glDisable(GL_TEXTURE_2D)
         self.doneCurrent()
 
-    def do_raycast(self, x, y):
+    def do_raycast(self, x, y): # pixel offsets are wrong
         # en.wikipedia.org/wiki/Ray_tracing_(graphics)#Calculate_rays_for_rectangular_viewport
         h = vector.vec3(x=1).rotate(*-self.camera.rotation) # camera local X
         v = vector.vec3(z=1).rotate(*-self.camera.rotation) # camera local Y
@@ -149,24 +151,29 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
             if self.camera_moving:
                 x = self.width() / 2
                 y = self.height() / 2
-            ray_origin, ray_direction = self.do_raycast(x, y)
+            ray_origin, ray_direction = self.do_raycast(x, self.height() - y)
             self.raycast.emit(ray_origin, ray_direction)
         super(MapViewport3D, self).mouseReleaseEvent(event)
 
     def initializeGL(self):
-        self.render_manager.share_context(self.context()) # get buffers
-        # no longer rendering on the viewport's surface
+        self.render_manager = render.manager(self)
         self.set_view_mode("flat") # sets shaders & GL state
+        glViewport(0, 0, self.width(), self.height())
         glClearColor(0, 0, 0, 0)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
         gluPerspective(self.fov, self.width() / self.height(), 0.1, self.draw_distance)
         glEnable(GL_DEPTH_TEST)
 ##        glEnable(GL_CULL_FACE)
+        glEnableVertexAttribArray(0)
+        glEnableVertexAttribArray(1)
+        glEnableVertexAttribArray(2)
+        glEnableVertexAttribArray(3)
         glPolygonMode(GL_BACK, GL_LINE)
         glFrontFace(GL_CW)
         glPointSize(4)
         self.timer.start(1000 / self.fps) # start painting
+        self.glInitialized.emit()
 
     def paintGL(self):
         glLoadIdentity()
@@ -189,6 +196,9 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
             # ^ overly long name for a commonly used array ^
             start, length = span
             glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
+            # ^ are buffers bound?
+            data = glGetBufferSubData(GL_ELEMENT_ARRAY, GLvoidp(start), length)
+            print(data)
         if self.ray != []: # render raycast for debug
             glUseProgram(0)
             glColor(1, .75, .25)

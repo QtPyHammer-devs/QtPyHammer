@@ -91,10 +91,10 @@ def free(spans, span_to_remove): # remove from memory map
 
 
 class manager:
-    def __init__(self, ctx):
-        self.gl_context = QtGui.QOpenGLContext()
-        # self.gl_context.setFormat(...) # get GLES_MODE here
-        self.gl_context.create()
+    def __init__(self, parent):
+##        self.gl_context = QtGui.QOpenGLContext()
+##        self.share_context(parent.context())
+        self.gl_context = parent.context()
         self.offscreen_surface = QtGui.QOffscreenSurface()
         self.offscreen_surface.setFormat(self.gl_context.format())
         self.offscreen_surface.create()
@@ -112,6 +112,7 @@ class manager:
             self.shader_version = "GLES_300"
         self.GLES_MODE = GLES_MODE
         shader_folder = "shaders/{}/".format(self.shader_version)
+        ctx = parent.ctx
         compile_shader = lambda s, t: compileShader(open(ctx.get_resource(shader_folder + s), "rb"), t)
         # Vertex Shaders
         vert_brush =  compile_shader("brush.vert", GL_VERTEX_SHADER)
@@ -412,6 +413,11 @@ class manager:
                             np.array(data, dtype=np.float32))
         self.gl_context.doneCurrent()
         del index_writes
+
+        for span in self.abstract_buffer_map["index"]["brush"]:
+            start, length = span
+            data = glGetBufferSubData(GL_ELEMENT_ARRAY_BUFFER, start, length)
+            print(data)
         
         # now do the displacements
         # VERTICES & INDICES collected & offset in vertex assignment loop
@@ -420,8 +426,8 @@ class manager:
         # double buffering and/or using a separate thread, awaits etc.
 
     def share_context(self, other_context):
-        other_context.setShareContext(self.gl_context)
-        other_context.setFormat(self.gl_context.format())
-        other_context.create()
+        self.gl_context.setShareContext(other_context)
+        self.gl_context.setFormat(other_context.format())
+        self.gl_context.create()
         if not self.gl_context.areSharing(self.gl_context, other_context):
             raise RuntimeError("GL BROKES, TELL A PROGRAMMER!")
