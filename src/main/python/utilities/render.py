@@ -424,6 +424,9 @@ class manager:
         print("=" * 80)
         self.parent.doneCurrent()
 
+        # resulting buffer sizes stored in abstract map are wrong
+        # indices 208 bytes, 52 integers, 17.333 triangles
+
         # now do the displacements
         # VERTICES & INDICES collected & offset in vertex assignment loop
 
