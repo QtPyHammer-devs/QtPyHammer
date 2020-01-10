@@ -92,16 +92,16 @@ def free(spans, span_to_remove): # remove from memory map
 
 class manager:
     def __init__(self, parent):
-##        self.gl_context = QtGui.QOpenGLContext()
-##        self.share_context(parent.context())
-        self.gl_context = parent.context()
-        self.offscreen_surface = QtGui.QOffscreenSurface()
-        self.offscreen_surface.setFormat(self.gl_context.format())
-        self.offscreen_surface.create()
-        if not self.offscreen_surface.supportsOpenGL():
-            raise RuntimeError("Can't run OpenGL")
-        if not self.gl_context.makeCurrent(self.offscreen_surface):
-            raise RuntimeError("Couldn't Initialise OpenGL")
+        # self.gl_context = parent.context()
+        # self.offscreen_surface = QtGui.QOffscreenSurface()
+        # self.offscreen_surface.setFormat(self.gl_context.format())
+        # self.offscreen_surface.create()
+        # if not self.offscreen_surface.supportsOpenGL():
+        #     raise RuntimeError("Can't run OpenGL")
+        # if not self.gl_context.makeCurrent(self.offscreen_surface):
+        #     raise RuntimeError("Couldn't Initialize OpenGL")
+        self.parent = parent
+        self.parent.makeCurrent()
         major = glGetIntegerv(GL_MAJOR_VERSION) # could get this from our ...
         minor = glGetIntegerv(GL_MINOR_VERSION) # Qt QGLContext Format
         GLES_MODE = False # why not just check the version
@@ -284,7 +284,7 @@ class manager:
             # SET STATE: brushes
             # for S, L in abstract_buffer_map["index"]["brush"]
             # drawElements(GL_TRIANGLES, S, L)
-        self.gl_context.doneCurrent()
+        self.parent.doneCurrent()
 
     def find_gaps(self, buffer="vertex", preferred_type=None, minimum_size=1):
         """Generator which yeilds a (start, length) span for each gap which meets requirements"""
@@ -367,14 +367,14 @@ class manager:
                         *vertex_writes.keys()]
         self.abstract_buffer_map["vertex"]["brush"] = compress(vertex_spans)
 
-        self.gl_context.makeCurrent(self.offscreen_surface)
+        self.parent.makeCurrent()
         for span, data in vertex_writes.items():
             start, length = span
             data = list(itertools.chain(*data))
             # ^ [(*position, *normal, *uv, *colour)] => [*vertex]
             glBufferSubData(GL_ARRAY_BUFFER, start, length,
                             np.array(data, dtype=np.float32))
-        self.gl_context.doneCurrent()
+        self.parent.doneCurrent()
         del vertex_writes
 
         # ^^ offset_indices = {brush: indices + offset} ^^
@@ -404,30 +404,35 @@ class manager:
                        *index_writes.keys()]
         self.abstract_buffer_map["index"]["brush"] = compress(index_spans)
 
-        self.gl_context.makeCurrent(self.offscreen_surface)
+        self.parent.makeCurrent()
         for span, data in index_writes.items():
             start, length = span
             data = list(itertools.chain(*data))
             # ^ [[brush.indices], [brush.indices]] => [*brush.indices]
             glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, start, length,
                             np.array(data, dtype=np.float32))
-        self.gl_context.doneCurrent()
+            print(np.array(data, dtype=np.float32))
+            print("-" * 80)
         del index_writes
 
+        print("=" * 80)
         for span in self.abstract_buffer_map["index"]["brush"]:
             start, length = span
             data = glGetBufferSubData(GL_ELEMENT_ARRAY_BUFFER, start, length)
-            print(data)
-        
+            print(np.array(data, dtype=np.float32))
+            print("-" * 80)
+        print("=" * 80)
+        self.parent.doneCurrent()
+
         # now do the displacements
         # VERTICES & INDICES collected & offset in vertex assignment loop
 
         # it would be nice if we could do all this asyncronously
         # double buffering and/or using a separate thread, awaits etc.
 
-    def share_context(self, other_context):
-        self.gl_context.setShareContext(other_context)
-        self.gl_context.setFormat(other_context.format())
-        self.gl_context.create()
-        if not self.gl_context.areSharing(self.gl_context, other_context):
-            raise RuntimeError("GL BROKES, TELL A PROGRAMMER!")
+    # def share_context(self, other_context):
+    #     other_context.setShareContext(self.gl_context)
+    #     other_context.setFormat(self.gl_context.format())
+    #     other_context.create()
+    #     if not self.gl_context.areSharing(self.gl_context, other_context):
+    #         raise RuntimeError("GL BROKES, TELL A PROGRAMMER!")

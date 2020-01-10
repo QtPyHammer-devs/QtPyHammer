@@ -31,8 +31,10 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
     # ^ https://www.riverbankcomputing.com/static/Docs/PyQt5/signals_slots.html
     def __init__(self, parent, fps=60):
         super(MapViewport3D, self).__init__(parent=parent)
-        self.ctx = parent.ctx
+        self.ctx = parent.ctx # appctxt for loading shader scripts
         # RENDERING
+        self.shaders = {"brush": 0}
+        self.uniforms = {"brush": {}}
         self.draw_distance = 4096 * 4 # defined in settings
         self.fov = 90 # defined in settings (70 - 120)
         # model draw distance (defined in settings)
@@ -54,6 +56,21 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.update)
 
+    def initializeGL(self):
+        self.render_manager = render.manager(self) # get buffers
+        glClearColor(0, 0, 0, 0) # Invalid Operation, yet paintGL works
+        glMatrixMode(GL_PROJECTION)
+        glLoadIdentity()
+        gluPerspective(self.fov, self.width() / self.height(), 0.1, self.draw_distance)
+        glEnable(GL_DEPTH_TEST)
+##        glEnable(GL_CULL_FACE)
+        glPolygonMode(GL_BACK, GL_LINE)
+        glFrontFace(GL_CW)
+        glPointSize(4)
+        self.set_view_mode("flat") # sets shaders & GL state
+        self.timer.start(1000 / self.fps) # start painting
+        self.glInitialized.emit()
+
     # calling the slot by it's name creates a QVariant Error
     # which for some reason does not trace correctly
     @QtCore.pyqtSlot(str, name="setViewMode") # connected to UI
@@ -73,6 +90,40 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
             glDisable(GL_TEXTURE_2D)
         self.doneCurrent()
+
+    def paintGL(self):
+        glLoadIdentity()
+        gluPerspective(self.fov, self.width() / self.height(), 0.1, self.draw_distance)
+        self.camera.set()
+        if self.render_manager.GLES_MODE:
+            matrix = glGetFloatv(GL_PROJECTION_MATRIX)
+        render.draw_grid()
+        render.draw_origin()
+        # loop over targets (brush, displacement, model)
+        glUseProgram(self.shaders["brush"])
+        for uniform, location in self.uniforms["brush"].items():
+            # {"uniform": [func, *args]} would be better
+            # since it allows us to share uniforms across shaders
+            # and complex if...else cases make me ;w;
+            if uniform == "matrix" and self.render_manager.GLES_MODE:
+                glUniformMatrix4fv(location, 1, GL_FALSE, matrix)
+        # dither for flat shaded transparency on skip & hint
+        for span in self.render_manager.abstract_buffer_map["index"]["brush"]:
+            # ^ overly long name for a commonly used array ^
+            start, length = span
+            glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
+            # ^ are buffers bound?
+            data = glGetBufferSubData(GL_ELEMENT_ARRAY, GLvoidp(start), length)
+            print(data)
+        if self.ray != []: # render raycast for debug
+            glUseProgram(0)
+            glColor(1, .75, .25)
+            glLineWidth(2)
+            glBegin(GL_LINES)
+            glVertex(*self.ray[0])
+            glVertex(*(self.ray[0] + self.ray[1] * self.draw_distance))
+            glEnd()
+            glLineWidth(1)
 
     def do_raycast(self, x, y): # pixel offsets are wrong
         # en.wikipedia.org/wiki/Ray_tracing_(graphics)#Calculate_rays_for_rectangular_viewport
@@ -154,60 +205,6 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
             ray_origin, ray_direction = self.do_raycast(x, self.height() - y)
             self.raycast.emit(ray_origin, ray_direction)
         super(MapViewport3D, self).mouseReleaseEvent(event)
-
-    def initializeGL(self):
-        self.render_manager = render.manager(self)
-        self.set_view_mode("flat") # sets shaders & GL state
-        glViewport(0, 0, self.width(), self.height())
-        glClearColor(0, 0, 0, 0)
-        glMatrixMode(GL_PROJECTION)
-        glLoadIdentity()
-        gluPerspective(self.fov, self.width() / self.height(), 0.1, self.draw_distance)
-        glEnable(GL_DEPTH_TEST)
-##        glEnable(GL_CULL_FACE)
-        glEnableVertexAttribArray(0)
-        glEnableVertexAttribArray(1)
-        glEnableVertexAttribArray(2)
-        glEnableVertexAttribArray(3)
-        glPolygonMode(GL_BACK, GL_LINE)
-        glFrontFace(GL_CW)
-        glPointSize(4)
-        self.timer.start(1000 / self.fps) # start painting
-        self.glInitialized.emit()
-
-    def paintGL(self):
-        glLoadIdentity()
-        gluPerspective(self.fov, self.width() / self.height(), 0.1, self.draw_distance)
-        self.camera.set()
-        if self.render_manager.GLES_MODE:
-            matrix = glGetFloatv(GL_PROJECTION_MATRIX)
-        render.draw_grid()
-        render.draw_origin()
-        # loop over targets (brush, displacement, model)
-        glUseProgram(self.shaders["brush"])
-        for uniform, location in self.uniforms["brush"].items():
-            # {"uniform": [func, *args]} would be better
-            # since it allows us to share uniforms across shaders
-            # and complex if...else cases make me ;w;
-            if uniform == "matrix" and self.render_manager.GLES_MODE:
-                glUniformMatrix4fv(location, 1, GL_FALSE, matrix)
-        # dither for flat shaded transparency on skip & hint
-        for span in self.render_manager.abstract_buffer_map["index"]["brush"]:
-            # ^ overly long name for a commonly used array ^
-            start, length = span
-            glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
-            # ^ are buffers bound?
-            data = glGetBufferSubData(GL_ELEMENT_ARRAY, GLvoidp(start), length)
-            print(data)
-        if self.ray != []: # render raycast for debug
-            glUseProgram(0)
-            glColor(1, .75, .25)
-            glLineWidth(2)
-            glBegin(GL_LINES)
-            glVertex(*self.ray[0])
-            glVertex(*(self.ray[0] + self.ray[1] * self.draw_distance))
-            glEnd()
-            glLineWidth(1)
 
     def resizeGL(self, width, height):
         glLoadIdentity()

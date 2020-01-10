@@ -36,7 +36,7 @@ class Workspace(QtWidgets.QWidget):
         layout = QtWidgets.QVBoxLayout()
         layout.addWidget(self.viewport)
         self.setLayout(layout)
-        self.viewport.setFocus()
+        self.viewport.setFocus() # not really working
         self.viewport.raycast.connect(self.raycast)
         # Viewport splitter(s)
         # toolbar (grid controls etc.)
