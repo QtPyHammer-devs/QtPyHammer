@@ -30,4 +30,4 @@ Other fbs operations, such as freezing QtPyHammer to a standalone release, or bu
 
 See this guide for more information: [https://www.learnpyqt.com/courses/packaging-and-distribution/packaging-pyqt5-apps-fbs/]
 
-Be aware there is a security vulnerability in the version of PyInstaller used by fbs, but it only affects "onefile" builds, and which fbs does not create
+Be aware there is a security vulnerability in the version of PyInstaller used by fbs, but it only affects "onefile" builds, which fbs does not create
