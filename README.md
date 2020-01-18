@@ -29,3 +29,5 @@ You can now run QtPyHammer with the following command: (needs venv to be active)
 Other fbs operations, such as freezing QtPyHammer to a standalone release, or building an Installer may require additional packages
 
 See this guide for more information: [https://www.learnpyqt.com/courses/packaging-and-distribution/packaging-pyqt5-apps-fbs/]
+
+Be aware there is a security vulnerability in the version of PyInstaller used by fbs, but it only affects "onefile" builds, and which fbs does not create
