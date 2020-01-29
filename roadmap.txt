@@ -44,6 +44,54 @@ Undo & Redo
     https://www.youtube.com/watch?v=EZXz-uPyCyA
     
 
+--==User Requested Features==-- (from the Official Discord)
+Mobile version [bikkie]
+in-editor particle editor and preview [exactol]
+Map tabs [pont]
+registering multiple "nudges" with arrow keys as a single action when undoing [pont]
+particle browser, zoos & search tags [bikkie]
+select brush by material [bikkie]
+model browser tags [bikkie]
+various grid types: radial, angled ratio [narpas]
+disembodied head of gordon freeman to represent other mappers in multiplayer [narpas & yoshimario]
+way for a mapper to highlight an area to aid discussions in multiplayer [narpas]
+multiplayer moderation tools (ignore repeated pings etc) [narpas]
+import custom asset from anywhere (gameinfo independent) [maarten]
+text to brush like Sledge [savva]
+curve to brush [everyone]
+forest fill snap to ground [asd]
+forest fill randomly rotate Z (optional) [narpas]
+blender2.8-esque view type selector [narpas]
+blender vmf editing tools [asd] (wait, is that not what he meant?)
+T-junction locating and minimising tools [yoshimario]
+more in-depth way of using object groups (selections and visgroups) (see blender collections) [narpas]
+wireframe displacements that cannot be selected for sealing & nodraw placement [bikkie]
+easy macro creation [bikkie]
+materials favourites (shortcuts) (sky, nodraw, trigger, black) [pont, yoshimario, exactol]
+group materials in browser by map (optional) [maarten]
+blend material "invert alpha" on non-displacements [bikkie]
+instance collapse options: create new visgroup, texture lock [yoshimario]
+auto-align & scramble textures for beams, stairs and other tedious repetetive brushwork [bikkie]
+remember material browser filter(s) across all types (when browsing decals, overlays & general materials) [pont]
+auto-generate blend texture preview in material browser [yoshimario]
+group faces to share material (not just replace) [narpas]
+select faces by material as it's own button, not an obscure function of replace [asd]
+preview dynamic prop scale in editor [narpas]
+toggleable "symmetrically edit" (mirrored or rotated) [asd]
+preview setbodygroup [bikkie & yoshimario]
+list named attachment points for models [bikkie]
+highlight parent / children of selection [pont]
+lines in viewport showing I/O connections [pont]
+always store an editor camera in the .vmf (pick up from where you finished in your previous session) [pont]
+pan views with middle mouse [narpas]
+full preset keybind sets based on other 3D editors [yoshimario]
+allow mappers to share their keybind configs [yoshimario]
+UI custom colour configs [pont]
+alt+rmb texture wrap without reassigning materials [pont]
+preserve skin index when changing world model [pont]
+?better alignment options? [yoshimario] (grouped brush snapping? materials?)
+?The ability to move vertices within fractions, like using Ctrl+M, while editing vertices? [narpas]
+
 --==Nice To Have Features==--
 https://tf2maps.net/threads/3-most-wanted-features-for-hammer.37807/
 Forest fill (prop family, density, falloff side, sort by tricount)
