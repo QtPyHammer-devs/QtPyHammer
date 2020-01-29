@@ -101,7 +101,6 @@ class manager:
         # if not self.gl_context.makeCurrent(self.offscreen_surface):
         #     raise RuntimeError("Couldn't Initialize OpenGL")
         self.parent = parent
-        self.parent.makeCurrent()
         major = glGetIntegerv(GL_MAJOR_VERSION) # could get this from our ...
         minor = glGetIntegerv(GL_MINOR_VERSION) # Qt QGLContext Format
         GLES_MODE = False # why not just check the version
@@ -284,7 +283,6 @@ class manager:
             # SET STATE: brushes
             # for S, L in abstract_buffer_map["index"]["brush"]
             # drawElements(GL_TRIANGLES, S, L)
-        self.parent.doneCurrent()
 
     def find_gaps(self, buffer="vertex", preferred_type=None, minimum_size=1):
         """Generator which yeilds a (start, length) span for each gap which meets requirements"""
