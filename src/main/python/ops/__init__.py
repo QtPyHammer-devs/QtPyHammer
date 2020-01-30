@@ -30,7 +30,9 @@ def open_vmf():
     vmf_browser.setDirectory("F:/Modding/tf2 maps/") # default map directory
     vmf_browser.setDefaultSuffix("vmf") # for saving
     vmf_path, ext = vmf_browser.getOpenFileName(filter="Valve Map Format (*.vmf)")
-    return vmf_path, import_vmf(vmf_path)
+    if len(vmf_path) < 1:
+        return False, vmf_path, None
+    return True, vmf_path, import_vmf(vmf_path)
 
 def import_vmf(path):
     """create a vmf/qph session object from a .vmf file"""
