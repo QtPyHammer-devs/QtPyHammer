@@ -22,25 +22,22 @@ class selection_mode(Enum):
 
 
 class Workspace(QtWidgets.QWidget):
+    """ """
     def __init__(self, vmf_path, parent):
         super(Workspace, self).__init__(parent)
         self.ctx = parent.ctx
         self.vmf = ops.vmf.interface(self, open(vmf_path))
         self.viewport = viewport.MapViewport3D(self)
         # self.viewport.setViewMode.connect(...)
-        load_vmf = lambda: self.viewport.render_manager.add_brushes(*self.vmf.brushes)
-        self.viewport.glInitialized.connect(load_vmf)
-        # ^ use a loading bar
-        # self.render_manager.add_entities(*self.vmf.entities)
-        # ^ use a loading bar
-        layout = QtWidgets.QVBoxLayout()
+        self.viewport.render_manager.queued_updates.append((add_brushes, *self.vmf.brushes))
+        # self.viewport.render_manager.queued_updates.append((add_entities, *self.vmf.entities))
+        # ^ neither op.vmf.interface or render.manager handle entities. yet
+        layout = QtWidgets.QVBoxLayout() # holds the viewport
+        # ^ QSplitter(s) will be used for quad viewports
         layout.addWidget(self.viewport)
         self.setLayout(layout)
-        self.viewport.setFocus() # not really working
-        self.viewport.raycast.connect(self.raycast)
-        # Viewport splitter(s)
-        # toolbar (grid controls etc.)
-        # selection mode widget / hotkeys (defined in settings)
+        self.viewport.setFocus() # not working
+        self.viewport.raycast.connect(self.raycast) # get 3D ray from viewport
         self.selection_mode = selection_mode.group
         self.selection = {"brushes": set(), "faces": set(), "entities": set()}
         # self.timeline = ops.timeline.edit_history() # also handles multiplayer
@@ -50,9 +47,12 @@ class Workspace(QtWidgets.QWidget):
         # ? branches and reading timelines efficiently (chronological sorting) ?
         # append mode file writing
         ### END EDIT TIMELINE NOTES ###
+        # TODO: viewport splitter(s), toolbar (grid controls etc.),
+        # selection mode widget, hotkeys (defined in settings)
 
     def raycast(self, ray_origin, ray_direction):
         """Get the object hit by ray"""
+        # test ray against selectable objects
         print("calcualting raycast")
         ray_end = ray_origin + ray_direction
         for brush in self.vmf.brushes:
@@ -63,9 +63,10 @@ class Workspace(QtWidgets.QWidget):
                 states.add(starts_behind + ends_behind) # orderless encoding 012
             if (True + False) in states:
                 print(brush.id, sep="\t")
+        # modify Workspace.selection based on result
 ##        if ctrl in self.viewport.keys: # add selection key (defined in settings)
 ##            self.selection[hit_type].add(hit_object)
 
     def close(self):
-        # self.render_manager; unbind buffers
-        ...
+        # release used memory eg. self.viewport.render_manager buffers
+        super(Workspace, self).close()

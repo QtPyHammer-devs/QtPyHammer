@@ -27,14 +27,11 @@ view_modes = ['flat', 'textured', 'wireframe']
 
 class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
     raycast = QtCore.pyqtSignal(vector.vec3, vector.vec3) # emits ray
-    glInitialized = QtCore.pyqtSignal()
-    # ^ https://www.riverbankcomputing.com/static/Docs/PyQt5/signals_slots.html
     def __init__(self, parent, fps=60):
         super(MapViewport3D, self).__init__(parent=parent)
         self.ctx = parent.ctx # appctxt for loading shader scripts
         # RENDERING
-        self.shaders = {"brush": 0}
-        self.uniforms = {"brush": {}}
+        self.render_manager = render.manager(self)
         self.draw_distance = 4096 * 4 # defined in settings
         self.fov = 90 # defined in settings (70 - 120)
         # model draw distance (defined in settings)
@@ -57,8 +54,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.timer.timeout.connect(self.update)
 
     def initializeGL(self):
-        self.render_manager = render.manager(self) # get buffers
-        glClearColor(0, 0, 0, 0) # Invalid Operation, yet paintGL works
+        glClearColor(0, 0, 0, 0)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
         gluPerspective(self.fov, self.width() / self.height(), 0.1, self.draw_distance)
@@ -67,9 +63,10 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         glPolygonMode(GL_BACK, GL_LINE)
         glFrontFace(GL_CW)
         glPointSize(4)
+        self.render_manager.initializeGL()
+        self.draw_calls = self.render_manager.abstract_buffer_map["index"]
         self.set_view_mode("flat") # sets shaders & GL state
         self.timer.start(1000 / self.fps) # start painting
-        self.glInitialized.emit()
 
     # calling the slot by it's name creates a QVariant Error
     # which for some reason does not trace correctly
@@ -108,13 +105,8 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
             if uniform == "matrix" and self.render_manager.GLES_MODE:
                 glUniformMatrix4fv(location, 1, GL_FALSE, matrix)
         # dither for flat shaded transparency on skip & hint
-        for span in self.render_manager.abstract_buffer_map["index"]["brush"]:
-            # ^ overly long name for a commonly used array ^
-            start, length = span
+        for start, length in self.draw_calls["brush"]:
             glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
-            # ^ are buffers bound?
-            data = glGetBufferSubData(GL_ELEMENT_ARRAY, GLvoidp(start), length)
-            print(data)
         if self.ray != []: # render raycast for debug
             glUseProgram(0)
             glColor(1, .75, .25)
@@ -211,6 +203,9 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         gluPerspective(self.fov, self.width() / self.height(), 0.1, 4096 * 4)
 
     def update(self):
+        for update in self.render_manager.queued_updates:
+            func, *args = updates
+            func(*args)
         if self.camera_moving: # TOGGLED ON: take user inputs
             self.camera.update(self.mouse_vector, self.keys, self.dt)
             if self.moved_last_tick == False: # prevent drift

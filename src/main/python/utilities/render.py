@@ -13,15 +13,27 @@ from . import camera, solid, vector
 
 
 def yield_grid(limit, step): # get "step" from Grid Scale action (MainWindow)
-    for i in range(0, limit + 1, step): # centers on 0, centering on a vertex / edge would be helpful for uneven grids
+    """ yields lines on a grid (one vertex at a time) centered on [0, 0]
+    limit: int, half the width of grid
+    step: int, gap between edges"""
+    # center axes
+    yield 0, -limit
+    yield 0, limit # +NS
+    yield -limit, 0
+    yield limit, 0 # +EW
+    # concentric squares stepping out from center (0, 0) to limit
+    for i in range(1, limit + 1, step):
         yield i, -limit
-        yield i, limit # edge +NS
+        yield i, limit # +NS
         yield -limit, i
-        yield limit, i # edge +EW
+        yield limit, i # +EW
         yield limit, -i
-        yield -limit, -i # edge -WE
+        yield -limit, -i # -WE
         yield -i, limit
-        yield -i, -limit # edge -SN
+        yield -i, -limit # -SN
+    # ^ the above function is optimised for a line grid
+    # another function would be required for a dot grid
+    # it's also worth considering adding an offset
 
 def draw_grid(limit=2048, grid_scale=64, colour=(.5, .5, .5)):
     glUseProgram(0)
@@ -91,27 +103,27 @@ def free(spans, span_to_remove): # remove from memory map
 
 
 class manager:
+    """Manages OpenGL buffers and gives handles for rendering & hiding objects"""
     def __init__(self, parent):
-        # self.gl_context = parent.context()
-        # self.offscreen_surface = QtGui.QOffscreenSurface()
-        # self.offscreen_surface.setFormat(self.gl_context.format())
-        # self.offscreen_surface.create()
-        # if not self.offscreen_surface.supportsOpenGL():
-        #     raise RuntimeError("Can't run OpenGL")
-        # if not self.gl_context.makeCurrent(self.offscreen_surface):
-        #     raise RuntimeError("Couldn't Initialize OpenGL")
-        self.parent = parent
-        major = glGetIntegerv(GL_MAJOR_VERSION) # could get this from our ...
-        minor = glGetIntegerv(GL_MINOR_VERSION) # Qt QGLContext Format
-        GLES_MODE = False # why not just check the version
+        self.parent = parent # parent is expected to be a MapViewport3D
+        self.queued_updates = [] # (method, *args)
+        # ^ queued updates are OpenGL functions called by the parent viewport
+        # specifically executed within the parent viewport's update method
+        self.hidden = {} # {type: (start, length)}
+
+    def initializeGL(self): # to be called by parent viewport's initializeGL()
+        major = glGetIntegerv(GL_MAJOR_VERSION)
+        minor = glGetIntegerv(GL_MINOR_VERSION)
+        # ^ could get this from our Qt QGLContext Format
+        GLES_MODE = False # why not just check the version?
+        self.GLES_MODE = GLES_MODE
         if major >= 4 and minor >= 5:
             self.shader_version = "GLSL_450"
         elif major >= 3 and minor >= 0:
             GLES_MODE = True
             self.shader_version = "GLES_300"
-        self.GLES_MODE = GLES_MODE
-        shader_folder = "shaders/{}/".format(self.shader_version)
         ctx = parent.ctx
+        shader_folder = "shaders/{}/".format(self.shader_version)
         compile_shader = lambda s, t: compileShader(open(ctx.get_resource(shader_folder + s), "rb"), t)
         # Vertex Shaders
         vert_brush =  compile_shader("brush.vert", GL_VERTEX_SHADER)
@@ -122,15 +134,13 @@ class manager:
         frag_stripey_brush = compile_shader("stripey_brush.frag", GL_FRAGMENT_SHADER)
         # Programs
         self.shader = {"flat": {}, "stripey": {}, "textured": {}, "shaded": {}}
-        # ^ style: {target: program} ^ shaded is textured & shaded
+        # ^ style: {target: program}
         self.shader["flat"]["brush"] = compileProgram(vert_brush, frag_flat_brush)
         self.shader["flat"]["displacement"] = compileProgram(vert_displacement, frag_flat_displacement)
         self.shader["stripey"]["brush"] = compileProgram(vert_brush, frag_stripey_brush)
-        for style in self.shader.values():
-            for program in style.values():
+        for style_dict in self.shader.values():
+            for program in style_dict.values():
                 glLinkProgram(program)
-        # would QtGui.QOpenGLShaderProgram share easier?
-
         # Uniforms
         self.uniform = {"flat": {"brush": {}, "displacement": {}},
                         "stripey": {"brush": {}},
@@ -144,81 +154,21 @@ class manager:
                     self.uniform[style][target]["matrix"] = glGetUniformLocation(self.shader[style][target], "ModelViewProjectionMatrix")
             glUseProgram(0)
 
-        # Vertex Formats
-        max_attribs = glGetIntegerv(GL_MAX_VERTEX_ATTRIBS)
-        # should we grab attrib locations from shader(s)?
+        # Connect vertex format to shaders
+        # https://github.com/snake-biscuits/QtPyHammer/wiki/Rendering:-Vertex-Format
         glEnableVertexAttribArray(0) # vertex_position
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
         glEnableVertexAttribArray(1) # vertex_normal (brush only)
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 44, GLvoidp(12))
         # glEnableVertexAttribArray(4) # blend_alpha (displacement only)
         glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(12))
-        # ^ replaces vertex_normal if displacement ^
+        # ^ replaces vertex_normal if displacement
+        # however, switching vertex formats while drawing crashes _/(;w;)\_
         glEnableVertexAttribArray(2) # vertex_uv
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
         glEnableVertexAttribArray(3) # editor_colour
         glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
-        ### --- 44 bytes SOLID FACE VERTEX FORMAT --- ###
-        # -- 12 bytes  (3 float32)  Position
-        # -- 12 bytes  (3 float32)  Normal
-        # -- 8  bytes  (2 float32)  UV
-        # -- 12 bytes  (3 float32)  Colour
-        ## 1 Tri  == 132 bytes VERTICES +  12 bytes INDICES
-        ## 1 Quad == 176 bytes VERTICES +  24 bytes INDICES
-        ## 1 Cube == 352 bytes VERTICES + 144 bytes INDICES
-        ## 200 Cube Solids = 70 400 ~ 71KB VERTICES
-        ##                   28 800 ~ 29KB INDICES
-        ##                   99 200 ~100KB VERTICES & INDICES
-        ### --- 44 bytes DISPLACEMENT VERTEX FORMAT --- ###
-        # -- 12 bytes  (3 float32)  Position
-        # -- 4  bytes  (1 float32)  Alpha
-        # -- 8  bytes  (2 padding)  0x0000
-        # -- 8  bytes  (2 float32)  UV
-        # -- 12 bytes  (3 float32)  Colour
-        ## |\|/|\|/|\|/|\|/|
-        ## |/|\|/|\|/|\|/|\|
-        ## |\|/|\|/|\|/|\|/|  Power 3
-        ## |/|\|/|\|/|\|/|\|
-        ## |\|/|\|/|\|/|\|/|  |\|/|\|/|  Power 2
-        ## |/|\|/|\|/|\|/|\|  |/|\|/|\|
-        ## |\|/|\|/|\|/|\|/|  |\|/|\|/|  |\|/| Power 1
-        ## |/|\|/|\|/|\|/|\|  |/|\|/|\|  |/|\|
-        ## 2 ^ power = quads per row
-        ## 2 ^ power * 2 = tris per row
-        ## 2 ^ power * 2 * 2^power = tris per displacement
-        ## 2 ^ power * 2 * 2^power * 3 = vertices referenced per displacement
-        ## GL_TRIANGLES
-        ## 2^power * 2 triangles * 2^power rows * 3 vertices * 4 bytes
-        ## lambda power: ((2 ** power) ** 2) * 24
-        ## GL_TRIANGLE STRIP
-        ## (2^power + 1) * 2 vertices * 2^power rows * 4 bytes
-        ## lambda power: ((2 ** power) + 1) * (2 ** power) * 8
-        ## To draw using GL_TRIANGLE_STRIP you need (start, length)
-        ## per row, per displacement
-        ##   9 vertex Power1 ==   396 bytes VERTICES + 96 bytes INDICES
-        ##                         48 bytes INDICES GL_TRIANGLE_STRIP
-        ##  25 vertex Power2 ==  1100 bytes VERTICES + 384 bytes INDICES
-        ##                        160 bytes INDICES GL_TRIANGLE_STRIP
-        ##  81 vertex Power3 ==  3564 bytes VERTICES + 864 bytes INDICES
-        ##                        576 bytes INDICES GL_TRIANGLE_STRIP
-        ## 289 vertex Power4 == 12716 bytes VERTICES + 2176 bytes INDICES
-        ##                       6144 bytes INDICES GL_TRIANGLE_STRIP
-        ## 100 Power 2 Displacements = 110 000 ~110KB VERTICES
-        ##                              16 000 ~ 16KB INDICES
-        ##                             126 000 ~126KB VERTICES & INDICES
-        ## 100 Power 3 Displacements = 356 400 ~360KB VERTICES
-        ##                              57 600 ~ 58KB INDICES
-        ##                             414 000 ~414KB VERTICES & INDICES
-        ## 100 Power2 + 100 Power3 = 110 000 + 356 400 = 466 400
-        ##                          ~467KB VERTICES
-        ##                            16 000 +  57 600 =  73 600
-        ##                           ~74KB INDICES
-        ##                           466 400 +  73 600 = 540 000
-        ##                          ~540KB VERTICES & INDICES
-        ## 200 Cube Brushes + 100 Power2 Displacement + 100 Power3 DIsplacements
-        ## ~640KB of VRAM (536.8KB VERTICES + 102.4KB INDICES)
-        # pl_upward_d.vmf has:
-        # 558 Displacement Brushes & 1890 Non-Displacement Brushes
+        # ^ should we grab attrib locations from shader(s)?
 
         # Buffers
         KB = 10 ** 3
@@ -226,8 +176,8 @@ class manager:
         GB = 10 ** 9
         self.memory_limit = 512 * MB # user defined in settings
         VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
-        self.vertex_buffer_size = self.memory_limit // 2 # halve again if double buffering
-        self.index_buffer_size = self.memory_limit // 2 # could change the ratio
+        self.vertex_buffer_size = self.memory_limit // 2
+        self.index_buffer_size = self.memory_limit // 2
         # Vertex Buffer
         glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER)
         glBufferData(GL_ARRAY_BUFFER, self.vertex_buffer_size, None, GL_DYNAMIC_DRAW)
@@ -236,18 +186,13 @@ class manager:
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.index_buffer_size, None, GL_DYNAMIC_DRAW)
         # VRAM Memory Management
         self.buffer_map = {"vertex": {}, "index": {}}
-        # buffer: {object: (start, length)}
-        # object = brush: {side_index: (start, length)} for displacements
-        # what about mapping by brush id?
-        # recording this makes hiding, deleting and adding geometry easy
-        # this system is good for brushes & displacements but for instances...
-        # we should only store models & other often duplicated geometry once
-        # we key the hash (a pointer if using CPython) of each brush
-        # how do we key displacements? brush.faces[i].dispinfo ?
-        # it needs to be sensible for singling out when deleting & selecting
-        # hiding individual faces seems like a bad idea
-        # knowing the offset of the INDICES a brush and using that brush's ...
-        # internal map of it's indices should make "highlighting" a face easy
+        # ^ buffer: {object: (start, length)}
+        # recording the in-memory location of each object is essential
+        # without doing so we could not hide, edit or delete objects
+
+        # "object" needs to be a sensible key, that works for brushes, displacements & models alike
+        # mapping by brush.id should be quite functional, especially for multiplayer
+        # we should only store models & other duplicate geometry (instances etc.) once and only once
 
         # VERTICES: needed for reallocation & offset of INDICES
         # INDICES: needed for rendering / hiding (using free function)
@@ -256,7 +201,7 @@ class manager:
         # VERTICES 0 | Brush1 | Brush2 | Displacement1 |     | LIMIT
         # INDICES  0 | B1 | B2 | Disp1 |                     | LIMIT
         # TEXTURES 0 |                                       | LIMIT
-        # A tool like this would also be useful for fine tuning memory limits
+        # A tool like this would also be useful for fine tuning performance
         self.abstract_buffer_map = {"vertex": {"brush": [], "displacement": [], "model": []},
                                     "index": {"brush": [], "displacement": [], "model": []}}
         # buffer: {type: [(start, length)]}
@@ -297,15 +242,14 @@ class manager:
             limit = self.index_buffer_size
         else:
             raise RuntimeError("Buffer {} is not mapped".format(buffer))
-        span_type = {span: _type for _type in buffer_map for span in buffer_map[_type]}
-        # ^ {"type": [*spans]} -> {span: "type"}
-        filled_spans = sorted(span_type, key=lambda s: s[0])
-        # ^ all spans filled by objects of all types, sorted by span[0] (start)
         # spans are spaces with data assigned
         # gaps are free spaces data can be assigned to
+        span_type = {s: t for t in buffer_map for s in buffer_map[t]}
+        # ^ {"type": [*spans]} -> {span: "type"}
+        filled_spans = sorted(span_type, key=lambda s: s[0])
+        # ^ all occupied spans, sorted by starting_inedx (span[0])
         prev_span = (0, 0)
-        span_type[prev_span] = preferred_type
-        # ^ if buffer is empty, use it
+        span_type[prev_span] = preferred_type # always fill a gap starting at 0
         prev_span_end = 0
         prev_gap = (0, 0)
         for span in filled_spans:
@@ -325,11 +269,12 @@ class manager:
                     yield gap
 
     def add_brushes(self, *brushes):
-        """add *brushes to the appropriate GPU buffers"""
-        # the most important case is loading a fresh file
-        # which should not be overly expensive
-        # as we should have a long stretch of free memory
-        brushes = list(brushes) # for pop method
+        """Add *brushes to the appropriate GPU buffers"""
+        # the most important case is loading a fresh file which should not be overly expensive as we should have a long stretch of free memory
+        # a loading bar for long updates would be handy
+        # do long / large updates hang on the UI thread?
+        # it would be nice if we could do all this asyncronously; double buffering and/or using a separate thread, awaits etc.
+        brushes = list(brushes) # tuples have no .pop() method
         vertex_writes = {} # {(start, length): data}
         offset_indices = {} # brush: indices + offset
         for gap in self.find_gaps(buffer="vertex"):
@@ -365,14 +310,12 @@ class manager:
                         *vertex_writes.keys()]
         self.abstract_buffer_map["vertex"]["brush"] = compress(vertex_spans)
 
-        self.parent.makeCurrent()
         for span, data in vertex_writes.items():
             start, length = span
             data = list(itertools.chain(*data))
             # ^ [(*position, *normal, *uv, *colour)] => [*vertex]
             glBufferSubData(GL_ARRAY_BUFFER, start, length,
                             np.array(data, dtype=np.float32))
-        self.parent.doneCurrent()
         del vertex_writes
 
         # ^^ offset_indices = {brush: indices + offset} ^^
@@ -402,17 +345,18 @@ class manager:
                        *index_writes.keys()]
         self.abstract_buffer_map["index"]["brush"] = compress(index_spans)
 
-        self.parent.makeCurrent()
         for span, data in index_writes.items():
             start, length = span
             data = list(itertools.chain(*data))
             # ^ [[brush.indices], [brush.indices]] => [*brush.indices]
             glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, start, length,
                             np.array(data, dtype=np.float32))
+            # DEBUG show data being written into buffers
             print(np.array(data, dtype=np.float32))
             print("-" * 80)
         del index_writes
 
+        # DEBUG show data in buffer pointed to by abstract_buffer_map
         print("=" * 80)
         for span in self.abstract_buffer_map["index"]["brush"]:
             start, length = span
@@ -420,20 +364,10 @@ class manager:
             print(np.array(data, dtype=np.float32))
             print("-" * 80)
         print("=" * 80)
-        self.parent.doneCurrent()
 
+        # NOTES ON DEBUG PRINTS:
         # resulting buffer sizes stored in abstract map are wrong
         # indices 208 bytes, 52 integers, 17.333 triangles
 
-        # now do the displacements
+        # WRITE DISPLACEMENTS TO BUFFERS
         # VERTICES & INDICES collected & offset in vertex assignment loop
-
-        # it would be nice if we could do all this asyncronously
-        # double buffering and/or using a separate thread, awaits etc.
-
-    # def share_context(self, other_context):
-    #     other_context.setShareContext(self.gl_context)
-    #     other_context.setFormat(self.gl_context.format())
-    #     other_context.create()
-    #     if not self.gl_context.areSharing(self.gl_context, other_context):
-    #         raise RuntimeError("GL BROKES, TELL A PROGRAMMER!")
