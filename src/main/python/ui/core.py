@@ -324,11 +324,13 @@ class MainWindow(QtWidgets.QMainWindow):
         # self.setCentralWidget(self.viewport)
         # self.viewport.setFocus()
 
-    def new_tab(self, vmf_path=False):
-        if vmf_path in (False, ""): # or vmf_path does not exist
+    def new_tab(self, vmf_path=None):
+        if vmf_path == False: # file browser was opened but no file was selected
+            return
+        elif vmf_path == None: # new file
             filename = "untitled"
             vmf_path = self.ctx.get_resource("vmfs/blank.vmf")
-        else:
+        else: # load the requested file (vmf_path) into a new tab
             filename = os.path.basename(vmf_path)
         tab = tabs.Workspace(vmf_path, parent=self) # parent gives appctxt
         self.tabmaster.addTab(tab, filename)

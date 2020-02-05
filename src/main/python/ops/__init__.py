@@ -7,4 +7,6 @@ def open_vmf():
     vmf_browser.setDirectory("F:/Modding/tf2 maps/") # default map directory
     vmf_browser.setDefaultSuffix("vmf") # for saving
     vmf_path, ext = vmf_browser.getOpenFileName(filter="Valve Map Format (*.vmf)")
+    if vmf_path == "": # no file was selected
+        return False
     return vmf_path
