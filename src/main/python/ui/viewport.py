@@ -208,7 +208,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
 
     def update(self):
         for update in self.render_manager.queued_updates:
-            func, *args = updates
+            func, *args = update
             func(*args)
         if self.camera_moving: # TOGGLED ON: take user inputs
             self.camera.update(self.mouse_vector, self.keys, self.dt)

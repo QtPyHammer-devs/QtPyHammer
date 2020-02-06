@@ -12,9 +12,9 @@ sys.excepthook = except_hook
 
 
 if __name__ == '__main__':
+    # QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
     QtGui.QSurfaceFormat.setDefaultFormat(QtGui.QSurfaceFormat())
     appctxt = ApplicationContext()       # 1. Instantiate ApplicationContext
-    appctxt.app.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
     # need QSettings to store: (cached_property)
     #  recent files
     #  OpenGL settings
