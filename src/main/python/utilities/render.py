@@ -111,6 +111,11 @@ class manager:
         # specifically executed within the parent viewport's update method
         self.hidden = {} # {type: (start, length)}
 
+    def load_vmf(self, vmf):
+        self.queued_updates.append((add_brushes, *vmf.brushes))
+        # self.queued_updates.append((self.add_entities, *vmf.entities))
+        # ^ neither op.vmf.interface or render.manager handle entities. yet
+
     def initializeGL(self): # to be called by parent viewport's initializeGL()
         major = glGetIntegerv(GL_MAJOR_VERSION)
         minor = glGetIntegerv(GL_MINOR_VERSION)

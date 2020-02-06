@@ -28,10 +28,8 @@ class Workspace(QtWidgets.QWidget):
         self.ctx = parent.ctx
         self.vmf = ops.vmf.interface(self, open(vmf_path))
         self.viewport = viewport.MapViewport3D(self)
+        self.viewport.load_vmf(self.vmf) # for render.manager
         # self.viewport.setViewMode.connect(...)
-        self.viewport.render_manager.queued_updates.append((add_brushes, *self.vmf.brushes))
-        # self.viewport.render_manager.queued_updates.append((add_entities, *self.vmf.entities))
-        # ^ neither op.vmf.interface or render.manager handle entities. yet
         layout = QtWidgets.QVBoxLayout() # holds the viewport
         # ^ QSplitter(s) will be used for quad viewports
         layout.addWidget(self.viewport)

@@ -53,6 +53,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.update)
 
+    # GL functions
     def initializeGL(self):
         glClearColor(0, 0, 0, 0)
         glMatrixMode(GL_PROJECTION)
@@ -129,8 +130,11 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         top_left_pixel = d - (hx * px) - (hy * py)
         ray_origin = self.camera.position
         ray_direction = (top_left_pixel + px * (x - 1) + py * (y - 1)).normalise()
-        self.ray = [ray_origin, ray_direction] # for debug rendering
+        self.ray = [ray_origin, ray_direction] # DEBUG rendering
         return ray_origin, ray_direction
+
+    def load_vmf(self, vmf):
+        self.render_manager.load_vmf(vmf)
 
     # REBINDING QT METHODS
     def keyPressEvent(self, event):
