@@ -38,7 +38,8 @@ class interface:
         # self.parent.edit_timeline.add(timeline.op.BRUSH_ADD, brushes)
         for brush in brushes:
             self.brushes.append(brush)
-        self.parent.render_manager.add_brushes(*brushes)
+        self.parent.viewport.render_manager.queued_updates.append(
+        (self.parent.viewport.render_manager.add_brushes, *brushes)) # yikes
 
     def delete_brushes(self, *indices):
         # self.parent.edit_timeline.add(timeline.op.BRUSH_DEL, brushes)

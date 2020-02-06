@@ -314,7 +314,6 @@ class manager:
             if allocated_length > 0: # we have data to write!
                 vertex_writes[(allocation_start, allocated_length)] = data
         print(vertex_writes.keys())
-        return # skip the broken code to avoid AUTOMATIC? recall
 
         # check we don't have any brushes left over, if we do:
         # - check there is enough VRAM to fit the leftovers into
