@@ -180,15 +180,14 @@ class manager:
         MB = 10 ** 6
         GB = 10 ** 9
         self.memory_limit = 512 * MB # user defined in settings
-        VERTEX_BUFFER, INDEX_BUFFER = glGenBuffers(2)
+        self.VERTEX_BUFFER, self.INDEX_BUFFER = glGenBuffers(2)
         self.vertex_buffer_size = self.memory_limit // 2
         self.index_buffer_size = self.memory_limit // 2
         # Vertex Buffer
-        glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER)
-        glMapBuffer(GL_ARRAY_BUFFER, GL_READ_WRITE) # INVALID! OUR BUFFERS SUCK!
+        glBindBuffer(GL_ARRAY_BUFFER, self.VERTEX_BUFFER)
         glBufferData(GL_ARRAY_BUFFER, self.vertex_buffer_size, None, GL_DYNAMIC_DRAW)
         # Index Buffer
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.INDEX_BUFFER)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.index_buffer_size, None, GL_DYNAMIC_DRAW)
         # VRAM Memory Management
         self.buffer_map = {"vertex": {}, "index": {}}
@@ -280,66 +279,63 @@ class manager:
         # a loading bar for long updates would be handy
         # do long / large updates hang on the UI thread?
         # it would be nice if we could do all this asyncronously; double buffering and/or using a separate thread, awaits etc.
-        brushes = list(brushes) # tuples have no .pop() method
+        brushes = iter(brushes)
         vertex_writes = {} # {(start, length): data}
         offset_indices = {} # {brush: indices + offset}
-        for gap in self.find_gaps(buffer="vertex"):
-            gap_start, gap_length = gap
-            true_gap_start = gap_start # gap must start on a multiple of 44
-            used_gap_length = 0
-            gap_sufficient = True
-            data = [] # itertools.chain([brush.vertices])
-            while gap_sufficient and len(brushes) > 0:
-                brush = brushes[0]
-                # does brush have displacement data?
-                # if so, assign its verts and offset its indices too
-                vertices_size = len(brush.vertices) * 44 # bytes per vertex
-                if vertices_size > gap_length:
-                    gap_sufficient = False
-                    continue # go to next gap
-                data += brush.vertices
+        gaps = self.find_gaps(buffer="vertex") # generator
+        allocating_brushes = True
+        brush = next(brushes)
+        vertices_size = len(brush.vertices) * 44 # 44 bytes per vertex
+        while allocating_brushes:
+            try:
+                gap_start, gap_length = next(gaps) # NEW GAP
+                allocation_start = gap_start # gap must start on a multiple of 44
+                allocated_length = 0
+                data = [] # [*brush.vertices]
+            except StopIteration: # out of gaps
+                allocating_brushes = False
+                continue # quit loop
+            while vertices_size < gap_length: # CHECK BRUSH
+                data += brush.vertices # add to write list
                 self.buffer_map["vertex"][brush] = (gap_start, vertices_size)
+                # add offset to all indicies for later
                 offset = lambda i: i + (gap_start // 44)
                 offset_indices[brush] = list(map(offset, brush.indices))
+                # update gap related variables
+                allocated_length += vertices_size
                 gap_start += vertices_size
                 gap_length -= vertices_size
-                used_gap_length += vertices_size
-                brushes.pop(0) # this brush will be written, go to next brush
-            vertex_writes[(true_gap_start, used_gap_length)] = data
-        if len(brushes) > 0: # couldn't pack all brushes with above method
-            gaps = [g for g in self.find_gaps(buffer="vertex")]
-            # take remaining brushes, if any, and pack as best as possible
-            # if any brush is too large for any gap
-            # not any(gap.length >= brush.span.length)
-            # we are out of VRAM, raise Error OR
-            # if sum(gap.lengths) == sum(brush.lengths): ADD ON NEXT DEFRAG
+                try:
+                    brush = next(brushes)
+                    vertices_size = len(brush.vertices) * 44 # bytes per vertex
+                except StopIteration: # out of brushes
+                    allocating_brushes = False # FINAL WRITE
+                    # DO NOT CONTINUE! WE STILL NEED TO WRITE!
+            if allocated_length > 0: # we have data to write!
+                vertex_writes[(allocation_start, allocated_length)] = data
+        print(vertex_writes.keys())
+        return # skip the broken code to avoid AUTOMATIC? recall
+
+        # check we don't have any brushes left over, if we do:
+        # - check there is enough VRAM to fit the leftovers into
+        # - raise an error if we are out of VRAM
+        # - squeeze our leftovers into ANY gaps (no find_gaps preference)
+
         vertex_spans = [*self.abstract_buffer_map["vertex"]["brush"],
                         *vertex_writes.keys()]
         self.abstract_buffer_map["vertex"]["brush"] = compress(vertex_spans)
+        # ^ update abstract_buffer_map with all the brushes we have prepared
 
         # WRITE VERTICES TO VERTEX LUMP
+        glBindBuffer(GL_ARRAY_BUFFER, self.VERTEX_BUFFER)
+
+        # GL_INVALID_OPERATION is generated by glBufferSubData if zero is bound to target.
+        bound_array_buffer = glGetIntegerv(GL_ARRAY_BUFFER_BINDING)
         for span, data in vertex_writes.items():
             start, length = span
             data = list(itertools.chain(*data))
             # ^ [(*position, *normal, *uv, *colour)] => [*vertex]
             data = np.array(data, dtype=np.float32)
-            # ^ possibly the wrong format for glBufferSubData
-
-            # GL_INVALID_OPERATION is generated by glBufferSubData if zero is bound to target.
-            bound_array_buffer = glGetIntegerv(GL_ARRAY_BUFFER_BINDING)
-            print("NO ARRAY BUFFER", bound_array_buffer, bound_array_buffer == 0)
-
-            # GL_INVALID_OPERATION is generated by glNamedBufferSubData if buffer is not the name of an existing buffer object.
-            # NOT USING NAMED BUFFERS, SHOULD NOT APPLY
-
-            # GL_INVALID_OPERATION is generated if any part of the specified range of the buffer object is mapped with
-            # glMapBufferRange or glMapBuffer , unless it was mapped with the GL_MAP_PERSISTENT_BIT bit set in the glMapBufferRange access flags.
-            # POOR ACCESS FLAGS IN INITIALISATION!?
-
-            # GL_INVALID_OPERATION is generated if the value of the GL_BUFFER_IMMUTABLE_STORAGE flag of the buffer object is
-            # GL_TRUE and the value of GL_BUFFER_STORAGE_FLAGS for the buffer object does not have the GL_DYNAMIC_STORAGE_BIT bit set.
-
-
             glBufferSubData(GL_ARRAY_BUFFER, start, length, data)
             # ^ GLERROR 1282: INVALID operation
             # PyOpenGL's interface to glBufferSubData is wierd about the "data"
