@@ -53,7 +53,27 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.update)
 
-    # GL functions
+    def update(self):
+        while len(self.render_manager.queued_updates) > 0:
+            func, *args = self.render_manager.queued_updates.pop(0)
+            try:
+                func(*args)
+            except Exception as exc:
+                print("{}{}\nraised {}".format(func, args, exc))
+                raise exc
+                break
+        self.render_manager.queued_updates = []
+        if self.camera_moving: # TOGGLED ON: take user inputs
+            self.camera.update(self.mouse_vector, self.keys, self.dt)
+            if self.moved_last_tick == False: # prevent drift
+                self.mouse_vector = vector.vec2()
+            self.moved_last_tick = False
+        super(MapViewport3D, self).update() # calls PaintGL
+
+    ######################
+    ### OpenGL Methods ###
+    ######################
+
     def initializeGL(self):
         glClearColor(0, 0, 0, 0)
         glMatrixMode(GL_PROJECTION)
@@ -118,6 +138,14 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
             glEnd()
             glLineWidth(1)
 
+    def resizeGL(self, width, height):
+        glLoadIdentity()
+        gluPerspective(self.fov, self.width() / self.height(), 0.1, 4096 * 4)
+
+    ##################
+    ### Qt Signals ###
+    ##################
+
     def do_raycast(self, x, y): # pixel offsets are wrong
         # en.wikipedia.org/wiki/Ray_tracing_(graphics)#Calculate_rays_for_rectangular_viewport
         h = vector.vec3(x=1).rotate(*-self.camera.rotation) # camera local X
@@ -133,10 +161,10 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.ray = [ray_origin, ray_direction] # DEBUG rendering
         return ray_origin, ray_direction
 
-    def load_vmf(self, vmf):
-        self.render_manager.load_vmf(vmf)
-
-    # REBINDING QT METHODS
+    ##########################
+    ### Rebound Qt Methods ###
+    ##########################
+    
     def keyPressEvent(self, event):
         self.keys.add(event.key())
         if event.key() == QtCore.Qt.Key_Z:
@@ -201,22 +229,6 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
             ray_origin, ray_direction = self.do_raycast(x, self.height() - y)
             self.raycast.emit(ray_origin, ray_direction)
         super(MapViewport3D, self).mouseReleaseEvent(event)
-
-    def resizeGL(self, width, height):
-        glLoadIdentity()
-        gluPerspective(self.fov, self.width() / self.height(), 0.1, 4096 * 4)
-
-    def update(self):
-        for update in self.render_manager.queued_updates:
-            func, *args = update
-            func(*args)
-        self.render_manager.queued_updates = []
-        if self.camera_moving: # TOGGLED ON: take user inputs
-            self.camera.update(self.mouse_vector, self.keys, self.dt)
-            if self.moved_last_tick == False: # prevent drift
-                self.mouse_vector = vector.vec2()
-            self.moved_last_tick = False
-        super(MapViewport3D, self).update() # calls PaintGL
 
 
 class MapViewport2D(QtWidgets.QOpenGLWidget): # QtWidgets.QGraphicsView ?
