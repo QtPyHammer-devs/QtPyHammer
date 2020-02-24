@@ -22,13 +22,13 @@ class selection_mode(Enum):
 
 
 class Workspace(QtWidgets.QWidget):
-    """ """
+    """Holds the .vmf data and viewport(s)"""
     def __init__(self, vmf_path, parent):
         super(Workspace, self).__init__(parent)
         self.ctx = parent.ctx
         self.vmf = ops.vmf.interface(self, open(vmf_path))
         self.viewport = viewport.MapViewport3D(self)
-        self.viewport.render_manager.add_brushes(*self.vmf.brushes)
+        self.viewport.add_brushes(*self.vmf.brushes)
         # self.viewport.render_manager.add_entities(*self.vmf.entities)
         # ^ neither op.vmf.interface or render.manager handle entities. yet
         # self.viewport.setViewMode.connect(...)

@@ -109,6 +109,58 @@ class manager:
         self.queued_updates = [] # (method, *args)
         # ^ queued updates are OpenGL functions called by the parent viewport
         # specifically executed within the parent viewport's update method
+        
+        # VRAM Memory Management
+        KB = 10 ** 3
+        MB = 10 ** 6
+        GB = 10 ** 9
+        self.memory_limit = 512 * MB # user defined in settings
+        # ^ be aware we can't check the video card limit until post-initializeGL
+        self.vertex_buffer_size = self.memory_limit // 2
+        self.index_buffer_size = self.memory_limit // 2
+        self.buffer_map = {"vertex": {}, "index": {}}
+        # ^ buffer: {object: (start, length)}
+        # recording the in-memory location of each object is essential
+        # without doing so we could not hide, edit or delete objects
+
+        # "object" needs to be a sensible key, that works for brushes, displacements & models alike
+        # mapping by brush.id should be quite functional, especially for multiplayer
+        # we should only store models & other duplicate geometry (instances etc.) once and only once
+
+        # VERTICES: needed for reallocation & offset of INDICES
+        # INDICES: needed for rendering / hiding (using free function)
+
+        ### A Qt Debug visalisation which shows the state of each buffer would be handy
+        # VERTICES 0 | Brush1 | Brush2 | Displacement1 |     | LIMIT
+        # INDICES  0 | B1 | B2 | Disp1 |                     | LIMIT
+        # TEXTURES 0 |                                       | LIMIT
+        # A tool like this would also be useful for fine tuning performance
+        self.abstract_buffer_map = {"vertex": {"brush": [], "displacement": [], "model": []},
+                                    "index": {"brush": [], "displacement": [], "model": []}}
+        # buffer: {type: [(start, length)]}
+        # used to simplify draw calls and keep track of any fragmentation
+        # fragmentation of the index buffer means slower framerate
+
+        # update method:
+        # self.abstract_buffer_map = ...
+        # compress([*self.abstract_buffer_map["brushes"], *adding_span])
+        # free(self.abstract_buffer_map["brushes"], deleting_span)
+
+        # should we double buffer each buffer and defragment in the background?
+        # switching to the other at the end of each complete defrag cycle
+        # leaving generous gaps between types would be clever
+        # adding the switch to a "hands off" operation like saving could help...
+        # to make the experience seamless
+
+        # collate an ordered list of draw functions for viewports
+        # draw calls need to ask the render manager what to draw (and what to skip)
+        # set program, drawElements (start, len), [update uniform(s)]
+        # (func, {**kwargs}) -> func(**kwargs)
+        # draw_calls.append((draw_grid, {"limit": 2048, "grid_scale": 64, "colour": (.5,) * 3}))
+        # draw_calls.append((draw_origin, {"scale": 64}))
+            # SET STATE: brushes
+            # for S, L in abstract_buffer_map["index"]["brush"]
+            # drawElements(GL_TRIANGLES, S, L)
         self.hidden = {} # {type: (start, length)}
 
     def initializeGL(self): # to be called by parent viewport's initializeGL()
@@ -171,63 +223,14 @@ class manager:
         # ^ should we grab attrib locations from shader(s)?
 
         # Buffers
-        KB = 10 ** 3
-        MB = 10 ** 6
-        GB = 10 ** 9
-        self.memory_limit = 512 * MB # user defined in settings
         self.VERTEX_BUFFER, self.INDEX_BUFFER = glGenBuffers(2)
-        self.vertex_buffer_size = self.memory_limit // 2
-        self.index_buffer_size = self.memory_limit // 2
         # Vertex Buffer
         glBindBuffer(GL_ARRAY_BUFFER, self.VERTEX_BUFFER)
         glBufferData(GL_ARRAY_BUFFER, self.vertex_buffer_size, None, GL_DYNAMIC_DRAW)
         # Index Buffer
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.INDEX_BUFFER)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.index_buffer_size, None, GL_DYNAMIC_DRAW)
-        # VRAM Memory Management
-        self.buffer_map = {"vertex": {}, "index": {}}
-        # ^ buffer: {object: (start, length)}
-        # recording the in-memory location of each object is essential
-        # without doing so we could not hide, edit or delete objects
 
-        # "object" needs to be a sensible key, that works for brushes, displacements & models alike
-        # mapping by brush.id should be quite functional, especially for multiplayer
-        # we should only store models & other duplicate geometry (instances etc.) once and only once
-
-        # VERTICES: needed for reallocation & offset of INDICES
-        # INDICES: needed for rendering / hiding (using free function)
-
-        ### A Qt Debug visalisation which shows the state of each buffer would be handy
-        # VERTICES 0 | Brush1 | Brush2 | Displacement1 |     | LIMIT
-        # INDICES  0 | B1 | B2 | Disp1 |                     | LIMIT
-        # TEXTURES 0 |                                       | LIMIT
-        # A tool like this would also be useful for fine tuning performance
-        self.abstract_buffer_map = {"vertex": {"brush": [], "displacement": [], "model": []},
-                                    "index": {"brush": [], "displacement": [], "model": []}}
-        # buffer: {type: [(start, length)]}
-        # used to simplify draw calls and keep track of any fragmentation
-        # fragmentation of the index buffer means slower framerate
-
-        # update method:
-        # self.abstract_buffer_map = ...
-        # compress([*self.abstract_buffer_map["brushes"], *adding_span])
-        # free(self.abstract_buffer_map["brushes"], deleting_span)
-
-        # should we double buffer each buffer and defragment in the background?
-        # switching to the other at the end of each complete defrag cycle
-        # leaving generous gaps between types would be clever
-        # adding the switch to a "hands off" operation like saving could help...
-        # to make the experience seamless
-
-        # collate an ordered list of draw functions for viewports
-        # draw calls need to ask the render manager what to draw (and what to skip)
-        # set program, drawElements (start, len), [update uniform(s)]
-        # (func, {**kwargs}) -> func(**kwargs)
-        # draw_calls.append((draw_grid, {"limit": 2048, "grid_scale": 64, "colour": (.5,) * 3}))
-        # draw_calls.append((draw_origin, {"scale": 64}))
-            # SET STATE: brushes
-            # for S, L in abstract_buffer_map["index"]["brush"]
-            # drawElements(GL_TRIANGLES, S, L)
 
     def find_gaps(self, buffer="vertex", preferred_type=None, minimum_size=1):
         """Generator which yeilds a (start, length) span for each gap which meets requirements"""

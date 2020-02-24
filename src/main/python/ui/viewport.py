@@ -70,6 +70,10 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
             self.moved_last_tick = False
         super(MapViewport3D, self).update() # calls PaintGL
 
+    def add_brushes(self, *brushes):
+        self.render_manager.queued_updates.append(
+              (self.render_manager.add_brushes, *brushes))
+
     ######################
     ### OpenGL Methods ###
     ######################
