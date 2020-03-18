@@ -208,6 +208,7 @@ class manager:
 
         # Connect vertex format to shaders
         # https://github.com/snake-biscuits/QtPyHammer/wiki/Rendering:-Vertex-Format
+        # glGet(GL_MAX_VERTEX_ATTRIB_BINDINGS)
         glEnableVertexAttribArray(0) # vertex_position
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
         glEnableVertexAttribArray(1) # vertex_normal (brush only)
@@ -230,6 +231,10 @@ class manager:
         # Index Buffer
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.INDEX_BUFFER)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.index_buffer_size, None, GL_DYNAMIC_DRAW)
+
+        # in the face of ambiguity, refuse the temptation to guess
+        glGetIntegerv(GL_MAX_ELEMENTS_INDICES)
+        glGetIntegerv(GL_MAX_ELEMENTS_VERTICES)
 
 
     def find_gaps(self, buffer="vertex", preferred_type=None, minimum_size=1):
@@ -311,7 +316,10 @@ class manager:
                     # DO NOT CONTINUE! WE STILL NEED TO WRITE!
             if allocated_length > 0: # we have data to write!
                 vertex_writes[(allocation_start, allocated_length)] = data
+        print(f"MEMORY CAP: {self.memory_limit}")
         print(vertex_writes.keys())
+        print(self.memory_limit <
+              sum(sorted(vertex_writes.keys(), key=lambda w: w[0])[0]))
 
         # check we don't have any brushes left over, if we do:
         # - check there is enough VRAM to fit the leftovers into
@@ -330,10 +338,11 @@ class manager:
         for span, data in vertex_writes.items():
             start, length = span
             data = list(itertools.chain(*data))
-            # ^ [(*position, *normal, *uv, *colour)] => [*vertex]
+            # ^ [(*position, *normal, *uv, *colour)] => [*vertex]  FLATTENING
             data = np.array(data, dtype=np.float32)
-            self.queued_updates.append(
-                (glBufferSubData, *(GL_ARRAY_BUFFER, start, length, data)))
+            print("NOT queuing glBufferSubData")
+##            self.queued_updates.append(
+##                (glBufferSubData, *(GL_ARRAY_BUFFER, start, length, data)))
         del vertex_writes
 
         # ^^ offset_indices = {brush: indices + offset} ^^
@@ -363,12 +372,14 @@ class manager:
                        *index_writes.keys()]
         self.abstract_buffer_map["index"]["brush"] = compress(index_spans)
 
+        # queue INDEX_BUFFER glBufferSubData updates
         for span, data in index_writes.items():
             start, length = span
             data = list(itertools.chain(*data))
             # ^ [[brush.indices], [brush.indices]] => [*brush.indices]
-            glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, start, length,
-                            np.array(data, dtype=np.float32))
+            print("NOT queuing glBufferSubData")
+##            glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, start, length,
+##                            np.array(data, dtype=np.float32))
             # DEBUG show data being written into buffers
         del index_writes
 
