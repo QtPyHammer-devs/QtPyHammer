@@ -57,9 +57,13 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         while len(self.render_manager.queued_updates) > 0:
             func, *args = self.render_manager.queued_updates.pop(0)
             try:
+                args_string = ", ".join(map(str, args))
+                if len(args_string) > 60:
+                    args_string = f"{args[0]}, ..., {args[1]}"
+                print(f"{func.__name__}({args_string})")
                 func(*args)
             except Exception as exc:
-                print("{}{}\nraised {}".format(func, args, exc))
+                print("*** {}{}\nraised {}".format(func, args, exc))
                 raise exc
                 break
         self.render_manager.queued_updates = []
