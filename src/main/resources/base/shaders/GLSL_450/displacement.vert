@@ -16,7 +16,7 @@ void main()
     position = vertex_position;
     blend = blend_alpha;
     uv = vec2(vertex_uv.x, -vertex_uv.y);
-	colour = editor_colour;
+  	colour = editor_colour;
 
 	gl_Position = gl_ModelViewProjectionMatrix * vec4(vertex_position, 1);
 }

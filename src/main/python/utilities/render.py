@@ -109,7 +109,7 @@ class manager:
         self.queued_updates = [] # (method, *args)
         # ^ queued updates are OpenGL functions called by the parent viewport
         # specifically executed within the parent viewport's update method
-        
+
         # VRAM Memory Management
         KB = 10 ** 3
         MB = 10 ** 6
