@@ -379,7 +379,7 @@ class manager:
             # ^ [[brush.indices], [brush.indices]] => [*brush.indices]
             print("NOT queuing glBufferSubData")
 ##            glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, start, length,
-##                            np.array(data, dtype=np.float32))
+##                            np.array(data, dtype=np.uint32))
             # DEBUG show data being written into buffers
         del index_writes
 
@@ -388,7 +388,7 @@ class manager:
 ##        for span in self.abstract_buffer_map["index"]["brush"]:
 ##            start, length = span
 ##            data = glGetBufferSubData(GL_ELEMENT_ARRAY_BUFFER, start, length)
-##            print(np.array(data, dtype=np.float32))
+##            print(np.array(data, dtype=np.uint32))
 ##            print("-" * 80)
 ##        print("=" * 80)
 
