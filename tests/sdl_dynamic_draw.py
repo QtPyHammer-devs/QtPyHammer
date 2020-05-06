@@ -29,33 +29,37 @@ def main(width, height):
     glPointSize(4)
     
     ###  BEGIN DYNAMIC DRAW BUFFER TEST  ###
+    # VERTEX
     VERTEX_BUFFER = glGenBuffers(1)
     glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER)
     glBufferData(GL_ARRAY_BUFFER, 256, None, GL_DYNAMIC_DRAW)
     # ^ target, size, *data, usage
-
+    
     cube_vertices = [(-1, 1, 1), (1, 1, 1), (1, -1, 1), (-1, -1, 1),
                      (-1, 1, -1), (1, 1, -1), (1, -1, -1), (-1, -1, -1)]
     cube_vertices = [*itertools.chain(*cube_vertices)]
     cube_vertices = np.array(cube_vertices, dtype=np.float32)
     glBufferSubData(GL_ARRAY_BUFFER, 0, len(cube_vertices) * 4, cube_vertices)
     # ^ target, start, length, *data
-    
+
+    # CHECK
     vertex_buffer_data = glGetBufferSubData(GL_ARRAY_BUFFER, 0, 8 * 3 * 4)
     # ^ target, start, length
     vertices = list(struct.iter_unpack("3f", vertex_buffer_data))
     print(vertices)
 
+    # INDEX
     INDEX_BUFFER = glGenBuffers(1)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 256, None, GL_DYNAMIC_DRAW)
     # ^ target, size, *data, usage
 
     cube_indices = [0, 1, 2, 3, 4, 5, 6, 7]
-    cube_vertices = np.array(cube_indices, dtype=np.uint32)
-    glBufferSubData(GL_ARRAY_BUFFER, 0, len(cube_indices) * 4, cube_vertices)
+    cube_indices = np.array(cube_indices, dtype=np.uint32)
+    glBufferSubData(GL_ARRAY_BUFFER, 0, len(cube_indices) * 4, cube_indices)
     # ^ target, start, length, *data
 
+    # CHECK
     index_buffer_data = glGetBufferSubData(GL_ARRAY_BUFFER, 0, 8 * 4)
     # ^ target, start, length
     indices = [s[0] for s in struct.iter_unpack("I", index_buffer_data)]
