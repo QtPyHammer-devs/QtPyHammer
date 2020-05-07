@@ -86,6 +86,4 @@ if __name__ == "__main__":
         del window
     
     app.aboutToQuit.connect(cleanup)
-    
     sys.exit(app.exec_())
-    sys.stdout.close()
