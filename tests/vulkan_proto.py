@@ -44,8 +44,14 @@ class VulkanWindow(QtWidgets.QWidget):
                 hinstance = lib.GetWindowLongA(c_intf.cast("void*", self.winId()), -6))
             createSurface = self.getInstanceProc("vkCreateWin32SurfaceKHR")
         elif sys.platform == "linux":
-            VkWaylandSurfaceCreateInfoKHR()
+            # we take our example from
+            # https://github.com/qt/qtwayland/blob/5832b6628d848b271efae99585206fa02fc214c9/src/client/qwaylandvulkaninstance.cpp#L108
+            s_create_info = VkWaylandSurfaceCreateInfoKHR(
+                display = self.display().wl_display(),
+                surface = self.wlSurface())
+            createSurface = self.getInstanceProc("vkCreateWaylandSurfaceKHR")
         self._surface = createSurface(self._instance, s_create_info, None)
+        print self._surface
 
 ##        # physical device selection
 ##        self._physical_device = None
