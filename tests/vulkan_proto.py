@@ -35,6 +35,7 @@ class VulkanWindow(QtWidgets.QWidget):
             ppEnabledExtensionNames = self.extensions)
         
         self._instance = vkCreateInstance(self.instance_info, None)
+        # ^ returns VkErrorIncompatibleDriver on linux laptop
         if self._instance == None:
             raise RuntimeError("Could not create Vulkan instance")
 
