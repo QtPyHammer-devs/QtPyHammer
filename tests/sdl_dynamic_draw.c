@@ -59,7 +59,37 @@ int main()//int argument_count, char *argument_value[])
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 256, NULL, GL_DYNAMIC_DRAW);
     
+    GLubyte indices[8] = {0, 1, 2, 3, 4, 5, 6, 7};
+
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(GLubyte) * 8, indices);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, (GLvoid*)0);
     
+    // SHADERS
+    const GLchar *vert_source = "#version 300 es\nlayout(location = 0) in vec3 vpos;\nuniform mat4 MVP;\nvoid main()\n{\nglPosition = MVP * vpos;\n}\n";
+
+    const GLchar *frag_source = "#version 300 es\nlayout(location = 0) out mediump vec4 RGBA;\nvoid main()\n{\nRGBA = vec4(1, 1, 1, 1);\n}\n";
+    
+    GLuint vert_shader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vert_shader, &vert_source);
+    glCompileShader(vert_shader);
+
+    GLuint frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(frag_shader, &frag_source);
+    glCompileShader(frag_shader);
+    
+    GLuint shader_program = glCreateProgram();
+    glAttachShader(shader_program, vert_shader);
+    glAttachShader(shader_program, frag_shader);
+    glLinkProgram(shader_program);
+    glDetachShader(shader_program, vert_shader);
+    glDetachShader(shader_program, frag_shader);
+
+    glUseProgram(shader_progam);
+    float mvp[16];
+    glGetFloatv(GL_PROJECTION_MATRIX, &mvp);
+    glUniform4fv(glGetUniformLocation(shader_program, "MVP"), mvp);   
 
     bool running = true;
     SDL_Event event;
@@ -85,19 +115,22 @@ int main()//int argument_count, char *argument_value[])
         // DRAW LOOP
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        glDrawArrays(GL_POINTS, 0, 8);
+        glDrawElements(GL_POINTS, 8, GL_UNSIGNED_BYTE, (GLvoid*)0);
+
+        /*
         glBegin(GL_TRIANGLES);
           glVertex2i(1, -1.5);
           glVertex2i(0, 1.5);
           glVertex2i(-1, -1.5);
         glEnd();
+        */
         
         SDL_GL_SwapWindow(window); // PRESENT FRAME
     }
     // QUIT
-    /*
     glDeleteBuffers(1, &VERTEX_BUFFER);
     glDeleteBuffers(1, &INDEX_BUFFER);
-    */
     SDL_DestroyWindow(window);
     SDL_Quit();    
     return 0;
