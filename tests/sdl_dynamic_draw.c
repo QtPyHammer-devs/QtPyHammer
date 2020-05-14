@@ -67,16 +67,18 @@ int main()//int argument_count, char *argument_value[])
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, (GLvoid*)0);
     
     // SHADERS
-    const GLchar *vert_source = "#version 300 es\nlayout(location = 0) in vec3 vpos;\nuniform mat4 MVP;\nvoid main()\n{\nglPosition = MVP * vpos;\n}\n";
+    const char vert_source[] = {"#version 300 es\nlayout(location = 0) in vec3 vpos;\nuniform mat4 MVP;\nvoid main()\n{\nglPosition = MVP * vpos;\n}\n"};
+    const int vert_source_len[] = {strlen(vert_source)};
 
-    const GLchar *frag_source = "#version 300 es\nlayout(location = 0) out mediump vec4 RGBA;\nvoid main()\n{\nRGBA = vec4(1, 1, 1, 1);\n}\n";
+    const char frag_source[] = {"#version 300 es\nlayout(location = 0) out mediump vec4 RGBA;\nvoid main()\n{\nRGBA = vec4(1, 1, 1, 1);\n}\n"};
+    const int frag_source_len[] = {strlen(frag_source)};
     
     GLuint vert_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vert_shader, &vert_source);
+    glShaderSource(vert_shader, 1, (const GLchar* const*)vert_source, vert_source_len);
     glCompileShader(vert_shader);
 
     GLuint frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(frag_shader, &frag_source);
+    glShaderSource(frag_shader, 1, (const GLchar* const*)frag_source, frag_source_len);
     glCompileShader(frag_shader);
     
     GLuint shader_program = glCreateProgram();
@@ -86,10 +88,10 @@ int main()//int argument_count, char *argument_value[])
     glDetachShader(shader_program, vert_shader);
     glDetachShader(shader_program, frag_shader);
 
-    glUseProgram(shader_progam);
+    glUseProgram(shader_program);
     float mvp[16];
-    glGetFloatv(GL_PROJECTION_MATRIX, &mvp);
-    glUniform4fv(glGetUniformLocation(shader_program, "MVP"), mvp);   
+    glGetFloatv(GL_PROJECTION_MATRIX, mvp);
+    glUniform4fv(glGetUniformLocation(shader_program, "MVP"), 4, mvp);   
 
     bool running = true;
     SDL_Event event;
