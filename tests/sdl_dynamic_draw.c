@@ -67,18 +67,16 @@ int main()//int argument_count, char *argument_value[])
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, (GLvoid*)0);
     
     // SHADERS
-    const char vert_source[] = "#version 300 es\nlayout(location = 0) in vec3 vpos;\nuniform mat4 MVP;\nvoid main()\n{\nglPosition = MVP * vpos;\n}\n";
-    const int vert_source_len[] = {strlen(vert_source)};
+    const char* vert_source[] = {"#version 300 es\nlayout(location = 0) in vec3 vpos;\nuniform mat4 MVP;\nvoid main()\n{\nglPosition = MVP * vpos;\n}\n"};
 
-    const char frag_source[] = "#version 300 es\nlayout(location = 0) out mediump vec4 RGBA;\nvoid main()\n{\nRGBA = vec4(1, 1, 1, 1);\n}\n";
-    const int frag_source_len[] = {strlen(frag_source)};
+    const char* frag_source[] = {"#version 300 es\nlayout(location = 0) out mediump vec4 RGBA;\nvoid main()\n{\nRGBA = vec4(1, 1, 1, 1);\n}\n"};
     
     GLuint vert_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vert_shader, 1, (const GLchar* const*)vert_source, vert_source_len); // segfault here (bad memcpy)
+    glShaderSource(vert_shader, 1, vert_source, NULL);
     glCompileShader(vert_shader);
 
     GLuint frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(frag_shader, 1, (const GLchar* const*)frag_source, frag_source_len);
+    glShaderSource(frag_shader, 1, frag_source, NULL);
     glCompileShader(frag_shader);
     
     GLuint shader_program = glCreateProgram();
@@ -119,13 +117,11 @@ int main()//int argument_count, char *argument_value[])
         glDrawArrays(GL_POINTS, 0, 8);
         glDrawElements(GL_POINTS, 8, GL_UNSIGNED_BYTE, (GLvoid*)0);
 
-        /*
         glBegin(GL_TRIANGLES);
           glVertex2i(1, -1.5);
           glVertex2i(0, 1.5);
           glVertex2i(-1, -1.5);
         glEnd();
-        */
         
         SDL_GL_SwapWindow(window); // PRESENT FRAME
     }
