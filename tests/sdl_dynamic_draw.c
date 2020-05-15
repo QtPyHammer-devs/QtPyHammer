@@ -13,10 +13,10 @@ int main()//int argument_count, char *argument_value[])
     SDL_Init(SDL_INIT_VIDEO);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-    int maj, min;
-    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &maj);
-    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &min);
-    printf("Using OpenGL %d.%d (SDL)\n", maj, min);
+    int major, minor;
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &major);
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &minor);
+    printf("Using OpenGL %d.%d (SDL)\n", major, minor);
     SDL_Window *window = SDL_CreateWindow("OpenGL window",
                   SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                   720, 576, SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS);
@@ -31,9 +31,9 @@ int main()//int argument_count, char *argument_value[])
         return 1;
     }
 
-    glGetIntegerv(GL_MAJOR_VERSION, &maj);
-    glGetIntegerv(GL_MINOR_VERSION, &min);
-    printf("Using OpenGL %d.%d (GL)\n", maj, min);
+    glGetIntegerv(GL_MAJOR_VERSION, &major);
+    glGetIntegerv(GL_MINOR_VERSION, &minor);
+    printf("Using OpenGL %d.%d (GL)\n", major, minor);
 
     // GL SETUP
     glClearColor(0.0, 0.75, 0.5, 0.0);
@@ -67,14 +67,14 @@ int main()//int argument_count, char *argument_value[])
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, (GLvoid*)0);
     
     // SHADERS
-    const char vert_source[] = {"#version 300 es\nlayout(location = 0) in vec3 vpos;\nuniform mat4 MVP;\nvoid main()\n{\nglPosition = MVP * vpos;\n}\n"};
+    const char vert_source[] = "#version 300 es\nlayout(location = 0) in vec3 vpos;\nuniform mat4 MVP;\nvoid main()\n{\nglPosition = MVP * vpos;\n}\n";
     const int vert_source_len[] = {strlen(vert_source)};
 
-    const char frag_source[] = {"#version 300 es\nlayout(location = 0) out mediump vec4 RGBA;\nvoid main()\n{\nRGBA = vec4(1, 1, 1, 1);\n}\n"};
+    const char frag_source[] = "#version 300 es\nlayout(location = 0) out mediump vec4 RGBA;\nvoid main()\n{\nRGBA = vec4(1, 1, 1, 1);\n}\n";
     const int frag_source_len[] = {strlen(frag_source)};
     
     GLuint vert_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vert_shader, 1, (const GLchar* const*)vert_source, vert_source_len);
+    glShaderSource(vert_shader, 1, (const GLchar* const*)vert_source, vert_source_len); // segfault here (bad memcpy)
     glCompileShader(vert_shader);
 
     GLuint frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -113,7 +113,6 @@ int main()//int argument_count, char *argument_value[])
                     }
             }
         }
-
         // DRAW LOOP
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
