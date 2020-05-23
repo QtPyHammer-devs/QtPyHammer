@@ -1,5 +1,5 @@
 #include "gl3.h"
-#include <GL/gl.h> // try GLEW
+//#include <GL/gl.h> // try GLEW
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <stdbool.h>
@@ -38,7 +38,7 @@ int main()//int argument_count, char *argument_value[])
 
     // GL SETUP
     glClearColor(0.0, 0.75, 0.5, 0.0);
-    glOrtho(-2.0, 2.0, -2.0, 2.0, 0.0, 1024.0);
+    glOrtho(-4.0, 4.0, -4.0, 4.0, 0.0, 1024.0);
     glEnableClientState(GL_VERTEX_ARRAY);
     glPointSize(8);
 
@@ -46,30 +46,28 @@ int main()//int argument_count, char *argument_value[])
     GLuint VERTEX_BUFFER;
     glGenBuffers(1, &VERTEX_BUFFER);
     glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER);
-    glBufferData(GL_ARRAY_BUFFER, 256, NULL, GL_DYNAMIC_DRAW);
 
     float vertices[24] = {-1,  1,  1,   1,  1,  1,   1, -1,  1,
                           -1, -1,  1,  -1,  1, -1,   1,  1, -1,
                            1, -1, -1,  -1, -1, -1}; // 8 * XYZ
 
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 24, vertices);
-
-    float data[32]; 
-    glGetBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 24, vertices, &data);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 24, vertices, GL_STATIC_DRAW);
+    //glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 24, vertices);
 
     // INDEX BUFFER
     GLuint INDEX_BUFFER;
     glGenBuffers(1, &INDEX_BUFFER);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 256, NULL, GL_DYNAMIC_DRAW);
     
-    GLubyte indices[8] = {0, 1, 2, 3, 4, 5, 6, 7};
+    unsigned int indices[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 
-    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(GLubyte) * 8, indices);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * 8, indices, GL_STATIC_DRAW);
+    //glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(int) * 8, indices);
 
-    //glGetBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(int) * 8, vertices, &data + 24);
-
-    printf("(%f %f %f)", data[0], data[1], data[2]);
+    //float data[32]; 
+    //glGetBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 24, vertices, &data);
+    //glGetBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(int) * 8, vertices, &data + 24);
+    //printf("(%f %f %f)", data[0], data[1], data[2]);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, (GLvoid*)0);
@@ -123,8 +121,8 @@ int main()//int argument_count, char *argument_value[])
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glUseProgram(shader_program);
-        glDrawArrays(GL_POINTS, 0, 8);
-        glDrawElements(GL_POINTS, 8, GL_UNSIGNED_BYTE, (GLvoid*)0);
+        glDrawArrays(GL_POINTS, 0, 8 * 4);
+        glDrawElements(GL_POINTS, 8 * 4, GL_UNSIGNED_INT, (GLvoid*)0);
 
         glUseProgram(0);
         glBegin(GL_TRIANGLES);
@@ -132,7 +130,7 @@ int main()//int argument_count, char *argument_value[])
           glVertex2i(0, 1.5);
           glVertex2i(-1, -1.5);
         glEnd();
-        
+
         SDL_GL_SwapWindow(window); // PRESENT FRAME
     }
     // QUIT
