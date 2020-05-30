@@ -30,18 +30,17 @@ def main(width, height):
     
     ###  BEGIN DYNAMIC DRAW BUFFER TEST  ###
     # VERTEX
-    VERTEX_BUFFER = glGenBuffers(1)
-    glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER)
-##    glBufferData(GL_ARRAY_BUFFER, 256, None, GL_DYNAMIC_DRAW)
-    # ^ target, size, *data, usage
-    
     cube_vertices = [(-1, 1, 1), (1, 1, 1), (1, -1, 1), (-1, -1, 1),
                      (-1, 1, -1), (1, 1, -1), (1, -1, -1), (-1, -1, -1)]
     cube_vertices = [*itertools.chain(*cube_vertices)]
     cube_vertices = np.array(cube_vertices, dtype=np.float32)
-##    glBufferSubData(GL_ARRAY_BUFFER, 0, len(cube_vertices) * 4, cube_vertices)
+
+    VERTEX_BUFFER = glGenBuffers(1)
+    glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER)
+##    glBufferData(GL_ARRAY_BUFFER, 256, cube_vertices, GL_DYNAMIC_DRAW)
+    glBufferStorage(GL_ARRAY_BUFFER, 256, None, GL_DYNAMIC_STORAGE_BIT)
+    glBufferSubData(GL_ARRAY_BUFFER, 0, len(cube_vertices) * 4, cube_vertices)
     # ^ target, start, length, *data
-    glBufferData(GL_ARRAY_BUFFER, 256, cube_vertices, GL_DYNAMIC_DRAW)
 
     # CHECK
     vertex_buffer_data = glGetBufferSubData(GL_ARRAY_BUFFER, 0, 8 * 3 * 4)
@@ -50,16 +49,16 @@ def main(width, height):
     print(vertices)
 
     # INDEX
-    INDEX_BUFFER = glGenBuffers(1)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
-##    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 256, None, GL_DYNAMIC_DRAW)
-    # ^ target, size, *data, usage
-
     cube_indices = [0, 1, 2, 3, 4, 5, 6, 7]
     cube_indices = np.array(cube_indices, dtype=np.uint32)
-##    glBufferSubData(GL_ARRAY_BUFFER, 0, len(cube_indices) * 4, cube_indices)
+
+    INDEX_BUFFER = glGenBuffers(1)
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
+##    glBufferData(GL_ARRAY_BUFFER, 256, cube_indices, GL_DYNAMIC_DRAW)
+    glBufferStorage(GL_ARRAY_BUFFER, 256, None, GL_DYNAMIC_STORAGE_BIT)
+    glBufferSubData(GL_ARRAY_BUFFER, 0, len(cube_indices) * 4, cube_indices)
     # ^ target, start, length, *data
-    glBufferData(GL_ARRAY_BUFFER, 256, cube_indices, GL_DYNAMIC_DRAW)
+    
 
     # CHECK
     index_buffer_data = glGetBufferSubData(GL_ARRAY_BUFFER, 0, 8 * 4)
