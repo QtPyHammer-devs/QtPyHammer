@@ -232,34 +232,31 @@ class manager:
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.INDEX_BUFFER)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.index_buffer_size, None, GL_DYNAMIC_DRAW)
 
-        # in the face of ambiguity, refuse the temptation to guess
-        glGetIntegerv(GL_MAX_ELEMENTS_INDICES)
-        glGetIntegerv(GL_MAX_ELEMENTS_VERTICES)
-
 
     def find_gaps(self, buffer="vertex", preferred_type=None, minimum_size=1):
         """Generator which yeilds a (start, length) span for each gap which meets requirements"""
         if minimum_size < 1:
             raise RuntimeError("Can't search for gap smaller than 1 byte")
-        buffer_map = self.abstract_buffer_map[buffer]
-        if preferred_type not in (None, *buffer_map.keys()):
-            raise RuntimeError("Can't search for gap of type {}".format(preferred_type))
         if buffer == "vertex":
             limit = self.vertex_buffer_size
         elif buffer == "index":
             limit = self.index_buffer_size
         else:
-            raise RuntimeError("Buffer {} is not mapped".format(buffer))
-        # spans are spaces with data assigned
-        # gaps are free spaces data can be assigned to
-        span_type = {s: t for t in buffer_map for s in buffer_map[t]}
-        # ^ {"type": [*spans]} -> {span: "type"}
-        filled_spans = sorted(span_type, key=lambda s: s[0])
-        # ^ all occupied spans, sorted by starting_inedx (span[0])
+            raise RuntimeError("There is no '{}' buffer".format(buffer))
+        # "spans" refers to spaces with data assigned
+        # "gaps" are unused spaces in memory that data can be assigned to
+        # both are recorded in the form: (starting_index, length_in_bytes)
         prev_span = (0, 0)
-        span_type[prev_span] = preferred_type # always fill a gap starting at 0
         prev_span_end = 0
         prev_gap = (0, 0)
+        buffer_map = self.abstract_buffer_map[buffer]
+        if preferred_type not in (None, *buffer_map.keys()):
+            raise RuntimeError("Invalid preferred_type: {}".format(preferred_type))
+        span_type = {s: t for t in buffer_map for s in buffer_map[t]}
+        # ^ {"type": [*spans]} -> {span: "type"}
+        span_type[prev_span] = preferred_type # always fill a gap starting at 0
+        filled_spans = sorted(span_type, key=lambda s: s[0])
+        # ^ all occupied spans, sorted by starting_index (span[0])
         for span in filled_spans:
             span_start, span_length = span
             gap_start = prev_span_end + 1
@@ -281,7 +278,8 @@ class manager:
         # the most important case is loading a fresh file which should not be overly expensive as we should have a long stretch of free memory
         # a loading bar for long updates would be handy
         # do long / large updates hang on the UI thread?
-        # it would be nice if we could do all this asyncronously; double buffering and/or using a separate thread, awaits etc.
+        # it would be nice if we could do all this asyncronously:
+        # -- double buffering and/or using a separate thread, awaits etc.
         brushes = iter(brushes)
         vertex_writes = {} # {(start, length): data}
         offset_indices = {} # {brush: indices + offset}
@@ -316,11 +314,6 @@ class manager:
                     # DO NOT CONTINUE! WE STILL NEED TO WRITE!
             if allocated_length > 0: # we have data to write!
                 vertex_writes[(allocation_start, allocated_length)] = data
-        print(f"MEMORY CAP: {self.memory_limit}")
-        print(vertex_writes.keys())
-        print(self.memory_limit <
-              sum(sorted(vertex_writes.keys(), key=lambda w: w[0])[0]))
-
         # check we don't have any brushes left over, if we do:
         # - check there is enough VRAM to fit the leftovers into
         # - raise an error if we are out of VRAM
@@ -338,11 +331,9 @@ class manager:
         for span, data in vertex_writes.items():
             start, length = span
             data = list(itertools.chain(*data))
-            # ^ [(*position, *normal, *uv, *colour)] => [*vertex]  FLATTENING
             data = np.array(data, dtype=np.float32)
-            print("NOT queuing glBufferSubData")
-##            self.queued_updates.append(
-##                (glBufferSubData, *(GL_ARRAY_BUFFER, start, length, data)))
+            self.queued_updates.append(
+                (glBufferSubData, *(GL_ARRAY_BUFFER, start, length, data)))
         del vertex_writes
 
         # ^^ offset_indices = {brush: indices + offset} ^^
@@ -376,11 +367,9 @@ class manager:
         for span, data in index_writes.items():
             start, length = span
             data = list(itertools.chain(*data))
-            # ^ [[brush.indices], [brush.indices]] => [*brush.indices]
-            print("NOT queuing glBufferSubData")
-##            glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, start, length,
-##                            np.array(data, dtype=np.uint32))
-            # DEBUG show data being written into buffers
+            data = np.array(data, dtype=np.uint32)
+            self.queued_updates.append(
+                (glBufferSubData, *(GL_ELEMENT_ARRAY_BUFFER, start, length, data)))
         del index_writes
 
 ##        # DEBUG show data in buffer pointed to by abstract_buffer_map
