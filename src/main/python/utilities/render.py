@@ -232,6 +232,8 @@ class manager:
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.INDEX_BUFFER)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.index_buffer_size, None, GL_DYNAMIC_DRAW)
 
+        glClearColor(1, 0, 1, 0)
+
 
     def find_gaps(self, buffer="vertex", preferred_type=None, minimum_size=1):
         """Generator which yeilds a (start, length) span for each gap which meets requirements"""

@@ -100,7 +100,6 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         glPolygonMode(GL_BACK, GL_LINE)
         glFrontFace(GL_CW)
         glPointSize(4)
-        print("render_manager init")
         self.render_manager.initializeGL()
         self.draw_calls = self.render_manager.abstract_buffer_map["index"]
         self.set_view_mode("flat") # sets shaders & GL state
