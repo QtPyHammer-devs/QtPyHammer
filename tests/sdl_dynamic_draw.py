@@ -1,7 +1,6 @@
 ﻿import ctypes
 import itertools
 import math
-import random
 import struct
 import time
 
@@ -113,8 +112,8 @@ def main(width, height):
 
     void main()
     {
-        vec4 Ka = vec4(0.15, 0.15, 0.15, 1);
-        outColour = vec4(.75, .75, .75, 1) * gl_FragCoord.z + Ka;
+        mediump vec4 Ka = vec4(0.15, 0.15, 0.15, 1);
+        outColour = vec4(position.xyz * 0.75, 1) + Ka;
     }
     """
 
@@ -137,7 +136,7 @@ def main(width, height):
     glLinkProgram(shader_program)
     glUseProgram(shader_program)
     if GLES:
-        location = glGetUniformLocation(shader_program, "ModelViewProjectionMatrix")
+        matrix_location = glGetUniformLocation(shader_program, "ModelViewProjectionMatrix")
     ###  END SHADERS  ###
     
     tickrate = 1 / 0.015
@@ -157,14 +156,14 @@ def main(width, height):
             # do logic for frame
             glRotate(30 / tickrate, 1, 0, 1.25)
             if GLES:
-                matrix = glGetFloatv(GL_PROJECTION_MATRIX)
+                matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
                 glUseProgram(shader_program)
-                glUniformMatrix4fv(location, 1, GL_FALSE, matrix)
-            if tick_number == 16:
+                glUniformMatrix4fv(matrix_location, 1, GL_FALSE, matrix)
+            if tick_number % 20 == 0:
+                cube_indices = [(i + 1) % 8 for i in cube_indices]
                 glBufferSubData(GL_ELEMENT_ARRAY_BUFFER,
-                                0, 3 * 4,
-                                np.array([0, 4, random.randint(0, 8)],
-                                         dtype=np.uint32))
+                                0, 12 * 4,
+                                np.array(cube_indices, dtype=np.uint32))
             tick_number = (tick_number + 1) % 60
             # end frame
             dt -= 1 / tickrate
