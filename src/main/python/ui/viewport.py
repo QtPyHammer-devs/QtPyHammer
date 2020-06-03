@@ -62,17 +62,25 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
                     args_string = "{}, ..., {}".format(args[0], args[-1])
                 print("{}({})".format(func.__name__, args_string))
                 func(*args)
-            except Exception as exc:
-                print("*** {}{} raised {}".format(func, args, exc))
-                raise exc
+            except Exception as error:
+                print("*** {}{} raised {}".format(func, args, error))
+                # A: 0 bound to target
+                # B: any segment mapped without GL_PERSISTENT_BIT
+                # C: GL_BUFFER_IMMUTABLE_STORAGE == GL_TRUE
+                # AND GL_BUFFER_STORAGE_FLAGS !& GL_DYNAMIC_STORAGE_BIT
+##                case_c = glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_IMMUTABLE_STORAGE)
+##                print({GL_TRUE: GL_TRUE, GL_FALSE: GL_FALSE}[case_c])
+                print(glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_USAGE))
+                # raise exc
                 break
-        self.render_manager.queued_updates = []
         if self.camera_moving: # TOGGLED ON: take user inputs
             self.camera.update(self.mouse_vector, self.keys, self.dt)
             if self.moved_last_tick == False: # prevent drift
                 self.mouse_vector = vector.vec2()
             self.moved_last_tick = False
+        print("almost painting")
         super(MapViewport3D, self).update() # calls PaintGL
+        print("end update")
 
     def add_brushes(self, *brushes):
         self.render_manager.queued_updates.append(
@@ -92,6 +100,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         glPolygonMode(GL_BACK, GL_LINE)
         glFrontFace(GL_CW)
         glPointSize(4)
+        print("render_manager init")
         self.render_manager.initializeGL()
         self.draw_calls = self.render_manager.abstract_buffer_map["index"]
         self.set_view_mode("flat") # sets shaders & GL state
@@ -118,6 +127,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.doneCurrent()
 
     def paintGL(self):
+        print("! start frame !")
         glLoadIdentity()
         gluPerspective(self.fov, self.width() / self.height(), 0.1, self.draw_distance)
         self.camera.set()
@@ -135,7 +145,11 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
                 glUniformMatrix4fv(location, 1, GL_FALSE, matrix)
         # dither for flat shaded transparency on skip & hint
         for start, length in self.draw_calls["brush"]:
-            glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
+            # CRASHES HERE
+            glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, start)
+            # having to bind buffers when calling glBufferSubData implies:
+            # -- self.render_manager.initializeGL has no effect, but why?
+            # can this be proven? perhaps with glClearColor?
         if self.ray != []: # render raycast for debug
             glUseProgram(0)
             glColor(1, .75, .25)
@@ -145,6 +159,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
             glVertex(*(self.ray[0] + self.ray[1] * self.draw_distance))
             glEnd()
             glLineWidth(1)
+        print("! end frame !")
 
     def resizeGL(self, width, height):
         glLoadIdentity()
