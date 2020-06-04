@@ -12,6 +12,7 @@ from PyQt5 import QtGui
 from . import camera, solid, vector
 
 
+# DRAWING FUNCTIONS
 def yield_grid(limit, step): # get "step" from Grid Scale action (MainWindow)
     """ yields lines on a grid (one vertex at a time) centered on [0, 0]
     limit: int, half the width of grid
@@ -36,7 +37,6 @@ def yield_grid(limit, step): # get "step" from Grid Scale action (MainWindow)
     # it's also worth considering adding an offset
 
 def draw_grid(limit=2048, grid_scale=64, colour=(.5, .5, .5)):
-    glUseProgram(0)
     glLineWidth(1)
     glBegin(GL_LINES)
     glColor(*colour)
@@ -45,7 +45,6 @@ def draw_grid(limit=2048, grid_scale=64, colour=(.5, .5, .5)):
     glEnd()
 
 def draw_origin(scale=64):
-    glUseProgram(0)
     glLineWidth(2)
     glBegin(GL_LINES)
     glColor(1, 0, 0)
@@ -59,8 +58,19 @@ def draw_origin(scale=64):
     glVertex(0, 0, scale)
     glEnd()
 
+def draw_ray(origin, direction, distance=4096):
+    glLineWidth(2)
+    glBegin(GL_LINES)
+    glColor(1, .75, .25)
+    glVertex(*origin)
+    glVertex(*(origin + direction * distance))
+    glEnd()
+
 # BUFFER TOOLS
-def compress(spans): # simplify memory map
+# These two funtions work to find free segments to assign to
+# render.manager method find_gap uses these functions...
+#  - however! it also checks the types of neighbours to optimise draw calls
+def compress(spans):
     """Combine a series of spans into as few (start, length) spans as possible
     This is to minimise calls read, write & draw calls to OpenGL buffers"""
     spans = list(sorted(spans, key=lambda x: x[0]))
@@ -79,11 +89,11 @@ def compress(spans): # simplify memory map
     out.append(tuple(current))
     return out
 
-def free(spans, span_to_remove): # remove from memory map
+def free(spans, span_to_remove): # can be used to hide selection
     """remove a (start, length) span from a series of spans"""
-    r_start, r_length = span_to_remove # R
+    r_start, r_length = span_to_remove # span_to_remove is R
     r_end = r_start + r_length
-    out = []
+    out = [] # all spans which do not intersect R
     for start, length in spans: # current span
         end = start + length # current end
         if r_start <= start < end <= r_end:
@@ -97,94 +107,67 @@ def free(spans, span_to_remove): # remove from memory map
                 out.append((new_start, end - new_start)) # segment after R
     return out
 
-# These two funtions work with a third to find free segments to assign to
-# The render.manager class method find_gap does this
-# However, it also check the types of neighbours for optimisation purposes
-
 
 class manager:
     """Manages OpenGL buffers and gives handles for rendering & hiding objects"""
-    def __init__(self, parent):
-        self.parent = parent # parent is expected to be a MapViewport3D
-        self.queued_updates = [] # (method, *args)
-        # ^ queued updates are OpenGL functions called by the parent viewport
-        # specifically executed within the parent viewport's update method
-
-        # VRAM Memory Management
+    def __init__(self):
+        self.draw_distance = 4096 * 4 # defined in settings
+        self.fov = 90 # defined in settings (70 - 120)
+        self.render_mode = "flat" # defined in settings
         KB = 10 ** 3
         MB = 10 ** 6
         GB = 10 ** 9
-        self.memory_limit = 512 * MB # user defined in settings
-        # ^ be aware we can't check the video card limit until post-initializeGL
+        self.memory_limit = 512 * MB # defined in settings
+        # ^ can't check the physical device limit until after init_GL is called
+
+        self.buffer_update_queue = []
+        # [{"type": "brush" or "displacement"
+        #   "id": brush.id or brush.side[?].id
+        #   "vertex": (start, length, data),
+        #   "index":  (start, length, data)}, ...]
+        # ^ would a collections.namedtuple be better?
+
         self.vertex_buffer_size = self.memory_limit // 2
         self.index_buffer_size = self.memory_limit // 2
-        self.buffer_map = {"vertex": {}, "index": {}}
-        # ^ buffer: {object: (start, length)}
-        # recording the in-memory location of each object is essential
-        # without doing so we could not hide, edit or delete objects
+        self.buffer_location = {}
+        # ^ renderable: {"vertex": (start, length),
+        #                "index":  (start, length)}
+        # where: renderable = {"type": "brush", "id": brush.id}
 
-        # "object" needs to be a sensible key, that works for brushes, displacements & models alike
-        # mapping by brush.id should be quite functional, especially for multiplayer
-        # we should only store models & other duplicate geometry (instances etc.) once and only once
 
-        # VERTICES: needed for reallocation & offset of INDICES
-        # INDICES: needed for rendering / hiding (using free function)
-
-        ### A Qt Debug visalisation which shows the state of each buffer would be handy
-        # VERTICES 0 | Brush1 | Brush2 | Displacement1 |     | LIMIT
-        # INDICES  0 | B1 | B2 | Disp1 |                     | LIMIT
-        # TEXTURES 0 |                                       | LIMIT
-        # A tool like this would also be useful for fine tuning performance
-        self.abstract_buffer_map = {"vertex": {"brush": [], "displacement": [], "model": []},
+        self.buffer_type_spans = {"vertex": {"brush": [], "displacement": [], "model": []},
                                     "index": {"brush": [], "displacement": [], "model": []}}
-        # buffer: {type: [(start, length)]}
-        # used to simplify draw calls and keep track of any fragmentation
-        # fragmentation of the index buffer means slower framerate
-
-        # update method:
+        # ^ buffer: {type: [(start, length)]}
+        # update:
         # self.abstract_buffer_map = ...
         # compress([*self.abstract_buffer_map["brushes"], *adding_span])
         # free(self.abstract_buffer_map["brushes"], deleting_span)
+        self.hidden = {"brush": [], "displacement": []}
+        # ^ type: (start, length)
 
-        # should we double buffer each buffer and defragment in the background?
-        # switching to the other at the end of each complete defrag cycle
-        # leaving generous gaps between types would be clever
-        # adding the switch to a "hands off" operation like saving could help...
-        # to make the experience seamless
-
-        # collate an ordered list of draw functions for viewports
-        # draw calls need to ask the render manager what to draw (and what to skip)
-        # set program, drawElements (start, len), [update uniform(s)]
-        # (func, {**kwargs}) -> func(**kwargs)
-        # draw_calls.append((draw_grid, {"limit": 2048, "grid_scale": 64, "colour": (.5,) * 3}))
-        # draw_calls.append((draw_origin, {"scale": 64}))
-            # SET STATE: brushes
-            # for S, L in abstract_buffer_map["index"]["brush"]
-            # drawElements(GL_TRIANGLES, S, L)
-        self.hidden = {} # {type: (start, length)}
-
-    def initializeGL(self): # to be called by parent viewport's initializeGL()
+    def init_GL(self, ctx): # called by parent viewport's initializeGL()
+        glClearColor(0, 0, 0, 0)
+        glEnable(GL_DEPTH_TEST)
+        glFrontFace(GL_CW)
+        glPointSize(4)
+        glPolygonMode(GL_BACK, GL_LINE)
+        # SHADERS
         major = glGetIntegerv(GL_MAJOR_VERSION)
         minor = glGetIntegerv(GL_MINOR_VERSION)
-        # ^ could get this from our Qt QGLContext Format
-        GLES_MODE = False # why not just check the version?
+        GLES_MODE = False
         self.GLES_MODE = GLES_MODE
         if major >= 4 and minor >= 5:
             self.shader_version = "GLSL_450"
         elif major >= 3 and minor >= 0:
             GLES_MODE = True
             self.shader_version = "GLES_300"
-        ctx = self.parent.ctx
         shader_folder = "shaders/{}/".format(self.shader_version)
         compile_shader = lambda s, t: compileShader(open(ctx.get_resource(shader_folder + s), "rb"), t)
-        # Vertex Shaders
         vert_brush =  compile_shader("brush.vert", GL_VERTEX_SHADER)
         vert_displacement = compile_shader("displacement.vert", GL_VERTEX_SHADER)
-        # Fragment Shaders
         frag_flat_brush = compile_shader("flat_brush.frag", GL_FRAGMENT_SHADER)
         frag_flat_displacement = compile_shader("flat_displacement.frag", GL_FRAGMENT_SHADER)
         frag_stripey_brush = compile_shader("stripey_brush.frag", GL_FRAGMENT_SHADER)
-        # Programs
         self.shader = {"flat": {}, "stripey": {}, "textured": {}, "shaded": {}}
         # ^ style: {target: program}
         self.shader["flat"]["brush"] = compileProgram(vert_brush, frag_flat_brush)
@@ -193,7 +176,6 @@ class manager:
         for style_dict in self.shader.values():
             for program in style_dict.values():
                 glLinkProgram(program)
-        # Uniforms
         self.uniform = {"flat": {"brush": {}, "displacement": {}},
                         "stripey": {"brush": {}},
                         "textured": {},
@@ -205,10 +187,7 @@ class manager:
                     glUseProgram(self.shader[style][target])
                     self.uniform[style][target]["matrix"] = glGetUniformLocation(self.shader[style][target], "ModelViewProjectionMatrix")
             glUseProgram(0)
-
-        # Connect vertex format to shaders
         # https://github.com/snake-biscuits/QtPyHammer/wiki/Rendering:-Vertex-Format
-        # glGet(GL_MAX_VERTEX_ATTRIB_BINDINGS)
         glEnableVertexAttribArray(0) # vertex_position
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
         glEnableVertexAttribArray(1) # vertex_normal (brush only)
@@ -216,25 +195,50 @@ class manager:
         # glEnableVertexAttribArray(4) # blend_alpha (displacement only)
         glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(12))
         # ^ replaces vertex_normal if displacement
-        # however, switching vertex formats while drawing crashes _/(;w;)\_
         glEnableVertexAttribArray(2) # vertex_uv
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
         glEnableVertexAttribArray(3) # editor_colour
         glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
-        # ^ should we grab attrib locations from shader(s)?
-
         # Buffers
         self.VERTEX_BUFFER, self.INDEX_BUFFER = glGenBuffers(2)
-        # Vertex Buffer
         glBindBuffer(GL_ARRAY_BUFFER, self.VERTEX_BUFFER)
         glBufferData(GL_ARRAY_BUFFER, self.vertex_buffer_size, None, GL_DYNAMIC_DRAW)
-        # Index Buffer
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.INDEX_BUFFER)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.index_buffer_size, None, GL_DYNAMIC_DRAW)
 
-        glClearColor(1, 0, 1, 0)
+    def draw(self):
+        gluPerspective(self.fov, self.aspect, 0.1, self.draw_distance)
+        glUseProgram(0)
+        draw_grid()
+        draw_origin()
+        draw_ray(vector.vec3(), vector.vec3(), 0)
+        # dither transparency for tooltextures (skip, hint, trigger, clip)
+        glUseProgram(self.shader[self.render_mode]["brush"])
+        for start, length in self.abstract_buffer_map["index"]["brush"]:
+            glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
+
+    def update(self):
+        # update buffer data
+        if len(self.buffer_update_queue) > 0:
+            update = self.buffer_update_queue.pop(0)
+            renderable = (update["object_type"], update["id"])
+            glBufferSubData(GL_ARRAY_BUFFER, *update["vertex"])
+            glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, *update["index"])
+            start, length, data = update["vertex"]
+            vertex_span = (start, length)
+            start, length, data = update["index"]
+            index_span = (start, length)
+            self.buffer_location[renderable] = {"vertex": vertex_span, "index": index_span}
 
 
+
+        # update view matrix
+        glUseProgram(self.shader[self.render_mode]["brush"])
+        for uniform, location in self.uniform[self.render_mode]["brush"].items():
+            if uniform == "matrix":
+                glUniformMatrix4fv(location, 1, GL_FALSE, matrix)
+
+    # BUFFER UPDATES
     def find_gaps(self, buffer="vertex", preferred_type=None, minimum_size=1):
         """Generator which yeilds a (start, length) span for each gap which meets requirements"""
         if minimum_size < 1:
@@ -375,19 +379,3 @@ class manager:
             self.queued_updates.append(
                 (glBufferSubData, *(GL_ELEMENT_ARRAY_BUFFER, start, length, data)))
         del index_writes
-
-##        # DEBUG show data in buffer pointed to by abstract_buffer_map
-##        print("=" * 80)
-##        for span in self.abstract_buffer_map["index"]["brush"]:
-##            start, length = span
-##            data = glGetBufferSubData(GL_ELEMENT_ARRAY_BUFFER, start, length)
-##            print(np.array(data, dtype=np.uint32))
-##            print("-" * 80)
-##        print("=" * 80)
-
-        # NOTES ON DEBUG PRINTS:
-        # resulting buffer sizes stored in abstract map are wrong
-        # indices 208 bytes, 52 integers, 17.333 triangles
-
-        # WRITE DISPLACEMENTS TO BUFFERS
-        # VERTICES & INDICES collected & offset in vertex assignment loop

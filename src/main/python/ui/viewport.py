@@ -13,15 +13,15 @@ from utilities import vector
 
 
 # arrow keys aren't registering? why? do we need a separate function?
-camera.keybinds = {'FORWARD': [QtCore.Qt.Key_W], 'BACK': [QtCore.Qt.Key_S],
-                   'LEFT': [QtCore.Qt.Key_A, QtCore.Qt.LeftArrow],
-                   'RIGHT': [QtCore.Qt.Key_D, QtCore.Qt.RightArrow],
-                   'UP': [QtCore.Qt.Key_Q, QtCore.Qt.UpArrow],
-                   'DOWN': [QtCore.Qt.Key_E, QtCore.Qt.DownArrow]}
+camera.keybinds = {"FORWARD": [QtCore.Qt.Key_W], "BACK": [QtCore.Qt.Key_S],
+                   "LEFT": [QtCore.Qt.Key_A, QtCore.Qt.LeftArrow],
+                   "RIGHT": [QtCore.Qt.Key_D, QtCore.Qt.RightArrow],
+                   "UP": [QtCore.Qt.Key_Q, QtCore.Qt.UpArrow],
+                   "DOWN": [QtCore.Qt.Key_E, QtCore.Qt.DownArrow]}
 # ^ defined in settings ^
 camera.sensitivity = 2 # defined in settings
 
-view_modes = ['flat', 'textured', 'wireframe']
+view_modes = ["flat", "textured", "wireframe"]
 # "silhouette" view mode, lights on flat gray brushwork & props
 
 
@@ -29,13 +29,10 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
     raycast = QtCore.pyqtSignal(vector.vec3, vector.vec3) # emits ray
     def __init__(self, parent, fps=60):
         super(MapViewport3D, self).__init__(parent=parent)
-        self.ctx = parent.ctx # appctxt for loading shader scripts
+        self.ctx = parent.ctx # appctxt for loading shader files
         # RENDERING
-        self.render_manager = render.manager(self)
-        self.draw_distance = 4096 * 4 # defined in settings
-        self.fov = 90 # defined in settings (70 - 120)
+        self.render_manager = render.manager()
         # model draw distance (defined in settings)
-        self.view_mode = "flat" # defined in settings
         self.ray = [] # origin, dir (for debug rendering)
         # INPUT HANDLING
         self.camera = camera.freecam(None, None, 128)
@@ -46,41 +43,21 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.current_mouse_position = vector.vec2()
         self.mouse_vector = vector.vec2()
         self.setFocusPolicy(QtCore.Qt.ClickFocus) # get mouse inputs
-        # ^ user must click on viewport before Z to fly works
+        # ^ user must click on viewport
         # REFRESH RATE
         self.fps = fps
         self.dt = 1 / fps # will desynchronise, use time.time()
         self.timer = QtCore.QTimer()
-        self.timer.timeout.connect(self.update)
 
-    def update(self):
-        while len(self.render_manager.queued_updates) > 0:
-            func, *args = self.render_manager.queued_updates.pop(0)
-            try:
-                args_string = ", ".join(map(str, args))
-                if len(args_string) > 60:
-                    args_string = "{}, ..., {}".format(args[0], args[-1])
-                print("{}({})".format(func.__name__, args_string))
-                func(*args)
-            except Exception as error:
-                print("*** {}{} raised {}".format(func, args, error))
-                # A: 0 bound to target
-                # B: any segment mapped without GL_PERSISTENT_BIT
-                # C: GL_BUFFER_IMMUTABLE_STORAGE == GL_TRUE
-                # AND GL_BUFFER_STORAGE_FLAGS !& GL_DYNAMIC_STORAGE_BIT
-##                case_c = glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_IMMUTABLE_STORAGE)
-##                print({GL_TRUE: GL_TRUE, GL_FALSE: GL_FALSE}[case_c])
-                print(glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_USAGE))
-                # raise exc
-                break
+    def update(self): # called on timer once initializeGL is run
+        # UPDATE CAMERA
         if self.camera_moving: # TOGGLED ON: take user inputs
             self.camera.update(self.mouse_vector, self.keys, self.dt)
             if self.moved_last_tick == False: # prevent drift
                 self.mouse_vector = vector.vec2()
             self.moved_last_tick = False
-        print("almost painting")
+        self.render_manager.draw()
         super(MapViewport3D, self).update() # calls PaintGL
-        print("end update")
 
     def add_brushes(self, *brushes):
         self.render_manager.queued_updates.append(
@@ -91,27 +68,16 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
     ######################
 
     def initializeGL(self):
-        glClearColor(0, 0, 0, 0)
-        glMatrixMode(GL_PROJECTION)
-        glLoadIdentity()
-        gluPerspective(self.fov, self.width() / self.height(), 0.1, self.draw_distance)
-        glEnable(GL_DEPTH_TEST)
-##        glEnable(GL_CULL_FACE)
-        glPolygonMode(GL_BACK, GL_LINE)
-        glFrontFace(GL_CW)
-        glPointSize(4)
-        self.render_manager.initializeGL()
-        self.draw_calls = self.render_manager.abstract_buffer_map["index"]
+        self.render_manager.init_GL(self.ctx)
         self.set_view_mode("flat") # sets shaders & GL state
-        self.timer.start(1000 / self.fps) # start painting
+        self.timer.timeout.connect(self.update)
+        self.timer.start(1000 / self.fps) # call PaintGL
 
     # calling the slot by it's name creates a QVariant Error
     # which for some reason does not trace correctly
     @QtCore.pyqtSlot(str, name="setViewMode") # connected to UI
     def set_view_mode(self, view_mode): # C++: void setViewMode(QString)
         self.view_mode = view_mode
-        self.shaders = self.render_manager.shader[view_mode]
-        self.uniforms = self.render_manager.uniform[view_mode]
         self.makeCurrent()
         if view_mode == "flat":
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
@@ -128,41 +94,11 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
     def paintGL(self):
         print("! start frame !")
         glLoadIdentity()
-        gluPerspective(self.fov, self.width() / self.height(), 0.1, self.draw_distance)
         self.camera.set()
-        if self.render_manager.GLES_MODE:
-            matrix = glGetFloatv(GL_PROJECTION_MATRIX)
-        render.draw_grid()
-        render.draw_origin()
-        # loop over targets (brush, displacement, model)
-        glUseProgram(self.shaders["brush"])
-        for uniform, location in self.uniforms["brush"].items():
-            # {"uniform": [func, *args]} would be better
-            # since it allows us to share uniforms across shaders
-            # and complex if...else cases make me ;w;
-            if uniform == "matrix" and self.render_manager.GLES_MODE:
-                glUniformMatrix4fv(location, 1, GL_FALSE, matrix)
-        # dither for flat shaded transparency on skip & hint
-        for start, length in self.draw_calls["brush"]:
-            # CRASHES HERE
-            glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, start)
-            # having to bind buffers when calling glBufferSubData implies:
-            # -- self.render_manager.initializeGL has no effect, but why?
-            # can this be proven? perhaps with glClearColor?
-        if self.ray != []: # render raycast for debug
-            glUseProgram(0)
-            glColor(1, .75, .25)
-            glLineWidth(2)
-            glBegin(GL_LINES)
-            glVertex(*self.ray[0])
-            glVertex(*(self.ray[0] + self.ray[1] * self.draw_distance))
-            glEnd()
-            glLineWidth(1)
-        print("! end frame !")
+        self.render_manager.draw()
 
     def resizeGL(self, width, height):
-        glLoadIdentity()
-        gluPerspective(self.fov, self.width() / self.height(), 0.1, 4096 * 4)
+        self.render_manager.aspect = width / height
 
     ##################
     ### Qt Signals ###
