@@ -1,8 +1,5 @@
-﻿import ctypes
-import itertools
-import math
+﻿import itertools
 import struct
-import time
 
 import numpy as np
 from OpenGL.GL import *
@@ -51,6 +48,19 @@ class render_manager:
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.INDEX_BUFFER)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, None, GL_DYNAMIC_DRAW)
 
+    def draw(self):
+        glUseProgram(self.basic_shader)
+        glDrawElements(GL_TRIANGLES, 8, GL_UNSIGNED_INT, GLvoidp(0))
+
+    def update(self):
+        if len(self.update_queue) > 0:
+            vertices, indices = self.update_queue.pop(0)
+            self.update_buffers(vertices, indices)
+        MV_matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
+        P_matrix = glGetFloatv(GL_PROJECTION_MATRIX)
+        glUseProgram(self.basic_shader)
+        glUniformMatrix4fv(self.matrix_location, 1, GL_FALSE, MV_matrix)
+
     def update_buffers(self, vertices, indices):
         # SEND DATA TO BUFFERS
         vertex_data = list(itertools.chain(*vertices))
@@ -65,18 +75,6 @@ class render_manager:
         index_data = list(itertools.chain(*struct.iter_unpack("I", index_data)))
         assert vertex_data == vertices
         assert index_data == indices
-
-    def draw(self):
-        glUseProgram(self.basic_shader)
-        glDrawElements(GL_TRIANGLES, 8, GL_UNSIGNED_INT, GLvoidp(0))
-
-    def update(self):
-        if len(self.update_queue) > 0:
-            vertices, indices = self.update_queue.pop(0)
-            self.update_buffers(vertices, indices)
-        matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
-        glUseProgram(self.basic_shader)
-        glUniformMatrix4fv(self.matrix_location, 1, GL_FALSE, matrix)
 
 
 class viewport(QtWidgets.QOpenGLWidget):
@@ -123,3 +121,54 @@ if __name__ == '__main__':
     window.render_manager.update_queue.append([vertices, indices])
     window.show()
     sys.exit(app.exec_())
+
+    import ctypes
+    from sdl2 import *
+    import time
+
+    def sdl_window(width=576, height=576):
+        SDL_Init(SDL_INIT_VIDEO)
+        window = SDL_CreateWindow(b"SDL2 OpenGL",
+                                  SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                  width, height,
+                                  SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS)
+        glContext = SDL_GL_CreateContext(window)
+        SDL_GL_SetSwapInterval(0)
+        # GL SETUP
+        glClearColor(0.1, 0.25, 0.4, 0.0)
+        glEnable(GL_DEPTH_TEST)
+        glEnableClientState(GL_VERTEX_ARRAY)
+        gluPerspective(90, width / height, 0.1, 1024)
+        # ^ fov, aspect, near, far
+        glTranslate(0, 0, -4)
+
+        manager = render_manager()
+        manager.init_GL()
+        manager.init_buffers()
+
+        tickrate = 1 / 0.015
+        old_time = time.time()
+        event = SDL_Event()
+        while True:
+            while SDL_PollEvent(ctypes.byref(event)) != 0:
+                if event.type == SDL_QUIT or event.key.keysym.sym == SDLK_ESCAPE and event.type == SDL_KEYDOWN:
+                    SDL_GL_DeleteContext(glContext)
+                    SDL_DestroyWindow(window)
+                    SDL_Quit()
+                    return False
+                
+            dt = time.time() - old_time
+            while dt >= 1 / tickrate:
+                # do logic for frame
+                glRotate(30 / tickrate, 1, 0, 1.25)
+                manager.update()
+                # end frame
+                dt -= 1 / tickrate
+                old_time = time.time()
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+            manager.draw()
+            SDL_GL_SwapWindow(window)
+
+    sdl_window()
+

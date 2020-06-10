@@ -25,8 +25,6 @@ def main(width, height):
     
     glEnable(GL_DEPTH_TEST)
     glEnableClientState(GL_VERTEX_ARRAY)
-
-    glPointSize(4)
     
     ###  BEGIN DYNAMIC DRAW BUFFER TEST  ###
     # VERTEX
@@ -98,12 +96,10 @@ def main(width, height):
     layout(location = 0) out vec4 outColour;
     in vec3 position;
 
-    in vec4 gl_FragCoord;
-
     void main()
     {
         vec4 Ka = vec4(0.15, 0.15, 0.15, 1);
-        outColour = vec4(.75, .75, .75, 1) * (1.25 - gl_FragCoord.z) + Ka;
+        outColour = vec4(position.xyz * 0.75, 1) + Ka;
     }
     """
     fragment_shader_gles_source = """#version 300 es
@@ -156,9 +152,10 @@ def main(width, height):
             # do logic for frame
             glRotate(30 / tickrate, 1, 0, 1.25)
             if GLES:
-                matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
+                MV_matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
+                P_matrix = glGetFloatv(GL_PROJECTION_MATRIX)
                 glUseProgram(shader_program)
-                glUniformMatrix4fv(matrix_location, 1, GL_FALSE, matrix)
+                glUniformMatrix4fv(matrix_location, 1, GL_FALSE, MV_matrix)
             if tick_number % 20 == 0:
                 cube_indices = [(i + 1) % 8 for i in cube_indices]
                 glBufferSubData(GL_ELEMENT_ARRAY_BUFFER,

@@ -13,7 +13,7 @@ from . import camera, solid, vector
 
 
 # DRAWING FUNCTIONS
-def yield_grid(limit, step): # get "step" from Grid Scale action (MainWindow)
+def yield_grid(limit, step): # "step" = Grid Scale (MainWindow action)
     """ yields lines on a grid (one vertex at a time) centered on [0, 0]
     limit: int, half the width of grid
     step: int, gap between edges"""
@@ -34,7 +34,7 @@ def yield_grid(limit, step): # get "step" from Grid Scale action (MainWindow)
         yield -i, -limit # -SN
     # ^ the above function is optimised for a line grid
     # another function would be required for a dot grid
-    # it's also worth considering adding an offset
+    # it's also worth considering adding an offset / origin point
 
 def draw_grid(limit=2048, grid_scale=64, colour=(.5, .5, .5)):
     glLineWidth(1)
@@ -182,19 +182,14 @@ class manager:
         # update buffer data
         if len(self.buffer_update_queue) > 0:
             update = self.buffer_update_queue.pop(0)
-            renderable = (update["object_type"], update["id"])
-            glBufferSubData(GL_ARRAY_BUFFER, *update["vertex"])
-            glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, *update["index"])
-            start, length, data = update["vertex"]
-            vertex_span = (start, length)
-            start, length, data = update["index"]
-            index_span = (start, length)
-            self.buffer_location[renderable] = {"vertex": vertex_span, "index": index_span}
+            self.update_buffers(self, update)
         # update view matrix
+        MV_matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
+        P_matrix = glGetFloatv(GL_PROJECTION_MATRIX)
         glUseProgram(self.shader[self.render_mode]["brush"])
-        for uniform, location in self.uniform[self.render_mode]["brush"].items():
-            if uniform == "matrix":
-                glUniformMatrix4fv(location, 1, GL_FALSE, matrix)
+        if "matrix" in self.uniform[self.render_mode]["brush"]:
+            location = self.uniform[self.render_mode]["brush"]["matrix"]
+            glUniformMatrix4fv(location, 1, GL_FALSE, MV_matrix)
 
     # BUFFER UPDATES
     def update_buffers(self, update):
