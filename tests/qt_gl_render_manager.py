@@ -17,7 +17,8 @@ class render_manager:
         glEnable(GL_DEPTH_TEST)
         glEnableClientState(GL_VERTEX_ARRAY)
         gluPerspective(90, 1, 0.1, 1024)
-        glTranslate(0, 0, -4)
+        glTranslate(0, 0, -8)
+        glPointSize(4)
         glEnableVertexAttribArray(0)
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, GLvoidp(0))
         vertex_shader_source = """#version 300 es
@@ -32,13 +33,14 @@ class render_manager:
         in mediump vec3 position;
         void main() {
             mediump vec4 Ka = vec4(0.15, 0.15, 0.15, 1);
-            outColour = vec4(position.xyz * 0.75, 1) + Ka; }"""
+            outColour = vec4(0.75, 0.75, 0.75, 1) + Ka; }"""
         vert_shader = compileShader(vertex_shader_source, GL_VERTEX_SHADER)
         frag_shader = compileShader(fragment_shader_source, GL_FRAGMENT_SHADER)
         self.basic_shader = compileProgram(vert_shader, frag_shader)
         glLinkProgram(self.basic_shader)
         glUseProgram(self.basic_shader)
         self.matrix_location = glGetUniformLocation(self.basic_shader, "MVP")
+        self.draw_length = 0
     
     def init_buffers(self, size=256):
         self.VERTEX_BUFFER = glGenBuffers(1)
@@ -50,14 +52,13 @@ class render_manager:
 
     def draw(self):
         glUseProgram(self.basic_shader)
-        glDrawElements(GL_TRIANGLES, 8, GL_UNSIGNED_INT, GLvoidp(0))
+        glDrawElements(GL_POINTS, self.draw_length, GL_UNSIGNED_INT, GLvoidp(0))
 
     def update(self):
         if len(self.update_queue) > 0:
             vertices, indices = self.update_queue.pop(0)
             self.update_buffers(vertices, indices)
         MV_matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
-        P_matrix = glGetFloatv(GL_PROJECTION_MATRIX)
         glUseProgram(self.basic_shader)
         glUniformMatrix4fv(self.matrix_location, 1, GL_FALSE, MV_matrix)
 
@@ -75,6 +76,7 @@ class render_manager:
         index_data = list(itertools.chain(*struct.iter_unpack("I", index_data)))
         assert vertex_data == vertices
         assert index_data == indices
+        self.draw_length = len(indices)
 
 
 class viewport(QtWidgets.QOpenGLWidget):
@@ -92,12 +94,11 @@ class viewport(QtWidgets.QOpenGLWidget):
     def update(self, tick_length=0.015):
         glRotate(30 * tick_length, 1, 0, 1.25)
         self.render_manager.update()
-        super(viewport, self).update()
+        super(viewport, self).update() # calls paintGL
 
     def paintGL(self):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         self.render_manager.draw()
-        glPointSize(4)
         glUseProgram(0)
         glBegin(GL_TRIANGLES)
         glVertex(1, 0)
@@ -107,6 +108,10 @@ class viewport(QtWidgets.QOpenGLWidget):
 
 
 if __name__ == '__main__':
+    vertices = [(-1, 1, 1), (1, 1, 1), (1, -1, 1), (-1, -1, 1),
+                (-1, 1, -1), (1, 1, -1), (1, -1, -1), (-1, -1, -1)]
+    indices = [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7]
+
     import sys
 
     def except_hook(cls, exception, traceback):
@@ -116,11 +121,9 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = viewport()
     window.setGeometry(128, 0, 576, 576)
-    vertices = [(-1, 1, 1), (1, 1, 1), (1, -1, 1), (-1, -1, 1), (-1, 1, -1), (1, 1, -1), (1, -1, -1), (-1, -1, -1)]
-    indices = [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7]
     window.render_manager.update_queue.append([vertices, indices])
     window.show()
-    sys.exit(app.exec_())
+    app.exec_()
 
     import ctypes
     from sdl2 import *
@@ -134,17 +137,13 @@ if __name__ == '__main__':
                                   SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS)
         glContext = SDL_GL_CreateContext(window)
         SDL_GL_SetSwapInterval(0)
-        # GL SETUP
-        glClearColor(0.1, 0.25, 0.4, 0.0)
-        glEnable(GL_DEPTH_TEST)
-        glEnableClientState(GL_VERTEX_ARRAY)
-        gluPerspective(90, width / height, 0.1, 1024)
-        # ^ fov, aspect, near, far
-        glTranslate(0, 0, -4)
 
         manager = render_manager()
         manager.init_GL()
         manager.init_buffers()
+
+        global vertices, indices
+        manager.update_queue.append([vertices, indices])
 
         tickrate = 1 / 0.015
         old_time = time.time()
@@ -168,6 +167,14 @@ if __name__ == '__main__':
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             manager.draw()
+            
+            glUseProgram(0)
+            glBegin(GL_TRIANGLES)
+            glVertex(0, 1)
+            glVertex(1, 0)
+            glVertex(0, 0)
+            glEnd()
+            
             SDL_GL_SwapWindow(window)
 
     sdl_window()
