@@ -170,23 +170,6 @@ def main(width, height):
         # BEGIN DRAW
         glUseProgram(shader_program)
         glDrawElements(GL_TRIANGLES, len(cube_indices), GL_UNSIGNED_INT, GLvoidp(0))
-        
-##        glUseProgram(0)
-##        glColor(0, .5, .5)
-##        glBegin(GL_LINE_LOOP)
-##        glVertex(0, 0, 0)
-##        glVertex(1, 0, 0)
-##        glVertex(0, 1, 0)
-##        glVertex(0, 0, 1)
-##        glEnd()
-##        glColor(1, 0, 1)
-##        glBegin(GL_POINTS)
-##        glVertex(0, 0, 0)
-##        glVertex(1, 0, 0)
-##        glVertex(0, 1, 0)
-##        glVertex(0, 0, 1)
-##        glEnd()
-        
         # END DRAW
         SDL_GL_SwapWindow(window)
         
