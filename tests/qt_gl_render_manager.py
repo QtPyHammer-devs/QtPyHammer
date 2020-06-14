@@ -114,63 +114,67 @@ if __name__ == '__main__':
                 (-1, 1, -1), (1, 1, -1), (1, -1, -1), (-1, -1, -1)]
     indices = [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7]
 
-    import sys
+    TEST = "SDL"
 
-    def except_hook(cls, exception, traceback):
-        sys.__excepthook__(cls, exception, traceback)
-    sys.excepthook = except_hook # Python Qt Debug
-    
-    app = QtWidgets.QApplication(sys.argv)
-    window = viewport()
-    window.setGeometry(128, 64, 576, 576)
-    window.render_manager.update_queue.append([vertices, indices])
-    window.show()
-    app.exec_()
+    if TEST == "QT":
+        import sys
 
-    import ctypes
-    from sdl2 import *
-    import time
+        def except_hook(cls, exception, traceback):
+            sys.__excepthook__(cls, exception, traceback)
+        sys.excepthook = except_hook # Python Qt Debug
+        
+        app = QtWidgets.QApplication(sys.argv)
+        window = viewport()
+        window.setGeometry(128, 64, 576, 576)
+        window.render_manager.update_queue.append([vertices, indices])
+        window.show()
+        app.exec_()
 
-    def sdl_window(width=576, height=576):
-        SDL_Init(SDL_INIT_VIDEO)
-        window = SDL_CreateWindow(b"SDL2 OpenGL",
-                                  SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                  width, height,
-                                  SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS)
-        glContext = SDL_GL_CreateContext(window)
-        SDL_GL_SetSwapInterval(0)
-        manager = render_manager()
-        manager.init_GL()
-        manager.init_buffers()
-        global vertices, indices
-        manager.update_queue.append([vertices, indices])
-        tickrate = 1 / 0.015
-        old_time = time.time()
-        event = SDL_Event()
-        while True:
-            while SDL_PollEvent(ctypes.byref(event)) != 0:
-                if event.type == SDL_QUIT or event.key.keysym.sym == SDLK_ESCAPE and event.type == SDL_KEYDOWN:
-                    SDL_GL_DeleteContext(glContext)
-                    SDL_DestroyWindow(window)
-                    SDL_Quit()
-                    return False  
-            dt = time.time() - old_time
-            while dt >= 1 / tickrate:
-                # do logic for frame
-                glRotate(30 / tickrate, 1, 0, 1.25)
-                manager.update()
-                # end frame
-                dt -= 1 / tickrate
-                old_time = time.time()
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-            manager.draw()
-            glUseProgram(0)
-            glBegin(GL_TRIANGLES)
-            glVertex(0, 1)
-            glVertex(1, 0)
-            glVertex(0, 0)
-            glEnd()
-            SDL_GL_SwapWindow(window)
+    elif TEST == "SDL":
+        import ctypes
+        from sdl2 import *
+        import time
 
-    sdl_window()
+        def sdl_window(width=576, height=576):
+            SDL_Init(SDL_INIT_VIDEO)
+            window = SDL_CreateWindow(b"SDL2 OpenGL",
+                                      SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                      width, height,
+                                      SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS)
+            glContext = SDL_GL_CreateContext(window)
+            SDL_GL_SetSwapInterval(0)
+            manager = render_manager()
+            manager.init_GL()
+            manager.init_buffers()
+            global vertices, indices
+            manager.update_queue.append([vertices, indices])
+            tickrate = 1 / 0.015
+            old_time = time.time()
+            event = SDL_Event()
+            while True:
+                while SDL_PollEvent(ctypes.byref(event)) != 0:
+                    if event.type == SDL_QUIT or event.key.keysym.sym == SDLK_ESCAPE and event.type == SDL_KEYDOWN:
+                        SDL_GL_DeleteContext(glContext)
+                        SDL_DestroyWindow(window)
+                        SDL_Quit()
+                        return False  
+                dt = time.time() - old_time
+                while dt >= 1 / tickrate:
+                    # do logic for frame
+                    glRotate(30 / tickrate, 1, 0, 1.25)
+                    manager.update()
+                    # end frame
+                    dt -= 1 / tickrate
+                    old_time = time.time()
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+                manager.draw()
+                glUseProgram(0)
+                glBegin(GL_TRIANGLES)
+                glVertex(0, 1)
+                glVertex(1, 0)
+                glVertex(0, 0)
+                glEnd()
+                SDL_GL_SwapWindow(window)
+
+        sdl_window()
 
