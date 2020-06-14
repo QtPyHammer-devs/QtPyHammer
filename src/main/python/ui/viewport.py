@@ -56,7 +56,9 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
             if self.moved_last_tick == False: # prevent drift
                 self.mouse_vector = vector.vec2()
             self.moved_last_tick = False
-        self.render_manager.draw()
+        self.makeCurrent()
+        self.render_manager.update()
+        self.doneCurrent()
         super(MapViewport3D, self).update() # calls PaintGL
 
     def add_brushes(self, *brushes):
@@ -92,7 +94,6 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.doneCurrent()
 
     def paintGL(self):
-        print("! start frame !")
         glLoadIdentity()
         self.camera.set()
         self.render_manager.draw()
