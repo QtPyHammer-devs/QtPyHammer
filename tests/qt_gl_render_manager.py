@@ -92,8 +92,10 @@ class viewport(QtWidgets.QOpenGLWidget):
         self.clock.start(15) # tick_length in milliseconds
 
     def update(self, tick_length=0.015):
+        self.makeCurrent()
         glRotate(30 * tick_length, 1, 0, 1.25)
         self.render_manager.update()
+        self.doneCurrent()
         super(viewport, self).update() # calls paintGL
 
     def paintGL(self):
@@ -120,7 +122,7 @@ if __name__ == '__main__':
     
     app = QtWidgets.QApplication(sys.argv)
     window = viewport()
-    window.setGeometry(128, 0, 576, 576)
+    window.setGeometry(128, 64, 576, 576)
     window.render_manager.update_queue.append([vertices, indices])
     window.show()
     app.exec_()
