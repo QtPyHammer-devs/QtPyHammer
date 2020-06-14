@@ -19,8 +19,6 @@ class render_manager:
         gluPerspective(90, 1, 0.1, 1024)
         glTranslate(0, 0, -8)
         glPointSize(4)
-        glEnableVertexAttribArray(0)
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, GLvoidp(0))
         vertex_shader_source = """#version 300 es
         layout(location = 0) in vec3 vertex_position;
         uniform mat4 MVP;
@@ -49,10 +47,12 @@ class render_manager:
         self.INDEX_BUFFER = glGenBuffers(1)
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.INDEX_BUFFER)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, None, GL_DYNAMIC_DRAW)
+        glEnableVertexAttribArray(0)
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, GLvoidp(0))
 
     def draw(self):
         glUseProgram(self.basic_shader)
-        glDrawElements(GL_POINTS, self.draw_length, GL_UNSIGNED_INT, GLvoidp(0))
+        glDrawElements(GL_TRIANGLES, self.draw_length, GL_UNSIGNED_INT, GLvoidp(0))
 
     def update(self):
         if len(self.update_queue) > 0:
@@ -112,18 +112,18 @@ if __name__ == '__main__':
                 (-1, 1, -1), (1, 1, -1), (1, -1, -1), (-1, -1, -1)]
     indices = [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7]
 
-    import sys
-
-    def except_hook(cls, exception, traceback):
-        sys.__excepthook__(cls, exception, traceback)
-    sys.excepthook = except_hook # Python Qt Debug
-    
-    app = QtWidgets.QApplication(sys.argv)
-    window = viewport()
-    window.setGeometry(128, 0, 576, 576)
-    window.render_manager.update_queue.append([vertices, indices])
-    window.show()
-    app.exec_()
+##    import sys
+##
+##    def except_hook(cls, exception, traceback):
+##        sys.__excepthook__(cls, exception, traceback)
+##    sys.excepthook = except_hook # Python Qt Debug
+##    
+##    app = QtWidgets.QApplication(sys.argv)
+##    window = viewport()
+##    window.setGeometry(128, 0, 576, 576)
+##    window.render_manager.update_queue.append([vertices, indices])
+##    window.show()
+##    app.exec_()
 
     import ctypes
     from sdl2 import *
@@ -137,14 +137,11 @@ if __name__ == '__main__':
                                   SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS)
         glContext = SDL_GL_CreateContext(window)
         SDL_GL_SetSwapInterval(0)
-
         manager = render_manager()
         manager.init_GL()
         manager.init_buffers()
-
         global vertices, indices
         manager.update_queue.append([vertices, indices])
-
         tickrate = 1 / 0.015
         old_time = time.time()
         event = SDL_Event()
@@ -154,8 +151,7 @@ if __name__ == '__main__':
                     SDL_GL_DeleteContext(glContext)
                     SDL_DestroyWindow(window)
                     SDL_Quit()
-                    return False
-                
+                    return False  
             dt = time.time() - old_time
             while dt >= 1 / tickrate:
                 # do logic for frame
@@ -164,17 +160,14 @@ if __name__ == '__main__':
                 # end frame
                 dt -= 1 / tickrate
                 old_time = time.time()
-
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             manager.draw()
-            
             glUseProgram(0)
             glBegin(GL_TRIANGLES)
             glVertex(0, 1)
             glVertex(1, 0)
             glVertex(0, 0)
             glEnd()
-            
             SDL_GL_SwapWindow(window)
 
     sdl_window()

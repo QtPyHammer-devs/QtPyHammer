@@ -16,55 +16,12 @@ def main(width, height):
     window = SDL_CreateWindow(b"SDL2 OpenGL", SDL_WINDOWPOS_CENTERED,  SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS)
     glContext = SDL_GL_CreateContext(window)
     SDL_GL_SetSwapInterval(0)
-    glClearColor(0.0, 0.05, 0.1, 0.0)
-##    glOrtho(-2, 2, -2, 2, 0, 1024)
-    # ^ left, right, bottom, top, near, far
-    gluPerspective(90, 1, 0.1, 1024)
-    # ^ fov, aspect, near, far
-    glTranslate(0, 0, -4)
-    
+    glClearColor(0.25, 0.25, 0.5, 0.0)
     glEnable(GL_DEPTH_TEST)
     glEnableClientState(GL_VERTEX_ARRAY)
-    
-    ###  BEGIN DYNAMIC DRAW BUFFER TEST  ###
-    # VERTEX
-    cube_vertices = [(-1, 1, 1), (1, 1, 1), (1, -1, 1), (-1, -1, 1),
-                     (-1, 1, -1), (1, 1, -1), (1, -1, -1), (-1, -1, -1)]
-    cube_vertices = [*itertools.chain(*cube_vertices)]
-    cube_vertices = np.array(cube_vertices, dtype=np.float32)
-
-    VERTEX_BUFFER = glGenBuffers(1)
-    glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER)
-    glBufferData(GL_ARRAY_BUFFER, 256, None, GL_DYNAMIC_DRAW)
-    glBufferSubData(GL_ARRAY_BUFFER, 0, len(cube_vertices) * 4, cube_vertices)
-    # ^ target, start, length, *data
-
-    # CHECK
-    vertex_buffer_data = glGetBufferSubData(GL_ARRAY_BUFFER, 0, 8 * 3 * 4)
-    # ^ target, start, length
-    vertices = list(struct.iter_unpack("3f", vertex_buffer_data))
-    print(vertices)
-
-    # INDEX
-    cube_indices = [0, 1, 2,  0, 2, 3,
-                    4, 5, 6,  4, 6, 7]
-    cube_indices = np.array(cube_indices, dtype=np.uint32)
-
-    INDEX_BUFFER = glGenBuffers(1)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 256, None, GL_DYNAMIC_DRAW)
-    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, len(cube_indices) * 4, cube_indices)
-    # ^ target, start, length, *data
-    
-    # CHECK
-    index_buffer_data = glGetBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, 8 * 4)
-    # ^ target, start, length
-    indices = [s[0] for s in struct.iter_unpack("I", index_buffer_data)]
-    print(indices)
-    ###  END DYNAMIC DRAW BUFFER TEST  ###
-
-    glEnableVertexAttribArray(0)
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, GLvoidp(0))
+    gluPerspective(90, 1, 0.1, 1024)
+    glTranslate(0, 0, -8)
+    glPointSize(4)
 
     ###  BEGIN SHADERS  ###
     # VERT SHADER SOURCE
@@ -134,6 +91,46 @@ def main(width, height):
     if GLES:
         matrix_location = glGetUniformLocation(shader_program, "ModelViewProjectionMatrix")
     ###  END SHADERS  ###
+    
+    ###  BEGIN DYNAMIC DRAW BUFFER TEST  ###
+    # VERTEX
+    cube_vertices = [(-1, 1, 1), (1, 1, 1), (1, -1, 1), (-1, -1, 1),
+                     (-1, 1, -1), (1, 1, -1), (1, -1, -1), (-1, -1, -1)]
+    cube_vertices = [*itertools.chain(*cube_vertices)]
+    cube_vertices = np.array(cube_vertices, dtype=np.float32)
+
+    VERTEX_BUFFER = glGenBuffers(1)
+    glBindBuffer(GL_ARRAY_BUFFER, VERTEX_BUFFER)
+    glBufferData(GL_ARRAY_BUFFER, 256, None, GL_DYNAMIC_DRAW)
+    glBufferSubData(GL_ARRAY_BUFFER, 0, len(cube_vertices) * 4, cube_vertices)
+    # ^ target, start, length, *data
+
+    # CHECK
+    vertex_buffer_data = glGetBufferSubData(GL_ARRAY_BUFFER, 0, 8 * 3 * 4)
+    # ^ target, start, length
+    vertices = list(struct.iter_unpack("3f", vertex_buffer_data))
+    print(vertices)
+
+    # INDEX
+    cube_indices = [0, 1, 2,  0, 2, 3,
+                    4, 5, 6,  4, 6, 7]
+    cube_indices = np.array(cube_indices, dtype=np.uint32)
+
+    INDEX_BUFFER = glGenBuffers(1)
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER)
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 256, None, GL_DYNAMIC_DRAW)
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, len(cube_indices) * 4, cube_indices)
+    # ^ target, start, length, *data
+    
+    # CHECK
+    index_buffer_data = glGetBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, 8 * 4)
+    # ^ target, start, length
+    indices = [s[0] for s in struct.iter_unpack("I", index_buffer_data)]
+    print(indices)
+    ###  END DYNAMIC DRAW BUFFER TEST  ###
+
+    glEnableVertexAttribArray(0)
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, GLvoidp(0)) 
     
     tickrate = 1 / 0.015
     tick_number = 0
