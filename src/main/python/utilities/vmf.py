@@ -1,6 +1,6 @@
 """https://github.com/snake-biscuits/vmf_tool"""
 # TODO: Functions for handling the horrible visgroup system
-# e.g. "visgroupid" "7"\n"visgroupid" "8" = {'visgroupid': ['7', '8']}
+# e.g. "visgroupid" "7"\n"visgroupid" "8" = {"visgroupid": ["7", "8"]}
 
 
 def pluralise(word):
@@ -80,7 +80,7 @@ class scope:
                     repr_strings.append(".{}".format(tier))
             else:
                 repr_strings.append("[{}]".format(tier))
-        return "".join(repr_string)
+        return "".join(repr_strings)
 
     def add(self, tier):
         """Go a layer deeper"""

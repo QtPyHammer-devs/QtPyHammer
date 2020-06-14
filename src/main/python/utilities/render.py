@@ -147,6 +147,12 @@ class manager:
                     glUseProgram(self.shader[style][target])
                     self.uniform[style][target]["matrix"] = glGetUniformLocation(self.shader[style][target], "ModelViewProjectionMatrix")
             glUseProgram(0)
+        # Buffers
+        self.VERTEX_BUFFER, self.INDEX_BUFFER = glGenBuffers(2)
+        glBindBuffer(GL_ARRAY_BUFFER, self.VERTEX_BUFFER)
+        glBufferData(GL_ARRAY_BUFFER, self.vertex_buffer_size, None, GL_DYNAMIC_DRAW)
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.INDEX_BUFFER)
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.index_buffer_size, None, GL_DYNAMIC_DRAW)
         # https://github.com/snake-biscuits/QtPyHammer/wiki/Rendering:-Vertex-Format
         self.vertex_format_size = 44
         glEnableVertexAttribArray(0) # vertex_position
@@ -160,12 +166,6 @@ class manager:
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
         glEnableVertexAttribArray(3) # editor_colour
         glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
-        # Buffers
-        self.VERTEX_BUFFER, self.INDEX_BUFFER = glGenBuffers(2)
-        glBindBuffer(GL_ARRAY_BUFFER, self.VERTEX_BUFFER)
-        glBufferData(GL_ARRAY_BUFFER, self.vertex_buffer_size, None, GL_DYNAMIC_DRAW)
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.INDEX_BUFFER)
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.index_buffer_size, None, GL_DYNAMIC_DRAW)
 
     def draw(self):
         gluPerspective(self.fov, self.aspect, 0.1, self.draw_distance)
@@ -310,6 +310,8 @@ class manager:
         brush = next_brush()
         allocating = True
         for gap in gaps:
-            brush ...
+            pass
+            # brush["vertex_length"]
+            # brush["index_length"]
             # yield an buffer_update for the queue
             # -- for each gap filled
