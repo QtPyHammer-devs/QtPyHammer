@@ -112,18 +112,18 @@ if __name__ == '__main__':
                 (-1, 1, -1), (1, 1, -1), (1, -1, -1), (-1, -1, -1)]
     indices = [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7]
 
-##    import sys
-##
-##    def except_hook(cls, exception, traceback):
-##        sys.__excepthook__(cls, exception, traceback)
-##    sys.excepthook = except_hook # Python Qt Debug
-##    
-##    app = QtWidgets.QApplication(sys.argv)
-##    window = viewport()
-##    window.setGeometry(128, 0, 576, 576)
-##    window.render_manager.update_queue.append([vertices, indices])
-##    window.show()
-##    app.exec_()
+    import sys
+
+    def except_hook(cls, exception, traceback):
+        sys.__excepthook__(cls, exception, traceback)
+    sys.excepthook = except_hook # Python Qt Debug
+    
+    app = QtWidgets.QApplication(sys.argv)
+    window = viewport()
+    window.setGeometry(128, 0, 576, 576)
+    window.render_manager.update_queue.append([vertices, indices])
+    window.show()
+    app.exec_()
 
     import ctypes
     from sdl2 import *
