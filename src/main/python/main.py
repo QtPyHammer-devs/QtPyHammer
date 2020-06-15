@@ -30,7 +30,7 @@ if __name__ == '__main__':
     # mount & tag custom data (check the gameinfo.txt for paths, accept others)
     window = MainWindow(ctx=appctxt)
     window.showMaximized()
-    # window.new_tab(appctxt.get_resource("vmfs/test2.vmf"))
+    window.new_tab(appctxt.get_resource("vmfs/test2.vmf"))
     # ^ test case
     appctxt.app.quit()
     exit_code = appctxt.app.exec_()      # 2. Invoke appctxt.app.exec_()
