@@ -6,15 +6,11 @@ in mediump vec3 normal;
 in mediump vec2 uv;
 in mediump vec3 colour;
 
-// uniform sampler2D texture; /* Move toward a Texture Atlas / Array */
+in mediump float Kd;
 
 void main()
 {
-	mediump vec4 ambient = vec4(0.75, 0.75, 0.75, 1);
-	mediump vec4 diffuse = vec4(1, 1, 1, 1) * dot(normal, vec3(1, 1, 1));
-    diffuse = clamp(diffuse, 0.25, 1.0);
-	// mediump vec4 albedo = texture2D(texture, uv);
+	mediump vec4 Ka = vec4(0.75, 0.75, 0.75, 1);
 
-	outColour = vec4(colour, 1) * (ambient + diffuse);
-	// outColour = albedo * (ambient + diffuse);
+	outColour = vec4(colour, 1) * (Kd + Ka);
 }
