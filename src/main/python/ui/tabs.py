@@ -53,7 +53,7 @@ class Workspace(QtWidgets.QWidget):
     def raycast(self, ray_origin, ray_direction):
         """Get the object hit by ray"""
         # test ray against selectable objects
-        print("calcualting raycast")
+##        print("calcualting raycast")
         ray_end = ray_origin + ray_direction
         for brush in self.vmf.brushes:
             states = set()
@@ -62,7 +62,7 @@ class Workspace(QtWidgets.QWidget):
                 ends_behind = vector.dot(ray_end, normal) >= distance
                 states.add(starts_behind + ends_behind) # orderless encoding 012
             if (True + False) in states:
-                print(brush.id, sep="\t")
+##                print(brush.id, sep="\t")
         # modify Workspace.selection based on result
 ##        if ctrl in self.viewport.keys: # add selection key (defined in settings)
 ##            self.selection[hit_type].add(hit_object)
