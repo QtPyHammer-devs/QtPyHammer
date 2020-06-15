@@ -248,7 +248,7 @@ class solid:
                 alphas = [float(a) for row in alpha_rows for a in row.split()]
                 for pos, alpha, uv in zip(side_dispverts, alphas, disp_uvs):
                     assembled_vertex = tuple(itertools.chain(pos, [alpha, 0.0, 0.0], uv, self.colour))
-                    self.displacement_vertices[i].append(assembled_vertex)
+                    self.displacement_vertices[side.id].append(assembled_vertex)
 
         if not self.is_displacement:
             del self.displacement_vertices
@@ -261,6 +261,7 @@ class solid:
         # min_z, max_z = min(all_z), max(all_z)
         # self.aabb = physics.aabb([min_x, min_y, min_z], [max_x, max_y, max_z])
         # self.center = (self.aabb.min + self.aabb.max) / 2
+        
 
     def __repr__(self):
         return f"<solid {len(self.vertices)} vertices>"
