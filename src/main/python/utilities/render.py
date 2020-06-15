@@ -167,19 +167,14 @@ class manager:
 
     def draw(self):
         glUseProgram(0)
-##        glColor(1, 1, 1)
-##        glBegin(GL_TRIANGLES)
-##        glVertex(0, 1)
-##        glVertex(0, 0)
-##        glVertex(1, 0)
-##        glEnd()
         draw_grid()
         draw_origin()
         draw_ray(vector.vec3(), vector.vec3(), 0)
-        # dither transparency for tooltextures (skip, hint, trigger, clip)
+        # TODO: dither transparency for tooltextures (skip, hint, trigger, clip)
         glUseProgram(self.shader[self.render_mode]["brush"])
-        for start, length in self.buffer_allocation_map["index"]["brush"]:
-            glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
+##        for start, length in self.buffer_allocation_map["index"]["brush"]:
+##            glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
+        glDrawArrays(GL_POINTS, 0, 9000)
 
     def update(self):
         # update buffer data
@@ -201,8 +196,6 @@ class manager:
                     self.buffer_location[key] = dict()
                 self.buffer_location[key][buffer] = (start, length)
                 start += length
-            print(self.buffer_allocation_map)
-            
         # update view matrix
         MV_matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
         glUseProgram(self.shader[self.render_mode]["brush"])
@@ -296,6 +289,9 @@ class manager:
                     yield gap
 
     # --> add_brushes --> buffer_update_queue & mapping_update_queue
+    # in future this will be reworked for all renderable types
+    # -- variable vertex format size (& gap_start alignment)
+    # -- possibly different vertex & index data acquisition
     def add_brushes(self, *brushes):
         """Add *brushes to the appropriate GPU buffers"""
         vertex_gaps = {g: [0, [], []] for g in self.find_gaps(buffer="vertex")}
@@ -312,6 +308,7 @@ class manager:
                     vertex_gaps[gap][1].append(brush.id) # brush ids
                     vertex_data = list(itertools.chain(*brush.vertices))
                     vertex_gaps[gap][2].append(vertex_data) # data
+                    index_offset = gap_start // self.vertex_format_size
                     break
             index_data_length = len(brush.indices) * 4
             for gap in index_gaps:
@@ -321,7 +318,8 @@ class manager:
                 if index_data_length <= free_length:
                     index_gaps[gap][0] += index_data_length # used length
                     index_gaps[gap][1].append(brush.id) # brush ids
-                    index_gaps[gap][2].append(brush.indices) # data
+                    index_data = [i + index_offset for i in brush.indices]
+                    index_gaps[gap][2].append(index_data) # data
                     break
         for gap in vertex_gaps:
             if vertex_gaps[gap][0] == 0: # used length
@@ -330,8 +328,9 @@ class manager:
             vertex_data = np.array(flattened_data, dtype=np.float32)
             update = (GL_ARRAY_BUFFER, gap_start, used_length, vertex_data)
             self.buffer_update_queue.append(update)
+            print(used_length, len(vertex_data))
             ids = vertex_gaps[gap][1]
-            lengths = [len(d) for d in vertex_gaps[gap][2]]
+            lengths = [len(d) * self.vertex_format_size for d in vertex_gaps[gap][2]]
             mapping = ("brush", ids, tuple(lengths))
             self.mappings_update_queue.append(mapping)
         for gap in index_gaps:
@@ -342,6 +341,6 @@ class manager:
             update = (GL_ELEMENT_ARRAY_BUFFER, gap_start, used_length, index_data)
             self.buffer_update_queue.append(update)
             ids = index_gaps[gap][1]
-            lengths = [len(d) for d in index_gaps[gap][2]]
+            lengths = [len(d) * 4 for d in index_gaps[gap][2]]
             mapping = ("brush", ids, tuple(lengths))
             self.mappings_update_queue.append(mapping)
