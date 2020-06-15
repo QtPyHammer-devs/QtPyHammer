@@ -1,5 +1,6 @@
 """QtPyHammer MainWindow class & other core ui classes"""
 import itertools
+import os
 import sys
 # Third-party imports
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -8,14 +9,10 @@ from OpenGL.GL import *
 from OpenGL.GL.shaders import compileShader, compileProgram
 from OpenGL.GLU import *
 # QPH imports
-from . import entity, viewport # ui
+from . import entity, tabs, viewport # ui
 sys.path.insert(0, "../") # sibling packages
 import ops # connects buttons to functions
 from utilities import render
-
-def except_hook(cls, exception, traceback): # nessecary for debugging SLOTS
-    sys.__excepthook__(cls, exception, traceback)
-sys.excepthook = except_hook
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -25,25 +22,16 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setWindowTitle("QtPyHammer")
         self.setMinimumSize(640, 480)
 
-        ... # objects for holding map & session data
         self.actions = {} # {"identifier": action}
-        # map all actions so we can rebind EVERYTHING
-        self.vmf = ops.import_vmf(ctx.get_resource("vmfs/test2.vmf"))
+        # list ALL actions so we can rebind EVERYTHING
 
-        self.setTabPosition(QtCore.Qt.TopDockWidgetArea, QtWidgets.QTabWidget.North)
+        self.setTabPosition(QtCore.Qt.TopDockWidgetArea, QtWidgets.QTabWidget.North) # ???
         self.main_menu = QtWidgets.QMenuBar()
         file_menu = self.main_menu.addMenu('&File')
         self.actions["File>New"] = file_menu.addAction('&New')
-        self.actions["File>New"].setEnabled(False)
-        #self.actions["File>New"].triggered.connect(ops.core.new_file)
+        self.actions["File>New"].triggered.connect(self.new_tab)
         self.actions["File>Open"] = file_menu.addAction('&Open')
-        def open_vmf(): # should really be in ops/__init__
-            success, filename, vmf = ops.open_vmf()
-            if success:
-                self.vmf = vmf
-                self.setWindowTitle("QtPyHammer - {}".format(filename.rpartition("/")[2]))
-                self.viewport.executeGL(render.vmf_setup, self.vmf, self.ctx)
-                # should be using a fresh viewport & context (i.e a new tab)
+        open_vmf = lambda: self.new_tab(ops.open_vmf())
         self.actions["File>Open"].triggered.connect(open_vmf)
         self.actions["File>Save"] = file_menu.addAction('&Save')
         self.actions["File>Save"].setEnabled(False)
@@ -328,8 +316,21 @@ class MainWindow(QtWidgets.QMainWindow):
         # # cut copy paste | cordon radius | TL <TL> | DD 3D DW DA |
         # # compile helpers 2D_models fade CM prop_detail NO_DRAW
 
-        self.viewport = viewport.Viewport3D(60)
-        self.viewport.buffer_updates.append(lambda v: render.vmf_setup(v, self.vmf, self.ctx))
-        # do we need to pass the context down?
-        self.setCentralWidget(self.viewport)
-        self.viewport.setFocus()
+        # self.viewport = viewport.Viewport3D(60)
+        # self.viewport.buffer_updates.append(lambda v: render.vmf_setup(v, self.vmf, self.ctx))
+        # # do we need to pass the context down?
+        self.tabmaster = QtWidgets.QTabWidget()
+        self.setCentralWidget(self.tabmaster)
+        # self.setCentralWidget(self.viewport)
+        # self.viewport.setFocus()
+
+    def new_tab(self, vmf_path=None):
+        if vmf_path == False: # file browser was opened but no file was selected
+            return
+        elif vmf_path == None: # new file
+            filename = "untitled"
+            vmf_path = self.ctx.get_resource("vmfs/blank.vmf")
+        else: # load the requested file (vmf_path) into a new tab
+            filename = os.path.basename(vmf_path)
+        tab = tabs.Workspace(vmf_path, parent=self) # parent gives appctxt
+        self.tabmaster.addTab(tab, filename)

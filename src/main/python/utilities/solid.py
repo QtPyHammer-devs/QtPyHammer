@@ -262,6 +262,9 @@ class solid:
         # self.aabb = physics.aabb([min_x, min_y, min_z], [max_x, max_y, max_z])
         # self.center = (self.aabb.min + self.aabb.max) / 2
 
+    def __repr__(self):
+        return f"<solid {len(self.vertices)} vertices>"
+
     def flip(self, plane):
         # maintain outward facing plane normals
         # presevere accuracy of planes while flipping geo
