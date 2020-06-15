@@ -35,7 +35,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         # model draw distance (defined in settings)
         self.ray = [] # origin, dir (for debug rendering)
         # INPUT HANDLING
-        self.camera = camera.freecam(None, None, 128)
+        self.camera = camera.freecam(None, None, 16)
         self.camera_moving = False
         self.cursor_start = QtCore.QPoint()
         self.moved_last_tick = False
@@ -94,7 +94,13 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
 
     def paintGL(self):
         glLoadIdentity()
+        fov = self.render_manager.fov
+        aspect = self.render_manager.aspect
+        draw_distance = self.render_manager.draw_distance
+        gluPerspective(fov, aspect, 0.1, draw_distance)
         self.camera.set()
+        # ^ cannot call gluPerspective in render.manager.draw
+        # -- this order of operations must be preserved
         self.render_manager.draw()
         super(MapViewport3D, self).paintGL()
 

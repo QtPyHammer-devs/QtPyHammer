@@ -68,7 +68,6 @@ def draw_ray(origin, direction, distance=4096):
     glVertex(*(origin + direction * distance))
     glEnd()
 
-
 class manager:
     """Manages OpenGL buffers and gives handles for rendering & hiding objects"""
     def __init__(self):
@@ -121,7 +120,6 @@ class manager:
         elif major >= 3 and minor >= 0:
             GLES_MODE = True
             self.shader_version = "GLES_300"
-        print(self.shader_version)
         shader_folder = "shaders/{}/".format(self.shader_version)
         compile_shader = lambda s, t: compileShader(open(ctx.get_resource(shader_folder + s), "rb"), t)
         vert_brush =  compile_shader("brush.vert", GL_VERTEX_SHADER)
@@ -168,8 +166,13 @@ class manager:
         glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
 
     def draw(self):
-        gluPerspective(self.fov, self.aspect, 0.1, self.draw_distance)
         glUseProgram(0)
+##        glColor(1, 1, 1)
+##        glBegin(GL_TRIANGLES)
+##        glVertex(0, 1)
+##        glVertex(0, 0)
+##        glVertex(1, 0)
+##        glEnd()
         draw_grid()
         draw_origin()
         draw_ray(vector.vec3(), vector.vec3(), 0)
@@ -184,16 +187,21 @@ class manager:
             update = self.buffer_update_queue.pop(0)
             buffer, start, length, data = update
             glBufferSubData(buffer, start, length, data)
-            buffer = {GL_ARRAY_BUFFER: "vertex", GL_ELEMENT_ARRAY_BUFFER: "index"}[buffer]
-            mapping = self.mapping_update_queue.pop(0)
-            renderable_type, ids, lengths
-            self.track_span((start, length)) # add to self.buffer_allocation_map
+            buffer = {GL_ARRAY_BUFFER: "vertex",
+                      GL_ELEMENT_ARRAY_BUFFER: "index"}[buffer]
+            # ^ ternary operator, but can be extended for other buffer types
+            # -- if Key then buffer = Value
+            mapping = self.mappings_update_queue.pop(0)
+            renderable_type, ids, lengths = mapping
+            self.track_span(buffer, renderable_type, (start, length))
+            # ^ add to self.buffer_allocation_map
             for renderable_id, length in zip(ids, lengths):
                 key = (renderable_type, renderable_id)
                 if key not in self.buffer_location:
                     self.buffer_location[key] = dict()
                 self.buffer_location[key][buffer] = (start, length)
                 start += length
+            print(self.buffer_allocation_map)
             
         # update view matrix
         MV_matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
@@ -208,6 +216,9 @@ class manager:
         start, length = span_to_track
         end = start + length
         target = self.buffer_allocation_map[buffer][renderable_type]
+        if len(target) == 0:
+            self.buffer_allocation_map[buffer][renderable_type] = [span_to_track]
+            return
         for i, span in enumerate(target):
             S, L = span
             E = S + L
@@ -284,47 +295,53 @@ class manager:
             if preferred_type in (None, span_type[prev_span]):
                     yield gap
 
-    # --> add_brushes --> buffer_update_queue --> update allocation maps
+    # --> add_brushes --> buffer_update_queue & mapping_update_queue
     def add_brushes(self, *brushes):
         """Add *brushes to the appropriate GPU buffers"""
-        gap_map = namedtuple("gap_map", ["used_length", "data", "ids"])
-        vertex_gaps = {g: gap_map(0, [], []) for g in self.find_gaps(buffer="vertex")}
-        index_gaps = {g: gap_map(0, [], []) for g in self.find_gaps(buffer="index", preferred_type="brush")}
+        vertex_gaps = {g: [0, [], []] for g in self.find_gaps(buffer="vertex")}
+        index_gaps = {g: [0, [], []] for g in self.find_gaps(buffer="index", preferred_type="brush")}
+        # ^ gap: [used_length, [ids], [data]]
         for brush in brushes:
             vertex_data_length = len(brush.vertices) * self.vertex_format_size
             for gap in vertex_gaps:
                 gap_start, gap_length = gap
-                used_length = vertex_gaps[gap].used_length
+                used_length = vertex_gaps[gap][0]
                 free_length = gap_length - used_length
                 if vertex_data_length <= free_length:
+                    vertex_gaps[gap][0] += vertex_data_length # used_length
+                    vertex_gaps[gap][1].append(brush.id) # brush ids
                     vertex_data = list(itertools.chain(*brush.vertices))
-                    vertex_gaps[gap].data.append(vertex_data)
-                    vertex_gaps[gap].ids.append(brush.id)
+                    vertex_gaps[gap][2].append(vertex_data) # data
                     break
             index_data_length = len(brush.indices) * 4
             for gap in index_gaps:
                 gap_start, gap_length = gap
-                used_length = index_gaps[gap].used_length
+                used_length = index_gaps[gap][0]
                 free_length = gap_length - used_length
                 if index_data_length <= free_length:
-                    index_gaps[gap].data.append(brush.indices)
-                    index_gaps[gap].ids.append(brush.id)
+                    index_gaps[gap][0] += index_data_length # used length
+                    index_gaps[gap][1].append(brush.id) # brush ids
+                    index_gaps[gap][2].append(brush.indices) # data
                     break
         for gap in vertex_gaps:
-            if vertex_gaps[gap].used_length == 0:
+            if vertex_gaps[gap][0] == 0: # used length
                 continue
-            flattened_data = list(itertools.chain(*vertex_gaps[gap].data))
+            flattened_data = list(itertools.chain(*vertex_gaps[gap][2]))
             vertex_data = np.array(flattened_data, dtype=np.float32)
             update = (GL_ARRAY_BUFFER, gap_start, used_length, vertex_data)
             self.buffer_update_queue.append(update)
-            # lengths = [len(d) for d in vertex_gaps[gap].data]
-            # mapping = ("brush", ids, tuple(lengths))
-            # self.mappings_update_queue.append(mapping)
+            ids = vertex_gaps[gap][1]
+            lengths = [len(d) for d in vertex_gaps[gap][2]]
+            mapping = ("brush", ids, tuple(lengths))
+            self.mappings_update_queue.append(mapping)
         for gap in index_gaps:
-            if index_gaps[gap].used_length == 0:
+            if index_gaps[gap][0] == 0: # used length
                 continue
-            flattened_data = list(itertools.chain(*vertex_gaps[gap].data))
+            flattened_data = list(itertools.chain(*vertex_gaps[gap][2]))
             index_data = np.array(flattened_data, dtype=np.uint32)
             update = (GL_ELEMENT_ARRAY_BUFFER, gap_start, used_length, index_data)
             self.buffer_update_queue.append(update)
-        # mapping are not sent to the buffer update queue
+            ids = index_gaps[gap][1]
+            lengths = [len(d) for d in index_gaps[gap][2]]
+            mapping = ("brush", ids, tuple(lengths))
+            self.mappings_update_queue.append(mapping)
