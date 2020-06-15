@@ -61,7 +61,7 @@ class Workspace(QtWidgets.QWidget):
                 starts_behind = vector.dot(ray_origin, normal) > distance
                 ends_behind = vector.dot(ray_end, normal) >= distance
                 states.add(starts_behind + ends_behind) # orderless encoding 012
-            if (True + False) in states:
+##            if (True + False) in states:
 ##                print(brush.id, sep="\t")
         # modify Workspace.selection based on result
 ##        if ctrl in self.viewport.keys: # add selection key (defined in settings)
