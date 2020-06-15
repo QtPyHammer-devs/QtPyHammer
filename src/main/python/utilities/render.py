@@ -1,4 +1,5 @@
 """Bunch of OpenGL heavy code for rendering vmfs"""
+from collections import namedtuple
 import colorsys
 import ctypes
 import itertools
@@ -7,6 +8,7 @@ import traceback
 import numpy as np
 from OpenGL.GL import *
 from OpenGL.GL.shaders import compileShader, compileProgram
+from OpenGL.GLU import *
 from PyQt5 import QtGui
 
 from . import camera, solid, vector
@@ -79,13 +81,10 @@ class manager:
         self.memory_limit = 512 * MB # defined in settings
         # ^ can't check the physical device limit until after init_GL is called
 
-        # queue for self.update_buffers()
         self.buffer_update_queue = []
-        # [{"type": "brush" or "displacement"
-        #   "id": brush.id or brush.side[?].id
-        #   "vertex": (start, length, data),
-        #   "index":  (start, length, data)}, ...]
-        # ^ would a collections.namedtuple be better?
+        # ^ buffer, start, length, data
+        self.mappings_update_queue = []
+        # ^ type, ids, lengths
 
         self.vertex_buffer_size = self.memory_limit // 2
         self.index_buffer_size = self.memory_limit // 2
@@ -104,9 +103,10 @@ class manager:
         self.hidden = {"brush": [], "displacement": [], "model": []}
         # ^ type: (start, length)
         # DOES NOT YET AFFECT RENDER
+        self.vertex_format_size = 44
 
     def init_GL(self, ctx): # called by parent viewport's initializeGL()
-        glClearColor(0, 0, 0, 0)
+        glClearColor(0.0, 0.0, 0.0, 0.0)
         glEnable(GL_DEPTH_TEST)
         glFrontFace(GL_CW)
         glPointSize(4)
@@ -121,6 +121,7 @@ class manager:
         elif major >= 3 and minor >= 0:
             GLES_MODE = True
             self.shader_version = "GLES_300"
+        print(self.shader_version)
         shader_folder = "shaders/{}/".format(self.shader_version)
         compile_shader = lambda s, t: compileShader(open(ctx.get_resource(shader_folder + s), "rb"), t)
         vert_brush =  compile_shader("brush.vert", GL_VERTEX_SHADER)
@@ -154,7 +155,6 @@ class manager:
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.INDEX_BUFFER)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.index_buffer_size, None, GL_DYNAMIC_DRAW)
         # https://github.com/snake-biscuits/QtPyHammer/wiki/Rendering:-Vertex-Format
-        self.vertex_format_size = 44
         glEnableVertexAttribArray(0) # vertex_position
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
         glEnableVertexAttribArray(1) # vertex_normal (brush only)
@@ -175,40 +175,32 @@ class manager:
         draw_ray(vector.vec3(), vector.vec3(), 0)
         # dither transparency for tooltextures (skip, hint, trigger, clip)
         glUseProgram(self.shader[self.render_mode]["brush"])
-        for start, length in self.abstract_buffer_map["index"]["brush"]:
+        for start, length in self.buffer_allocation_map["index"]["brush"]:
             glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
 
     def update(self):
         # update buffer data
         if len(self.buffer_update_queue) > 0:
             update = self.buffer_update_queue.pop(0)
-            self.update_buffers(self, update)
+            buffer, start, length, data = update
+            glBufferSubData(buffer, start, length, data)
+            buffer = {GL_ARRAY_BUFFER: "vertex", GL_ELEMENT_ARRAY_BUFFER: "index"}[buffer]
+            mapping = self.mapping_update_queue.pop(0)
+            renderable_type, ids, lengths
+            self.track_span((start, length)) # add to self.buffer_allocation_map
+            for renderable_id, length in zip(ids, lengths):
+                key = (renderable_type, renderable_id)
+                if key not in self.buffer_location:
+                    self.buffer_location[key] = dict()
+                self.buffer_location[key][buffer] = (start, length)
+                start += length
+            
         # update view matrix
         MV_matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
-        P_matrix = glGetFloatv(GL_PROJECTION_MATRIX)
         glUseProgram(self.shader[self.render_mode]["brush"])
         if "matrix" in self.uniform[self.render_mode]["brush"]:
             location = self.uniform[self.render_mode]["brush"]["matrix"]
             glUniformMatrix4fv(location, 1, GL_FALSE, MV_matrix)
-
-    # BUFFER UPDATES
-    def update_buffers(self, update):
-        """update data in buffers and draw calls"""
-        # {"type": "brush" or "displacement" or model
-        #  "ids": [id, ...],
-        #  "spans": [{"vertex": (start, length),
-        #             "index": (start, length)}, ...]
-        #  "vertex": (start, length, data),
-        #  "index": (start, length, data)}
-        # ^ zip together
-        glBufferSubData(GL_ARRAY_BUFFER, *update["vertex"])
-        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, *update["index"])
-        ids, spans = update["ids"], update["spans"]
-        for renderable_id, span in zip(ids, spans):
-            # span = {"vertex": (start, length), "index": (start, length)}
-            self.buffer_location[identifier] = span
-        self.track_span("vertex", "brush", update["vertex"][:2])
-        self.track_span("index", "brush", update["index"][:2])
 
     # modify self.buffer_allocation_map
     # WORKING
@@ -268,7 +260,7 @@ class manager:
         prev_span = (0, 0)
         prev_span_end = 0
         prev_gap = (0, 0)
-        buffer_map = self.abstract_buffer_map[buffer]
+        buffer_map = self.buffer_allocation_map[buffer]
         if preferred_type not in (None, *buffer_map.keys()):
             raise RuntimeError("Invalid preferred_type: {}".format(preferred_type))
         span_type = {s: t for t in buffer_map for s in buffer_map[t]}
@@ -292,26 +284,47 @@ class manager:
             if preferred_type in (None, span_type[prev_span]):
                     yield gap
 
+    # --> add_brushes --> buffer_update_queue --> update allocation maps
     def add_brushes(self, *brushes):
         """Add *brushes to the appropriate GPU buffers"""
-        # aiming to be a generator
-        # until async is implemented
-        gaps = self.find_gaps(buffer="vertex") # generator
-        brushes = iter(brushes)
-        def next_brush():
-            out = {"brush": next(brushes),
-                   "identifier": {"type": "brush", "id": brush.id}}
-            flat_vertex_data = itertools.chain(*brush.vertices)
-            out["vertex_data"] = np.array(flat_vertex_data, dtype=np.float32)
-            out["vertex_length"] = len(brush.vertices) * self.vertex_format_size
-            out["index_data"] = np.array(brush.indices, dtype=np.uint32)
-            out["index_length"] = len(brush.indices) * 4
-            return out
-        brush = next_brush()
-        allocating = True
-        for gap in gaps:
-            pass
-            # brush["vertex_length"]
-            # brush["index_length"]
-            # yield an buffer_update for the queue
-            # -- for each gap filled
+        gap_map = namedtuple("gap_map", ["used_length", "data", "ids"])
+        vertex_gaps = {g: gap_map(0, [], []) for g in self.find_gaps(buffer="vertex")}
+        index_gaps = {g: gap_map(0, [], []) for g in self.find_gaps(buffer="index", preferred_type="brush")}
+        for brush in brushes:
+            vertex_data_length = len(brush.vertices) * self.vertex_format_size
+            for gap in vertex_gaps:
+                gap_start, gap_length = gap
+                used_length = vertex_gaps[gap].used_length
+                free_length = gap_length - used_length
+                if vertex_data_length <= free_length:
+                    vertex_data = list(itertools.chain(*brush.vertices))
+                    vertex_gaps[gap].data.append(vertex_data)
+                    vertex_gaps[gap].ids.append(brush.id)
+                    break
+            index_data_length = len(brush.indices) * 4
+            for gap in index_gaps:
+                gap_start, gap_length = gap
+                used_length = index_gaps[gap].used_length
+                free_length = gap_length - used_length
+                if index_data_length <= free_length:
+                    index_gaps[gap].data.append(brush.indices)
+                    index_gaps[gap].ids.append(brush.id)
+                    break
+        for gap in vertex_gaps:
+            if vertex_gaps[gap].used_length == 0:
+                continue
+            flattened_data = list(itertools.chain(*vertex_gaps[gap].data))
+            vertex_data = np.array(flattened_data, dtype=np.float32)
+            update = (GL_ARRAY_BUFFER, gap_start, used_length, vertex_data)
+            self.buffer_update_queue.append(update)
+            # lengths = [len(d) for d in vertex_gaps[gap].data]
+            # mapping = ("brush", ids, tuple(lengths))
+            # self.mappings_update_queue.append(mapping)
+        for gap in index_gaps:
+            if index_gaps[gap].used_length == 0:
+                continue
+            flattened_data = list(itertools.chain(*vertex_gaps[gap].data))
+            index_data = np.array(flattened_data, dtype=np.uint32)
+            update = (GL_ELEMENT_ARRAY_BUFFER, gap_start, used_length, index_data)
+            self.buffer_update_queue.append(update)
+        # mapping are not sent to the buffer update queue

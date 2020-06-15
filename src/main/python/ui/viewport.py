@@ -62,8 +62,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         super(MapViewport3D, self).update() # calls PaintGL
 
     def add_brushes(self, *brushes):
-        self.render_manager.queued_updates.append(
-              (self.render_manager.add_brushes, *brushes))
+        self.render_manager.add_brushes(*brushes)
 
     ######################
     ### OpenGL Methods ###
@@ -97,6 +96,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         glLoadIdentity()
         self.camera.set()
         self.render_manager.draw()
+        super(MapViewport3D, self).paintGL()
 
     def resizeGL(self, width, height):
         self.render_manager.aspect = width / height
@@ -110,7 +110,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         h = vector.vec3(x=1).rotate(*-self.camera.rotation) # camera local X
         v = vector.vec3(z=1).rotate(*-self.camera.rotation) # camera local Y
         d = vector.vec3(y=1).rotate(*-self.camera.rotation) # camera local Z
-        hx = math.tan(self.fov/2) # viewport range projected out 1 unit
+        hx = math.tan(self.render_manager.fov/2) # viewport range projected out 1 unit
         hy = hx * (self.height() / self.width()) # scale by aspect ratio
         px = (2 * hx) / (self.width() - 1) * h # projected pixel width
         py = (2 * hy) / (self.height() - 1) * v # projected pixel height
