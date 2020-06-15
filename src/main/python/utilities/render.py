@@ -172,19 +172,25 @@ class manager:
         draw_ray(vector.vec3(), vector.vec3(), 0)
         # TODO: dither transparency for tooltextures (skip, hint, trigger, clip)
         glUseProgram(self.shader[self.render_mode]["brush"])
+##        glDrawArrays(GL_POINTS, 0, 9984)
         for start, length in self.buffer_allocation_map["index"]["brush"]:
             count = length // 4 # sizeof(GL_UNSIGNED_INT)
             glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, GLvoidp(start))
+##        # render only brush.id = 2
 ##        for renderable in self.buffer_location:
 ##            try:
-##                start, length = self.buffer_location[renderable]["index"]
-##                if start == 0:
+##                renderable_id = renderable[1] 
+##                if renderable_id == 2:
+##                    start, length = self.buffer_location[renderable]["vertex"]
+##                    count = length // 44
+##                    glDrawArrays(GL_POINTS, start, count)
+##                    start, length = self.buffer_location[renderable]["index"]
 ##                    count = length // 4
-##                    print(renderable, start, count)
 ##                    glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, GLvoidp(start))
-##            except:
-##                pass # drew during mapping write
-        glDrawArrays(GL_POINTS, 0, 9984)
+##            except KeyError:
+##                pass # attempted to draw while mapping was being written
+##            except Exception as exc:
+##                print(f"{exc.__class__.__name__}: {exc}")
 
     def update(self):
         # update buffer data
@@ -318,7 +324,7 @@ class manager:
                     vertex_gaps[gap][1].append(brush.id) # brush ids
                     vertex_data = list(itertools.chain(*brush.vertices))
                     vertex_gaps[gap][2].append(vertex_data) # data
-                    index_offset = gap_start // self.vertex_format_size
+                    index_offset = (gap_start + used_length) // self.vertex_format_size
                     break
             index_data_length = len(brush.indices) * 4
             for gap in index_gaps:
@@ -340,13 +346,13 @@ class manager:
             update = (GL_ARRAY_BUFFER, gap_start, used_length, vertex_data)
             self.buffer_update_queue.append(update)
             ids = vertex_gaps[gap][1]
-            lengths = [len(d) * self.vertex_format_size for d in vertex_gaps[gap][2]]
+            lengths = [len(d) for d in vertex_gaps[gap][2]]
             mapping = ("brush", ids, tuple(lengths))
             self.mappings_update_queue.append(mapping)
         for gap in index_gaps:
             if index_gaps[gap][0] == 0: # used length
                 continue
-            flattened_data = list(itertools.chain(*vertex_gaps[gap][2]))
+            flattened_data = list(itertools.chain(*index_gaps[gap][2]))
             index_data = np.array(flattened_data, dtype=np.uint32)
             used_length = index_gaps[gap][0]
             update = (GL_ELEMENT_ARRAY_BUFFER, gap_start, used_length, index_data)
