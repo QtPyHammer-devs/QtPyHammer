@@ -77,7 +77,7 @@ class manager:
         KB = 10 ** 3
         MB = 10 ** 6
         GB = 10 ** 9
-        self.memory_limit = 512 * MB # defined in settings
+        self.memory_limit = 128 * MB # defined in settings
         # ^ can't check the physical device limit until after init_GL is called
 
         self.buffer_update_queue = []
