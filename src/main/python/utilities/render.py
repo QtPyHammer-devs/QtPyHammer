@@ -361,3 +361,11 @@ class manager:
             lengths = [len(d) * 4 for d in index_gaps[gap][2]]
             mapping = ("brush", ids, tuple(lengths))
             self.mappings_update_queue.append(mapping)
+        # CTRL+C, CTRL+V: DISPLACEMENTS
+##        vertex_gaps = {g: [0, [], []] for g in self.find_gaps(buffer="vertex")}
+##        index_gaps = {g: [0, [], []] for g in self.find_gaps(buffer="index", preferred_type="displacement")}
+##        # ^ gap: [used_length, [ids], [data]]
+##        displacement_brushes = filter(lambda b: b.is_displacement, brushes)
+##        for brush in displacement_brushes:
+##            for side_id in brush.displacements:
+##                ...

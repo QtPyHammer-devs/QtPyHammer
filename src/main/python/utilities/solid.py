@@ -243,7 +243,7 @@ class solid:
                             normal = normal.normalise()
                         normals.append(normal)
 
-                self.displacement_vertices[i] = []
+                self.displacement_vertices[side.id] = []
                 alpha_rows = [v for k, v in side.dispinfo.alphas.__dict__.items() if k != "_line"]
                 alphas = [float(a) for row in alpha_rows for a in row.split()]
                 for pos, alpha, uv in zip(side_dispverts, alphas, disp_uvs):
