@@ -20,8 +20,7 @@ void main()
     uv = vec2(vertex_uv.x, -vertex_uv.y);
 	colour = editor_colour;
 
-	Kd = abs(normal.x / 3 + 1/3 * normal.y / 3 + 2/3 * normal.z / 3);
+	Kd = abs(normal.x / 3.0 + 1.0/3.0 * normal.y / 3.0 + 2.0/3.0 * normal.z / 3.0);
 
 	gl_Position = ModelViewProjectionMatrix * vec4(vertex_position, 1);
-    // gl_Position = vec4(vertex_position, 1);
 }
