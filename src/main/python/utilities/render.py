@@ -167,14 +167,24 @@ class manager:
 
     def draw(self):
         glUseProgram(0)
-        draw_grid()
+##        draw_grid()
         draw_origin()
         draw_ray(vector.vec3(), vector.vec3(), 0)
         # TODO: dither transparency for tooltextures (skip, hint, trigger, clip)
         glUseProgram(self.shader[self.render_mode]["brush"])
-##        for start, length in self.buffer_allocation_map["index"]["brush"]:
-##            glDrawElements(GL_TRIANGLES, length, GL_UNSIGNED_INT, GLvoidp(start))
-        glDrawArrays(GL_POINTS, 0, 9000)
+        for start, length in self.buffer_allocation_map["index"]["brush"]:
+            count = length // 4 # sizeof(GL_UNSIGNED_INT)
+            glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, GLvoidp(start))
+##        for renderable in self.buffer_location:
+##            try:
+##                start, length = self.buffer_location[renderable]["index"]
+##                if start == 0:
+##                    count = length // 4
+##                    print(renderable, start, count)
+##                    glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, GLvoidp(start))
+##            except:
+##                pass # drew during mapping write
+        glDrawArrays(GL_POINTS, 0, 9984)
 
     def update(self):
         # update buffer data
@@ -326,9 +336,9 @@ class manager:
                 continue
             flattened_data = list(itertools.chain(*vertex_gaps[gap][2]))
             vertex_data = np.array(flattened_data, dtype=np.float32)
+            used_length = vertex_gaps[gap][0]
             update = (GL_ARRAY_BUFFER, gap_start, used_length, vertex_data)
             self.buffer_update_queue.append(update)
-            print(used_length, len(vertex_data))
             ids = vertex_gaps[gap][1]
             lengths = [len(d) * self.vertex_format_size for d in vertex_gaps[gap][2]]
             mapping = ("brush", ids, tuple(lengths))
@@ -338,6 +348,7 @@ class manager:
                 continue
             flattened_data = list(itertools.chain(*vertex_gaps[gap][2]))
             index_data = np.array(flattened_data, dtype=np.uint32)
+            used_length = index_gaps[gap][0]
             update = (GL_ELEMENT_ARRAY_BUFFER, gap_start, used_length, index_data)
             self.buffer_update_queue.append(update)
             ids = index_gaps[gap][1]
