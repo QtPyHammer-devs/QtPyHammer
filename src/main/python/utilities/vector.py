@@ -13,9 +13,9 @@ __doc__ = """2D & 3D vector classes"""
 
 class vec2:
     """2D vector class"""
-    __slots__ = ['x', 'y']
+    __slots__ = ["x", "y"]
     def __init__(self, x=0, y=0):
-        if hasattr(x, '__iter__'):
+        if hasattr(x, "__iter__"):
             self.x, self.y = x[0], x[1]
         else:
             self.x, self.y = x, y
@@ -24,7 +24,7 @@ class vec2:
         return self.magnitude()
 
     def __add__(self, other):
-        if hasattr(other, '__iter__'):
+        if hasattr(other, "__iter__"):
             return vec2(*map(math.fsum, itertools.zip_longest(self, other, fillvalue=0)))
         else:
             raise TypeError("unsupported operand type(s) for +: 'vec2' and '{}'".format(other.__class__.__name__))
@@ -41,8 +41,8 @@ class vec2:
                 return True
         return False
 
-    def __format__(self, format_spec=''):
-        return ' '.join([format(i, format_spec) for i in self])
+    def __format__(self, format_spec=""):
+        return " ".join([format(i, format_spec) for i in self])
 
     def __floordiv__(self, other):
         if isinstance(other, (int, float)):
@@ -61,8 +61,8 @@ class vec2:
     def __mul__(self, other):
         if isinstance(other, (int, float)):
             return vec2(self.x * other, self.y * other)
-        elif hasattr(other, '__iter__'):
-            raise NotImplementedError('vec2 cross product not implemented.')
+        elif hasattr(other, "__iter__"):
+            raise NotImplementedError("vec2 cross product not implemented.")
         else:
             raise TypeError("unsupported operand type(s) for *: 'vec2' and '{}'".format(other.__class__.__name__))
 
@@ -94,8 +94,8 @@ class vec2:
     def __truediv__(self, other):
         if isinstance(other, (int, float)):
             return vec2(self.x / other, self.y / other)
-        elif hasattr(other, '__iter__'):
-            raise ArithmeticError('Cannot divide vector by another vector.')
+        elif hasattr(other, "__iter__"):
+            raise ArithmeticError("Cannot divide vector by another vector.")
         raise TypeError("unsupported operand type(s) for /: 'vec2' and '{}'".format(other.__class__.__name__))
 
     def magnitude(self):
@@ -126,9 +126,9 @@ class vec2:
 
 class vec3:
     """3D vector class"""
-    __slots__ = ['x', 'y', 'z']
+    __slots__ = ["x", "y", "z"]
     def __init__(self, x=0, y=0, z=0):
-        if hasattr(x, '__iter__'):
+        if hasattr(x, "__iter__"):
             self.x, self.y, self.z = x[0], x[1], x[2]
         else:
             self.x, self.y, self.z = x, y, z
@@ -155,14 +155,14 @@ class vec3:
                 return True
         return False
 
-    def __format__(self, format_spec=''):
-        return ' '.join([format(i, format_spec) for i in self])
+    def __format__(self, format_spec=""):
+        return " ".join([format(i, format_spec) for i in self])
 
     def __floordiv__(self, other):
         if isinstance(other, (int, float)):
             return vec3(self.x // other, self.y // other, self.z // other)
-        elif hasattr(other, '__iter__'):
-            raise ArithmeticError('Cannot divide vector by another vector.')
+        elif hasattr(other, "__iter__"):
+            raise ArithmeticError("Cannot divide vector by another vector.")
         raise TypeError("unsupported operand type(s) for //: 'vec3' and '{}'".format(other.__class__.__name__))
 
     def __getitem__(self, key):
@@ -177,7 +177,7 @@ class vec3:
     def __mul__(self, other):
         if isinstance(other, (int, float)):
             return vec3(*[i * other for i in self])
-        elif hasattr(other, '__iter__'):
+        elif hasattr(other, "__iter__"):
             return vec3(math.fsum([self[1] * other[2], -self[2] * other[1]]),
                         math.fsum([self[2] * other[0], -self[0] * other[2]]),
                         math.fsum([self[0] * other[1], -self[1] * other[0]]))
@@ -194,7 +194,7 @@ class vec3:
 
     def __setitem__(self, key, value):
         if isinstance(key, slice):
-            for k, v in zip(['x', 'y', 'z'][key], value[key]):
+            for k, v in zip(["x", "y", "z"][key], value[key]):
                 self.__setattr__(k, v)
         elif key == 0:
             self.x = value
@@ -215,8 +215,8 @@ class vec3:
     def __truediv__(self, other):
         if isinstance(other, (int, float)):
             return vec3(self.x / other, self.y / other, self.z / other)
-        elif hasattr(other, '__iter__'):
-            raise ArithmeticError('Cannot divide vector by another vector.')
+        elif hasattr(other, "__iter__"):
+            raise ArithmeticError("Cannot divide vector by another vector.")
         raise TypeError("unsupported operand type(s) for /: 'vec3' and '{}'".format(other.__class__.__name__))
 
     def magnitude(self):
@@ -255,7 +255,7 @@ class vec3:
 
 def dot(a, b):
     """Returns the dot product of two vectors"""
-    if hasattr(a, '__iter__') and hasattr(b, '__iter__'):
+    if hasattr(a, "__iter__") and hasattr(b, "__iter__"):
         return math.fsum([i * j for i, j in itertools.zip_longest(a, b, fillvalue=0)])
     else:
         raise TypeError("Cannot dot {} & {}".format(type(a), type(b)))
@@ -265,7 +265,7 @@ def lerp(a, b, t):
     types = (type(a), type(b))
     if int in types or float in types:
         return math.fsum([a, t * math.fsum([b, -a])])
-    if hasattr(a, '__iter__') and hasattr(b, '__iter__'):
+    if hasattr(a, "__iter__") and hasattr(b, "__iter__"):
         out = []
         for i, j in itertools.zip_longest(a, b, fillvalue=0):
             out.append(lerp(i, j, t))
@@ -300,30 +300,3 @@ def sort_clockwise(vec3s, normal):
         
     sorted_vec3s = [vec3s[0]] + [vec3s[i] for i in sorted(proximity.keys(), key=lambda k: proximity[k])]
     return sorted_vec3s
-
-##def sort_clockwise_indices(vec3s, indices, normal):
-##    C = sum(vec3s, vec3()) / len(vec3s)
-##    score = lambda A, B: dot(normal, (A - C) * (B - C))
-##    left = []
-##    right = []
-##    for index, point in enumerate(vec3s[1:]):
-##        (left if score(vec3s[0], point) >= 0 else right).append(index + 1)
-##    
-##    proximity = dict() # number of points between self and start
-##    for i, p in enumerate(vec3s[1:]):
-##        i += 1
-##        if i in left:
-##            proximity[i] = len(right)
-##            for j in left:
-##                if score(p, vec3s[j]) >= 0:
-##                    proximity[i] += 1
-##        else:
-##            proximity[i] = 0
-##            for j in right:
-##                if score(p, vec3s[j]) >= 0:
-##                    proximity[i] += 1
-##    return [0] + [vec3s[0]] + sorted(proximity.keys(), key=lambda k: proximity[k])
-    
-
-if __name__ == "__main__":
-    pass
