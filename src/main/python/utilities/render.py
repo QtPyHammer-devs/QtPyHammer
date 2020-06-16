@@ -101,13 +101,13 @@ class manager:
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
         glEnableVertexAttribArray(1) # vertex_normal (brush only)
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 44, GLvoidp(12))
-        # glEnableVertexAttribArray(4) # blend_alpha (displacement only)
-        # glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(12))
-        # ^ replaces vertex_normal if displacement
         glEnableVertexAttribArray(2) # vertex_uv
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
         glEnableVertexAttribArray(3) # editor_colour
         glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
+        glEnableVertexAttribArray(4) # blend_alpha (displacement only)
+        glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
+        # ^ replaces editor_colour if displacement
 
     def draw(self):
         glUseProgram(0)
@@ -116,28 +116,11 @@ class manager:
         draw_ray(vector.vec3(), vector.vec3(), 0)
         # TODO: dither transparency for tooltextures (skip, hint, trigger, clip)
         glUseProgram(self.shader[self.render_mode]["brush"])
-##        glDrawArrays(GL_POINTS, 0, 9984)
         for start, length in self.buffer_allocation_map["index"]["brush"]:
             count = length // 4 # sizeof(GL_UNSIGNED_INT)
             glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, GLvoidp(start))
-##        # render only brush.id = 2
-##        for renderable in self.buffer_location:
-##            try:
-##                renderable_id = renderable[1] 
-##                if renderable_id == 2:
-##                    start, length = self.buffer_location[renderable]["vertex"]
-##                    count = length // 44
-##                    glDrawArrays(GL_POINTS, start, count)
-##                    start, length = self.buffer_location[renderable]["index"]
-##                    count = length // 4
-##                    glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, GLvoidp(start))
-##            except KeyError:
-##                pass # attempted to draw while mapping was being written
-##            except Exception as exc:
-##                print(f"{exc.__class__.__name__}: {exc}")
 
     def update(self):
-        # update buffer data
         if len(self.buffer_update_queue) > 0:
             update = self.buffer_update_queue.pop(0)
             buffer, start, length, data = update
@@ -156,7 +139,6 @@ class manager:
                     self.buffer_location[key] = dict()
                 self.buffer_location[key][buffer] = (start, length)
                 start += length
-        # update view matrix
         MV_matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
         glUseProgram(self.shader[self.render_mode]["brush"])
         if "matrix" in self.uniform[self.render_mode]["brush"]:
@@ -173,10 +155,6 @@ class manager:
         for i, span in enumerate(target):
             S, L = span
             E = S + L
-            # we can safely assume no spans overlap
-            # self.find_gaps checks that
-            # but self.find_gaps doesn't update the map
-            # we don't update the map until the buffer is updated
             if S < end and E < start:
                 continue # (S, L) is before span_to_track and doesn't touch it
             elif S == end: # span_to_track leads (S, L)
@@ -392,7 +370,7 @@ def brush_to_buffer_data(brush):
         normal = plane[0]
         for i, vertex in enumerate(face):
             uv = side.uv_at(vertex)
-            assembled_vertex = tuple(itertools.chain(vertex, normal, uv, brush.colour))
+            assembled_vertex = (*vertex, *normal, *uv, *brush.colour)
             if assembled_vertex not in vertices:
                 vertices.append(assembled_vertex)
                 face_indices.append(len(self.vertices) - 1)
@@ -400,69 +378,38 @@ def brush_to_buffer_data(brush):
                 face_indices.append(self.vertices.index(assembled_vertex))
         indices.append(loop_fan(face_indices))
 
-def displacement_to_buffer_data(brush_side):
-    power2 = 2 ** side.disp_info.power
-    vertices = []
-    quad = tuple(vector.vec3(x) for x in self.sides[i].face)
+def displacement_to_buffer_data(side):
+    vertices = [] # [(*position, *normal, *uv, blend_alpha, 0, 0), ...]
+    quad = tuple(vector.vec3(P) for P in side.face)
     # ^ the solid class should have checked this is a quad
-    quad_uvs = tuple(vector.vec2(x) for x in uvs[i])
-    disp_uvs = [] # uvs for each barymetrically placed vertex
-    # TODO: move dispinfo decoding to utilities.solid.side
-    start = vector.vec3(*map(float, side.dispinfo.startposition[1:-1].split()))
+    start = vector.vec3(side.dispinfo.start)
     if start not in quad:
         # make start closest point on quad to start
         start = sorted(quad, key=lambda P: (start - P).magnitude())[0]
-    index = quad.index(start) - 1
-    quad = quad[index:] + quad[:index] # "rotate" to make start the start
-    quad_uvs = quad_uvs[index:] + quad_uvs[:index]
-    side_dispverts = []
+    starting_index = quad.index(start) - 1
+    quad = quad[starting_index:] + quad[:starting_index]
+    # ^ "rotate" to make quad[0] == start
     A, B, C, D = quad
     DA = D - A
     CB = C - B
-    Auv, Buv, Cuv, Duv = quad_uvs
-    DAuv = Duv - Auv
-    CBuv = Cuv - Buv
-    distance_rows = [v for k, v in side.dispinfo.distances.__dict__.items() if k != "_line"] # skip line number
-    normal_rows = [v for k, v in side.dispinfo.normals.__dict__.items() if k != "_line"]
-    for y, distance_row, normals_row in zip(itertools.count(), distance_rows, normal_rows):
-        distance_row = [float(x) for x in distance_row.split()]
-        normals_row = [*map(float, normals_row.split())]
-        left_vert = A + (DA * y / power2)
-        left_uv = Auv + (DAuv * y / power2)
-        right_vert = B + (CB * y / power2)
-        right_uv = Buv + (CBuv * y / power2)
-        for x, distance in enumerate(distance_row):
-            k = x * 3 # index
-            normal = vector.vec3(normals_row[k], normals_row[k + 1], normals_row[k + 2])
-            baryvert = vector.lerp(right_vert, left_vert, x / power2)
-            disp_uvs.append(vector.lerp(right_uv, left_uv, x / power2))
-            side_dispverts.append(vector.vec3(baryvert) + (distance * normal))
-
-            # calculate displacement normals
-            normals = []
-            for x in range(power2 + 1):
-                for y in range(power2 + 1):
-                    dispvert = side_dispverts[x * (power2 + 1) + y]
-                    neighbour_indices = square_neighbours(x, y, power2 + 1)
-                    try:
-                        neighbours = [side_dispverts[i] for i in neighbour_indices]
-                    except Exception as exc:
-                        # f"({x}, {y}) {list(square_neighbours(x, y, power2 + 1))=}") # python 3.8
-                        print("({}, {}) {}".format(x, y, list(square_neighbours(x, y, power2 + 1))))
-                        print(exc) # raise traceback instead
-                    normal = vector.vec3(0, 0, 1)
-                    if len(neighbours) != 0:
-                        normal -= dispvert - sum(neighbours, vector.vec3()) / len(neighbours)
-                        normal = normal.normalise()
-                    normals.append(normal)
-
-            self.displacement_vertices[side.id] = []
-            alpha_rows = [v for k, v in side.dispinfo.alphas.__dict__.items() if k != "_line"]
-            alphas = [float(a) for row in alpha_rows for a in row.split()]
-            for pos, alpha, uv in zip(side_dispverts, alphas, disp_uvs):
-                assembled_vertex = tuple(itertools.chain(pos, [alpha, 0.0, 0.0], uv, self.colour))
-                self.displacement_vertices[side.id].append(assembled_vertex)
-
+    disp_info = side.disp_info
+    power2 = 2 ** disp_info.power
+    for i in range(power2 + 1):
+        y_lerp_factor = i / power2
+        distance_row = disp_info.distances[i]
+        normal_row = disp_info.normals[i]
+        alpha_row = disp_info.alphas[i]
+        for normals, distances, alphas in zip(distance_row, normal_row, alpha_row):
+            left_vert = A + (DA * y_lerp_factor)
+            right_vert = B + (CB * y_lerp_factor)
+            for j, normal, distance, alpha in zip(itertools.count(), normals, distances, alphas):
+                barymetric = vector.lerp(right_vert, left_vert, j / power2)
+                position = vector.vec3(barymetric) + (distance * normal)
+                normal = side.plane[0]
+                # ^ could use square_neighbours to calculate per-vertex smooth normals
+                uv = side.uv_at(barymetric)
+                vertices.append((*position, *normal, *uv, alpha, 0, 0))
+    indices = disp_indices(disp_info.power)
 
 # DRAWING FUNCTIONS
 def yield_grid(limit, step): # "step" = Grid Scale (MainWindow action)

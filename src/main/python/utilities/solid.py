@@ -22,7 +22,7 @@ class texture_vector: # pairing uaxis and vaxis together would be nice
         x, y, z, offset = re.findall("(?<=[\[\ ]).+?(?=[\ \]])", string)
         self.vector = x, y, z
         self.offset = offset
-        self.scale = re.search("(?<=\ )[^\ ]*$", side.uaxis).group(0)
+        self.scale = re.search("(?<=\ )[^\ ]+$", side.uaxis).group(0)
 
     def linear_pos(self, position):
         """half a uv, need 2 texture_vectors for the full uv"""
@@ -48,11 +48,49 @@ class side:
 
         self.face = [] # calculated by clipping against other planes in solid.__init__
 
+        if hasattr(namescape, "dispinfo"):
+            self.disp_info = disp_info(namespace.dispinfo)
+
     def uv_at(self, position):
         u = self.uaxis.linear_pos(position)
         v = self.vaxis.linear_pos(position)
         return (u, v)
 
+
+class dispinfo:
+    def __init__(self, namespace):
+        self.power = int(namespace.power)
+        self.start = tuple(map(float, re.findall("(?<=[\[\ ]).+?(?=[\ \]])", namespace.startposition)))
+        # self.flags = int(namespace.flags)
+        # self.elevation = int(namespace.elevation)
+        # self.subdiv = int(subdiv)
+
+        self.normals = []
+        self.distances = []
+        # self.offsets = []
+        # self.offset_normals = []
+        self.alphas = []
+        # self.triangle_tags = []
+        # self.allowed_verts = []
+        floats = lambda s: map(float, s.split(" "))
+        row_count = (2 ** self.power) + 1
+        for i in range(row_count):
+            row = f"row{i}"
+            row_strings = namespace.normals[row].split(" ")
+            row_normals = []
+            for i in range(row_count):
+                i *= 3
+                row_normals.append(vector.vec3(floats(row_strings[i:i+3])))
+            self.normals.append(row_normals)
+            self.distances.append(floats(namespace.distances[row]))
+            self.alphas.append(floats(namespace.alphas[row]))
+            # almost always 0-255 (256 has been observed in the wild)
+            # almost always an integer (however floats have also been seen)
+
+    def change_power(self, new_power):
+        """simplify / subdivide displacement further"""
+        raise NotImplementedError()
+        
 
 class solid:
     __slots__ = ("colour", "id", "is_displacement", "sides", "side_ids", "source")
@@ -61,7 +99,7 @@ class solid:
         """Initialise from namespace (vmf import)"""
         self.source = namespace # preserved for debugging
         self.id = int(self.source.id)
-        self.colour = tuple(int(x) / 255 for x in solid_namespace.editor.color.split())
+        self.colour = tuple(int(x) / 255 for x in namespace.editor.color.split())
 
         self.sides = [side(s) for s in self.source.sides]
         self.side_ids = [s.id for s in self.sides]

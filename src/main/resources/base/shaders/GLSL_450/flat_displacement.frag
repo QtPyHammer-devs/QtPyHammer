@@ -2,16 +2,16 @@
 layout(location = 0) out vec4 outColour;
 
 in vec3 position;
-in float blend;
+in vec3 normal;
 in vec2 uv;
+in float blend;
+
 in vec3 colour;
+in float Kd;
 
 void main()
 {
-	vec4 Ka = vec4(0.75, 0.75, 0.75, 1);
-	
-	vec3 inverse_colour = vec3(1, 1, 1); // will be inverse hue
-	vec4 blend_colour = vec4(mix(colour, inverse_colour, blend), 1);
+	vec4 Ka = vec4(0.25, 0.25, 0.25, 1);
 
-	outColour = vec4(blend_colour, 1) + Ka;
+	outColour = vec4(colour, 1) * (Kd + Ka);
 }
