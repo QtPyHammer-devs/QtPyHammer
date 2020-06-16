@@ -3,70 +3,14 @@ from collections import namedtuple
 import colorsys
 import ctypes
 import itertools
-import traceback
 
 import numpy as np
 from OpenGL.GL import *
 from OpenGL.GL.shaders import compileShader, compileProgram
-from OpenGL.GLU import *
 from PyQt5 import QtGui
 
-from . import camera, solid, vector
+from . import vector
 
-
-# DRAWING FUNCTIONS
-def yield_grid(limit, step): # "step" = Grid Scale (MainWindow action)
-    """ yields lines on a grid (one vertex at a time) centered on [0, 0]
-    limit: int, half the width of grid
-    step: int, gap between edges"""
-    # center axes
-    yield 0, -limit
-    yield 0, limit # +NS
-    yield -limit, 0
-    yield limit, 0 # +EW
-    # concentric squares stepping out from center (0, 0) to limit
-    for i in range(1, limit + 1, step):
-        yield i, -limit
-        yield i, limit # +NS
-        yield -limit, i
-        yield limit, i # +EW
-        yield limit, -i
-        yield -limit, -i # -WE
-        yield -i, limit
-        yield -i, -limit # -SN
-    # ^ the above function is optimised for a line grid
-    # another function would be required for a dot grid
-    # it's also worth considering adding an offset / origin point
-
-def draw_grid(limit=2048, grid_scale=64, colour=(.5, .5, .5)):
-    glLineWidth(1)
-    glBegin(GL_LINES)
-    glColor(*colour)
-    for x, y in yield_grid(limit, grid_scale):
-        glVertex(x, y)
-    glEnd()
-
-def draw_origin(scale=64):
-    glLineWidth(2)
-    glBegin(GL_LINES)
-    glColor(1, 0, 0)
-    glVertex(0, 0, 0)
-    glVertex(scale, 0, 0)
-    glColor(0, 1, 0)
-    glVertex(0, 0, 0)
-    glVertex(0, scale, 0)
-    glColor(0, 0, 1)
-    glVertex(0, 0, 0)
-    glVertex(0, 0, scale)
-    glEnd()
-
-def draw_ray(origin, direction, distance=4096):
-    glLineWidth(2)
-    glBegin(GL_LINES)
-    glColor(1, .75, .25)
-    glVertex(*origin)
-    glVertex(*(origin + direction * distance))
-    glEnd()
 
 class manager:
     """Manages OpenGL buffers and gives handles for rendering & hiding objects"""
@@ -219,8 +163,6 @@ class manager:
             location = self.uniform[self.render_mode]["brush"]["matrix"]
             glUniformMatrix4fv(location, 1, GL_FALSE, MV_matrix)
 
-    # modify self.buffer_allocation_map
-    # WORKING
     def track_span(self, buffer, renderable_type, span_to_track):
         start, length = span_to_track
         end = start + length
@@ -262,7 +204,6 @@ class manager:
                     new_start = max([start, r_end])
                     out.append((new_start, end - new_start)) # segment after R
         return out
-    # WORKING END
 
     def find_gaps(self, buffer="vertex", preferred_type=None, minimum_size=1):
         """Generator which yeilds a (start, length) span for each gap which meets requirements"""
@@ -369,3 +310,212 @@ class manager:
 ##        for brush in displacement_brushes:
 ##            for side_id in brush.displacements:
 ##                ...
+        
+
+# polygon to triangles
+def loop_fan(vertices):
+    "ploygon to triangle fan"
+    out = vertices[:3]
+    for vertex in vertices[3:]:
+        out += [out[0], out[-1], vertex]
+    return out
+
+def loop_fan_indices(vertices):
+    "polygon to triangle fan (indices only) by Exactol"
+    indices = []
+    for i in range(len(vertices) - 2):
+        indices += [0, i + 1, i + 2]
+    return indices
+
+# displacement to triangles
+def disp_indices(power, start=0):
+    """output length = ((2 ** power) + 1) ** 2"""
+    power2 = 2 ** power
+    power2A = power2 + 1
+    power2B = power2 + 2
+    power2C = power2 + 3
+    tris = []
+    for line in range(power2):
+        line_offset = power2A * line
+        for block in range(2 ** (power - 1)):
+            offset = line_offset + 2 * block
+            if line % 2 == 0: # |\|/|
+                tris.append(start + offset + 0)
+                tris.append(start + offset + power2A)
+                tris.append(start + offset + 1)
+
+                tris.append(start + offset + power2A)
+                tris.append(start + offset + power2B)
+                tris.append(start + offset + 1)
+
+                tris.append(start + offset + power2B)
+                tris.append(start + offset + power2C)
+                tris.append(start + offset + 1)
+
+                tris.append(start + offset + power2C)
+                tris.append(start + offset + 2)
+                tris.append(start + offset + 1)
+            else: # |/|\|
+                tris.append(start + offset + 0)
+                tris.append(start + offset + power2A)
+                tris.append(start + offset + power2B)
+
+                tris.append(start + offset + 1)
+                tris.append(start + offset + 0)
+                tris.append(start + offset + power2B)
+
+                tris.append(start + offset + 2])
+                tris.append(start + offset + 1])
+                tris.append(start + offset + power2B)
+
+                tris.append(start + offset + power2C)
+                tris.append(start + offset + 2])
+                tris.append(start + offset + power2B)
+    return tris
+
+
+def square_neighbours(x, y, edge_length): # edge_length = (2^power) + 1
+    """yields the indicies of neighbouring points in a displacement"""
+    for i in range(x - 1, x + 2):
+        if i >= 0 and i < edge_length:
+            for j in range(y - 1, y + 2):
+                if j >= 0 and j < edge_length:
+                    if not (i != x and j != y):
+                        yield i * edge_length + j
+
+# renderable(s) to vertices & indices
+def brush_to_buffer_data(brush):
+    indices = []
+    vertices = [] # [(*position, *normal, *uv, *colour), ...]
+    for face, side, plane in zip(brush.faces, brush.sides, brush.planes):
+        face_indices = []
+        normal = plane[0]
+        for i, vertex in enumerate(face):
+            uv = side.uv_at(vertex)
+            assembled_vertex = tuple(itertools.chain(vertex, normal, uv, brush.colour))
+            if assembled_vertex not in vertices:
+                vertices.append(assembled_vertex)
+                face_indices.append(len(self.vertices) - 1)
+            else:
+                face_indices.append(self.vertices.index(assembled_vertex))
+        indices.append(loop_fan(face_indices))
+
+def displacement_to_buffer_data(brush_side):
+    power2 = 2 ** side.disp_info.power
+    vertices = []
+    quad = tuple(vector.vec3(x) for x in self.sides[i].face)
+    # ^ the solid class should have checked this is a quad
+    quad_uvs = tuple(vector.vec2(x) for x in uvs[i])
+    disp_uvs = [] # uvs for each barymetrically placed vertex
+    # TODO: move dispinfo decoding to utilities.solid.side
+    start = vector.vec3(*map(float, side.dispinfo.startposition[1:-1].split()))
+    if start not in quad:
+        # make start closest point on quad to start
+        start = sorted(quad, key=lambda P: (start - P).magnitude())[0]
+    index = quad.index(start) - 1
+    quad = quad[index:] + quad[:index] # "rotate" to make start the start
+    quad_uvs = quad_uvs[index:] + quad_uvs[:index]
+    side_dispverts = []
+    A, B, C, D = quad
+    DA = D - A
+    CB = C - B
+    Auv, Buv, Cuv, Duv = quad_uvs
+    DAuv = Duv - Auv
+    CBuv = Cuv - Buv
+    distance_rows = [v for k, v in side.dispinfo.distances.__dict__.items() if k != "_line"] # skip line number
+    normal_rows = [v for k, v in side.dispinfo.normals.__dict__.items() if k != "_line"]
+    for y, distance_row, normals_row in zip(itertools.count(), distance_rows, normal_rows):
+        distance_row = [float(x) for x in distance_row.split()]
+        normals_row = [*map(float, normals_row.split())]
+        left_vert = A + (DA * y / power2)
+        left_uv = Auv + (DAuv * y / power2)
+        right_vert = B + (CB * y / power2)
+        right_uv = Buv + (CBuv * y / power2)
+        for x, distance in enumerate(distance_row):
+            k = x * 3 # index
+            normal = vector.vec3(normals_row[k], normals_row[k + 1], normals_row[k + 2])
+            baryvert = vector.lerp(right_vert, left_vert, x / power2)
+            disp_uvs.append(vector.lerp(right_uv, left_uv, x / power2))
+            side_dispverts.append(vector.vec3(baryvert) + (distance * normal))
+
+            # calculate displacement normals
+            normals = []
+            for x in range(power2 + 1):
+                for y in range(power2 + 1):
+                    dispvert = side_dispverts[x * (power2 + 1) + y]
+                    neighbour_indices = square_neighbours(x, y, power2 + 1)
+                    try:
+                        neighbours = [side_dispverts[i] for i in neighbour_indices]
+                    except Exception as exc:
+                        # f"({x}, {y}) {list(square_neighbours(x, y, power2 + 1))=}") # python 3.8
+                        print("({}, {}) {}".format(x, y, list(square_neighbours(x, y, power2 + 1))))
+                        print(exc) # raise traceback instead
+                    normal = vector.vec3(0, 0, 1)
+                    if len(neighbours) != 0:
+                        normal -= dispvert - sum(neighbours, vector.vec3()) / len(neighbours)
+                        normal = normal.normalise()
+                    normals.append(normal)
+
+            self.displacement_vertices[side.id] = []
+            alpha_rows = [v for k, v in side.dispinfo.alphas.__dict__.items() if k != "_line"]
+            alphas = [float(a) for row in alpha_rows for a in row.split()]
+            for pos, alpha, uv in zip(side_dispverts, alphas, disp_uvs):
+                assembled_vertex = tuple(itertools.chain(pos, [alpha, 0.0, 0.0], uv, self.colour))
+                self.displacement_vertices[side.id].append(assembled_vertex)
+
+
+# DRAWING FUNCTIONS
+def yield_grid(limit, step): # "step" = Grid Scale (MainWindow action)
+    """ yields lines on a grid (one vertex at a time) centered on [0, 0]
+    limit: int, half the width of grid
+    step: int, gap between edges"""
+    # center axes
+    yield 0, -limit
+    yield 0, limit # +NS
+    yield -limit, 0
+    yield limit, 0 # +EW
+    # concentric squares stepping out from center (0, 0) to limit
+    for i in range(1, limit + 1, step):
+        yield i, -limit
+        yield i, limit # +NS
+        yield -limit, i
+        yield limit, i # +EW
+        yield limit, -i
+        yield -limit, -i # -WE
+        yield -i, limit
+        yield -i, -limit # -SN
+    # ^ the above function is optimised for a line grid
+    # another function would be required for a dot grid
+    # it's also worth considering adding an offset / origin point
+
+def draw_grid(limit=2048, grid_scale=64, colour=(.5, .5, .5)):
+    glLineWidth(1)
+    glBegin(GL_LINES)
+    glColor(*colour)
+    for x, y in yield_grid(limit, grid_scale):
+        glVertex(x, y)
+    glEnd()
+
+def draw_origin(scale=64):
+    glLineWidth(2)
+    glBegin(GL_LINES)
+    glColor(1, 0, 0)
+    glVertex(0, 0, 0)
+    glVertex(scale, 0, 0)
+    glColor(0, 1, 0)
+    glVertex(0, 0, 0)
+    glVertex(0, scale, 0)
+    glColor(0, 0, 1)
+    glVertex(0, 0, 0)
+    glVertex(0, 0, scale)
+    glEnd()
+
+def draw_ray(origin, direction, distance=4096):
+    glLineWidth(2)
+    glBegin(GL_LINES)
+    glColor(1, .75, .25)
+    glVertex(*origin)
+    glVertex(*(origin + direction * distance))
+    glEnd()
+
+
