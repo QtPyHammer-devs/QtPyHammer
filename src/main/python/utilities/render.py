@@ -105,8 +105,8 @@ class manager:
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
         glEnableVertexAttribArray(3) # editor_colour
         glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
-##        glEnableVertexAttribArray(4) # blend_alpha (displacement only)
-##        glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
+        glEnableVertexAttribArray(4) # blend_alpha (displacement only)
+        glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
 
     def draw(self):
         glUseProgram(0)
@@ -197,18 +197,18 @@ class manager:
         # "spans" refers to spaces with data assigned
         # "gaps" are unused spaces in memory that data can be assigned to
         # both are recorded in the form: (starting_index, length_in_bytes)
-        prev_span = (0, 0)
-        prev_span_end = 0
-        prev_gap = (0, 0)
         buffer_map = self.buffer_allocation_map[buffer]
+        if sum([len(buffer_map[r]) for r in buffer_map]) == 0:
+            yield (0, limit)
+            return
         if preferred_type not in (None, *buffer_map.keys()):
             raise RuntimeError("Invalid preferred_type: {}".format(preferred_type))
         span_type = {s: t for t in buffer_map for s in buffer_map[t]}
         # ^ {"type": [*spans]} -> {span: "type"}
-        span_type[prev_span] = preferred_type # if a gap starts at 0, use it
         filled_spans = sorted(span_type, key=lambda s: s[0])
         # ^ all occupied spans, sorted by start
-        # -- appears to ignore other spans (preferred_type related?)
+        prev_span = filled_spans.pop(0)
+        prev_span_end = sum(prev_span)
         for span in filled_spans:
             span_start, span_length = span
             gap_start = prev_span_end + 1
@@ -238,7 +238,8 @@ class manager:
                     displacement_data[(brush.id, face.id)] = data
         self.add_renderables("brush", brush_data)
         # self.add_renderables("displacement", displacement_data)
-        # ^ not yet hiding base brush & find_gaps is overwriting brush data
+        # ^ not yet hiding base brush
+        # BUG: doing buffer mapping updates with buffer data updates is bad for find_gaps
 
     # --> add_renderables --> buffer_update_queue & mapping_update_queue
     def add_renderables(self, _type, renderables):
