@@ -34,7 +34,8 @@ class manager:
         self.buffer_location = {}
         # ^ renderable: {"vertex": (start, length),
         #                "index":  (start, length)}
-        # where: renderable = {"type": "brush", "id": brush.id}
+        # renderable = {"type": "brush", "id": brush.id}
+        # -- OR {"type": "displacement", "id": (brush.id, side.id)}
 
         self.buffer_allocation_map = {"vertex": {"brush": [],
                                                  "displacement": [],
@@ -217,23 +218,38 @@ class manager:
                     yield gap
             prev_span = span
             prev_span_end = span_start + span_length
-        if prev_span_end < limit: # final gap
+        if prev_span_end < limit: # gap at tail of buffer
             gap_start = prev_span_end
             gap = (gap_start, limit - gap_start)
             if preferred_type in (None, span_type[prev_span]):
                     yield gap
 
-    # --> add_brushes --> buffer_update_queue & mapping_update_queue
-    # in future this will be reworked for all renderable types
-    # -- variable vertex format size (& gap_start alignment)
-    # -- possibly different vertex & index data acquisition
     def add_brushes(self, *brushes):
-        """Add *brushes to the appropriate GPU buffers"""
-        vertex_gaps = {g: [0, [], []] for g in self.find_gaps(buffer="vertex")}
-        index_gaps = {g: [0, [], []] for g in self.find_gaps(buffer="index", preferred_type="brush")}
+        brush_data = dict()
+        displacement_data = dict()
+        for brush in *brushes:
+            brush_data[brush.id] = brush_buffer_data(brush)
+            if brush.is_displacement:
+                for side in brush:
+                    if not hasattr(side, "displacement"):
+                        continue
+                    vertices, indices = displacement_buffer_data(side.displacement)
+                    displacement_data[(brush.id, side.id)] = (vertices, indices)
+        self.add_renderables("brush", brush_data)
+        self.add_renderables("displacement", displacement_data)
+
+    # --> add_renderables --> buffer_update_queue & mapping_update_queue
+    def add_renderables(self, renderable_type, data):
+        """Add data to the appropriate GPU buffers"""
+        # data = {renderable_id: (vertices, indices)}
+        vertex_gaps = self.find_gaps(buffer="vertex")
+        vertex_gaps = {g: [0, [], []] for g in vertex_gaps}
+        index_gaps = self.find_gaps(buffer="index", preferred_type=renderable_type)
+        index_gaps = {g: [0, [], []] for g in index_gaps}
         # ^ gap: [used_length, [ids], [data]]
-        for brush in brushes:
-            vertex_data_length = len(brush.vertices) * self.vertex_format_size
+        for renderable_id, data in data.items():
+            vertex_data, index_data = data
+            vertex_data_length = len(vertex_data) * 4
             for gap in vertex_gaps:
                 gap_start, gap_length = gap
                 used_length = vertex_gaps[gap][0]
@@ -241,11 +257,10 @@ class manager:
                 if vertex_data_length <= free_length:
                     vertex_gaps[gap][0] += vertex_data_length # used_length
                     vertex_gaps[gap][1].append(brush.id) # brush ids
-                    vertex_data = list(itertools.chain(*brush.vertices))
                     vertex_gaps[gap][2].append(vertex_data) # data
                     index_offset = (gap_start + used_length) // self.vertex_format_size
                     break
-            index_data_length = len(brush.indices) * 4
+            index_data_length = len(index_data) * 4
             for gap in index_gaps:
                 gap_start, gap_length = gap
                 used_length = index_gaps[gap][0]
@@ -280,15 +295,57 @@ class manager:
             lengths = [len(d) * 4 for d in index_gaps[gap][2]]
             mapping = ("brush", ids, tuple(lengths))
             self.mappings_update_queue.append(mapping)
-        # CTRL+C, CTRL+V: DISPLACEMENTS
-##        vertex_gaps = {g: [0, [], []] for g in self.find_gaps(buffer="vertex")}
-##        index_gaps = {g: [0, [], []] for g in self.find_gaps(buffer="index", preferred_type="displacement")}
-##        # ^ gap: [used_length, [ids], [data]]
-##        displacement_brushes = filter(lambda b: b.is_displacement, brushes)
-##        for brush in displacement_brushes:
-##            for side_id in brush.displacements:
-##                ...
-        
+
+# renderable(s) to vertices & indices
+def brush_buffer_data(brush):
+    indices = []
+    vertices = [] # [(*position, *normal, *uv, *colour), ...]
+    for face, side, plane in zip(brush.faces, brush.sides, brush.planes):
+        face_indices = []
+        normal = plane[0]
+        for i, vertex in enumerate(face):
+            uv = side.uv_at(vertex)
+            assembled_vertex = (*vertex, *normal, *uv, *brush.colour)
+            if assembled_vertex not in vertices:
+                vertices.append(assembled_vertex)
+                face_indices.append(len(self.vertices) - 1)
+            else:
+                face_indices.append(self.vertices.index(assembled_vertex))
+        indices.append(loop_fan(face_indices))
+    vertices = list(itertools.chain(*vertices))
+    return vertices, indices
+
+def displacement_buffer_data(side):
+    vertices = [] # [(*position, *normal, *uv, blend_alpha, 0, 0), ...]
+    quad = tuple(vector.vec3(P) for P in side.face)
+    # ^ the solid class should have checked this is a quad
+    start = vector.vec3(side.dispinfo.start)
+    if start not in quad: # start = closest point on quad to start
+        start = sorted(quad, key=lambda P: (start - P).magnitude())[0]
+    starting_index = quad.index(start) - 1
+    quad = quad[starting_index:] + quad[:starting_index]
+    A, B, C, D = quad
+    DA = D - A
+    CB = C - B
+    disp_info = side.disp_info
+    power2 = 2 ** disp_info.power
+    for i in range(power2 + 1):
+        y_lerp_factor = i / power2
+        distance_row = disp_info.distances[i]
+        normal_row = disp_info.normals[i]
+        alpha_row = disp_info.alphas[i]
+        for normals, distances, alphas in zip(distance_row, normal_row, alpha_row):
+            left_vert = A + (DA * y_lerp_factor)
+            right_vert = B + (CB * y_lerp_factor)
+            for j, normal, distance, alpha in zip(itertools.count(), normals, distances, alphas):
+                barymetric = vector.lerp(right_vert, left_vert, j / power2)
+                position = vector.vec3(barymetric) + (distance * normal)
+                normal = side.plane[0]
+                uv = side.uv_at(barymetric)
+                vertices.append((*position, *normal, *uv, alpha, 0, 0))
+    indices = disp_indices(disp_info.power)
+    vertices = list(itertools.chain(*vertices))
+    return vertices, indices
 
 # polygon to triangles
 def loop_fan(vertices):
@@ -351,7 +408,7 @@ def disp_indices(power):
                 tris.append(offset + power2B)
     return tris
 
-
+# displacement smooth normal calculation (get index of neighbour in list)
 def square_neighbours(x, y, edge_length): # edge_length = (2^power) + 1
     """yields the indicies of neighbouring points in a displacement"""
     for i in range(x - 1, x + 2):
@@ -360,56 +417,6 @@ def square_neighbours(x, y, edge_length): # edge_length = (2^power) + 1
                 if j >= 0 and j < edge_length:
                     if not (i != x and j != y):
                         yield i * edge_length + j
-
-# renderable(s) to vertices & indices
-def brush_to_buffer_data(brush):
-    indices = []
-    vertices = [] # [(*position, *normal, *uv, *colour), ...]
-    for face, side, plane in zip(brush.faces, brush.sides, brush.planes):
-        face_indices = []
-        normal = plane[0]
-        for i, vertex in enumerate(face):
-            uv = side.uv_at(vertex)
-            assembled_vertex = (*vertex, *normal, *uv, *brush.colour)
-            if assembled_vertex not in vertices:
-                vertices.append(assembled_vertex)
-                face_indices.append(len(self.vertices) - 1)
-            else:
-                face_indices.append(self.vertices.index(assembled_vertex))
-        indices.append(loop_fan(face_indices))
-
-def displacement_to_buffer_data(side):
-    vertices = [] # [(*position, *normal, *uv, blend_alpha, 0, 0), ...]
-    quad = tuple(vector.vec3(P) for P in side.face)
-    # ^ the solid class should have checked this is a quad
-    start = vector.vec3(side.dispinfo.start)
-    if start not in quad:
-        # make start closest point on quad to start
-        start = sorted(quad, key=lambda P: (start - P).magnitude())[0]
-    starting_index = quad.index(start) - 1
-    quad = quad[starting_index:] + quad[:starting_index]
-    # ^ "rotate" to make quad[0] == start
-    A, B, C, D = quad
-    DA = D - A
-    CB = C - B
-    disp_info = side.disp_info
-    power2 = 2 ** disp_info.power
-    for i in range(power2 + 1):
-        y_lerp_factor = i / power2
-        distance_row = disp_info.distances[i]
-        normal_row = disp_info.normals[i]
-        alpha_row = disp_info.alphas[i]
-        for normals, distances, alphas in zip(distance_row, normal_row, alpha_row):
-            left_vert = A + (DA * y_lerp_factor)
-            right_vert = B + (CB * y_lerp_factor)
-            for j, normal, distance, alpha in zip(itertools.count(), normals, distances, alphas):
-                barymetric = vector.lerp(right_vert, left_vert, j / power2)
-                position = vector.vec3(barymetric) + (distance * normal)
-                normal = side.plane[0]
-                # ^ could use square_neighbours to calculate per-vertex smooth normals
-                uv = side.uv_at(barymetric)
-                vertices.append((*position, *normal, *uv, alpha, 0, 0))
-    indices = disp_indices(disp_info.power)
 
 # DRAWING FUNCTIONS
 def yield_grid(limit, step): # "step" = Grid Scale (MainWindow action)

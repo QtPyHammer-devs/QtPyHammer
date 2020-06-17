@@ -50,7 +50,7 @@ class side:
         # ^ calculated by clipping against other planes in solid.__init__
 
         if hasattr(namespace, "dispinfo"):
-            self.displacement = disp_info(namespace.dispinfo)
+            self.displacement = displacement(namespace.dispinfo)
 
     def uv_at(self, position):
         u = self.uaxis.linear_pos(position)

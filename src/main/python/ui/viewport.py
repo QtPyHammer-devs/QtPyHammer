@@ -7,9 +7,7 @@ from OpenGL.GLU import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 sys.path.insert(0, "../")
-from utilities import camera
-from utilities import render
-from utilities import vector
+from utilities import camera, render, vector
 
 
 # arrow keys aren't registering? why? do we need a separate function?
@@ -60,9 +58,6 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.render_manager.update()
         self.doneCurrent()
         super(MapViewport3D, self).update() # calls PaintGL
-
-    def add_brushes(self, *brushes):
-        self.render_manager.add_brushes(*brushes)
 
     ######################
     ### OpenGL Methods ###
