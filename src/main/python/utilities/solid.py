@@ -7,7 +7,7 @@ from . import vector, vmf
 def triangle_of(string):
     """"'(X Y Z) (X Y Z) (X Y Z)' --> (vec3(X, Y, Z), vec3(X, Y, Z), vec3(X, Y, Z))"""
     points = re.findall("(?<=\().+?(?=\))", string)
-    vector_of = lambda P: vector.vec3(map(float, P.split(" ")))
+    vector_of = lambda P: vector.vec3(*map(float, P.split(" ")))
     return tuple(map(vector_of, points))
 
 def plane_of(A, B, C):
@@ -20,9 +20,9 @@ class texture_vector: # pairing uaxis and vaxis together would be nice
     def __init__(self, string):
         """'[X Y Z Offset] Scale' --> self.vector, self.offset, self.scale"""
         x, y, z, offset = re.findall("(?<=[\[\ ]).+?(?=[\ \]])", string)
-        self.vector = x, y, z
-        self.offset = offset
-        self.scale = re.search("(?<=\ )[^\ ]+$", side.uaxis).group(0)
+        self.vector = tuple(map(float, [x, y, z]))
+        self.offset = float(offset)
+        self.scale = float(re.search("(?<=\ )[^\ ]+$", string).group(0))
 
     def linear_pos(self, position):
         """half a uv, need 2 texture_vectors for the full uv"""
@@ -34,11 +34,11 @@ class texture_vector: # pairing uaxis and vaxis together would be nice
     # & a wrapping method for alt+right click
 
 
-class side:
+class face:
     def __init__(self, namespace):
         self.id = int(namespace.id)
         self.base_triangle = triangle_of(namespace.plane)
-        self.plane = plane_of(*self._triangle) # vec3 normal, float distance
+        self.plane = plane_of(*self.base_triangle) # vec3 normal, float distance
         self.material = namespace.material
         self.uaxis = texture_vector(namespace.uaxis)
         self.vaxis = texture_vector(namespace.vaxis)
@@ -46,7 +46,7 @@ class side:
         self.lightmap_scale = int(namespace.lightmapscale)
         self.smoothing_groups = int(namespace.smoothing_groups)
 
-        self.face = []
+        self.polygon = []
         # ^ calculated by clipping against other planes in solid.__init__
 
         if hasattr(namespace, "dispinfo"):
@@ -73,7 +73,7 @@ class displacement:
         self.alphas = []
         # self.triangle_tags = []
         # self.allowed_verts = []
-        floats = lambda s: map(float, s.split(" "))
+        floats = lambda s: tuple(map(float, s.split(" ")))
         row_count = (2 ** self.power) + 1
         for i in range(row_count):
             row = f"row{i}"
@@ -81,7 +81,8 @@ class displacement:
             row_normals = []
             for i in range(row_count):
                 i *= 3
-                row_normals.append(vector.vec3(floats(row_strings[i:i+3])))
+                normal_string = " ".join(row_strings[i:i+3])
+                row_normals.append(vector.vec3(floats(normal_string)))
             self.normals.append(row_normals)
             self.distances.append(floats(namespace.distances[row]))
             self.alphas.append(floats(namespace.alphas[row]))
@@ -94,7 +95,7 @@ class displacement:
         
 
 class solid:
-    __slots__ = ("colour", "id", "is_displacement", "sides", "side_ids", "source")
+    __slots__ = ("colour", "id", "is_displacement", "faces", "face_ids", "source")
 
     def __init__(self, namespace): # takes a namespace solid (imported from a .vmf)
         """Initialise from namespace (vmf import)"""
@@ -102,23 +103,24 @@ class solid:
         self.id = int(self.source.id)
         self.colour = tuple(int(x) / 255 for x in namespace.editor.color.split())
 
-        self.sides = [side(s) for s in self.source.sides]
-        self.side_ids = [s.id for s in self.sides]
-        # ^ for looking up sides by id
-        if any([hasattr(s, "disp_info") for s in self.sides]):
+        global face
+        self.faces = list(map(face, self.source.sides)) 
+        self.face_ids = [f.id for f in self.faces]
+        # ^ for lookup by id
+        if any([hasattr(f, "displacement") for f in self.faces]):
             self.is_displacement = True
         else:
             self.is_displacement = False
         
-        for i, side in enumerate(self.sides):
-            normal, distance = side.plane
+        for i, f in enumerate(self.faces):
+            normal, distance = f.plane
             if abs(normal.z) != 1:
                 non_parallel = vector.vec3(z=-1)
             else:
                 non_parallel = vector.vec3(y=-1)
             local_y = (non_parallel * normal).normalise()
             local_x = (local_y * normal).normalise()
-            center = sum(side.base_triangle, vector.vec3()) / 3
+            center = sum(f.base_triangle, vector.vec3()) / 3
             # ^ centered on string triangle, but rounding errors abound
             # however, using vector.vec3 does mean math.fsum is utilitsed
             radius = 10 ** 4 # should be larger than any reasonable brush
@@ -126,15 +128,13 @@ class solid:
                              center + ((local_x + local_y) * radius),
                              center + ((local_x + -local_y) * radius),
                              center + ((-local_x + -local_y) * radius)]
-            for other_side in self.sides:
-                if other_side.plane == side.plane;
-                # or other_side.plane[0] == -side.plane[0]: # inverse normal
+            for other_f in self.faces:
+                if other_f.plane == f.plane: # skip yourself
                     continue
-                ngon, offcut = clip(ngon, other_plane).values() # back, front
-            self.sides[i].face = ngon
-            # if this side is a displacement:
-            # -- check ngon is a quad
-            # -- log an error if it isn't
+                ngon, offcut = clip(ngon, other_f.plane).values()
+            self.faces[i].polygon = ngon
+            if hasattr(f, "displacement") and len(ngon) != 4:
+                raise RuntimeError("{self.id} {f.id} invalid displacement")
         
 
     def __repr__(self):

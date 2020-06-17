@@ -46,8 +46,7 @@ class manager:
         # ^ buffer: {type: [(start, length)]}
         self.hidden = {"brush": [], "displacement": [], "model": []}
         # ^ type: (start, length)
-        # DOES NOT YET AFFECT RENDER
-        self.vertex_format_size = 44
+        # -- doesn't do anything yet
 
     def init_GL(self, ctx): # called by parent viewport's initializeGL()
         glClearColor(0.0, 0.0, 0.0, 0.0)
@@ -106,20 +105,20 @@ class manager:
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
         glEnableVertexAttribArray(3) # editor_colour
         glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
-        glEnableVertexAttribArray(4) # blend_alpha (displacement only)
-        glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
-        # ^ replaces editor_colour if displacement
+##        glEnableVertexAttribArray(4) # blend_alpha (displacement only)
+##        glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
 
     def draw(self):
         glUseProgram(0)
-##        draw_grid()
+        draw_grid()
         draw_origin()
         draw_ray(vector.vec3(), vector.vec3(), 0)
         # TODO: dither transparency for tooltextures (skip, hint, trigger, clip)
-        glUseProgram(self.shader[self.render_mode]["brush"])
-        for start, length in self.buffer_allocation_map["index"]["brush"]:
-            count = length // 4 # sizeof(GL_UNSIGNED_INT)
-            glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, GLvoidp(start))
+        for renderable_type in ("brush", "displacement"):
+            glUseProgram(self.shader[self.render_mode][renderable_type])
+            for start, length in self.buffer_allocation_map["index"][renderable_type]:
+                count = length // 4 # sizeof(GL_UNSIGNED_INT)
+                glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, GLvoidp(start))
 
     def update(self):
         if len(self.buffer_update_queue) > 0:
@@ -168,6 +167,7 @@ class manager:
                 break # past the end of span_to_track [we're done!]
 
     def untrack_span(self, buffer, renderable_type, span_to_untrack):
+        # need to do something similar to hide renderables
         r_start, r_length = span_to_remove # span_to_remove is R
         r_end = r_start + r_length
         out = [] # all spans which do not intersect R
@@ -205,9 +205,10 @@ class manager:
             raise RuntimeError("Invalid preferred_type: {}".format(preferred_type))
         span_type = {s: t for t in buffer_map for s in buffer_map[t]}
         # ^ {"type": [*spans]} -> {span: "type"}
-        span_type[prev_span] = preferred_type # always fill a gap starting at 0
+        span_type[prev_span] = preferred_type # if a gap starts at 0, use it
         filled_spans = sorted(span_type, key=lambda s: s[0])
-        # ^ all occupied spans, sorted by starting_index (span[0])
+        # ^ all occupied spans, sorted by start
+        # -- appears to ignore other spans (preferred_type related?)
         for span in filled_spans:
             span_start, span_length = span
             gap_start = prev_span_end + 1
@@ -227,38 +228,39 @@ class manager:
     def add_brushes(self, *brushes):
         brush_data = dict()
         displacement_data = dict()
-        for brush in *brushes:
+        for brush in brushes:
             brush_data[brush.id] = brush_buffer_data(brush)
             if brush.is_displacement:
-                for side in brush:
-                    if not hasattr(side, "displacement"):
+                for face in brush.faces:
+                    if not hasattr(face, "displacement"):
                         continue
-                    vertices, indices = displacement_buffer_data(side.displacement)
-                    displacement_data[(brush.id, side.id)] = (vertices, indices)
+                    data = displacement_buffer_data(face)
+                    displacement_data[(brush.id, face.id)] = data
         self.add_renderables("brush", brush_data)
-        self.add_renderables("displacement", displacement_data)
+        # self.add_renderables("displacement", displacement_data)
+        # ^ not yet hiding base brush & find_gaps is overwriting brush data
 
     # --> add_renderables --> buffer_update_queue & mapping_update_queue
-    def add_renderables(self, renderable_type, data):
+    def add_renderables(self, _type, renderables):
         """Add data to the appropriate GPU buffers"""
-        # data = {renderable_id: (vertices, indices)}
+        # renderables = {_id: (vertices, indices)}
         vertex_gaps = self.find_gaps(buffer="vertex")
         vertex_gaps = {g: [0, [], []] for g in vertex_gaps}
-        index_gaps = self.find_gaps(buffer="index", preferred_type=renderable_type)
+        index_gaps = self.find_gaps(buffer="index", preferred_type=_type)
         index_gaps = {g: [0, [], []] for g in index_gaps}
         # ^ gap: [used_length, [ids], [data]]
-        for renderable_id, data in data.items():
-            vertex_data, index_data = data
+        for _id in renderables:
+            vertex_data, index_data = renderables[_id]
             vertex_data_length = len(vertex_data) * 4
             for gap in vertex_gaps:
                 gap_start, gap_length = gap
                 used_length = vertex_gaps[gap][0]
                 free_length = gap_length - used_length
                 if vertex_data_length <= free_length:
-                    vertex_gaps[gap][0] += vertex_data_length # used_length
-                    vertex_gaps[gap][1].append(brush.id) # brush ids
-                    vertex_gaps[gap][2].append(vertex_data) # data
-                    index_offset = (gap_start + used_length) // self.vertex_format_size
+                    vertex_gaps[gap][0] += vertex_data_length
+                    vertex_gaps[gap][1].append(_id)
+                    vertex_gaps[gap][2].append(vertex_data)
+                    index_offset = (gap_start + used_length) // 44
                     break
             index_data_length = len(index_data) * 4
             for gap in index_gaps:
@@ -266,13 +268,13 @@ class manager:
                 used_length = index_gaps[gap][0]
                 free_length = gap_length - used_length
                 if index_data_length <= free_length:
-                    index_gaps[gap][0] += index_data_length # used length
-                    index_gaps[gap][1].append(brush.id) # brush ids
-                    index_data = [i + index_offset for i in brush.indices]
-                    index_gaps[gap][2].append(index_data) # data
+                    index_gaps[gap][0] += index_data_length
+                    index_gaps[gap][1].append(_id)
+                    index_data = [i + index_offset for i in index_data]
+                    index_gaps[gap][2].append(index_data)
                     break
         for gap in vertex_gaps:
-            if vertex_gaps[gap][0] == 0: # used length
+            if vertex_gaps[gap][0] == 0:
                 continue
             flattened_data = list(itertools.chain(*vertex_gaps[gap][2]))
             vertex_data = np.array(flattened_data, dtype=np.float32)
@@ -280,11 +282,11 @@ class manager:
             update = (GL_ARRAY_BUFFER, gap_start, used_length, vertex_data)
             self.buffer_update_queue.append(update)
             ids = vertex_gaps[gap][1]
-            lengths = [len(d) for d in vertex_gaps[gap][2]]
-            mapping = ("brush", ids, tuple(lengths))
+            lengths = [len(d) * 4 for d in vertex_gaps[gap][2]]
+            mapping = (_type, ids, tuple(lengths))
             self.mappings_update_queue.append(mapping)
         for gap in index_gaps:
-            if index_gaps[gap][0] == 0: # used length
+            if index_gaps[gap][0] == 0:
                 continue
             flattened_data = list(itertools.chain(*index_gaps[gap][2]))
             index_data = np.array(flattened_data, dtype=np.uint32)
@@ -293,33 +295,32 @@ class manager:
             self.buffer_update_queue.append(update)
             ids = index_gaps[gap][1]
             lengths = [len(d) * 4 for d in index_gaps[gap][2]]
-            mapping = ("brush", ids, tuple(lengths))
+            mapping = (_type, ids, tuple(lengths))
             self.mappings_update_queue.append(mapping)
 
 # renderable(s) to vertices & indices
 def brush_buffer_data(brush):
     indices = []
     vertices = [] # [(*position, *normal, *uv, *colour), ...]
-    for face, side, plane in zip(brush.faces, brush.sides, brush.planes):
-        face_indices = []
-        normal = plane[0]
-        for i, vertex in enumerate(face):
-            uv = side.uv_at(vertex)
+    for face in brush.faces:
+        polygon_indices = []
+        normal = face.plane[0]
+        for i, vertex in enumerate(face.polygon):
+            uv = face.uv_at(vertex)
             assembled_vertex = (*vertex, *normal, *uv, *brush.colour)
             if assembled_vertex not in vertices:
                 vertices.append(assembled_vertex)
-                face_indices.append(len(self.vertices) - 1)
+                polygon_indices.append(len(vertices) - 1)
             else:
-                face_indices.append(self.vertices.index(assembled_vertex))
-        indices.append(loop_fan(face_indices))
-    vertices = list(itertools.chain(*vertices))
+                polygon_indices.append(vertices.index(assembled_vertex))
+        indices.extend(loop_triangle_fan(polygon_indices))
+    vertices = tuple(itertools.chain(*vertices))
     return vertices, indices
 
-def displacement_buffer_data(side):
+def displacement_buffer_data(face):
     vertices = [] # [(*position, *normal, *uv, blend_alpha, 0, 0), ...]
-    quad = tuple(vector.vec3(P) for P in side.face)
-    # ^ the solid class should have checked this is a quad
-    start = vector.vec3(side.dispinfo.start)
+    quad = tuple(vector.vec3(P) for P in face.polygon)
+    start = vector.vec3(face.displacement.start)
     if start not in quad: # start = closest point on quad to start
         start = sorted(quad, key=lambda P: (start - P).magnitude())[0]
     starting_index = quad.index(start) - 1
@@ -327,40 +328,27 @@ def displacement_buffer_data(side):
     A, B, C, D = quad
     DA = D - A
     CB = C - B
-    disp_info = side.disp_info
-    power2 = 2 ** disp_info.power
-    for i in range(power2 + 1):
-        y_lerp_factor = i / power2
-        distance_row = disp_info.distances[i]
-        normal_row = disp_info.normals[i]
-        alpha_row = disp_info.alphas[i]
-        for normals, distances, alphas in zip(distance_row, normal_row, alpha_row):
-            left_vert = A + (DA * y_lerp_factor)
-            right_vert = B + (CB * y_lerp_factor)
-            for j, normal, distance, alpha in zip(itertools.count(), normals, distances, alphas):
-                barymetric = vector.lerp(right_vert, left_vert, j / power2)
-                position = vector.vec3(barymetric) + (distance * normal)
-                normal = side.plane[0]
-                uv = side.uv_at(barymetric)
-                vertices.append((*position, *normal, *uv, alpha, 0, 0))
-    indices = disp_indices(disp_info.power)
+    displacement = face.displacement
+    power2 = 2 ** displacement.power
+    for i, normal_row, distance_row, alpha_row in zip(itertools.count(), displacement.normals, displacement.distances, displacement.alphas):
+        left_vert = A + (DA * i / power2)
+        right_vert = B + (CB * i / power2)
+        for j, normal, distance, alpha in zip(itertools.count(), normal_row, distance_row, alpha_row):
+            barymetric = vector.lerp(right_vert, left_vert, j / power2)
+            position = vector.vec3(barymetric) + (normal * distance)
+            uv = face.uv_at(barymetric)
+            vertices.append((*position, *normal, *uv, alpha, 0, 0))
+    indices = disp_indices(displacement.power)
     vertices = list(itertools.chain(*vertices))
     return vertices, indices
 
 # polygon to triangles
-def loop_fan(vertices):
+def loop_triangle_fan(vertices):
     "ploygon to triangle fan"
     out = vertices[:3]
     for vertex in vertices[3:]:
         out += [out[0], out[-1], vertex]
     return out
-
-def loop_fan_indices(vertices):
-    "polygon to triangle fan (indices only) by Exactol"
-    indices = []
-    for i in range(len(vertices) - 2):
-        indices += [0, i + 1, i + 2]
-    return indices
 
 # displacement to triangles
 def disp_indices(power):

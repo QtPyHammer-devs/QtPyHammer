@@ -26,12 +26,13 @@ class interface:
         qph_brushes = []
         for i, source_brush in enumerate(source_brushes):
             try:
-                brush = solid.solid(brush)
-                qph_brushes.append(brush)
+                qph_brush = solid.solid(source_brush)
+                qph_brushes.append(qph_brush)
             except Exception as exc:
-                self.log.append(f"Solid #{i} id: {brush.id} is invalid.\n{exc}")
+                self.log.append(f"Solid #{i} id: {source_brush.id} is invalid.\n{exc}")
+                raise exc
         self.brushes = []
-        self.add_brushes(*brushes)
+        self.add_brushes(*qph_brushes)
         # self.add_entities(*entities)
         if len(self.log) > 0:
             print(*self.log, sep="\n")

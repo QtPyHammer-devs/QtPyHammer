@@ -26,9 +26,9 @@ class Workspace(QtWidgets.QWidget):
     def __init__(self, vmf_path, parent):
         super(Workspace, self).__init__(parent)
         self.ctx = parent.ctx
-        self.vmf = ops.vmf.interface(self, open(vmf_path))
         self.viewport = viewport.MapViewport3D(self)
         # self.viewport.setViewMode.connect(...)
+        self.vmf = ops.vmf.interface(self, open(vmf_path))
         layout = QtWidgets.QVBoxLayout() # holds the viewport
         # ^ QSplitter(s) will be used for quad viewports
         layout.addWidget(self.viewport)
@@ -54,7 +54,8 @@ class Workspace(QtWidgets.QWidget):
         ray_end = ray_origin + ray_direction
         for brush in self.vmf.brushes:
             states = set()
-            for normal, distance in brush.planes:
+            for face in brush.faces:
+                normal, distance = face.plane
                 starts_behind = vector.dot(ray_origin, normal) > distance
                 ends_behind = vector.dot(ray_end, normal) >= distance
                 states.add(starts_behind + ends_behind) # orderless encoding 012
