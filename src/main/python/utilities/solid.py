@@ -46,10 +46,11 @@ class side:
         self.lightmap_scale = int(namespace.lightmapscale)
         self.smoothing_groups = int(namespace.smoothing_groups)
 
-        self.face = [] # calculated by clipping against other planes in solid.__init__
+        self.face = []
+        # ^ calculated by clipping against other planes in solid.__init__
 
-        if hasattr(namescape, "dispinfo"):
-            self.disp_info = disp_info(namespace.dispinfo)
+        if hasattr(namespace, "dispinfo"):
+            self.displacement = disp_info(namespace.dispinfo)
 
     def uv_at(self, position):
         u = self.uaxis.linear_pos(position)
@@ -57,7 +58,7 @@ class side:
         return (u, v)
 
 
-class dispinfo:
+class displacement:
     def __init__(self, namespace):
         self.power = int(namespace.power)
         self.start = tuple(map(float, re.findall("(?<=[\[\ ]).+?(?=[\ \]])", namespace.startposition)))
@@ -125,8 +126,9 @@ class solid:
                              center + ((local_x + local_y) * radius),
                              center + ((local_x + -local_y) * radius),
                              center + ((-local_x + -local_y) * radius)]
-            for other_plane in self.planes:
-                if other_plane == plane or plane[0] == -other_plane[0]:
+            for other_side in self.sides:
+                if other_side.plane == side.plane;
+                # or other_side.plane[0] == -side.plane[0]: # inverse normal
                     continue
                 ngon, offcut = clip(ngon, other_plane).values() # back, front
             self.sides[i].face = ngon

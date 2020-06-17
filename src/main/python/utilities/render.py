@@ -306,7 +306,7 @@ def loop_fan_indices(vertices):
     return indices
 
 # displacement to triangles
-def disp_indices(power, start=0):
+def disp_indices(power):
     """output length = ((2 ** power) + 1) ** 2"""
     power2 = 2 ** power
     power2A = power2 + 1
@@ -318,37 +318,37 @@ def disp_indices(power, start=0):
         for block in range(2 ** (power - 1)):
             offset = line_offset + 2 * block
             if line % 2 == 0: # |\|/|
-                tris.append(start + offset + 0)
-                tris.append(start + offset + power2A)
-                tris.append(start + offset + 1)
+                tris.append(offset + 0)
+                tris.append(offset + power2A)
+                tris.append(offset + 1)
 
-                tris.append(start + offset + power2A)
-                tris.append(start + offset + power2B)
-                tris.append(start + offset + 1)
+                tris.append(offset + power2A)
+                tris.append(offset + power2B)
+                tris.append(offset + 1)
 
-                tris.append(start + offset + power2B)
-                tris.append(start + offset + power2C)
-                tris.append(start + offset + 1)
+                tris.append(offset + power2B)
+                tris.append(offset + power2C)
+                tris.append(offset + 1)
 
-                tris.append(start + offset + power2C)
-                tris.append(start + offset + 2)
-                tris.append(start + offset + 1)
+                tris.append(offset + power2C)
+                tris.append(offset + 2)
+                tris.append(offset + 1)
             else: # |/|\|
-                tris.append(start + offset + 0)
-                tris.append(start + offset + power2A)
-                tris.append(start + offset + power2B)
+                tris.append(offset + 0)
+                tris.append(offset + power2A)
+                tris.append(offset + power2B)
 
-                tris.append(start + offset + 1)
-                tris.append(start + offset + 0)
-                tris.append(start + offset + power2B)
+                tris.append(offset + 1)
+                tris.append(offset + 0)
+                tris.append(offset + power2B)
 
-                tris.append(start + offset + 2])
-                tris.append(start + offset + 1])
-                tris.append(start + offset + power2B)
+                tris.append(offset + 2)
+                tris.append(offset + 1)
+                tris.append(offset + power2B)
 
-                tris.append(start + offset + power2C)
-                tris.append(start + offset + 2])
-                tris.append(start + offset + power2B)
+                tris.append(offset + power2C)
+                tris.append(offset + 2)
+                tris.append(offset + power2B)
     return tris
 
 
