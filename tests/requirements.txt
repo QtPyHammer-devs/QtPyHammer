@@ -1,0 +1,2 @@
+PySDL2==0.9.6
+pysdl2-dll

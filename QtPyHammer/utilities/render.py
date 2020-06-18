@@ -1,8 +1,5 @@
-"""Bunch of OpenGL heavy code for rendering vmfs"""
-from collections import namedtuple
-import colorsys
-import ctypes
 import itertools
+import os
 
 import numpy as np
 from OpenGL.GL import *
@@ -48,7 +45,7 @@ class manager:
         # ^ type: (start, length)
         # -- doesn't do anything yet
 
-    def init_GL(self, ctx): # called by parent viewport's initializeGL()
+    def init_GL(self):
         glClearColor(0.0, 0.0, 0.0, 0.0)
         glEnable(GL_DEPTH_TEST)
         glFrontFace(GL_CW)
@@ -64,8 +61,9 @@ class manager:
         elif major >= 3 and minor >= 0:
             GLES_MODE = True
             self.shader_version = "GLES_300"
-        shader_folder = "shaders/{}/".format(self.shader_version)
-        compile_shader = lambda s, t: compileShader(open(ctx.get_resource(shader_folder + s), "rb"), t)
+        current_dir = os.path.dirname(os.path.realpath(__file__))
+        shader_folder = f"{current_dir}/shaders/{self.shader_version}/"
+        compile_shader = lambda f, t: compileShader(open(shader_folder + f, "rb"), t)
         vert_brush =  compile_shader("brush.vert", GL_VERTEX_SHADER)
         vert_displacement = compile_shader("displacement.vert", GL_VERTEX_SHADER)
         frag_flat_brush = compile_shader("flat_brush.frag", GL_FRAGMENT_SHADER)

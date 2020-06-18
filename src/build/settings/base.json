@@ -1,6 +1,0 @@
-{
-    "app_name": "QtPyHammer",
-    "author": "snake-biscuits",
-    "main_module": "src/main/python/main.py",
-    "version": "0.0.2"
-}

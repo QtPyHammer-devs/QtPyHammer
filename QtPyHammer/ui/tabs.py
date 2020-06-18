@@ -1,12 +1,12 @@
 """QtPyHammer Workspace that holds and manages an open .vmf file"""
 from enum import Enum
 import sys
-# Third-party
+
 from PyQt5 import QtCore, QtGui, QtWidgets
-# Local
-from . import viewport # ui
-sys.path.insert(0, "../") # sibling packages
-import ops # ops.vmf & ops,timeline
+
+from . import viewport # ui.viewport
+sys.path.insert(0, "../")
+import ops # ops.vmf & ops.timeline
 # from utilities import entity
 from utilities import render
 from utilities import solid
@@ -25,7 +25,6 @@ class Workspace(QtWidgets.QWidget):
     """Holds the .vmf data and viewport(s)"""
     def __init__(self, vmf_path, parent):
         super(Workspace, self).__init__(parent)
-        self.ctx = parent.ctx
         self.viewport = viewport.MapViewport3D(self)
         # self.viewport.setViewMode.connect(...)
         self.vmf = ops.vmf.interface(self, open(vmf_path))

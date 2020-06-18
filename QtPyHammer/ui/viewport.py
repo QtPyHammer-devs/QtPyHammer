@@ -27,7 +27,6 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
     raycast = QtCore.pyqtSignal(vector.vec3, vector.vec3) # emits ray
     def __init__(self, parent, fps=60):
         super(MapViewport3D, self).__init__(parent=parent)
-        self.ctx = parent.ctx # appctxt for loading shader files
         # RENDERING
         self.render_manager = render.manager()
         # model draw distance (defined in settings)
@@ -64,7 +63,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
     ######################
 
     def initializeGL(self):
-        self.render_manager.init_GL(self.ctx)
+        self.render_manager.init_GL()
         self.set_view_mode("flat") # sets shaders & GL state
         self.timer.timeout.connect(self.update)
         self.timer.start(1000 / self.fps) # call PaintGL
