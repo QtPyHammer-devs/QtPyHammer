@@ -21,8 +21,8 @@ void main()
     uv = vec2(vertex_uv.x, -vertex_uv.y);
 	blend = blend_alpha;
 	
-  	colour = mix(vec3(0, 0, .75), vec3(.75, 0, .75), blend_alpha);
-	Kd = abs(normal.x / 3 + 1/3 * normal.y / 3 + 2/3 * normal.z / 3);
+  	colour = mix(vec3(.75, .65, 0), vec3(.15, .65, 0), blend_alpha);
+	Kd = abs(normal.z / 3 + 1/3 * normal.y / 3 + 2/3 * normal.x / 3);
 
 	gl_Position = gl_ModelViewProjectionMatrix * vec4(vertex_position, 1);
 }

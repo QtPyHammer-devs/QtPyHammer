@@ -19,6 +19,6 @@ window = ui.core.MainWindow()
 window.showMaximized()
 # TEST; REMOVE ON BUILD
 current_dir = dir_path = os.path.dirname(os.path.realpath(__file__)) + "/"
-window.new_tab(current_dir + "../test_maps/test2.vmf")
+window.new_tab(current_dir + "../test_maps/pl_upward_d.vmf")
 # TEST; REMOVE ON BUILD
 sys.exit(app.exec_())

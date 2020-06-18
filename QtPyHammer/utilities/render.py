@@ -1,4 +1,5 @@
 import itertools
+import math
 import os
 
 import numpy as np
@@ -234,8 +235,8 @@ class manager:
                         continue
                     data = displacement_buffer_data(face)
                     displacement_data[(brush.id, face.id)] = data
-        self.add_renderables("brush", brush_data)
-        # self.add_renderables("displacement", displacement_data)
+##        self.add_renderables("brush", brush_data)
+        self.add_renderables("displacement", displacement_data)
         # ^ not yet hiding base brush
         # BUG: doing buffer mapping updates with buffer data updates is bad for find_gaps
 
@@ -335,7 +336,12 @@ def displacement_buffer_data(face):
         for j, normal, distance, alpha in zip(itertools.count(), normal_row, distance_row, alpha_row):
             barymetric = vector.lerp(right_vert, left_vert, j / power2)
             position = vector.vec3(barymetric) + (normal * distance)
+##            theta =  math.degrees(math.acos(vector.dot(face.plane[0], (0, 0, 1))))
+##            normal = (normal * distance).normalise()
+##            normal = normal.rotate(*[-theta * x for x in face.plane[0]])
+            normal = face.plane[0]
             uv = face.uv_at(barymetric)
+            alpha = alpha / 255
             vertices.append((*position, *normal, *uv, alpha, 0, 0))
     indices = disp_indices(displacement.power)
     vertices = list(itertools.chain(*vertices))
