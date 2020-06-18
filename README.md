@@ -15,5 +15,5 @@ Finally, install all dependencies with pip
 `$ python -m pip install -r requirements.txt`
 
 You can now run QtPyHammer from the terminal  
-`$ python QtPyHammer/main.py`  
+`$ python QtPyHammer/hammer.py`  
 

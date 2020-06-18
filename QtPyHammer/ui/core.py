@@ -275,8 +275,8 @@ class MainWindow(QtWidgets.QMainWindow):
             open_url("https://tf2maps.net"))
 
         # load hotkeys config (change to QSettings)
-        current_path = os.path.dirname(os.path.realpath(__file__)) + "/"
-        hotkeys_config = open(current_path + "../configs/core_binds.txt")
+        current_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
+        hotkeys_config = open(current_dir + "../configs/core_binds.txt")
         for line_no, line in enumerate(hotkeys_config.readlines()):
             line = line.rstrip("\r\n")
             if line == "":
