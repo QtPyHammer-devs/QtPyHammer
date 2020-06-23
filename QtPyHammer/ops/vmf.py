@@ -5,7 +5,7 @@ sys.path.insert(0, "../") # sibling packages
 # import ops.timeline as timeline
 # from utilities import entity
 from utilities import solid
-from utilities.vmf import parse_lines
+from utilities.vmf import parse_lines, lines_from
 
 
 class interface:
@@ -23,6 +23,20 @@ class interface:
             source_brushes = self.source_vmf.world.solids
         elif hasattr(self.source_vmf.world, "solid"): # only one brush
             source_brushes.append(self.source_vmf.world.solid)
+        source_entities = []
+        if hasattr(self.source_vmf, "entity"):
+            source_entities = [self.source_vmf.entity]
+        elif hasattr(self.source_vmf, "entities"):
+            source_entities.extend(self.source_vmf.entities)
+        for entity in source_entities:
+            if hasattr(entity, "solid"): # brush entity
+                if hasattr(entity.solid, "id"):
+                    source_brushes.append(entity.solid)
+            elif hasattr(entity, "solids"): # multi-brush entity
+                if hasattr(entity.solids[0], "id"):
+                    # ^ some entities may have both a "solid" flag & an embedded brush
+                    # -- not checking this here, may be an issue later
+                    source_brushes.extend(entity.solids)
         qph_brushes = []
         for i, source_brush in enumerate(source_brushes):
             try:
