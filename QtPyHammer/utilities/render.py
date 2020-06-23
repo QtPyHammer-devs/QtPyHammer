@@ -243,6 +243,7 @@ class manager:
         vertex_gaps = {g: [0, [], []] for g in vertex_gaps}
         index_gaps = self.find_gaps(buffer="index", preferred_type=renderable_type)
         index_gaps = {g: [0, [], []] for g in index_gaps}
+        index_gaps.update({g: [0, [], []] for g in self.find_gaps(buffer="index")})
         # ^ gap: [used_length, [ids], [data]]
         for _id in renderables:
             vertex_data, index_data = renderables[_id]
