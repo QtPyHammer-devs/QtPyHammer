@@ -48,8 +48,10 @@ class manager:
 
     def init_GL(self):
         glClearColor(0.0, 0.0, 0.0, 0.0)
+        glEnable(GL_CULL_FACE)
         glEnable(GL_DEPTH_TEST)
         glFrontFace(GL_CW)
+        glCullFace(GL_BACK)
         glPointSize(4)
         glPolygonMode(GL_BACK, GL_LINE)
         # SHADERS
@@ -82,8 +84,9 @@ class manager:
         # ^ style: {target: {uniform: location}}
         for style, targets in self.uniform.items():
             for target in targets:
-                glUseProgram(self.shader[style][target])
-                self.uniform[style][target]["matrix"] = glGetUniformLocation(self.shader[style][target], "ModelViewProjectionMatrix")
+                shader = self.shader[style][target]
+                glUseProgram(shader)
+                self.uniform[style][target]["matrix"] = glGetUniformLocation(shader, "MVP_matrix")
         glUseProgram(0)
         # Buffers
         self.VERTEX_BUFFER, self.INDEX_BUFFER = glGenBuffers(2)
@@ -121,10 +124,11 @@ class manager:
             buffer, start, length, data = update
             glBufferSubData(buffer, start, length, data)
         MV_matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
-        glUseProgram(self.shader[self.render_mode]["brush"])
-        if "matrix" in self.uniform[self.render_mode]["brush"]:
-            location = self.uniform[self.render_mode]["brush"]["matrix"]
-            glUniformMatrix4fv(location, 1, GL_FALSE, MV_matrix)
+        for renderable_type in self.shader[self.render_mode]:
+            glUseProgram(self.shader[self.render_mode][renderable_type])
+            if "matrix" in self.uniform[self.render_mode][renderable_type]:
+                location = self.uniform[self.render_mode][renderable_type]["matrix"]
+                glUniformMatrix4fv(location, 1, GL_FALSE, MV_matrix)
 
     def track_span(self, buffer, renderable_type, span_to_track):
         start, length = span_to_track

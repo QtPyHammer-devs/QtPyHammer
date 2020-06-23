@@ -4,7 +4,7 @@ layout(location = 1) in vec3 vertex_normal;
 layout(location = 2) in vec2 vertex_uv;
 layout(location = 3) in vec3 editor_colour;
 
-uniform mat4 ModelViewProjectionMatrix;
+uniform mat4 MVP_matrix;
 
 out vec3 position;
 out smooth vec3 normal;
@@ -22,5 +22,5 @@ void main()
 
 	Kd = abs(normal.z / 3 + 1/3 * normal.y / 3 + 2/3 * normal.x / 3);
 
-	gl_Position = ModelViewProjectionMatrix * vec4(vertex_position, 1);
+	gl_Position = MVP_matrix * vec4(vertex_position, 1);
 }
