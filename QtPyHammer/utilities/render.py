@@ -55,14 +55,10 @@ class manager:
         # SHADERS
         major = glGetIntegerv(GL_MAJOR_VERSION)
         minor = glGetIntegerv(GL_MINOR_VERSION)
-        GLES_MODE = False
-        self.GLES_MODE = GLES_MODE
         if major >= 4 and minor >= 5:
             self.shader_version = "GLSL_450"
         elif major >= 3 and minor >= 0:
-            GLES_MODE = True
             self.shader_version = "GLES_300"
-        print(f"Running OpenGL {major}.{minor}: {self.shader_version}")
         current_dir = os.path.dirname(os.path.realpath(__file__))
         shader_folder = f"{current_dir}/shaders/{self.shader_version}/"
         compile_shader = lambda f, t: compileShader(open(shader_folder + f, "rb"), t)
@@ -84,12 +80,11 @@ class manager:
                         "textured": {},
                         "shaded": {}}
         # ^ style: {target: {uniform: location}}
-        if GLES_MODE == True:
-            for style, targets in self.uniform.items():
-                for target in targets:
-                    glUseProgram(self.shader[style][target])
-                    self.uniform[style][target]["matrix"] = glGetUniformLocation(self.shader[style][target], "ModelViewProjectionMatrix")
-            glUseProgram(0)
+        for style, targets in self.uniform.items():
+            for target in targets:
+                glUseProgram(self.shader[style][target])
+                self.uniform[style][target]["matrix"] = glGetUniformLocation(self.shader[style][target], "ModelViewProjectionMatrix")
+        glUseProgram(0)
         # Buffers
         self.VERTEX_BUFFER, self.INDEX_BUFFER = glGenBuffers(2)
         glBindBuffer(GL_ARRAY_BUFFER, self.VERTEX_BUFFER)

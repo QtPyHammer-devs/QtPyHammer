@@ -4,7 +4,7 @@ layout(location = 1) in vec3 vertex_normal;
 layout(location = 2) in vec2 vertex_uv;
 layout(location = 4) in float blend_alpha;
 
-uniform mat4 gl_ModelViewProjectionMatrix;
+uniform mat4 ModelViewProjectionMatrix;
 
 out vec3 position;
 out vec3 normal;
@@ -20,9 +20,9 @@ void main()
     normal = vertex_normal;
     uv = vec2(vertex_uv.x, -vertex_uv.y);
 	blend = blend_alpha;
-	
+
   	colour = mix(vec3(.75, .65, 0), vec3(.15, .65, 0), blend_alpha);
 	Kd = abs(normal.z / 3 + 1/3 * normal.y / 3 + 2/3 * normal.x / 3);
 
-	gl_Position = gl_ModelViewProjectionMatrix * vec4(vertex_position, 1);
+	gl_Position = ModelViewProjectionMatrix * vec4(vertex_position, 1);
 }
