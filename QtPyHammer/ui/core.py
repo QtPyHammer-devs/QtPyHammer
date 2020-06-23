@@ -14,6 +14,8 @@ sys.path.insert(0, "../") # sibling packages
 import ops # connects buttons to functions
 
 
+current_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
+
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(QtWidgets.QMainWindow, self).__init__(parent)
@@ -27,7 +29,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.main_menu = QtWidgets.QMenuBar()
         file_menu = self.main_menu.addMenu("&File")
         self.actions["File>New"] = file_menu.addAction("&New")
-        self.actions["File>New"].triggered.connect(self.new_tab)
+        self.actions["File>New"].triggered.connect(lambda: self.new_tab(None))
         self.actions["File>Open"] = file_menu.addAction("&Open")
         open_vmf = lambda: self.new_tab(ops.open_vmf())
         self.actions["File>Open"].triggered.connect(open_vmf)
@@ -275,7 +277,7 @@ class MainWindow(QtWidgets.QMainWindow):
             open_url("https://tf2maps.net"))
 
         # load hotkeys config (change to QSettings)
-        current_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
+        global current_dir
         hotkeys_config = open(current_dir + "../configs/core_binds.txt")
         for line_no, line in enumerate(hotkeys_config.readlines()):
             line = line.rstrip("\r\n")
@@ -325,7 +327,8 @@ class MainWindow(QtWidgets.QMainWindow):
             return
         elif vmf_path == None: # new file
             filename = "untitled"
-            vmf_path = "../configs/blank.vmf"
+            global current_dir
+            vmf_path = current_dir + "../configs/blank.vmf"
         else: # load the requested file (vmf_path) into a new tab
             filename = os.path.basename(vmf_path)
         tab = tabs.Workspace(vmf_path, parent=self)
