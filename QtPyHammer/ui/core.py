@@ -256,7 +256,7 @@ class MainWindow(QtWidgets.QMainWindow):
         help_menu.addSeparator()
         self.actions["Help>About QPH"] = help_menu.addAction("About QtPyHammer")
         self.actions["Help>About QPH"].triggered.connect(
-            open_url("https://github.com/snake-biscuits/QtPyHammer"))
+            open_url("https://github.com/snake-biscuits/QtPyHammer/wiki"))
         self.actions["Help>About Qt"] = help_menu.addAction("About Qt")
         self.actions["Help>About Qt"].setEnabled(False)
 ##        self.actions["Help>About Qt"].triggered.connect(ui. #QDialog
@@ -315,8 +315,10 @@ class MainWindow(QtWidgets.QMainWindow):
         # # cut copy paste | cordon radius | TL <TL> | DD 3D DW DA |
         # # compile helpers 2D_models fade CM prop_detail NO_DRAW
 
-        self.tabmaster = QtWidgets.QTabWidget()
-        self.setCentralWidget(self.tabmaster)
+        self.tab_master = QtWidgets.QTabWidget()
+        self.tab_master.setTabsClosable(True)
+        self.tab_master.tabCloseRequested.connect(self.tab_master.removeTab)
+        self.setCentralWidget(self.tab_master)
 
     def new_tab(self, vmf_path=None):
         if vmf_path == False: # file browser was opened but no file was selected
@@ -327,4 +329,4 @@ class MainWindow(QtWidgets.QMainWindow):
         else: # load the requested file (vmf_path) into a new tab
             filename = os.path.basename(vmf_path)
         tab = tabs.Workspace(vmf_path, parent=self)
-        self.tabmaster.addTab(tab, filename)
+        self.tab_master.addTab(tab, filename)
