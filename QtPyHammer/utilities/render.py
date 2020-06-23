@@ -62,6 +62,7 @@ class manager:
         elif major >= 3 and minor >= 0:
             GLES_MODE = True
             self.shader_version = "GLES_300"
+        print(f"Running OpenGL {major}.{minor}: {self.shader_version}")
         current_dir = os.path.dirname(os.path.realpath(__file__))
         shader_folder = f"{current_dir}/shaders/{self.shader_version}/"
         compile_shader = lambda f, t: compileShader(open(shader_folder + f, "rb"), t)
