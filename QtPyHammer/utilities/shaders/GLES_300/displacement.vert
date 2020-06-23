@@ -1,8 +1,8 @@
 #version 300 es
 layout(location = 0) in vec3 vertex_position;
-layout(location = 1) in float blend_alpha;
+layout(location = 1) in vec3 vertex_normal;
 layout(location = 2) in vec2 vertex_uv;
-layout(location = 3) in vec3 editor_colour;
+layout(location = 4) in float blend_alpha;
 
 uniform mat4 ModelViewProjectionMatrix;
 
