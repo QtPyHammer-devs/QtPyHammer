@@ -1,0 +1,1306 @@
+running build
+running build_exe
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/cx_Freeze-6.1-py3.6-linux-x86_64.egg/cx_Freeze/bases/Console -> build/exe.linux-x86_64-3.6/QtPyHammer.exe
+copying /usr/lib/x86_64-linux-gnu/libpython3.6m.so.1.0 -> build/exe.linux-x86_64-3.6/lib/libpython3.6m.so.1.0
+copying icons/QtPy.ico -> build/exe.linux-x86_64-3.6/QtPy.ico
+writing zip file build/exe.linux-x86_64-3.6/lib/library.zip
+
+  Name                      File
+  ----                      ----
+m BUILD_CONSTANTS           
+P OpenGL                    /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/__init__.py
+P OpenGL.GL                 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/__init__.py
+P OpenGL.GL.ARB             /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/__init__.py
+m OpenGL.GL.ARB.ES2_compatibility /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/ES2_compatibility.py
+m OpenGL.GL.ARB.ES3_compatibility /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/ES3_compatibility.py
+m OpenGL.GL.ARB.arrays_of_arrays /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/arrays_of_arrays.py
+m OpenGL.GL.ARB.base_instance /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/base_instance.py
+m OpenGL.GL.ARB.clear_buffer_object /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/clear_buffer_object.py
+m OpenGL.GL.ARB.compressed_texture_pixel_storage /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/compressed_texture_pixel_storage.py
+m OpenGL.GL.ARB.compute_shader /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/compute_shader.py
+m OpenGL.GL.ARB.conservative_depth /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/conservative_depth.py
+m OpenGL.GL.ARB.copy_image  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/copy_image.py
+m OpenGL.GL.ARB.enhanced_layouts /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/enhanced_layouts.py
+m OpenGL.GL.ARB.explicit_uniform_location /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/explicit_uniform_location.py
+m OpenGL.GL.ARB.fragment_layer_viewport /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/fragment_layer_viewport.py
+m OpenGL.GL.ARB.fragment_shader /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/fragment_shader.py
+m OpenGL.GL.ARB.framebuffer_no_attachments /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/framebuffer_no_attachments.py
+m OpenGL.GL.ARB.geometry_shader4 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/geometry_shader4.py
+m OpenGL.GL.ARB.get_program_binary /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/get_program_binary.py
+m OpenGL.GL.ARB.imaging     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/imaging.py
+m OpenGL.GL.ARB.internalformat_query /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/internalformat_query.py
+m OpenGL.GL.ARB.internalformat_query2 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/internalformat_query2.py
+m OpenGL.GL.ARB.invalidate_subdata /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/invalidate_subdata.py
+m OpenGL.GL.ARB.map_buffer_alignment /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/map_buffer_alignment.py
+m OpenGL.GL.ARB.multi_draw_indirect /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/multi_draw_indirect.py
+m OpenGL.GL.ARB.program_interface_query /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/program_interface_query.py
+m OpenGL.GL.ARB.robust_buffer_access_behavior /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/robust_buffer_access_behavior.py
+m OpenGL.GL.ARB.separate_shader_objects /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/separate_shader_objects.py
+m OpenGL.GL.ARB.shader_atomic_counters /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/shader_atomic_counters.py
+m OpenGL.GL.ARB.shader_image_load_store /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/shader_image_load_store.py
+m OpenGL.GL.ARB.shader_image_size /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/shader_image_size.py
+m OpenGL.GL.ARB.shader_objects /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/shader_objects.py
+m OpenGL.GL.ARB.shader_precision /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/shader_precision.py
+m OpenGL.GL.ARB.shader_storage_buffer_object /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/shader_storage_buffer_object.py
+m OpenGL.GL.ARB.shading_language_420pack /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/shading_language_420pack.py
+m OpenGL.GL.ARB.shading_language_packing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/shading_language_packing.py
+m OpenGL.GL.ARB.stencil_texturing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/stencil_texturing.py
+m OpenGL.GL.ARB.texture_buffer_object /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/texture_buffer_object.py
+m OpenGL.GL.ARB.texture_buffer_range /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/texture_buffer_range.py
+m OpenGL.GL.ARB.texture_query_levels /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/texture_query_levels.py
+m OpenGL.GL.ARB.texture_storage /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/texture_storage.py
+m OpenGL.GL.ARB.texture_storage_multisample /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/texture_storage_multisample.py
+m OpenGL.GL.ARB.texture_view /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/texture_view.py
+m OpenGL.GL.ARB.transform_feedback_instanced /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/transform_feedback_instanced.py
+m OpenGL.GL.ARB.uniform_buffer_object /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/uniform_buffer_object.py
+m OpenGL.GL.ARB.vboimplementation /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/vboimplementation.py
+m OpenGL.GL.ARB.vertex_attrib_64bit /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/vertex_attrib_64bit.py
+m OpenGL.GL.ARB.vertex_attrib_binding /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/vertex_attrib_binding.py
+m OpenGL.GL.ARB.vertex_buffer_object /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/vertex_buffer_object.py
+m OpenGL.GL.ARB.vertex_program /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/vertex_program.py
+m OpenGL.GL.ARB.vertex_shader /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/vertex_shader.py
+m OpenGL.GL.ARB.viewport_array /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/ARB/viewport_array.py
+P OpenGL.GL.KHR             /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/KHR/__init__.py
+m OpenGL.GL.KHR.debug       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/KHR/debug.py
+P OpenGL.GL.VERSION         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/__init__.py
+m OpenGL.GL.VERSION.GL_1_0  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_1_0.py
+m OpenGL.GL.VERSION.GL_1_1  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_1_1.py
+m OpenGL.GL.VERSION.GL_1_2  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_1_2.py
+m OpenGL.GL.VERSION.GL_1_2_images /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_1_2_images.py
+m OpenGL.GL.VERSION.GL_1_3  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_1_3.py
+m OpenGL.GL.VERSION.GL_1_4  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_1_4.py
+m OpenGL.GL.VERSION.GL_1_5  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_1_5.py
+m OpenGL.GL.VERSION.GL_2_0  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_2_0.py
+m OpenGL.GL.VERSION.GL_2_1  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_2_1.py
+m OpenGL.GL.VERSION.GL_3_0  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_3_0.py
+m OpenGL.GL.VERSION.GL_3_1  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_3_1.py
+m OpenGL.GL.VERSION.GL_3_2  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_3_2.py
+m OpenGL.GL.VERSION.GL_3_3  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_3_3.py
+m OpenGL.GL.VERSION.GL_4_0  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_4_0.py
+m OpenGL.GL.VERSION.GL_4_1  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_4_1.py
+m OpenGL.GL.VERSION.GL_4_2  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_4_2.py
+m OpenGL.GL.VERSION.GL_4_3  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_4_3.py
+m OpenGL.GL.VERSION.GL_4_4  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_4_4.py
+m OpenGL.GL.VERSION.GL_4_5  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_4_5.py
+m OpenGL.GL.VERSION.GL_4_6  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/VERSION/GL_4_6.py
+m OpenGL.GL.exceptional     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/exceptional.py
+m OpenGL.GL.feedback        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/feedback.py
+m OpenGL.GL.glget           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/glget.py
+m OpenGL.GL.images          /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/images.py
+m OpenGL.GL.pointers        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/pointers.py
+m OpenGL.GL.selection       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/selection.py
+m OpenGL.GL.shaders         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/shaders.py
+m OpenGL.GL.vboimplementation /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GL/vboimplementation.py
+P OpenGL.GLU                /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GLU/__init__.py
+m OpenGL.GLU.glunurbs       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GLU/glunurbs.py
+m OpenGL.GLU.projection     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GLU/projection.py
+m OpenGL.GLU.quadrics       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GLU/quadrics.py
+m OpenGL.GLU.tess           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/GLU/tess.py
+m OpenGL._bytes             /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/_bytes.py
+m OpenGL._configflags       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/_configflags.py
+m OpenGL._null              /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/_null.py
+m OpenGL._opaque            /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/_opaque.py
+m OpenGL.acceleratesupport  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/acceleratesupport.py
+P OpenGL.arrays             /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/arrays/__init__.py
+m OpenGL.arrays._arrayconstants /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/arrays/_arrayconstants.py
+m OpenGL.arrays.arraydatatype /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/arrays/arraydatatype.py
+m OpenGL.arrays.arrayhelpers /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/arrays/arrayhelpers.py
+m OpenGL.arrays.formathandler /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/arrays/formathandler.py
+m OpenGL.arrays.vbo         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/arrays/vbo.py
+m OpenGL.constant           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/constant.py
+m OpenGL.constants          /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/constants.py
+m OpenGL.contextdata        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/contextdata.py
+m OpenGL.converters         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/converters.py
+m OpenGL.error              /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/error.py
+m OpenGL.extensions         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/extensions.py
+m OpenGL.images             /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/images.py
+m OpenGL.latebind           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/latebind.py
+m OpenGL.lazywrapper        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/lazywrapper.py
+m OpenGL.logs               /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/logs.py
+P OpenGL.platform           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/platform/__init__.py
+m OpenGL.plugins            /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/plugins.py
+P OpenGL.raw                /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/__init__.py
+P OpenGL.raw.GL             /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/__init__.py
+P OpenGL.raw.GL.ARB         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/__init__.py
+m OpenGL.raw.GL.ARB.ES2_compatibility /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/ES2_compatibility.py
+m OpenGL.raw.GL.ARB.ES3_compatibility /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/ES3_compatibility.py
+m OpenGL.raw.GL.ARB.arrays_of_arrays /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/arrays_of_arrays.py
+m OpenGL.raw.GL.ARB.base_instance /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/base_instance.py
+m OpenGL.raw.GL.ARB.clear_buffer_object /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/clear_buffer_object.py
+m OpenGL.raw.GL.ARB.compressed_texture_pixel_storage /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/compressed_texture_pixel_storage.py
+m OpenGL.raw.GL.ARB.compute_shader /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/compute_shader.py
+m OpenGL.raw.GL.ARB.conservative_depth /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/conservative_depth.py
+m OpenGL.raw.GL.ARB.copy_image /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/copy_image.py
+m OpenGL.raw.GL.ARB.enhanced_layouts /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/enhanced_layouts.py
+m OpenGL.raw.GL.ARB.explicit_uniform_location /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/explicit_uniform_location.py
+m OpenGL.raw.GL.ARB.fragment_layer_viewport /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/fragment_layer_viewport.py
+m OpenGL.raw.GL.ARB.fragment_shader /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/fragment_shader.py
+m OpenGL.raw.GL.ARB.framebuffer_no_attachments /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/framebuffer_no_attachments.py
+m OpenGL.raw.GL.ARB.geometry_shader4 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/geometry_shader4.py
+m OpenGL.raw.GL.ARB.get_program_binary /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/get_program_binary.py
+m OpenGL.raw.GL.ARB.imaging /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/imaging.py
+m OpenGL.raw.GL.ARB.internalformat_query /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/internalformat_query.py
+m OpenGL.raw.GL.ARB.internalformat_query2 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/internalformat_query2.py
+m OpenGL.raw.GL.ARB.invalidate_subdata /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/invalidate_subdata.py
+m OpenGL.raw.GL.ARB.map_buffer_alignment /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/map_buffer_alignment.py
+m OpenGL.raw.GL.ARB.multi_draw_indirect /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/multi_draw_indirect.py
+m OpenGL.raw.GL.ARB.program_interface_query /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/program_interface_query.py
+m OpenGL.raw.GL.ARB.robust_buffer_access_behavior /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/robust_buffer_access_behavior.py
+m OpenGL.raw.GL.ARB.separate_shader_objects /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/separate_shader_objects.py
+m OpenGL.raw.GL.ARB.shader_atomic_counters /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/shader_atomic_counters.py
+m OpenGL.raw.GL.ARB.shader_image_load_store /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/shader_image_load_store.py
+m OpenGL.raw.GL.ARB.shader_image_size /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/shader_image_size.py
+m OpenGL.raw.GL.ARB.shader_objects /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/shader_objects.py
+m OpenGL.raw.GL.ARB.shader_precision /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/shader_precision.py
+m OpenGL.raw.GL.ARB.shader_storage_buffer_object /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/shader_storage_buffer_object.py
+m OpenGL.raw.GL.ARB.shading_language_420pack /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/shading_language_420pack.py
+m OpenGL.raw.GL.ARB.shading_language_packing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/shading_language_packing.py
+m OpenGL.raw.GL.ARB.stencil_texturing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/stencil_texturing.py
+m OpenGL.raw.GL.ARB.texture_buffer_object /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/texture_buffer_object.py
+m OpenGL.raw.GL.ARB.texture_buffer_range /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/texture_buffer_range.py
+m OpenGL.raw.GL.ARB.texture_query_levels /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/texture_query_levels.py
+m OpenGL.raw.GL.ARB.texture_storage /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/texture_storage.py
+m OpenGL.raw.GL.ARB.texture_storage_multisample /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/texture_storage_multisample.py
+m OpenGL.raw.GL.ARB.texture_view /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/texture_view.py
+m OpenGL.raw.GL.ARB.transform_feedback_instanced /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/transform_feedback_instanced.py
+m OpenGL.raw.GL.ARB.uniform_buffer_object /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/uniform_buffer_object.py
+m OpenGL.raw.GL.ARB.vertex_attrib_64bit /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/vertex_attrib_64bit.py
+m OpenGL.raw.GL.ARB.vertex_attrib_binding /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/vertex_attrib_binding.py
+m OpenGL.raw.GL.ARB.vertex_buffer_object /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/vertex_buffer_object.py
+m OpenGL.raw.GL.ARB.vertex_program /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/vertex_program.py
+m OpenGL.raw.GL.ARB.vertex_shader /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/vertex_shader.py
+m OpenGL.raw.GL.ARB.viewport_array /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/ARB/viewport_array.py
+P OpenGL.raw.GL.KHR         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/KHR/__init__.py
+m OpenGL.raw.GL.KHR.debug   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/KHR/debug.py
+P OpenGL.raw.GL.VERSION     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/__init__.py
+m OpenGL.raw.GL.VERSION.GL_1_0 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_1_0.py
+m OpenGL.raw.GL.VERSION.GL_1_1 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_1_1.py
+m OpenGL.raw.GL.VERSION.GL_1_2 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_1_2.py
+m OpenGL.raw.GL.VERSION.GL_1_3 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_1_3.py
+m OpenGL.raw.GL.VERSION.GL_1_4 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_1_4.py
+m OpenGL.raw.GL.VERSION.GL_1_5 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_1_5.py
+m OpenGL.raw.GL.VERSION.GL_2_0 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_2_0.py
+m OpenGL.raw.GL.VERSION.GL_2_1 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_2_1.py
+m OpenGL.raw.GL.VERSION.GL_3_0 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_3_0.py
+m OpenGL.raw.GL.VERSION.GL_3_1 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_3_1.py
+m OpenGL.raw.GL.VERSION.GL_3_2 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_3_2.py
+m OpenGL.raw.GL.VERSION.GL_3_3 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_3_3.py
+m OpenGL.raw.GL.VERSION.GL_4_0 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_4_0.py
+m OpenGL.raw.GL.VERSION.GL_4_1 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_4_1.py
+m OpenGL.raw.GL.VERSION.GL_4_2 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_4_2.py
+m OpenGL.raw.GL.VERSION.GL_4_3 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_4_3.py
+m OpenGL.raw.GL.VERSION.GL_4_4 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_4_4.py
+m OpenGL.raw.GL.VERSION.GL_4_5 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_4_5.py
+m OpenGL.raw.GL.VERSION.GL_4_6 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/VERSION/GL_4_6.py
+m OpenGL.raw.GL._errors     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/_errors.py
+m OpenGL.raw.GL._glgets     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/_glgets.py
+m OpenGL.raw.GL._lookupint  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/_lookupint.py
+m OpenGL.raw.GL._types      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GL/_types.py
+P OpenGL.raw.GLU            /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GLU/__init__.py
+m OpenGL.raw.GLU.annotations /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GLU/annotations.py
+m OpenGL.raw.GLU.constants  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/raw/GLU/constants.py
+m OpenGL.version            /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/version.py
+m OpenGL.wrapper            /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/OpenGL/wrapper.py
+P PyQt5                     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/__init__.py
+m PyQt5.QtCore              /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/QtCore.abi3.so
+m PyQt5.QtGui               /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/QtGui.abi3.so
+m PyQt5.QtWidgets           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/QtWidgets.abi3.so
+m QtPyHammer__init__        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/cx_Freeze-6.1-py3.6-linux-x86_64.egg/cx_Freeze/initscripts/Console.py
+m QtPyHammer__main__        hammer.py
+m __future__                /usr/lib/python3.6/__future__.py
+m __startup__               /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/cx_Freeze-6.1-py3.6-linux-x86_64.egg/cx_Freeze/initscripts/__startup__.py
+m _ast                      
+m _bisect                   
+m _blake2                   
+m _bootlocale               /usr/lib/python3.6/_bootlocale.py
+m _bz2                      /usr/lib/python3.6/lib-dynload/_bz2.cpython-36m-x86_64-linux-gnu.so
+m _codecs                   
+m _codecs_cn                /usr/lib/python3.6/lib-dynload/_codecs_cn.cpython-36m-x86_64-linux-gnu.so
+m _codecs_hk                /usr/lib/python3.6/lib-dynload/_codecs_hk.cpython-36m-x86_64-linux-gnu.so
+m _codecs_iso2022           /usr/lib/python3.6/lib-dynload/_codecs_iso2022.cpython-36m-x86_64-linux-gnu.so
+m _codecs_jp                /usr/lib/python3.6/lib-dynload/_codecs_jp.cpython-36m-x86_64-linux-gnu.so
+m _codecs_kr                /usr/lib/python3.6/lib-dynload/_codecs_kr.cpython-36m-x86_64-linux-gnu.so
+m _codecs_tw                /usr/lib/python3.6/lib-dynload/_codecs_tw.cpython-36m-x86_64-linux-gnu.so
+m _collections              
+m _collections_abc          /usr/lib/python3.6/_collections_abc.py
+m _compat_pickle            /usr/lib/python3.6/_compat_pickle.py
+m _compression              /usr/lib/python3.6/_compression.py
+m _ctypes                   /usr/lib/python3.6/lib-dynload/_ctypes.cpython-36m-x86_64-linux-gnu.so
+m _curses                   /usr/lib/python3.6/lib-dynload/_curses.cpython-36m-x86_64-linux-gnu.so
+m _datetime                 
+m _decimal                  /usr/lib/python3.6/lib-dynload/_decimal.cpython-36m-x86_64-linux-gnu.so
+m _dummy_thread             /usr/lib/python3.6/_dummy_thread.py
+m _functools                
+m _hashlib                  /usr/lib/python3.6/lib-dynload/_hashlib.cpython-36m-x86_64-linux-gnu.so
+m _heapq                    
+m _imp                      
+m _io                       
+m _json                     /usr/lib/python3.6/lib-dynload/_json.cpython-36m-x86_64-linux-gnu.so
+m _locale                   
+m _lzma                     /usr/lib/python3.6/lib-dynload/_lzma.cpython-36m-x86_64-linux-gnu.so
+m _md5                      
+m _multibytecodec           /usr/lib/python3.6/lib-dynload/_multibytecodec.cpython-36m-x86_64-linux-gnu.so
+m _multiprocessing          /usr/lib/python3.6/lib-dynload/_multiprocessing.cpython-36m-x86_64-linux-gnu.so
+m _opcode                   /usr/lib/python3.6/lib-dynload/_opcode.cpython-36m-x86_64-linux-gnu.so
+m _operator                 
+m _osx_support              /usr/lib/python3.6/_osx_support.py
+m _pickle                   
+m _posixsubprocess          
+m _pydecimal                /usr/lib/python3.6/_pydecimal.py
+m _random                   
+m _sha1                     
+m _sha256                   
+m _sha3                     
+m _sha512                   
+m _signal                   
+m _sitebuiltins             /usr/lib/python3.6/_sitebuiltins.py
+m _socket                   
+m _sre                      
+m _ssl                      /usr/lib/python3.6/lib-dynload/_ssl.cpython-36m-x86_64-linux-gnu.so
+m _stat                     
+m _string                   
+m _strptime                 /usr/lib/python3.6/_strptime.py
+m _struct                   
+m _thread                   
+m _threading_local          /usr/lib/python3.6/_threading_local.py
+m _tracemalloc              
+m _warnings                 
+m _weakref                  
+m _weakrefset               /usr/lib/python3.6/_weakrefset.py
+m abc                       /usr/lib/python3.6/abc.py
+m argparse                  /usr/lib/python3.6/argparse.py
+m array                     
+m ast                       /usr/lib/python3.6/ast.py
+m atexit                    
+m base64                    /usr/lib/python3.6/base64.py
+m bdb                       /usr/lib/python3.6/bdb.py
+m binascii                  
+m bisect                    /usr/lib/python3.6/bisect.py
+m builtins                  
+m bz2                       /usr/lib/python3.6/bz2.py
+m calendar                  /usr/lib/python3.6/calendar.py
+m cgi                       /usr/lib/python3.6/cgi.py
+m cmath                     
+m cmd                       /usr/lib/python3.6/cmd.py
+m code                      /usr/lib/python3.6/code.py
+m codecs                    /usr/lib/python3.6/codecs.py
+m codeop                    /usr/lib/python3.6/codeop.py
+P collections               /usr/lib/python3.6/collections/__init__.py
+m collections.abc           /usr/lib/python3.6/collections/abc.py
+P concurrent                /usr/lib/python3.6/concurrent/__init__.py
+P concurrent.futures        /usr/lib/python3.6/concurrent/futures/__init__.py
+m concurrent.futures._base  /usr/lib/python3.6/concurrent/futures/_base.py
+m concurrent.futures.process /usr/lib/python3.6/concurrent/futures/process.py
+m concurrent.futures.thread /usr/lib/python3.6/concurrent/futures/thread.py
+m configparser              /usr/lib/python3.6/configparser.py
+m contextlib                /usr/lib/python3.6/contextlib.py
+m copy                      /usr/lib/python3.6/copy.py
+m copyreg                   /usr/lib/python3.6/copyreg.py
+P ctypes                    /usr/lib/python3.6/ctypes/__init__.py
+m ctypes._endian            /usr/lib/python3.6/ctypes/_endian.py
+m ctypes.util               /usr/lib/python3.6/ctypes/util.py
+P curses                    /usr/lib/python3.6/curses/__init__.py
+m curses.has_key            /usr/lib/python3.6/curses/has_key.py
+m datetime                  /usr/lib/python3.6/datetime.py
+m decimal                   /usr/lib/python3.6/decimal.py
+m difflib                   /usr/lib/python3.6/difflib.py
+m dis                       /usr/lib/python3.6/dis.py
+P distutils                 /usr/lib/python3.6/distutils/__init__.py
+m distutils._msvccompiler   /usr/lib/python3.6/distutils/_msvccompiler.py
+m distutils.archive_util    /usr/lib/python3.6/distutils/archive_util.py
+m distutils.ccompiler       /usr/lib/python3.6/distutils/ccompiler.py
+m distutils.cmd             /usr/lib/python3.6/distutils/cmd.py
+P distutils.command         /usr/lib/python3.6/distutils/command/__init__.py
+m distutils.command.bdist   /usr/lib/python3.6/distutils/command/bdist.py
+m distutils.command.bdist_rpm /usr/lib/python3.6/distutils/command/bdist_rpm.py
+m distutils.command.build   /usr/lib/python3.6/distutils/command/build.py
+m distutils.command.build_clib /usr/lib/python3.6/distutils/command/build_clib.py
+m distutils.command.build_ext /usr/lib/python3.6/distutils/command/build_ext.py
+m distutils.command.build_py /usr/lib/python3.6/distutils/command/build_py.py
+m distutils.command.build_scripts /usr/lib/python3.6/distutils/command/build_scripts.py
+m distutils.command.config  /usr/lib/python3.6/distutils/command/config.py
+m distutils.command.install /usr/lib/python3.6/distutils/command/install.py
+m distutils.command.install_data /usr/lib/python3.6/distutils/command/install_data.py
+m distutils.command.install_headers /usr/lib/python3.6/distutils/command/install_headers.py
+m distutils.command.install_scripts /usr/lib/python3.6/distutils/command/install_scripts.py
+m distutils.command.sdist   /usr/lib/python3.6/distutils/command/sdist.py
+m distutils.config          /usr/lib/python3.6/distutils/config.py
+m distutils.core            /usr/lib/python3.6/distutils/core.py
+m distutils.cygwinccompiler /usr/lib/python3.6/distutils/cygwinccompiler.py
+m distutils.debug           /usr/lib/python3.6/distutils/debug.py
+m distutils.dep_util        /usr/lib/python3.6/distutils/dep_util.py
+m distutils.dir_util        /usr/lib/python3.6/distutils/dir_util.py
+m distutils.dist            /usr/lib/python3.6/distutils/dist.py
+m distutils.errors          /usr/lib/python3.6/distutils/errors.py
+m distutils.extension       /usr/lib/python3.6/distutils/extension.py
+m distutils.fancy_getopt    /usr/lib/python3.6/distutils/fancy_getopt.py
+m distutils.file_util       /usr/lib/python3.6/distutils/file_util.py
+m distutils.filelist        /usr/lib/python3.6/distutils/filelist.py
+m distutils.log             /usr/lib/python3.6/distutils/log.py
+m distutils.msvc9compiler   /usr/lib/python3.6/distutils/msvc9compiler.py
+m distutils.msvccompiler    /usr/lib/python3.6/distutils/msvccompiler.py
+m distutils.spawn           /usr/lib/python3.6/distutils/spawn.py
+m distutils.sysconfig       /usr/lib/python3.6/distutils/sysconfig.py
+m distutils.text_file       /usr/lib/python3.6/distutils/text_file.py
+m distutils.unixccompiler   /usr/lib/python3.6/distutils/unixccompiler.py
+m distutils.util            /usr/lib/python3.6/distutils/util.py
+m distutils.version         /usr/lib/python3.6/distutils/version.py
+m distutils.versionpredicate /usr/lib/python3.6/distutils/versionpredicate.py
+m doctest                   /usr/lib/python3.6/doctest.py
+m dummy_threading           /usr/lib/python3.6/dummy_threading.py
+P email                     /usr/lib/python3.6/email/__init__.py
+m email._encoded_words      /usr/lib/python3.6/email/_encoded_words.py
+m email._header_value_parser /usr/lib/python3.6/email/_header_value_parser.py
+m email._parseaddr          /usr/lib/python3.6/email/_parseaddr.py
+m email._policybase         /usr/lib/python3.6/email/_policybase.py
+m email.base64mime          /usr/lib/python3.6/email/base64mime.py
+m email.charset             /usr/lib/python3.6/email/charset.py
+m email.contentmanager      /usr/lib/python3.6/email/contentmanager.py
+m email.encoders            /usr/lib/python3.6/email/encoders.py
+m email.errors              /usr/lib/python3.6/email/errors.py
+m email.feedparser          /usr/lib/python3.6/email/feedparser.py
+m email.generator           /usr/lib/python3.6/email/generator.py
+m email.header              /usr/lib/python3.6/email/header.py
+m email.headerregistry      /usr/lib/python3.6/email/headerregistry.py
+m email.iterators           /usr/lib/python3.6/email/iterators.py
+m email.message             /usr/lib/python3.6/email/message.py
+m email.parser              /usr/lib/python3.6/email/parser.py
+m email.policy              /usr/lib/python3.6/email/policy.py
+m email.quoprimime          /usr/lib/python3.6/email/quoprimime.py
+m email.utils               /usr/lib/python3.6/email/utils.py
+P encodings                 /usr/lib/python3.6/encodings/__init__.py
+m encodings.aliases         /usr/lib/python3.6/encodings/aliases.py
+m encodings.ascii           /usr/lib/python3.6/encodings/ascii.py
+m encodings.base64_codec    /usr/lib/python3.6/encodings/base64_codec.py
+m encodings.big5            /usr/lib/python3.6/encodings/big5.py
+m encodings.big5hkscs       /usr/lib/python3.6/encodings/big5hkscs.py
+m encodings.bz2_codec       /usr/lib/python3.6/encodings/bz2_codec.py
+m encodings.charmap         /usr/lib/python3.6/encodings/charmap.py
+m encodings.cp037           /usr/lib/python3.6/encodings/cp037.py
+m encodings.cp1006          /usr/lib/python3.6/encodings/cp1006.py
+m encodings.cp1026          /usr/lib/python3.6/encodings/cp1026.py
+m encodings.cp1125          /usr/lib/python3.6/encodings/cp1125.py
+m encodings.cp1140          /usr/lib/python3.6/encodings/cp1140.py
+m encodings.cp1250          /usr/lib/python3.6/encodings/cp1250.py
+m encodings.cp1251          /usr/lib/python3.6/encodings/cp1251.py
+m encodings.cp1252          /usr/lib/python3.6/encodings/cp1252.py
+m encodings.cp1253          /usr/lib/python3.6/encodings/cp1253.py
+m encodings.cp1254          /usr/lib/python3.6/encodings/cp1254.py
+m encodings.cp1255          /usr/lib/python3.6/encodings/cp1255.py
+m encodings.cp1256          /usr/lib/python3.6/encodings/cp1256.py
+m encodings.cp1257          /usr/lib/python3.6/encodings/cp1257.py
+m encodings.cp1258          /usr/lib/python3.6/encodings/cp1258.py
+m encodings.cp273           /usr/lib/python3.6/encodings/cp273.py
+m encodings.cp424           /usr/lib/python3.6/encodings/cp424.py
+m encodings.cp437           /usr/lib/python3.6/encodings/cp437.py
+m encodings.cp500           /usr/lib/python3.6/encodings/cp500.py
+m encodings.cp65001         /usr/lib/python3.6/encodings/cp65001.py
+m encodings.cp720           /usr/lib/python3.6/encodings/cp720.py
+m encodings.cp737           /usr/lib/python3.6/encodings/cp737.py
+m encodings.cp775           /usr/lib/python3.6/encodings/cp775.py
+m encodings.cp850           /usr/lib/python3.6/encodings/cp850.py
+m encodings.cp852           /usr/lib/python3.6/encodings/cp852.py
+m encodings.cp855           /usr/lib/python3.6/encodings/cp855.py
+m encodings.cp856           /usr/lib/python3.6/encodings/cp856.py
+m encodings.cp857           /usr/lib/python3.6/encodings/cp857.py
+m encodings.cp858           /usr/lib/python3.6/encodings/cp858.py
+m encodings.cp860           /usr/lib/python3.6/encodings/cp860.py
+m encodings.cp861           /usr/lib/python3.6/encodings/cp861.py
+m encodings.cp862           /usr/lib/python3.6/encodings/cp862.py
+m encodings.cp863           /usr/lib/python3.6/encodings/cp863.py
+m encodings.cp864           /usr/lib/python3.6/encodings/cp864.py
+m encodings.cp865           /usr/lib/python3.6/encodings/cp865.py
+m encodings.cp866           /usr/lib/python3.6/encodings/cp866.py
+m encodings.cp869           /usr/lib/python3.6/encodings/cp869.py
+m encodings.cp874           /usr/lib/python3.6/encodings/cp874.py
+m encodings.cp875           /usr/lib/python3.6/encodings/cp875.py
+m encodings.cp932           /usr/lib/python3.6/encodings/cp932.py
+m encodings.cp949           /usr/lib/python3.6/encodings/cp949.py
+m encodings.cp950           /usr/lib/python3.6/encodings/cp950.py
+m encodings.euc_jis_2004    /usr/lib/python3.6/encodings/euc_jis_2004.py
+m encodings.euc_jisx0213    /usr/lib/python3.6/encodings/euc_jisx0213.py
+m encodings.euc_jp          /usr/lib/python3.6/encodings/euc_jp.py
+m encodings.euc_kr          /usr/lib/python3.6/encodings/euc_kr.py
+m encodings.gb18030         /usr/lib/python3.6/encodings/gb18030.py
+m encodings.gb2312          /usr/lib/python3.6/encodings/gb2312.py
+m encodings.gbk             /usr/lib/python3.6/encodings/gbk.py
+m encodings.hex_codec       /usr/lib/python3.6/encodings/hex_codec.py
+m encodings.hp_roman8       /usr/lib/python3.6/encodings/hp_roman8.py
+m encodings.hz              /usr/lib/python3.6/encodings/hz.py
+m encodings.idna            /usr/lib/python3.6/encodings/idna.py
+m encodings.iso2022_jp      /usr/lib/python3.6/encodings/iso2022_jp.py
+m encodings.iso2022_jp_1    /usr/lib/python3.6/encodings/iso2022_jp_1.py
+m encodings.iso2022_jp_2    /usr/lib/python3.6/encodings/iso2022_jp_2.py
+m encodings.iso2022_jp_2004 /usr/lib/python3.6/encodings/iso2022_jp_2004.py
+m encodings.iso2022_jp_3    /usr/lib/python3.6/encodings/iso2022_jp_3.py
+m encodings.iso2022_jp_ext  /usr/lib/python3.6/encodings/iso2022_jp_ext.py
+m encodings.iso2022_kr      /usr/lib/python3.6/encodings/iso2022_kr.py
+m encodings.iso8859_1       /usr/lib/python3.6/encodings/iso8859_1.py
+m encodings.iso8859_10      /usr/lib/python3.6/encodings/iso8859_10.py
+m encodings.iso8859_11      /usr/lib/python3.6/encodings/iso8859_11.py
+m encodings.iso8859_13      /usr/lib/python3.6/encodings/iso8859_13.py
+m encodings.iso8859_14      /usr/lib/python3.6/encodings/iso8859_14.py
+m encodings.iso8859_15      /usr/lib/python3.6/encodings/iso8859_15.py
+m encodings.iso8859_16      /usr/lib/python3.6/encodings/iso8859_16.py
+m encodings.iso8859_2       /usr/lib/python3.6/encodings/iso8859_2.py
+m encodings.iso8859_3       /usr/lib/python3.6/encodings/iso8859_3.py
+m encodings.iso8859_4       /usr/lib/python3.6/encodings/iso8859_4.py
+m encodings.iso8859_5       /usr/lib/python3.6/encodings/iso8859_5.py
+m encodings.iso8859_6       /usr/lib/python3.6/encodings/iso8859_6.py
+m encodings.iso8859_7       /usr/lib/python3.6/encodings/iso8859_7.py
+m encodings.iso8859_8       /usr/lib/python3.6/encodings/iso8859_8.py
+m encodings.iso8859_9       /usr/lib/python3.6/encodings/iso8859_9.py
+m encodings.johab           /usr/lib/python3.6/encodings/johab.py
+m encodings.koi8_r          /usr/lib/python3.6/encodings/koi8_r.py
+m encodings.koi8_t          /usr/lib/python3.6/encodings/koi8_t.py
+m encodings.koi8_u          /usr/lib/python3.6/encodings/koi8_u.py
+m encodings.kz1048          /usr/lib/python3.6/encodings/kz1048.py
+m encodings.latin_1         /usr/lib/python3.6/encodings/latin_1.py
+m encodings.mac_arabic      /usr/lib/python3.6/encodings/mac_arabic.py
+m encodings.mac_centeuro    /usr/lib/python3.6/encodings/mac_centeuro.py
+m encodings.mac_croatian    /usr/lib/python3.6/encodings/mac_croatian.py
+m encodings.mac_cyrillic    /usr/lib/python3.6/encodings/mac_cyrillic.py
+m encodings.mac_farsi       /usr/lib/python3.6/encodings/mac_farsi.py
+m encodings.mac_greek       /usr/lib/python3.6/encodings/mac_greek.py
+m encodings.mac_iceland     /usr/lib/python3.6/encodings/mac_iceland.py
+m encodings.mac_latin2      /usr/lib/python3.6/encodings/mac_latin2.py
+m encodings.mac_roman       /usr/lib/python3.6/encodings/mac_roman.py
+m encodings.mac_romanian    /usr/lib/python3.6/encodings/mac_romanian.py
+m encodings.mac_turkish     /usr/lib/python3.6/encodings/mac_turkish.py
+m encodings.mbcs            /usr/lib/python3.6/encodings/mbcs.py
+m encodings.oem             /usr/lib/python3.6/encodings/oem.py
+m encodings.palmos          /usr/lib/python3.6/encodings/palmos.py
+m encodings.ptcp154         /usr/lib/python3.6/encodings/ptcp154.py
+m encodings.punycode        /usr/lib/python3.6/encodings/punycode.py
+m encodings.quopri_codec    /usr/lib/python3.6/encodings/quopri_codec.py
+m encodings.raw_unicode_escape /usr/lib/python3.6/encodings/raw_unicode_escape.py
+m encodings.rot_13          /usr/lib/python3.6/encodings/rot_13.py
+m encodings.shift_jis       /usr/lib/python3.6/encodings/shift_jis.py
+m encodings.shift_jis_2004  /usr/lib/python3.6/encodings/shift_jis_2004.py
+m encodings.shift_jisx0213  /usr/lib/python3.6/encodings/shift_jisx0213.py
+m encodings.tis_620         /usr/lib/python3.6/encodings/tis_620.py
+m encodings.undefined       /usr/lib/python3.6/encodings/undefined.py
+m encodings.unicode_escape  /usr/lib/python3.6/encodings/unicode_escape.py
+m encodings.unicode_internal /usr/lib/python3.6/encodings/unicode_internal.py
+m encodings.utf_16          /usr/lib/python3.6/encodings/utf_16.py
+m encodings.utf_16_be       /usr/lib/python3.6/encodings/utf_16_be.py
+m encodings.utf_16_le       /usr/lib/python3.6/encodings/utf_16_le.py
+m encodings.utf_32          /usr/lib/python3.6/encodings/utf_32.py
+m encodings.utf_32_be       /usr/lib/python3.6/encodings/utf_32_be.py
+m encodings.utf_32_le       /usr/lib/python3.6/encodings/utf_32_le.py
+m encodings.utf_7           /usr/lib/python3.6/encodings/utf_7.py
+m encodings.utf_8           /usr/lib/python3.6/encodings/utf_8.py
+m encodings.utf_8_sig       /usr/lib/python3.6/encodings/utf_8_sig.py
+m encodings.uu_codec        /usr/lib/python3.6/encodings/uu_codec.py
+m encodings.zlib_codec      /usr/lib/python3.6/encodings/zlib_codec.py
+m enum                      /usr/lib/python3.6/enum.py
+m errno                     
+P fgdtools                  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/fgdtools/__init__.py
+m fgdtools.fgd              /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/fgdtools/fgd.py
+m fgdtools.parser           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/fgdtools/parser.py
+m fgdtools.writer           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/fgdtools/writer.py
+m fileinput                 /usr/lib/python3.6/fileinput.py
+m fnmatch                   /usr/lib/python3.6/fnmatch.py
+m fractions                 /usr/lib/python3.6/fractions.py
+m ftplib                    /usr/lib/python3.6/ftplib.py
+m functools                 /usr/lib/python3.6/functools.py
+m gc                        
+m genericpath               /usr/lib/python3.6/genericpath.py
+m getopt                    /usr/lib/python3.6/getopt.py
+m getpass                   /usr/lib/python3.6/getpass.py
+m gettext                   /usr/lib/python3.6/gettext.py
+m glob                      /usr/lib/python3.6/glob.py
+m grp                       
+m gzip                      /usr/lib/python3.6/gzip.py
+m hashlib                   /usr/lib/python3.6/hashlib.py
+m heapq                     /usr/lib/python3.6/heapq.py
+m hmac                      /usr/lib/python3.6/hmac.py
+P html                      /usr/lib/python3.6/html/__init__.py
+m html.entities             /usr/lib/python3.6/html/entities.py
+P http                      /usr/lib/python3.6/http/__init__.py
+m http.client               /usr/lib/python3.6/http/client.py
+m http.cookiejar            /usr/lib/python3.6/http/cookiejar.py
+m http.server               /usr/lib/python3.6/http/server.py
+m imp                       /usr/lib/python3.6/imp.py
+P importlib                 /usr/lib/python3.6/importlib/__init__.py
+m importlib._bootstrap      /usr/lib/python3.6/importlib/_bootstrap.py
+m importlib._bootstrap_external /usr/lib/python3.6/importlib/_bootstrap_external.py
+m importlib.abc             /usr/lib/python3.6/importlib/abc.py
+m importlib.machinery       /usr/lib/python3.6/importlib/machinery.py
+m importlib.util            /usr/lib/python3.6/importlib/util.py
+m inspect                   /usr/lib/python3.6/inspect.py
+m io                        /usr/lib/python3.6/io.py
+m ipaddress                 /usr/lib/python3.6/ipaddress.py
+m itertools                 
+P json                      /usr/lib/python3.6/json/__init__.py
+m json.decoder              /usr/lib/python3.6/json/decoder.py
+m json.encoder              /usr/lib/python3.6/json/encoder.py
+m json.scanner              /usr/lib/python3.6/json/scanner.py
+m keyword                   /usr/lib/python3.6/keyword.py
+P lib2to3                   /usr/lib/python3.6/lib2to3/__init__.py
+m lib2to3.btm_matcher       /usr/lib/python3.6/lib2to3/btm_matcher.py
+m lib2to3.btm_utils         /usr/lib/python3.6/lib2to3/btm_utils.py
+m lib2to3.fixer_util        /usr/lib/python3.6/lib2to3/fixer_util.py
+m lib2to3.patcomp           /usr/lib/python3.6/lib2to3/patcomp.py
+P lib2to3.pgen2             /usr/lib/python3.6/lib2to3/pgen2/__init__.py
+m lib2to3.pgen2.driver      /usr/lib/python3.6/lib2to3/pgen2/driver.py
+m lib2to3.pgen2.grammar     /usr/lib/python3.6/lib2to3/pgen2/grammar.py
+m lib2to3.pgen2.literals    /usr/lib/python3.6/lib2to3/pgen2/literals.py
+m lib2to3.pgen2.parse       /usr/lib/python3.6/lib2to3/pgen2/parse.py
+m lib2to3.pgen2.pgen        /usr/lib/python3.6/lib2to3/pgen2/pgen.py
+m lib2to3.pgen2.token       /usr/lib/python3.6/lib2to3/pgen2/token.py
+m lib2to3.pgen2.tokenize    /usr/lib/python3.6/lib2to3/pgen2/tokenize.py
+m lib2to3.pygram            /usr/lib/python3.6/lib2to3/pygram.py
+m lib2to3.pytree            /usr/lib/python3.6/lib2to3/pytree.py
+m lib2to3.refactor          /usr/lib/python3.6/lib2to3/refactor.py
+m linecache                 /usr/lib/python3.6/linecache.py
+m locale                    /usr/lib/python3.6/locale.py
+P logging                   /usr/lib/python3.6/logging/__init__.py
+m lzma                      /usr/lib/python3.6/lzma.py
+m marshal                   
+m math                      
+m mimetypes                 /usr/lib/python3.6/mimetypes.py
+m mmap                      /usr/lib/python3.6/lib-dynload/mmap.cpython-36m-x86_64-linux-gnu.so
+P multiprocessing           /usr/lib/python3.6/multiprocessing/__init__.py
+m multiprocessing.connection /usr/lib/python3.6/multiprocessing/connection.py
+m multiprocessing.context   /usr/lib/python3.6/multiprocessing/context.py
+P multiprocessing.dummy     /usr/lib/python3.6/multiprocessing/dummy/__init__.py
+m multiprocessing.dummy.connection /usr/lib/python3.6/multiprocessing/dummy/connection.py
+m multiprocessing.forkserver /usr/lib/python3.6/multiprocessing/forkserver.py
+m multiprocessing.heap      /usr/lib/python3.6/multiprocessing/heap.py
+m multiprocessing.managers  /usr/lib/python3.6/multiprocessing/managers.py
+m multiprocessing.pool      /usr/lib/python3.6/multiprocessing/pool.py
+m multiprocessing.popen_fork /usr/lib/python3.6/multiprocessing/popen_fork.py
+m multiprocessing.popen_forkserver /usr/lib/python3.6/multiprocessing/popen_forkserver.py
+m multiprocessing.popen_spawn_posix /usr/lib/python3.6/multiprocessing/popen_spawn_posix.py
+m multiprocessing.popen_spawn_win32 /usr/lib/python3.6/multiprocessing/popen_spawn_win32.py
+m multiprocessing.process   /usr/lib/python3.6/multiprocessing/process.py
+m multiprocessing.queues    /usr/lib/python3.6/multiprocessing/queues.py
+m multiprocessing.reduction /usr/lib/python3.6/multiprocessing/reduction.py
+m multiprocessing.resource_sharer /usr/lib/python3.6/multiprocessing/resource_sharer.py
+m multiprocessing.semaphore_tracker /usr/lib/python3.6/multiprocessing/semaphore_tracker.py
+m multiprocessing.sharedctypes /usr/lib/python3.6/multiprocessing/sharedctypes.py
+m multiprocessing.spawn     /usr/lib/python3.6/multiprocessing/spawn.py
+m multiprocessing.synchronize /usr/lib/python3.6/multiprocessing/synchronize.py
+m multiprocessing.util      /usr/lib/python3.6/multiprocessing/util.py
+m netrc                     /usr/lib/python3.6/netrc.py
+m ntpath                    /usr/lib/python3.6/ntpath.py
+m numbers                   /usr/lib/python3.6/numbers.py
+P numpy                     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/__init__.py
+m numpy.__config__          /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/__config__.py
+m numpy._distributor_init   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/_distributor_init.py
+m numpy._globals            /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/_globals.py
+m numpy._pytesttester       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/_pytesttester.py
+P numpy.compat              /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/compat/__init__.py
+m numpy.compat._inspect     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/compat/_inspect.py
+m numpy.compat.py3k         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/compat/py3k.py
+m numpy.compat.setup        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/compat/setup.py
+P numpy.compat.tests        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/compat/tests/__init__.py
+m numpy.compat.tests.test_compat /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/compat/tests/test_compat.py
+m numpy.conftest            /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/conftest.py
+P numpy.core                /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/__init__.py
+m numpy.core._add_newdocs   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_add_newdocs.py
+m numpy.core._asarray       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_asarray.py
+m numpy.core._dtype         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_dtype.py
+m numpy.core._dtype_ctypes  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_dtype_ctypes.py
+m numpy.core._exceptions    /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_exceptions.py
+m numpy.core._internal      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_internal.py
+m numpy.core._methods       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_methods.py
+m numpy.core._multiarray_tests /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_multiarray_tests.cpython-36m-x86_64-linux-gnu.so
+m numpy.core._multiarray_umath /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_multiarray_umath.cpython-36m-x86_64-linux-gnu.so
+m numpy.core._operand_flag_tests /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_operand_flag_tests.cpython-36m-x86_64-linux-gnu.so
+m numpy.core._rational_tests /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_rational_tests.cpython-36m-x86_64-linux-gnu.so
+m numpy.core._string_helpers /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_string_helpers.py
+m numpy.core._struct_ufunc_tests /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_struct_ufunc_tests.cpython-36m-x86_64-linux-gnu.so
+m numpy.core._type_aliases  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_type_aliases.py
+m numpy.core._ufunc_config  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_ufunc_config.py
+m numpy.core._umath_tests   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_umath_tests.cpython-36m-x86_64-linux-gnu.so
+m numpy.core.arrayprint     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/arrayprint.py
+m numpy.core.cversions      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/cversions.py
+m numpy.core.defchararray   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/defchararray.py
+m numpy.core.einsumfunc     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/einsumfunc.py
+m numpy.core.fromnumeric    /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/fromnumeric.py
+m numpy.core.function_base  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/function_base.py
+m numpy.core.generate_numpy_api /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/generate_numpy_api.py
+m numpy.core.getlimits      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/getlimits.py
+m numpy.core.machar         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/machar.py
+m numpy.core.memmap         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/memmap.py
+m numpy.core.multiarray     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/multiarray.py
+m numpy.core.numeric        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/numeric.py
+m numpy.core.numerictypes   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/numerictypes.py
+m numpy.core.overrides      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/overrides.py
+m numpy.core.records        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/records.py
+m numpy.core.setup          /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/setup.py
+m numpy.core.setup_common   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/setup_common.py
+m numpy.core.shape_base     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/shape_base.py
+P numpy.core.tests          /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/__init__.py
+m numpy.core.tests._locales /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/_locales.py
+m numpy.core.tests.test__exceptions /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test__exceptions.py
+m numpy.core.tests.test_abc /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_abc.py
+m numpy.core.tests.test_api /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_api.py
+m numpy.core.tests.test_arrayprint /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_arrayprint.py
+m numpy.core.tests.test_datetime /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_datetime.py
+m numpy.core.tests.test_defchararray /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_defchararray.py
+m numpy.core.tests.test_deprecations /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_deprecations.py
+m numpy.core.tests.test_dtype /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_dtype.py
+m numpy.core.tests.test_einsum /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_einsum.py
+m numpy.core.tests.test_errstate /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_errstate.py
+m numpy.core.tests.test_extint128 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_extint128.py
+m numpy.core.tests.test_function_base /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_function_base.py
+m numpy.core.tests.test_getlimits /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_getlimits.py
+m numpy.core.tests.test_half /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_half.py
+m numpy.core.tests.test_indexerrors /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_indexerrors.py
+m numpy.core.tests.test_indexing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_indexing.py
+m numpy.core.tests.test_issue14735 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_issue14735.py
+m numpy.core.tests.test_item_selection /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_item_selection.py
+m numpy.core.tests.test_longdouble /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_longdouble.py
+m numpy.core.tests.test_machar /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_machar.py
+m numpy.core.tests.test_mem_overlap /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_mem_overlap.py
+m numpy.core.tests.test_memmap /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_memmap.py
+m numpy.core.tests.test_multiarray /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_multiarray.py
+m numpy.core.tests.test_nditer /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_nditer.py
+m numpy.core.tests.test_numeric /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_numeric.py
+m numpy.core.tests.test_numerictypes /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_numerictypes.py
+m numpy.core.tests.test_overrides /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_overrides.py
+m numpy.core.tests.test_print /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_print.py
+m numpy.core.tests.test_records /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_records.py
+m numpy.core.tests.test_regression /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_regression.py
+m numpy.core.tests.test_scalar_ctors /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_scalar_ctors.py
+m numpy.core.tests.test_scalar_methods /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_scalar_methods.py
+m numpy.core.tests.test_scalarbuffer /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_scalarbuffer.py
+m numpy.core.tests.test_scalarinherit /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_scalarinherit.py
+m numpy.core.tests.test_scalarmath /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_scalarmath.py
+m numpy.core.tests.test_scalarprint /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_scalarprint.py
+m numpy.core.tests.test_shape_base /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_shape_base.py
+m numpy.core.tests.test_ufunc /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_ufunc.py
+m numpy.core.tests.test_umath /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_umath.py
+m numpy.core.tests.test_umath_accuracy /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_umath_accuracy.py
+m numpy.core.tests.test_umath_complex /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_umath_complex.py
+m numpy.core.tests.test_unicode /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/tests/test_unicode.py
+m numpy.core.umath          /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/umath.py
+m numpy.core.umath_tests    /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/umath_tests.py
+m numpy.ctypeslib           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/ctypeslib.py
+P numpy.distutils           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/__init__.py
+m numpy.distutils.__config__ /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/__config__.py
+m numpy.distutils._shell_utils /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/_shell_utils.py
+m numpy.distutils.ccompiler /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/ccompiler.py
+P numpy.distutils.command   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/__init__.py
+m numpy.distutils.command.autodist /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/autodist.py
+m numpy.distutils.command.bdist_rpm /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/bdist_rpm.py
+m numpy.distutils.command.build /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/build.py
+m numpy.distutils.command.build_clib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/build_clib.py
+m numpy.distutils.command.build_ext /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/build_ext.py
+m numpy.distutils.command.build_py /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/build_py.py
+m numpy.distutils.command.build_scripts /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/build_scripts.py
+m numpy.distutils.command.build_src /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/build_src.py
+m numpy.distutils.command.config /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/config.py
+m numpy.distutils.command.config_compiler /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/config_compiler.py
+m numpy.distutils.command.develop /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/develop.py
+m numpy.distutils.command.egg_info /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/egg_info.py
+m numpy.distutils.command.install /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/install.py
+m numpy.distutils.command.install_clib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/install_clib.py
+m numpy.distutils.command.install_data /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/install_data.py
+m numpy.distutils.command.install_headers /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/install_headers.py
+m numpy.distutils.command.sdist /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/command/sdist.py
+m numpy.distutils.compat    /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/compat.py
+m numpy.distutils.conv_template /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/conv_template.py
+m numpy.distutils.core      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/core.py
+m numpy.distutils.cpuinfo   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/cpuinfo.py
+m numpy.distutils.exec_command /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/exec_command.py
+m numpy.distutils.extension /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/extension.py
+P numpy.distutils.fcompiler /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/fcompiler/__init__.py
+m numpy.distutils.fcompiler.absoft /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/fcompiler/absoft.py
+m numpy.distutils.fcompiler.compaq /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/fcompiler/compaq.py
+m numpy.distutils.fcompiler.environment /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/fcompiler/environment.py
+m numpy.distutils.fcompiler.g95 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/fcompiler/g95.py
+m numpy.distutils.fcompiler.gnu /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/fcompiler/gnu.py
+m numpy.distutils.fcompiler.hpux /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/fcompiler/hpux.py
+m numpy.distutils.fcompiler.ibm /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/fcompiler/ibm.py
+m numpy.distutils.fcompiler.intel /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/fcompiler/intel.py
+m numpy.distutils.fcompiler.lahey /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/fcompiler/lahey.py
+m numpy.distutils.fcompiler.mips /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/fcompiler/mips.py
+m numpy.distutils.fcompiler.nag /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/fcompiler/nag.py
+m numpy.distutils.fcompiler.none /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/fcompiler/none.py
+m numpy.distutils.fcompiler.pathf95 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/fcompiler/pathf95.py
+m numpy.distutils.fcompiler.pg /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/fcompiler/pg.py
+m numpy.distutils.fcompiler.sun /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/fcompiler/sun.py
+m numpy.distutils.fcompiler.vast /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/fcompiler/vast.py
+m numpy.distutils.from_template /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/from_template.py
+m numpy.distutils.intelccompiler /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/intelccompiler.py
+m numpy.distutils.lib2def   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/lib2def.py
+m numpy.distutils.line_endings /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/line_endings.py
+m numpy.distutils.log       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/log.py
+m numpy.distutils.mingw32ccompiler /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/mingw32ccompiler.py
+m numpy.distutils.misc_util /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/misc_util.py
+m numpy.distutils.msvc9compiler /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/msvc9compiler.py
+m numpy.distutils.msvccompiler /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/msvccompiler.py
+m numpy.distutils.npy_pkg_config /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/npy_pkg_config.py
+m numpy.distutils.numpy_distribution /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/numpy_distribution.py
+m numpy.distutils.pathccompiler /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/pathccompiler.py
+m numpy.distutils.setup     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/setup.py
+m numpy.distutils.system_info /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/system_info.py
+P numpy.distutils.tests     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/tests/__init__.py
+m numpy.distutils.tests.test_exec_command /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/tests/test_exec_command.py
+m numpy.distutils.tests.test_fcompiler /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/tests/test_fcompiler.py
+m numpy.distutils.tests.test_fcompiler_gnu /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/tests/test_fcompiler_gnu.py
+m numpy.distutils.tests.test_fcompiler_intel /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/tests/test_fcompiler_intel.py
+m numpy.distutils.tests.test_fcompiler_nagfor /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/tests/test_fcompiler_nagfor.py
+m numpy.distutils.tests.test_from_template /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/tests/test_from_template.py
+m numpy.distutils.tests.test_mingw32ccompiler /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/tests/test_mingw32ccompiler.py
+m numpy.distutils.tests.test_misc_util /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/tests/test_misc_util.py
+m numpy.distutils.tests.test_npy_pkg_config /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/tests/test_npy_pkg_config.py
+m numpy.distutils.tests.test_shell_utils /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/tests/test_shell_utils.py
+m numpy.distutils.tests.test_system_info /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/tests/test_system_info.py
+m numpy.distutils.unixccompiler /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/distutils/unixccompiler.py
+P numpy.doc                 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/doc/__init__.py
+m numpy.doc.basics          /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/doc/basics.py
+m numpy.doc.broadcasting    /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/doc/broadcasting.py
+m numpy.doc.byteswapping    /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/doc/byteswapping.py
+m numpy.doc.constants       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/doc/constants.py
+m numpy.doc.creation        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/doc/creation.py
+m numpy.doc.dispatch        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/doc/dispatch.py
+m numpy.doc.glossary        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/doc/glossary.py
+m numpy.doc.indexing        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/doc/indexing.py
+m numpy.doc.internals       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/doc/internals.py
+m numpy.doc.misc            /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/doc/misc.py
+m numpy.doc.structured_arrays /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/doc/structured_arrays.py
+m numpy.doc.subclassing     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/doc/subclassing.py
+m numpy.doc.ufuncs          /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/doc/ufuncs.py
+m numpy.dual                /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/dual.py
+P numpy.f2py                /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/__init__.py
+m numpy.f2py.__main__       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/__main__.py
+m numpy.f2py.__version__    /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/__version__.py
+m numpy.f2py.auxfuncs       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/auxfuncs.py
+m numpy.f2py.capi_maps      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/capi_maps.py
+m numpy.f2py.cb_rules       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/cb_rules.py
+m numpy.f2py.cfuncs         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/cfuncs.py
+m numpy.f2py.common_rules   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/common_rules.py
+m numpy.f2py.crackfortran   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/crackfortran.py
+m numpy.f2py.diagnose       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/diagnose.py
+m numpy.f2py.f2py2e         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/f2py2e.py
+m numpy.f2py.f2py_testing   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/f2py_testing.py
+m numpy.f2py.f90mod_rules   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/f90mod_rules.py
+m numpy.f2py.func2subr      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/func2subr.py
+m numpy.f2py.rules          /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/rules.py
+m numpy.f2py.setup          /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/setup.py
+P numpy.f2py.tests          /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/__init__.py
+m numpy.f2py.tests.test_array_from_pyobj /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_array_from_pyobj.py
+m numpy.f2py.tests.test_assumed_shape /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_assumed_shape.py
+m numpy.f2py.tests.test_block_docstring /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_block_docstring.py
+m numpy.f2py.tests.test_callback /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_callback.py
+m numpy.f2py.tests.test_common /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_common.py
+m numpy.f2py.tests.test_compile_function /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_compile_function.py
+m numpy.f2py.tests.test_kind /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_kind.py
+m numpy.f2py.tests.test_mixed /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_mixed.py
+m numpy.f2py.tests.test_parameter /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_parameter.py
+m numpy.f2py.tests.test_quoted_character /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_quoted_character.py
+m numpy.f2py.tests.test_regression /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_regression.py
+m numpy.f2py.tests.test_return_character /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_return_character.py
+m numpy.f2py.tests.test_return_complex /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_return_complex.py
+m numpy.f2py.tests.test_return_integer /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_return_integer.py
+m numpy.f2py.tests.test_return_logical /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_return_logical.py
+m numpy.f2py.tests.test_return_real /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_return_real.py
+m numpy.f2py.tests.test_semicolon_split /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_semicolon_split.py
+m numpy.f2py.tests.test_size /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_size.py
+m numpy.f2py.tests.test_string /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/test_string.py
+m numpy.f2py.tests.util     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/tests/util.py
+m numpy.f2py.use_rules      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/f2py/use_rules.py
+P numpy.fft                 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/fft/__init__.py
+m numpy.fft._pocketfft      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/fft/_pocketfft.py
+m numpy.fft._pocketfft_internal /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/fft/_pocketfft_internal.cpython-36m-x86_64-linux-gnu.so
+m numpy.fft.helper          /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/fft/helper.py
+m numpy.fft.setup           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/fft/setup.py
+P numpy.fft.tests           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/fft/tests/__init__.py
+m numpy.fft.tests.test_helper /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/fft/tests/test_helper.py
+m numpy.fft.tests.test_pocketfft /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/fft/tests/test_pocketfft.py
+P numpy.lib                 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/__init__.py
+m numpy.lib._datasource     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/_datasource.py
+m numpy.lib._iotools        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/_iotools.py
+m numpy.lib._version        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/_version.py
+m numpy.lib.arraypad        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/arraypad.py
+m numpy.lib.arraysetops     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/arraysetops.py
+m numpy.lib.arrayterator    /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/arrayterator.py
+m numpy.lib.financial       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/financial.py
+m numpy.lib.format          /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/format.py
+m numpy.lib.function_base   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/function_base.py
+m numpy.lib.histograms      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/histograms.py
+m numpy.lib.index_tricks    /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/index_tricks.py
+m numpy.lib.mixins          /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/mixins.py
+m numpy.lib.nanfunctions    /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/nanfunctions.py
+m numpy.lib.npyio           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/npyio.py
+m numpy.lib.polynomial      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/polynomial.py
+m numpy.lib.recfunctions    /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/recfunctions.py
+m numpy.lib.scimath         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/scimath.py
+m numpy.lib.setup           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/setup.py
+m numpy.lib.shape_base      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/shape_base.py
+m numpy.lib.stride_tricks   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/stride_tricks.py
+P numpy.lib.tests           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/__init__.py
+m numpy.lib.tests.test__datasource /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test__datasource.py
+m numpy.lib.tests.test__iotools /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test__iotools.py
+m numpy.lib.tests.test__version /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test__version.py
+m numpy.lib.tests.test_arraypad /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_arraypad.py
+m numpy.lib.tests.test_arraysetops /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_arraysetops.py
+m numpy.lib.tests.test_arrayterator /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_arrayterator.py
+m numpy.lib.tests.test_financial /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_financial.py
+m numpy.lib.tests.test_format /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_format.py
+m numpy.lib.tests.test_function_base /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_function_base.py
+m numpy.lib.tests.test_histograms /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_histograms.py
+m numpy.lib.tests.test_index_tricks /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_index_tricks.py
+m numpy.lib.tests.test_io   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_io.py
+m numpy.lib.tests.test_mixins /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_mixins.py
+m numpy.lib.tests.test_nanfunctions /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_nanfunctions.py
+m numpy.lib.tests.test_packbits /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_packbits.py
+m numpy.lib.tests.test_polynomial /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_polynomial.py
+m numpy.lib.tests.test_recfunctions /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_recfunctions.py
+m numpy.lib.tests.test_regression /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_regression.py
+m numpy.lib.tests.test_shape_base /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_shape_base.py
+m numpy.lib.tests.test_stride_tricks /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_stride_tricks.py
+m numpy.lib.tests.test_twodim_base /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_twodim_base.py
+m numpy.lib.tests.test_type_check /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_type_check.py
+m numpy.lib.tests.test_ufunclike /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_ufunclike.py
+m numpy.lib.tests.test_utils /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/tests/test_utils.py
+m numpy.lib.twodim_base     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/twodim_base.py
+m numpy.lib.type_check      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/type_check.py
+m numpy.lib.ufunclike       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/ufunclike.py
+m numpy.lib.user_array      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/user_array.py
+m numpy.lib.utils           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/lib/utils.py
+P numpy.linalg              /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/__init__.py
+m numpy.linalg._umath_linalg /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/_umath_linalg.cpython-36m-x86_64-linux-gnu.so
+m numpy.linalg.lapack_lite  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/lapack_lite.cpython-36m-x86_64-linux-gnu.so
+m numpy.linalg.linalg       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/linalg.py
+m numpy.linalg.setup        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/setup.py
+P numpy.linalg.tests        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/tests/__init__.py
+m numpy.linalg.tests.test_build /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/tests/test_build.py
+m numpy.linalg.tests.test_deprecations /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/tests/test_deprecations.py
+m numpy.linalg.tests.test_linalg /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/tests/test_linalg.py
+m numpy.linalg.tests.test_regression /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/tests/test_regression.py
+P numpy.ma                  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/ma/__init__.py
+m numpy.ma.bench            /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/ma/bench.py
+m numpy.ma.core             /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/ma/core.py
+m numpy.ma.extras           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/ma/extras.py
+m numpy.ma.mrecords         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/ma/mrecords.py
+m numpy.ma.setup            /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/ma/setup.py
+P numpy.ma.tests            /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/ma/tests/__init__.py
+m numpy.ma.tests.test_core  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/ma/tests/test_core.py
+m numpy.ma.tests.test_deprecations /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/ma/tests/test_deprecations.py
+m numpy.ma.tests.test_extras /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/ma/tests/test_extras.py
+m numpy.ma.tests.test_mrecords /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/ma/tests/test_mrecords.py
+m numpy.ma.tests.test_old_ma /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/ma/tests/test_old_ma.py
+m numpy.ma.tests.test_regression /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/ma/tests/test_regression.py
+m numpy.ma.tests.test_subclassing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/ma/tests/test_subclassing.py
+m numpy.ma.testutils        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/ma/testutils.py
+m numpy.ma.timer_comparison /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/ma/timer_comparison.py
+m numpy.matlib              /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/matlib.py
+P numpy.matrixlib           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/matrixlib/__init__.py
+m numpy.matrixlib.defmatrix /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/matrixlib/defmatrix.py
+m numpy.matrixlib.setup     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/matrixlib/setup.py
+P numpy.matrixlib.tests     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/matrixlib/tests/__init__.py
+m numpy.matrixlib.tests.test_defmatrix /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/matrixlib/tests/test_defmatrix.py
+m numpy.matrixlib.tests.test_interaction /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/matrixlib/tests/test_interaction.py
+m numpy.matrixlib.tests.test_masked_matrix /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/matrixlib/tests/test_masked_matrix.py
+m numpy.matrixlib.tests.test_matrix_linalg /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/matrixlib/tests/test_matrix_linalg.py
+m numpy.matrixlib.tests.test_multiarray /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/matrixlib/tests/test_multiarray.py
+m numpy.matrixlib.tests.test_numeric /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/matrixlib/tests/test_numeric.py
+m numpy.matrixlib.tests.test_regression /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/matrixlib/tests/test_regression.py
+P numpy.polynomial          /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/__init__.py
+m numpy.polynomial._polybase /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/_polybase.py
+m numpy.polynomial.chebyshev /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/chebyshev.py
+m numpy.polynomial.hermite  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/hermite.py
+m numpy.polynomial.hermite_e /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/hermite_e.py
+m numpy.polynomial.laguerre /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/laguerre.py
+m numpy.polynomial.legendre /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/legendre.py
+m numpy.polynomial.polynomial /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/polynomial.py
+m numpy.polynomial.polyutils /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/polyutils.py
+m numpy.polynomial.setup    /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/setup.py
+P numpy.polynomial.tests    /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/tests/__init__.py
+m numpy.polynomial.tests.test_chebyshev /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/tests/test_chebyshev.py
+m numpy.polynomial.tests.test_classes /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/tests/test_classes.py
+m numpy.polynomial.tests.test_hermite /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/tests/test_hermite.py
+m numpy.polynomial.tests.test_hermite_e /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/tests/test_hermite_e.py
+m numpy.polynomial.tests.test_laguerre /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/tests/test_laguerre.py
+m numpy.polynomial.tests.test_legendre /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/tests/test_legendre.py
+m numpy.polynomial.tests.test_polynomial /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/tests/test_polynomial.py
+m numpy.polynomial.tests.test_polyutils /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/tests/test_polyutils.py
+m numpy.polynomial.tests.test_printing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/polynomial/tests/test_printing.py
+P numpy.random              /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/__init__.py
+m numpy.random._bit_generator /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/_bit_generator.cpython-36m-x86_64-linux-gnu.so
+m numpy.random._bounded_integers /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/_bounded_integers.cpython-36m-x86_64-linux-gnu.so
+m numpy.random._common      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/_common.cpython-36m-x86_64-linux-gnu.so
+m numpy.random._generator   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/_generator.cpython-36m-x86_64-linux-gnu.so
+m numpy.random._mt19937     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/_mt19937.cpython-36m-x86_64-linux-gnu.so
+m numpy.random._pcg64       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/_pcg64.cpython-36m-x86_64-linux-gnu.so
+m numpy.random._philox      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/_philox.cpython-36m-x86_64-linux-gnu.so
+m numpy.random._pickle      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/_pickle.py
+m numpy.random._sfc64       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/_sfc64.cpython-36m-x86_64-linux-gnu.so
+m numpy.random.mtrand       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/mtrand.cpython-36m-x86_64-linux-gnu.so
+m numpy.random.setup        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/setup.py
+P numpy.random.tests        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/tests/__init__.py
+P numpy.random.tests.data   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/tests/data/__init__.py
+m numpy.random.tests.test_direct /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/tests/test_direct.py
+m numpy.random.tests.test_extending /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/tests/test_extending.py
+m numpy.random.tests.test_generator_mt19937 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/tests/test_generator_mt19937.py
+m numpy.random.tests.test_generator_mt19937_regressions /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/tests/test_generator_mt19937_regressions.py
+m numpy.random.tests.test_random /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/tests/test_random.py
+m numpy.random.tests.test_randomstate /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/tests/test_randomstate.py
+m numpy.random.tests.test_randomstate_regression /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/tests/test_randomstate_regression.py
+m numpy.random.tests.test_regression /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/tests/test_regression.py
+m numpy.random.tests.test_seed_sequence /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/tests/test_seed_sequence.py
+m numpy.random.tests.test_smoke /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/tests/test_smoke.py
+m numpy.setup               /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/setup.py
+P numpy.testing             /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/testing/__init__.py
+P numpy.testing._private    /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/testing/_private/__init__.py
+m numpy.testing._private.decorators /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/testing/_private/decorators.py
+m numpy.testing._private.noseclasses /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/testing/_private/noseclasses.py
+m numpy.testing._private.nosetester /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/testing/_private/nosetester.py
+m numpy.testing._private.parameterized /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/testing/_private/parameterized.py
+m numpy.testing._private.utils /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/testing/_private/utils.py
+m numpy.testing.print_coercion_tables /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/testing/print_coercion_tables.py
+m numpy.testing.setup       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/testing/setup.py
+P numpy.testing.tests       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/testing/tests/__init__.py
+m numpy.testing.tests.test_decorators /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/testing/tests/test_decorators.py
+m numpy.testing.tests.test_doctesting /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/testing/tests/test_doctesting.py
+m numpy.testing.tests.test_utils /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/testing/tests/test_utils.py
+m numpy.testing.utils       /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/testing/utils.py
+P numpy.tests               /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/tests/__init__.py
+m numpy.tests.test_ctypeslib /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/tests/test_ctypeslib.py
+m numpy.tests.test_matlib   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/tests/test_matlib.py
+m numpy.tests.test_numpy_version /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/tests/test_numpy_version.py
+m numpy.tests.test_public_api /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/tests/test_public_api.py
+m numpy.tests.test_reloading /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/tests/test_reloading.py
+m numpy.tests.test_scripts  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/tests/test_scripts.py
+m numpy.tests.test_warnings /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/tests/test_warnings.py
+m numpy.version             /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/version.py
+m opcode                    /usr/lib/python3.6/opcode.py
+m operator                  /usr/lib/python3.6/operator.py
+P ops                       /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/ops/__init__.py
+m ops.vmf                   /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/ops/vmf.py
+m optparse                  /usr/lib/python3.6/optparse.py
+m os                        /usr/lib/python3.6/os.py
+m pathlib                   /usr/lib/python3.6/pathlib.py
+m pdb                       /usr/lib/python3.6/pdb.py
+m pickle                    /usr/lib/python3.6/pickle.py
+m pipes                     /usr/lib/python3.6/pipes.py
+P pkg_resources             /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/pkg_resources/__init__.py
+P pkg_resources._vendor     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/pkg_resources/_vendor/__init__.py
+m pkg_resources._vendor.appdirs /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/pkg_resources/_vendor/appdirs.py
+P pkg_resources._vendor.packaging /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/__init__.py
+m pkg_resources._vendor.packaging.__about__ /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/__about__.py
+m pkg_resources._vendor.packaging._compat /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/_compat.py
+m pkg_resources._vendor.packaging._structures /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/_structures.py
+m pkg_resources._vendor.packaging.markers /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/markers.py
+m pkg_resources._vendor.packaging.requirements /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/requirements.py
+m pkg_resources._vendor.packaging.specifiers /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/specifiers.py
+m pkg_resources._vendor.packaging.utils /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/utils.py
+m pkg_resources._vendor.packaging.version /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/version.py
+m pkg_resources._vendor.pyparsing /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/pkg_resources/_vendor/pyparsing.py
+m pkg_resources._vendor.six /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/pkg_resources/_vendor/six.py
+P pkg_resources.extern      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/pkg_resources/extern/__init__.py
+m pkg_resources.py31compat  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/pkg_resources/py31compat.py
+m pkgutil                   /usr/lib/python3.6/pkgutil.py
+m platform                  /usr/lib/python3.6/platform.py
+m plistlib                  /usr/lib/python3.6/plistlib.py
+m posix                     
+m posixpath                 /usr/lib/python3.6/posixpath.py
+m pprint                    /usr/lib/python3.6/pprint.py
+m pwd                       
+m py_compile                /usr/lib/python3.6/py_compile.py
+m pydoc                     /usr/lib/python3.6/pydoc.py
+P pydoc_data                /usr/lib/python3.6/pydoc_data/__init__.py
+m pydoc_data.topics         /usr/lib/python3.6/pydoc_data/topics.py
+m pyexpat                   
+m pyparsing                 /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/pyparsing.py
+m queue                     /usr/lib/python3.6/queue.py
+m quopri                    /usr/lib/python3.6/quopri.py
+m random                    /usr/lib/python3.6/random.py
+m re                        /usr/lib/python3.6/re.py
+m readline                  /usr/lib/python3.6/lib-dynload/readline.cpython-36m-x86_64-linux-gnu.so
+m reprlib                   /usr/lib/python3.6/reprlib.py
+m resource                  /usr/lib/python3.6/lib-dynload/resource.cpython-36m-x86_64-linux-gnu.so
+m rlcompleter               /usr/lib/python3.6/rlcompleter.py
+m runpy                     /usr/lib/python3.6/runpy.py
+m select                    
+m selectors                 /usr/lib/python3.6/selectors.py
+P setuptools                /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/__init__.py
+m setuptools.archive_util   /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/archive_util.py
+P setuptools.command        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/command/__init__.py
+m setuptools.command.bdist_egg /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/command/bdist_egg.py
+m setuptools.command.bdist_rpm /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/command/bdist_rpm.py
+m setuptools.command.develop /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/command/develop.py
+m setuptools.command.easy_install /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/command/easy_install.py
+m setuptools.command.egg_info /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/command/egg_info.py
+m setuptools.command.install /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/command/install.py
+m setuptools.command.install_scripts /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/command/install_scripts.py
+m setuptools.command.py36compat /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/command/py36compat.py
+m setuptools.command.sdist  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/command/sdist.py
+m setuptools.command.setopt /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/command/setopt.py
+m setuptools.config         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/config.py
+m setuptools.depends        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/depends.py
+m setuptools.dist           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/dist.py
+m setuptools.extension      /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/extension.py
+P setuptools.extern         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/extern/__init__.py
+m setuptools.glibc          /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/glibc.py
+m setuptools.glob           /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/glob.py
+m setuptools.monkey         /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/monkey.py
+m setuptools.namespaces     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/namespaces.py
+m setuptools.package_index  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/package_index.py
+m setuptools.pep425tags     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/pep425tags.py
+m setuptools.py27compat     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/py27compat.py
+m setuptools.py31compat     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/py31compat.py
+m setuptools.py33compat     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/py33compat.py
+m setuptools.py36compat     /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/py36compat.py
+m setuptools.sandbox        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/sandbox.py
+m setuptools.ssl_support    /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/ssl_support.py
+m setuptools.unicode_utils  /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/unicode_utils.py
+m setuptools.version        /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/version.py
+m setuptools.wheel          /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/wheel.py
+m setuptools.windows_support /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/setuptools/windows_support.py
+m shlex                     /usr/lib/python3.6/shlex.py
+m shutil                    /usr/lib/python3.6/shutil.py
+m signal                    /usr/lib/python3.6/signal.py
+m site                      /usr/lib/python3.6/site.py
+m sitecustomize             /usr/lib/python3.6/sitecustomize.py
+m socket                    /usr/lib/python3.6/socket.py
+m socketserver              /usr/lib/python3.6/socketserver.py
+m sre_compile               /usr/lib/python3.6/sre_compile.py
+m sre_constants             /usr/lib/python3.6/sre_constants.py
+m sre_parse                 /usr/lib/python3.6/sre_parse.py
+m ssl                       /usr/lib/python3.6/ssl.py
+m stat                      /usr/lib/python3.6/stat.py
+m string                    /usr/lib/python3.6/string.py
+m stringprep                /usr/lib/python3.6/stringprep.py
+m struct                    /usr/lib/python3.6/struct.py
+m subprocess                /usr/lib/python3.6/subprocess.py
+m sys                       
+m sysconfig                 /usr/lib/python3.6/sysconfig.py
+m tarfile                   /usr/lib/python3.6/tarfile.py
+m tempfile                  /usr/lib/python3.6/tempfile.py
+m termios                   /usr/lib/python3.6/lib-dynload/termios.cpython-36m-x86_64-linux-gnu.so
+m textwrap                  /usr/lib/python3.6/textwrap.py
+m threading                 /usr/lib/python3.6/threading.py
+m time                      
+m timeit                    /usr/lib/python3.6/timeit.py
+m token                     /usr/lib/python3.6/token.py
+m tokenize                  /usr/lib/python3.6/tokenize.py
+m traceback                 /usr/lib/python3.6/traceback.py
+m tracemalloc               /usr/lib/python3.6/tracemalloc.py
+m tty                       /usr/lib/python3.6/tty.py
+m types                     /usr/lib/python3.6/types.py
+P ui                        /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/ui/__init__.py
+m ui.core                   /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/ui/core.py
+m ui.entity                 /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/ui/entity.py
+m ui.tabs                   /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/ui/tabs.py
+m ui.viewport               /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/ui/viewport.py
+m unicodedata               
+P unittest                  /usr/lib/python3.6/unittest/__init__.py
+m unittest.case             /usr/lib/python3.6/unittest/case.py
+m unittest.loader           /usr/lib/python3.6/unittest/loader.py
+m unittest.main             /usr/lib/python3.6/unittest/main.py
+m unittest.mock             /usr/lib/python3.6/unittest/mock.py
+m unittest.result           /usr/lib/python3.6/unittest/result.py
+m unittest.runner           /usr/lib/python3.6/unittest/runner.py
+m unittest.signals          /usr/lib/python3.6/unittest/signals.py
+m unittest.suite            /usr/lib/python3.6/unittest/suite.py
+m unittest.util             /usr/lib/python3.6/unittest/util.py
+P urllib                    /usr/lib/python3.6/urllib/__init__.py
+m urllib.error              /usr/lib/python3.6/urllib/error.py
+m urllib.parse              /usr/lib/python3.6/urllib/parse.py
+m urllib.request            /usr/lib/python3.6/urllib/request.py
+m urllib.response           /usr/lib/python3.6/urllib/response.py
+P utilities                 /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/utilities/__init__.py
+m utilities.camera          /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/utilities/camera.py
+m utilities.physics         /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/utilities/physics.py
+m utilities.render          /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/utilities/render.py
+m utilities.solid           /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/utilities/solid.py
+m utilities.vector          /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/utilities/vector.py
+m utilities.vmf             /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/utilities/vmf.py
+m uu                        /usr/lib/python3.6/uu.py
+m uuid                      /usr/lib/python3.6/uuid.py
+m warnings                  /usr/lib/python3.6/warnings.py
+m weakref                   /usr/lib/python3.6/weakref.py
+m webbrowser                /usr/lib/python3.6/webbrowser.py
+P xml                       /usr/lib/python3.6/xml/__init__.py
+P xml.parsers               /usr/lib/python3.6/xml/parsers/__init__.py
+m xml.parsers.expat         /usr/lib/python3.6/xml/parsers/expat.py
+P xmlrpc                    /usr/lib/python3.6/xmlrpc/__init__.py
+m xmlrpc.client             /usr/lib/python3.6/xmlrpc/client.py
+m zipfile                   /usr/lib/python3.6/zipfile.py
+m zipimport                 
+m zlib                      
+
+Missing modules:
+? ConfigParser imported from numpy.distutils.npy_pkg_config, numpy.distutils.system_info
+? Cython.Compiler.Version imported from numpy.random.tests.test_extending
+? OpenGL.platform.PLATFORM imported from OpenGL.GLU.glunurbs, OpenGL.GLU.quadrics, OpenGL.GLU.tess, OpenGL.raw.GL._errors, OpenGL.raw.GL._types
+? OpenGL.platform.createBaseFunction imported from OpenGL.GLU.quadrics, OpenGL.GLU.tess
+? OpenGL_accelerate imported from OpenGL.acceleratesupport
+? OpenGL_accelerate.arraydatatype imported from OpenGL.arrays.arraydatatype, OpenGL.arrays.arrayhelpers, OpenGL.converters
+? OpenGL_accelerate.errorchecker imported from OpenGL.error
+? OpenGL_accelerate.latebind imported from OpenGL.latebind, OpenGL.wrapper
+? OpenGL_accelerate.vbo imported from OpenGL.arrays.vbo
+? OpenGL_accelerate.wrapper imported from OpenGL.arrays.arrayhelpers, OpenGL.converters, OpenGL.wrapper
+? PyQt5.QtCore imported from QtPyHammer__main__, ui.core, ui.entity, ui.tabs, ui.viewport
+? PyQt5.QtGui imported from QtPyHammer__main__, ui.core, ui.entity, ui.tabs, ui.viewport, utilities.render
+? PyQt5.QtWidgets imported from QtPyHammer__main__, ops, ui.core, ui.entity, ui.tabs, ui.viewport
+? Queue imported from numpy.fft.tests.test_pocketfft
+? StringIO imported from numpy.core.tests.test_print, numpy.distutils.tests.test_exec_command, numpy.lib.format, numpy.lib.tests.test_regression, numpy.lib.tests.test_utils, numpy.lib.utils, numpy.testing._private.utils, pkg_resources._vendor.six
+? __builtin__ imported from numpy, numpy.core.numeric, numpy.core.numerictypes, numpy.core.tests.test_multiarray, numpy.distutils.misc_util, numpy.lib._iotools, numpy.lib.function_base, numpy.lib.tests.test_format, numpy.ma.core, pkg_resources._vendor.pyparsing, pyparsing
+? __main__ imported from bdb, pdb, pkg_resources, rlcompleter
+? __version__ imported from numpy.f2py.setup
+? _distutils_findvs imported from distutils._msvccompiler
+? _dummy_threading imported from dummy_threading
+? _frozen_importlib imported from importlib, importlib.abc
+? _frozen_importlib_external imported from importlib, importlib._bootstrap, importlib.abc
+? _manylinux imported from setuptools.pep425tags
+? _scproxy imported from urllib.request
+? _winapi imported from multiprocessing.connection, multiprocessing.heap, multiprocessing.popen_spawn_win32, multiprocessing.reduction, subprocess
+? _winreg imported from numpy.distutils.cpuinfo, pkg_resources._vendor.appdirs, platform
+? apport_python_hook imported from sitecustomize
+? backports.ssl_match_hostname imported from setuptools.ssl_support
+? cffi imported from numpy.random.tests.test_direct, numpy.random.tests.test_extending
+? code_generators.genapi imported from numpy.core.cversions
+? code_generators.numpy_api imported from numpy.core.cversions
+? com.sun imported from pkg_resources._vendor.appdirs
+? com.sun.jna imported from pkg_resources._vendor.appdirs
+? com.sun.jna.platform imported from pkg_resources._vendor.appdirs
+? commands imported from numpy.distutils.cpuinfo
+? copy_reg imported from numpy.core
+? cpickle imported from numpy.compat.py3k
+? ctypes.macholib.dyld imported from ctypes.util
+? cython imported from numpy.random.tests.test_extending
+? dummy_thread imported from numpy.core.arrayprint
+? future_builtins imported from numpy.lib.npyio, numpy.lib.recfunctions
+? genapi imported from numpy.core.generate_numpy_api
+? java imported from unittest.mock
+? java.lang imported from platform
+? md5 imported from numpy.core.tests.test_regression, numpy.f2py.tests.util
+? msvcrt imported from getpass, multiprocessing.popen_spawn_win32, multiprocessing.spawn, numpy.distutils.mingw32ccompiler, subprocess
+? multiprocessing.AuthenticationError imported from multiprocessing.connection
+? multiprocessing.BufferTooShort imported from multiprocessing.connection
+? multiprocessing.SimpleQueue imported from concurrent.futures.process
+? multiprocessing.TimeoutError imported from multiprocessing.pool
+? multiprocessing.get_context imported from multiprocessing.managers, multiprocessing.pool, multiprocessing.sharedctypes
+? multiprocessing.get_start_method imported from multiprocessing.spawn
+? multiprocessing.set_start_method imported from multiprocessing.spawn
+? netbios imported from uuid
+? nose imported from numpy.testing._private.decorators, numpy.testing._private.noseclasses, numpy.testing._private.utils, numpy.testing.tests.test_decorators, numpy.testing.tests.test_doctesting
+? nose.plugins imported from numpy.testing._private.noseclasses, numpy.testing._private.nosetester
+? nose.plugins.base imported from numpy.testing._private.noseclasses
+? nose.plugins.builtin imported from numpy.testing._private.nosetester
+? nose.plugins.errorclass imported from numpy.testing._private.noseclasses
+? nose.util imported from numpy.testing._private.noseclasses
+? nt imported from ntpath, os, pathlib, shutil
+? nturl2path imported from urllib.request
+? numarray imported from numpy.distutils.system_info
+? numba imported from numpy.random.tests.test_extending
+? numpy._build_utils.apple_accelerate imported from numpy.core.setup
+? numpy.core.equal imported from numpy.lib.user_array
+? numpy.core.float32 imported from numpy.testing._private.utils
+? numpy.core.geterrobj imported from numpy.linalg.linalg
+? numpy.core.greater_equal imported from numpy.lib.user_array
+? numpy.core.integer imported from numpy.fft.helper
+? numpy.core.intp imported from numpy.linalg.linalg, numpy.testing._private.utils
+? numpy.core.less_equal imported from numpy.lib.user_array
+? numpy.core.object_ imported from numpy.linalg.linalg, numpy.testing._private.utils
+? numpy.core.signbit imported from numpy.testing._private.utils
+? numpy.core.subtract imported from numpy.lib.user_array
+? numpy.random.RandomState imported from numpy.random.tests.test_direct
+? numpy.random._examples.cffi imported from numpy.random.tests.test_extending
+? numpy.random._examples.numba imported from numpy.random.tests.test_extending
+? numpy.random.randint imported from numpy.core.tests.test_numeric, numpy.lib.tests.test_arrayterator, numpy.lib.tests.test_shape_base
+? numpy.random.random imported from numpy.fft.tests.test_pocketfft
+? numpy.testing.noseclasses imported from numpy.testing.tests.test_doctesting
+? numpy_api imported from numpy.core.generate_numpy_api
+? numpy_distutils imported from numpy.f2py.diagnose
+? numpy_distutils.command.build_flib imported from numpy.f2py.diagnose
+? numpy_distutils.command.cpuinfo imported from numpy.f2py.diagnose
+? numpy_distutils.cpuinfo imported from numpy.f2py.diagnose
+? numpy_distutils.fcompiler imported from numpy.f2py.diagnose
+? ordereddict imported from pkg_resources._vendor.pyparsing, pyparsing
+? org.python.core imported from copy, pickle
+? org.python.modules.posix.PosixModule imported from setuptools.sandbox
+? os.path imported from distutils.file_util, numpy.compat.tests.test_compat, numpy.core.cversions, numpy.core.memmap, numpy.core.setup, numpy.distutils.fcompiler.pg, numpy.distutils.tests.test_misc_util, numpy.random.setup, numpy.random.tests.test_direct, numpy.tests.test_scripts, os, pkg_resources, pkgutil, py_compile, sysconfig, tracemalloc, unittest, unittest.util
+? pathlib2 imported from numpy.core.tests.test_multiarray
+? pickle5 imported from numpy.compat.py3k
+? pkg_resources.extern.appdirs imported from pkg_resources
+? pkg_resources.extern.packaging imported from pkg_resources
+? pkg_resources.extern.pyparsing imported from pkg_resources._vendor.packaging.markers, pkg_resources._vendor.packaging.requirements
+? pkg_resources.extern.six imported from pkg_resources
+? pkg_resources.extern.six.moves imported from pkg_resources
+? pkg_resources.extern.six.moves.urllib imported from pkg_resources._vendor.packaging.requirements
+? psutil imported from numpy.testing._private.utils
+? pytest imported from numpy._pytesttester, numpy.conftest, numpy.core.tests._locales, numpy.core.tests.test_api, numpy.core.tests.test_arrayprint, numpy.core.tests.test_datetime, numpy.core.tests.test_deprecations, numpy.core.tests.test_dtype, numpy.core.tests.test_errstate, numpy.core.tests.test_extint128, numpy.core.tests.test_half, numpy.core.tests.test_indexing, numpy.core.tests.test_issue14735, numpy.core.tests.test_longdouble, numpy.core.tests.test_mem_overlap, numpy.core.tests.test_memmap, numpy.core.tests.test_multiarray, numpy.core.tests.test_nditer, numpy.core.tests.test_numeric, numpy.core.tests.test_numerictypes, numpy.core.tests.test_overrides, numpy.core.tests.test_print, numpy.core.tests.test_records, numpy.core.tests.test_regression, numpy.core.tests.test_scalar_ctors, numpy.core.tests.test_scalar_methods, numpy.core.tests.test_scalarbuffer, numpy.core.tests.test_scalarmath, numpy.core.tests.test_scalarprint, numpy.core.tests.test_shape_base, numpy.core.tests.test_ufunc, numpy.core.tests.test_umath, numpy.core.tests.test_umath_accuracy, numpy.core.tests.test_umath_complex, numpy.distutils.tests.test_fcompiler, numpy.distutils.tests.test_mingw32ccompiler, numpy.distutils.tests.test_shell_utils, numpy.distutils.tests.test_system_info, numpy.f2py.tests.test_array_from_pyobj, numpy.f2py.tests.test_assumed_shape, numpy.f2py.tests.test_block_docstring, numpy.f2py.tests.test_callback, numpy.f2py.tests.test_common, numpy.f2py.tests.test_compile_function, numpy.f2py.tests.test_kind, numpy.f2py.tests.test_mixed, numpy.f2py.tests.test_parameter, numpy.f2py.tests.test_quoted_character, numpy.f2py.tests.test_regression, numpy.f2py.tests.test_return_character, numpy.f2py.tests.test_return_complex, numpy.f2py.tests.test_return_integer, numpy.f2py.tests.test_return_logical, numpy.f2py.tests.test_return_real, numpy.f2py.tests.test_semicolon_split, numpy.f2py.tests.test_size, numpy.f2py.tests.test_string, numpy.f2py.tests.util, numpy.fft.tests.test_pocketfft, numpy.lib.tests.test__datasource, numpy.lib.tests.test_arraypad, numpy.lib.tests.test_arraysetops, numpy.lib.tests.test_format, numpy.lib.tests.test_function_base, numpy.lib.tests.test_histograms, numpy.lib.tests.test_index_tricks, numpy.lib.tests.test_io, numpy.lib.tests.test_nanfunctions, numpy.lib.tests.test_packbits, numpy.lib.tests.test_recfunctions, numpy.lib.tests.test_shape_base, numpy.lib.tests.test_utils, numpy.linalg.tests.test_build, numpy.linalg.tests.test_linalg, numpy.ma.tests.test_core, numpy.ma.tests.test_extras, numpy.matrixlib.tests.test_interaction, numpy.polynomial.tests.test_classes, numpy.random.tests.test_direct, numpy.random.tests.test_extending, numpy.random.tests.test_generator_mt19937, numpy.random.tests.test_generator_mt19937_regressions, numpy.random.tests.test_randomstate, numpy.random.tests.test_randomstate_regression, numpy.random.tests.test_smoke, numpy.testing._private.utils, numpy.testing.tests.test_decorators, numpy.testing.tests.test_utils, numpy.tests.test_ctypeslib, numpy.tests.test_matlib, numpy.tests.test_public_api, numpy.tests.test_scripts, numpy.tests.test_warnings
+? pytz imported from numpy.core.tests.test_datetime, numpy.core.tests.test_deprecations
+? scipy imported from numpy.testing._private.nosetester
+? setup_common imported from numpy.core.setup
+? setuptools.extern.packaging imported from setuptools.command.egg_info, setuptools.dist
+? setuptools.extern.six imported from setuptools.command.bdist_egg, setuptools.command.develop, setuptools.command.easy_install, setuptools.command.egg_info, setuptools.command.sdist, setuptools.config, setuptools.dist, setuptools.glob, setuptools.monkey, setuptools.package_index, setuptools.py27compat, setuptools.py33compat, setuptools.sandbox, setuptools.unicode_utils, setuptools.wheel
+? setuptools.extern.six.moves imported from setuptools, setuptools.command.easy_install, setuptools.command.egg_info, setuptools.command.py36compat, setuptools.command.setopt, setuptools.dist, setuptools.extension, setuptools.namespaces, setuptools.package_index, setuptools.py33compat, setuptools.sandbox, setuptools.ssl_support
+? thread imported from numpy.core.arrayprint
+? urllib2 imported from numpy.lib._datasource, numpy.lib.tests.test__datasource
+? urlparse imported from numpy.lib._datasource, numpy.lib.tests.test__datasource
+? vms_lib imported from platform
+? win32api imported from distutils.msvccompiler, pkg_resources._vendor.appdirs
+? win32com.shell imported from pkg_resources._vendor.appdirs
+? win32con imported from distutils.msvccompiler
+? win32pdh imported from numpy.testing._private.utils
+? win32wnet imported from uuid
+? wincertstore imported from setuptools.ssl_support
+? winreg imported from distutils._msvccompiler, distutils.msvc9compiler, distutils.msvccompiler, mimetypes, numpy.distutils.cpuinfo, platform, urllib.request
+This is not necessarily a problem - the modules may not be needed on this platform.
+
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/QtCore.abi3.so -> build/exe.linux-x86_64-3.6/lib/PyQt5/QtCore.abi3.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/QtGui.abi3.so -> build/exe.linux-x86_64-3.6/lib/PyQt5/QtGui.abi3.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/PyQt5/QtWidgets.abi3.so -> build/exe.linux-x86_64-3.6/lib/PyQt5/QtWidgets.abi3.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_multiarray_tests.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/core/_multiarray_tests.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_multiarray_umath.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/core/_multiarray_umath.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/../../numpy.libs/libopenblasp-r0-34a18dc3.3.7.so -> build/exe.linux-x86_64-3.6/lib/numpy/core/libopenblasp-r0-34a18dc3.3.7.so
+WARNING: cannot find libgfortran-ed201abd.so.3.0.0
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/../../numpy.libs/libgfortran-ed201abd.so.3.0.0 -> build/exe.linux-x86_64-3.6/lib/numpy/core/libgfortran-ed201abd.so.3.0.0
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_operand_flag_tests.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/core/_operand_flag_tests.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_rational_tests.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/core/_rational_tests.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_struct_ufunc_tests.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/core/_struct_ufunc_tests.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/core/_umath_tests.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/core/_umath_tests.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/fft/_pocketfft_internal.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/fft/_pocketfft_internal.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/_umath_linalg.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/linalg/_umath_linalg.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/../../numpy.libs/libopenblasp-r0-34a18dc3.3.7.so -> build/exe.linux-x86_64-3.6/lib/numpy/linalg/libopenblasp-r0-34a18dc3.3.7.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/../../numpy.libs/libgfortran-ed201abd.so.3.0.0 -> build/exe.linux-x86_64-3.6/lib/numpy/linalg/libgfortran-ed201abd.so.3.0.0
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/linalg/lapack_lite.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/linalg/lapack_lite.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/_bit_generator.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/random/_bit_generator.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/_bounded_integers.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/random/_bounded_integers.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/_common.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/random/_common.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/_generator.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/random/_generator.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/_mt19937.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/random/_mt19937.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/_pcg64.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/random/_pcg64.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/_philox.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/random/_philox.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/_sfc64.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/random/_sfc64.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/venv/lib/python3.6/site-packages/numpy/random/mtrand.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/numpy/random/mtrand.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/_bz2.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/_bz2.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/_codecs_cn.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/_codecs_cn.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/_codecs_hk.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/_codecs_hk.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/_codecs_iso2022.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/_codecs_iso2022.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/_codecs_jp.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/_codecs_jp.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/_codecs_kr.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/_codecs_kr.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/_codecs_tw.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/_codecs_tw.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/_ctypes.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/_ctypes.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/_curses.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/_curses.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/_decimal.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/_decimal.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/_hashlib.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/_hashlib.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/_json.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/_json.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/_lzma.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/_lzma.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/_multibytecodec.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/_multibytecodec.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/_multiprocessing.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/_multiprocessing.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/_opcode.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/_opcode.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/_ssl.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/_ssl.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/mmap.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/mmap.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/readline.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/readline.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/resource.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/resource.cpython-36m-x86_64-linux-gnu.so
+copying /usr/lib/python3.6/lib-dynload/termios.cpython-36m-x86_64-linux-gnu.so -> build/exe.linux-x86_64-3.6/lib/termios.cpython-36m-x86_64-linux-gnu.so
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/configs/core_binds.txt -> build/exe.linux-x86_64-3.6/core_binds.txt
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/configs/blank.vmf -> build/exe.linux-x86_64-3.6/blank.vmf
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/utilities/shaders/GLES_300/stripey_brush.frag -> build/exe.linux-x86_64-3.6/stripey_brush.frag
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/utilities/shaders/GLES_300/flat_displacement.frag -> build/exe.linux-x86_64-3.6/flat_displacement.frag
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/utilities/shaders/GLES_300/brush.vert -> build/exe.linux-x86_64-3.6/brush.vert
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/utilities/shaders/GLES_300/displacement.vert -> build/exe.linux-x86_64-3.6/displacement.vert
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/utilities/shaders/GLES_300/flat_brush.frag -> build/exe.linux-x86_64-3.6/flat_brush.frag
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/utilities/shaders/GLES_300/textured_brush.frag -> build/exe.linux-x86_64-3.6/textured_brush.frag
+copying /home/jared/Documents/Code/GitHub/QtPyHammer/QtPyHammer/utilities/shaders/GLES_300/textured_displacement.frag -> build/exe.linux-x86_64-3.6/textured_displacement.frag
