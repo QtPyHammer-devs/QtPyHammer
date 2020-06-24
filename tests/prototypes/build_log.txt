@@ -1,0 +1,1413 @@
+running build
+running build_exe
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\cx_Freeze\bases\Win32GUI.exe -> build\exe.win32-3.8\qt_gl_render_manager.exe
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-runtime-l1-1-0.dll -> build\exe.win32-3.8\api-ms-win-crt-runtime-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-stdio-l1-1-0.dll -> build\exe.win32-3.8\api-ms-win-crt-stdio-l1-1-0.dll
+copying C:\Program Files (x86)\Python38-32\python38.dll -> build\exe.win32-3.8\python38.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-math-l1-1-0.dll -> build\exe.win32-3.8\api-ms-win-crt-math-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-locale-l1-1-0.dll -> build\exe.win32-3.8\api-ms-win-crt-locale-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-heap-l1-1-0.dll -> build\exe.win32-3.8\api-ms-win-crt-heap-l1-1-0.dll
+*** WARNING *** unable to create version resource
+install pywin32 extensions first
+writing zip file build\exe.win32-3.8\lib\library.zip
+
+  Name                      File
+  ----                      ----
+m BUILD_CONSTANTS           
+m ConfigParser              C:\Program Files (x86)\Python38-32\lib\ConfigParser.py
+P OpenGL                    C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\__init__.py
+P OpenGL.GL                 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\__init__.py
+P OpenGL.GL.ARB             C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\__init__.py
+m OpenGL.GL.ARB.ES2_compatibility C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\ES2_compatibility.py
+m OpenGL.GL.ARB.ES3_compatibility C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\ES3_compatibility.py
+m OpenGL.GL.ARB.arrays_of_arrays C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\arrays_of_arrays.py
+m OpenGL.GL.ARB.base_instance C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\base_instance.py
+m OpenGL.GL.ARB.clear_buffer_object C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\clear_buffer_object.py
+m OpenGL.GL.ARB.compressed_texture_pixel_storage C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\compressed_texture_pixel_storage.py
+m OpenGL.GL.ARB.compute_shader C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\compute_shader.py
+m OpenGL.GL.ARB.conservative_depth C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\conservative_depth.py
+m OpenGL.GL.ARB.copy_image  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\copy_image.py
+m OpenGL.GL.ARB.enhanced_layouts C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\enhanced_layouts.py
+m OpenGL.GL.ARB.explicit_uniform_location C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\explicit_uniform_location.py
+m OpenGL.GL.ARB.fragment_layer_viewport C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\fragment_layer_viewport.py
+m OpenGL.GL.ARB.fragment_shader C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\fragment_shader.py
+m OpenGL.GL.ARB.framebuffer_no_attachments C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\framebuffer_no_attachments.py
+m OpenGL.GL.ARB.geometry_shader4 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\geometry_shader4.py
+m OpenGL.GL.ARB.get_program_binary C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\get_program_binary.py
+m OpenGL.GL.ARB.imaging     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\imaging.py
+m OpenGL.GL.ARB.internalformat_query C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\internalformat_query.py
+m OpenGL.GL.ARB.internalformat_query2 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\internalformat_query2.py
+m OpenGL.GL.ARB.invalidate_subdata C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\invalidate_subdata.py
+m OpenGL.GL.ARB.map_buffer_alignment C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\map_buffer_alignment.py
+m OpenGL.GL.ARB.multi_draw_indirect C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\multi_draw_indirect.py
+m OpenGL.GL.ARB.program_interface_query C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\program_interface_query.py
+m OpenGL.GL.ARB.robust_buffer_access_behavior C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\robust_buffer_access_behavior.py
+m OpenGL.GL.ARB.separate_shader_objects C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\separate_shader_objects.py
+m OpenGL.GL.ARB.shader_atomic_counters C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\shader_atomic_counters.py
+m OpenGL.GL.ARB.shader_image_load_store C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\shader_image_load_store.py
+m OpenGL.GL.ARB.shader_image_size C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\shader_image_size.py
+m OpenGL.GL.ARB.shader_objects C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\shader_objects.py
+m OpenGL.GL.ARB.shader_precision C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\shader_precision.py
+m OpenGL.GL.ARB.shader_storage_buffer_object C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\shader_storage_buffer_object.py
+m OpenGL.GL.ARB.shading_language_420pack C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\shading_language_420pack.py
+m OpenGL.GL.ARB.shading_language_packing C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\shading_language_packing.py
+m OpenGL.GL.ARB.stencil_texturing C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\stencil_texturing.py
+m OpenGL.GL.ARB.texture_buffer_object C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\texture_buffer_object.py
+m OpenGL.GL.ARB.texture_buffer_range C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\texture_buffer_range.py
+m OpenGL.GL.ARB.texture_query_levels C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\texture_query_levels.py
+m OpenGL.GL.ARB.texture_storage C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\texture_storage.py
+m OpenGL.GL.ARB.texture_storage_multisample C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\texture_storage_multisample.py
+m OpenGL.GL.ARB.texture_view C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\texture_view.py
+m OpenGL.GL.ARB.transform_feedback_instanced C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\transform_feedback_instanced.py
+m OpenGL.GL.ARB.uniform_buffer_object C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\uniform_buffer_object.py
+m OpenGL.GL.ARB.vboimplementation C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\vboimplementation.py
+m OpenGL.GL.ARB.vertex_attrib_64bit C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\vertex_attrib_64bit.py
+m OpenGL.GL.ARB.vertex_attrib_binding C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\vertex_attrib_binding.py
+m OpenGL.GL.ARB.vertex_buffer_object C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\vertex_buffer_object.py
+m OpenGL.GL.ARB.vertex_program C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\vertex_program.py
+m OpenGL.GL.ARB.vertex_shader C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\vertex_shader.py
+m OpenGL.GL.ARB.viewport_array C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\ARB\viewport_array.py
+P OpenGL.GL.KHR             C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\KHR\__init__.py
+m OpenGL.GL.KHR.debug       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\KHR\debug.py
+P OpenGL.GL.VERSION         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\__init__.py
+m OpenGL.GL.VERSION.GL_1_0  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_1_0.py
+m OpenGL.GL.VERSION.GL_1_1  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_1_1.py
+m OpenGL.GL.VERSION.GL_1_2  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_1_2.py
+m OpenGL.GL.VERSION.GL_1_2_images C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_1_2_images.py
+m OpenGL.GL.VERSION.GL_1_3  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_1_3.py
+m OpenGL.GL.VERSION.GL_1_4  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_1_4.py
+m OpenGL.GL.VERSION.GL_1_5  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_1_5.py
+m OpenGL.GL.VERSION.GL_2_0  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_2_0.py
+m OpenGL.GL.VERSION.GL_2_1  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_2_1.py
+m OpenGL.GL.VERSION.GL_3_0  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_3_0.py
+m OpenGL.GL.VERSION.GL_3_1  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_3_1.py
+m OpenGL.GL.VERSION.GL_3_2  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_3_2.py
+m OpenGL.GL.VERSION.GL_3_3  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_3_3.py
+m OpenGL.GL.VERSION.GL_4_0  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_4_0.py
+m OpenGL.GL.VERSION.GL_4_1  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_4_1.py
+m OpenGL.GL.VERSION.GL_4_2  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_4_2.py
+m OpenGL.GL.VERSION.GL_4_3  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_4_3.py
+m OpenGL.GL.VERSION.GL_4_4  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_4_4.py
+m OpenGL.GL.VERSION.GL_4_5  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_4_5.py
+m OpenGL.GL.VERSION.GL_4_6  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\VERSION\GL_4_6.py
+m OpenGL.GL.exceptional     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\exceptional.py
+m OpenGL.GL.feedback        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\feedback.py
+m OpenGL.GL.glget           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\glget.py
+m OpenGL.GL.images          C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\images.py
+m OpenGL.GL.pointers        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\pointers.py
+m OpenGL.GL.selection       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\selection.py
+m OpenGL.GL.shaders         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\shaders.py
+m OpenGL.GL.vboimplementation C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GL\vboimplementation.py
+P OpenGL.GLU                C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GLU\__init__.py
+m OpenGL.GLU.glunurbs       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GLU\glunurbs.py
+m OpenGL.GLU.projection     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GLU\projection.py
+m OpenGL.GLU.quadrics       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GLU\quadrics.py
+m OpenGL.GLU.tess           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\GLU\tess.py
+m OpenGL._bytes             C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\_bytes.py
+m OpenGL._configflags       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\_configflags.py
+m OpenGL._null              C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\_null.py
+m OpenGL._opaque            C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\_opaque.py
+m OpenGL.acceleratesupport  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\acceleratesupport.py
+P OpenGL.arrays             C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\arrays\__init__.py
+m OpenGL.arrays._arrayconstants C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\arrays\_arrayconstants.py
+m OpenGL.arrays.arraydatatype C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\arrays\arraydatatype.py
+m OpenGL.arrays.arrayhelpers C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\arrays\arrayhelpers.py
+m OpenGL.arrays.formathandler C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\arrays\formathandler.py
+m OpenGL.arrays.vbo         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\arrays\vbo.py
+m OpenGL.constant           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\constant.py
+m OpenGL.constants          C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\constants.py
+m OpenGL.contextdata        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\contextdata.py
+m OpenGL.converters         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\converters.py
+m OpenGL.error              C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\error.py
+m OpenGL.extensions         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\extensions.py
+m OpenGL.images             C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\images.py
+m OpenGL.latebind           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\latebind.py
+m OpenGL.lazywrapper        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\lazywrapper.py
+m OpenGL.logs               C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\logs.py
+P OpenGL.platform           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\platform\__init__.py
+m OpenGL.plugins            C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\plugins.py
+P OpenGL.raw                C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\__init__.py
+P OpenGL.raw.GL             C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\__init__.py
+P OpenGL.raw.GL.ARB         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\__init__.py
+m OpenGL.raw.GL.ARB.ES2_compatibility C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\ES2_compatibility.py
+m OpenGL.raw.GL.ARB.ES3_compatibility C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\ES3_compatibility.py
+m OpenGL.raw.GL.ARB.arrays_of_arrays C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\arrays_of_arrays.py
+m OpenGL.raw.GL.ARB.base_instance C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\base_instance.py
+m OpenGL.raw.GL.ARB.clear_buffer_object C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\clear_buffer_object.py
+m OpenGL.raw.GL.ARB.compressed_texture_pixel_storage C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\compressed_texture_pixel_storage.py
+m OpenGL.raw.GL.ARB.compute_shader C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\compute_shader.py
+m OpenGL.raw.GL.ARB.conservative_depth C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\conservative_depth.py
+m OpenGL.raw.GL.ARB.copy_image C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\copy_image.py
+m OpenGL.raw.GL.ARB.enhanced_layouts C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\enhanced_layouts.py
+m OpenGL.raw.GL.ARB.explicit_uniform_location C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\explicit_uniform_location.py
+m OpenGL.raw.GL.ARB.fragment_layer_viewport C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\fragment_layer_viewport.py
+m OpenGL.raw.GL.ARB.fragment_shader C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\fragment_shader.py
+m OpenGL.raw.GL.ARB.framebuffer_no_attachments C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\framebuffer_no_attachments.py
+m OpenGL.raw.GL.ARB.geometry_shader4 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\geometry_shader4.py
+m OpenGL.raw.GL.ARB.get_program_binary C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\get_program_binary.py
+m OpenGL.raw.GL.ARB.imaging C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\imaging.py
+m OpenGL.raw.GL.ARB.internalformat_query C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\internalformat_query.py
+m OpenGL.raw.GL.ARB.internalformat_query2 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\internalformat_query2.py
+m OpenGL.raw.GL.ARB.invalidate_subdata C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\invalidate_subdata.py
+m OpenGL.raw.GL.ARB.map_buffer_alignment C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\map_buffer_alignment.py
+m OpenGL.raw.GL.ARB.multi_draw_indirect C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\multi_draw_indirect.py
+m OpenGL.raw.GL.ARB.program_interface_query C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\program_interface_query.py
+m OpenGL.raw.GL.ARB.robust_buffer_access_behavior C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\robust_buffer_access_behavior.py
+m OpenGL.raw.GL.ARB.separate_shader_objects C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\separate_shader_objects.py
+m OpenGL.raw.GL.ARB.shader_atomic_counters C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\shader_atomic_counters.py
+m OpenGL.raw.GL.ARB.shader_image_load_store C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\shader_image_load_store.py
+m OpenGL.raw.GL.ARB.shader_image_size C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\shader_image_size.py
+m OpenGL.raw.GL.ARB.shader_objects C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\shader_objects.py
+m OpenGL.raw.GL.ARB.shader_precision C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\shader_precision.py
+m OpenGL.raw.GL.ARB.shader_storage_buffer_object C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\shader_storage_buffer_object.py
+m OpenGL.raw.GL.ARB.shading_language_420pack C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\shading_language_420pack.py
+m OpenGL.raw.GL.ARB.shading_language_packing C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\shading_language_packing.py
+m OpenGL.raw.GL.ARB.stencil_texturing C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\stencil_texturing.py
+m OpenGL.raw.GL.ARB.texture_buffer_object C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\texture_buffer_object.py
+m OpenGL.raw.GL.ARB.texture_buffer_range C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\texture_buffer_range.py
+m OpenGL.raw.GL.ARB.texture_query_levels C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\texture_query_levels.py
+m OpenGL.raw.GL.ARB.texture_storage C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\texture_storage.py
+m OpenGL.raw.GL.ARB.texture_storage_multisample C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\texture_storage_multisample.py
+m OpenGL.raw.GL.ARB.texture_view C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\texture_view.py
+m OpenGL.raw.GL.ARB.transform_feedback_instanced C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\transform_feedback_instanced.py
+m OpenGL.raw.GL.ARB.uniform_buffer_object C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\uniform_buffer_object.py
+m OpenGL.raw.GL.ARB.vertex_attrib_64bit C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\vertex_attrib_64bit.py
+m OpenGL.raw.GL.ARB.vertex_attrib_binding C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\vertex_attrib_binding.py
+m OpenGL.raw.GL.ARB.vertex_buffer_object C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\vertex_buffer_object.py
+m OpenGL.raw.GL.ARB.vertex_program C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\vertex_program.py
+m OpenGL.raw.GL.ARB.vertex_shader C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\vertex_shader.py
+m OpenGL.raw.GL.ARB.viewport_array C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\ARB\viewport_array.py
+P OpenGL.raw.GL.KHR         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\KHR\__init__.py
+m OpenGL.raw.GL.KHR.debug   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\KHR\debug.py
+P OpenGL.raw.GL.VERSION     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\__init__.py
+m OpenGL.raw.GL.VERSION.GL_1_0 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_1_0.py
+m OpenGL.raw.GL.VERSION.GL_1_1 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_1_1.py
+m OpenGL.raw.GL.VERSION.GL_1_2 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_1_2.py
+m OpenGL.raw.GL.VERSION.GL_1_3 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_1_3.py
+m OpenGL.raw.GL.VERSION.GL_1_4 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_1_4.py
+m OpenGL.raw.GL.VERSION.GL_1_5 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_1_5.py
+m OpenGL.raw.GL.VERSION.GL_2_0 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_2_0.py
+m OpenGL.raw.GL.VERSION.GL_2_1 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_2_1.py
+m OpenGL.raw.GL.VERSION.GL_3_0 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_3_0.py
+m OpenGL.raw.GL.VERSION.GL_3_1 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_3_1.py
+m OpenGL.raw.GL.VERSION.GL_3_2 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_3_2.py
+m OpenGL.raw.GL.VERSION.GL_3_3 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_3_3.py
+m OpenGL.raw.GL.VERSION.GL_4_0 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_4_0.py
+m OpenGL.raw.GL.VERSION.GL_4_1 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_4_1.py
+m OpenGL.raw.GL.VERSION.GL_4_2 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_4_2.py
+m OpenGL.raw.GL.VERSION.GL_4_3 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_4_3.py
+m OpenGL.raw.GL.VERSION.GL_4_4 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_4_4.py
+m OpenGL.raw.GL.VERSION.GL_4_5 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_4_5.py
+m OpenGL.raw.GL.VERSION.GL_4_6 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\VERSION\GL_4_6.py
+m OpenGL.raw.GL._errors     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\_errors.py
+m OpenGL.raw.GL._glgets     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\_glgets.py
+m OpenGL.raw.GL._lookupint  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\_lookupint.py
+m OpenGL.raw.GL._types      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GL\_types.py
+P OpenGL.raw.GLU            C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GLU\__init__.py
+m OpenGL.raw.GLU.annotations C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GLU\annotations.py
+m OpenGL.raw.GLU.constants  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\raw\GLU\constants.py
+m OpenGL.version            C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\version.py
+m OpenGL.wrapper            C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\OpenGL\wrapper.py
+P PyQt5                     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\PyQt5\__init__.py
+m PyQt5.QtCore              C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\PyQt5\QtCore.pyd
+m PyQt5.QtGui               C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\PyQt5\QtGui.pyd
+m PyQt5.QtWidgets           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\PyQt5\QtWidgets.pyd
+m Queue                     C:\Program Files (x86)\Python38-32\lib\Queue.py
+m __future__                C:\Program Files (x86)\Python38-32\lib\__future__.py
+m __startup__               C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\cx_Freeze\initscripts\__startup__.py
+m _abc                      
+m _ast                      
+m _asyncio                  C:\Program Files (x86)\Python38-32\DLLs\_asyncio.pyd
+m _bisect                   
+m _blake2                   
+m _bootlocale               C:\Program Files (x86)\Python38-32\lib\_bootlocale.py
+m _bz2                      C:\Program Files (x86)\Python38-32\DLLs\_bz2.pyd
+m _codecs                   
+m _codecs_cn                
+m _codecs_hk                
+m _codecs_iso2022           
+m _codecs_jp                
+m _codecs_kr                
+m _codecs_tw                
+m _collections              
+m _collections_abc          C:\Program Files (x86)\Python38-32\lib\_collections_abc.py
+m _compat_pickle            C:\Program Files (x86)\Python38-32\lib\_compat_pickle.py
+m _compression              C:\Program Files (x86)\Python38-32\lib\_compression.py
+m _contextvars              
+m _csv                      
+m _ctypes                   C:\Program Files (x86)\Python38-32\DLLs\_ctypes.pyd
+m _datetime                 
+m _decimal                  C:\Program Files (x86)\Python38-32\DLLs\_decimal.pyd
+m _dummy_thread             C:\Program Files (x86)\Python38-32\lib\_dummy_thread.py
+m _elementtree              C:\Program Files (x86)\Python38-32\DLLs\_elementtree.pyd
+m _functools                
+m _hashlib                  C:\Program Files (x86)\Python38-32\DLLs\_hashlib.pyd
+m _heapq                    
+m _imp                      
+m _io                       
+m _json                     
+m _locale                   
+m _lzma                     C:\Program Files (x86)\Python38-32\DLLs\_lzma.pyd
+m _md5                      
+m _multibytecodec           
+m _multiprocessing          C:\Program Files (x86)\Python38-32\DLLs\_multiprocessing.pyd
+m _opcode                   
+m _operator                 
+m _osx_support              C:\Program Files (x86)\Python38-32\lib\_osx_support.py
+m _overlapped               C:\Program Files (x86)\Python38-32\DLLs\_overlapped.pyd
+m _pickle                   
+m _py_abc                   C:\Program Files (x86)\Python38-32\lib\_py_abc.py
+m _pydecimal                C:\Program Files (x86)\Python38-32\lib\_pydecimal.py
+m _queue                    C:\Program Files (x86)\Python38-32\DLLs\_queue.pyd
+m _random                   
+m _sha1                     
+m _sha256                   
+m _sha3                     
+m _sha512                   
+m _signal                   
+m _sitebuiltins             C:\Program Files (x86)\Python38-32\lib\_sitebuiltins.py
+m _socket                   C:\Program Files (x86)\Python38-32\DLLs\_socket.pyd
+m _sre                      
+m _ssl                      C:\Program Files (x86)\Python38-32\DLLs\_ssl.pyd
+m _stat                     
+m _string                   
+m _strptime                 C:\Program Files (x86)\Python38-32\lib\_strptime.py
+m _struct                   
+m _testcapi                 C:\Program Files (x86)\Python38-32\DLLs\_testcapi.pyd
+m _thread                   
+m _threading_local          C:\Program Files (x86)\Python38-32\lib\_threading_local.py
+m _tracemalloc              
+m _warnings                 
+m _weakref                  
+m _weakrefset               C:\Program Files (x86)\Python38-32\lib\_weakrefset.py
+m _winapi                   
+m abc                       C:\Program Files (x86)\Python38-32\lib\abc.py
+m argparse                  C:\Program Files (x86)\Python38-32\lib\argparse.py
+m array                     
+m ast                       C:\Program Files (x86)\Python38-32\lib\ast.py
+P asyncio                   C:\Program Files (x86)\Python38-32\lib\asyncio\__init__.py
+m asyncio.__main__          C:\Program Files (x86)\Python38-32\lib\asyncio\__main__.py
+m asyncio.base_events       C:\Program Files (x86)\Python38-32\lib\asyncio\base_events.py
+m asyncio.base_futures      C:\Program Files (x86)\Python38-32\lib\asyncio\base_futures.py
+m asyncio.base_subprocess   C:\Program Files (x86)\Python38-32\lib\asyncio\base_subprocess.py
+m asyncio.base_tasks        C:\Program Files (x86)\Python38-32\lib\asyncio\base_tasks.py
+m asyncio.constants         C:\Program Files (x86)\Python38-32\lib\asyncio\constants.py
+m asyncio.coroutines        C:\Program Files (x86)\Python38-32\lib\asyncio\coroutines.py
+m asyncio.events            C:\Program Files (x86)\Python38-32\lib\asyncio\events.py
+m asyncio.exceptions        C:\Program Files (x86)\Python38-32\lib\asyncio\exceptions.py
+m asyncio.format_helpers    C:\Program Files (x86)\Python38-32\lib\asyncio\format_helpers.py
+m asyncio.futures           C:\Program Files (x86)\Python38-32\lib\asyncio\futures.py
+m asyncio.locks             C:\Program Files (x86)\Python38-32\lib\asyncio\locks.py
+m asyncio.log               C:\Program Files (x86)\Python38-32\lib\asyncio\log.py
+m asyncio.proactor_events   C:\Program Files (x86)\Python38-32\lib\asyncio\proactor_events.py
+m asyncio.protocols         C:\Program Files (x86)\Python38-32\lib\asyncio\protocols.py
+m asyncio.queues            C:\Program Files (x86)\Python38-32\lib\asyncio\queues.py
+m asyncio.runners           C:\Program Files (x86)\Python38-32\lib\asyncio\runners.py
+m asyncio.selector_events   C:\Program Files (x86)\Python38-32\lib\asyncio\selector_events.py
+m asyncio.sslproto          C:\Program Files (x86)\Python38-32\lib\asyncio\sslproto.py
+m asyncio.staggered         C:\Program Files (x86)\Python38-32\lib\asyncio\staggered.py
+m asyncio.streams           C:\Program Files (x86)\Python38-32\lib\asyncio\streams.py
+m asyncio.subprocess        C:\Program Files (x86)\Python38-32\lib\asyncio\subprocess.py
+m asyncio.tasks             C:\Program Files (x86)\Python38-32\lib\asyncio\tasks.py
+m asyncio.transports        C:\Program Files (x86)\Python38-32\lib\asyncio\transports.py
+m asyncio.trsock            C:\Program Files (x86)\Python38-32\lib\asyncio\trsock.py
+m asyncio.unix_events       C:\Program Files (x86)\Python38-32\lib\asyncio\unix_events.py
+m asyncio.windows_events    C:\Program Files (x86)\Python38-32\lib\asyncio\windows_events.py
+m asyncio.windows_utils     C:\Program Files (x86)\Python38-32\lib\asyncio\windows_utils.py
+m atexit                    
+m base64                    C:\Program Files (x86)\Python38-32\lib\base64.py
+m bdb                       C:\Program Files (x86)\Python38-32\lib\bdb.py
+m binascii                  
+m bisect                    C:\Program Files (x86)\Python38-32\lib\bisect.py
+m builtins                  
+m bz2                       C:\Program Files (x86)\Python38-32\lib\bz2.py
+m calendar                  C:\Program Files (x86)\Python38-32\lib\calendar.py
+m cgi                       C:\Program Files (x86)\Python38-32\lib\cgi.py
+m cmath                     
+m cmd                       C:\Program Files (x86)\Python38-32\lib\cmd.py
+m code                      C:\Program Files (x86)\Python38-32\lib\code.py
+m codecs                    C:\Program Files (x86)\Python38-32\lib\codecs.py
+m codeop                    C:\Program Files (x86)\Python38-32\lib\codeop.py
+P collections               C:\Program Files (x86)\Python38-32\lib\collections\__init__.py
+m collections.abc           C:\Program Files (x86)\Python38-32\lib\collections\abc.py
+P concurrent                C:\Program Files (x86)\Python38-32\lib\concurrent\__init__.py
+P concurrent.futures        C:\Program Files (x86)\Python38-32\lib\concurrent\futures\__init__.py
+m concurrent.futures._base  C:\Program Files (x86)\Python38-32\lib\concurrent\futures\_base.py
+m concurrent.futures.process C:\Program Files (x86)\Python38-32\lib\concurrent\futures\process.py
+m concurrent.futures.thread C:\Program Files (x86)\Python38-32\lib\concurrent\futures\thread.py
+m configparser              C:\Program Files (x86)\Python38-32\lib\configparser.py
+m contextlib                C:\Program Files (x86)\Python38-32\lib\contextlib.py
+m contextvars               C:\Program Files (x86)\Python38-32\lib\contextvars.py
+m copy                      C:\Program Files (x86)\Python38-32\lib\copy.py
+m copyreg                   C:\Program Files (x86)\Python38-32\lib\copyreg.py
+m csv                       C:\Program Files (x86)\Python38-32\lib\csv.py
+P ctypes                    C:\Program Files (x86)\Python38-32\lib\ctypes\__init__.py
+m ctypes._aix               C:\Program Files (x86)\Python38-32\lib\ctypes\_aix.py
+m ctypes._endian            C:\Program Files (x86)\Python38-32\lib\ctypes\_endian.py
+P ctypes.macholib           C:\Program Files (x86)\Python38-32\lib\ctypes\macholib\__init__.py
+m ctypes.macholib.dyld      C:\Program Files (x86)\Python38-32\lib\ctypes\macholib\dyld.py
+m ctypes.macholib.dylib     C:\Program Files (x86)\Python38-32\lib\ctypes\macholib\dylib.py
+m ctypes.macholib.framework C:\Program Files (x86)\Python38-32\lib\ctypes\macholib\framework.py
+m ctypes.util               C:\Program Files (x86)\Python38-32\lib\ctypes\util.py
+m ctypes.wintypes           C:\Program Files (x86)\Python38-32\lib\ctypes\wintypes.py
+P curses                    C:\Program Files (x86)\Python38-32\lib\curses\__init__.py
+m curses.has_key            C:\Program Files (x86)\Python38-32\lib\curses\has_key.py
+m datetime                  C:\Program Files (x86)\Python38-32\lib\datetime.py
+m decimal                   C:\Program Files (x86)\Python38-32\lib\decimal.py
+m difflib                   C:\Program Files (x86)\Python38-32\lib\difflib.py
+m dis                       C:\Program Files (x86)\Python38-32\lib\dis.py
+P distutils                 C:\Program Files (x86)\Python38-32\lib\distutils\__init__.py
+m distutils._msvccompiler   C:\Program Files (x86)\Python38-32\lib\distutils\_msvccompiler.py
+m distutils.archive_util    C:\Program Files (x86)\Python38-32\lib\distutils\archive_util.py
+m distutils.ccompiler       C:\Program Files (x86)\Python38-32\lib\distutils\ccompiler.py
+m distutils.cmd             C:\Program Files (x86)\Python38-32\lib\distutils\cmd.py
+P distutils.command         C:\Program Files (x86)\Python38-32\lib\distutils\command\__init__.py
+m distutils.command.bdist   C:\Program Files (x86)\Python38-32\lib\distutils\command\bdist.py
+m distutils.command.bdist_rpm C:\Program Files (x86)\Python38-32\lib\distutils\command\bdist_rpm.py
+m distutils.command.build   C:\Program Files (x86)\Python38-32\lib\distutils\command\build.py
+m distutils.command.build_clib C:\Program Files (x86)\Python38-32\lib\distutils\command\build_clib.py
+m distutils.command.build_ext C:\Program Files (x86)\Python38-32\lib\distutils\command\build_ext.py
+m distutils.command.build_py C:\Program Files (x86)\Python38-32\lib\distutils\command\build_py.py
+m distutils.command.build_scripts C:\Program Files (x86)\Python38-32\lib\distutils\command\build_scripts.py
+m distutils.command.config  C:\Program Files (x86)\Python38-32\lib\distutils\command\config.py
+m distutils.command.install C:\Program Files (x86)\Python38-32\lib\distutils\command\install.py
+m distutils.command.install_data C:\Program Files (x86)\Python38-32\lib\distutils\command\install_data.py
+m distutils.command.install_headers C:\Program Files (x86)\Python38-32\lib\distutils\command\install_headers.py
+m distutils.command.install_scripts C:\Program Files (x86)\Python38-32\lib\distutils\command\install_scripts.py
+m distutils.command.sdist   C:\Program Files (x86)\Python38-32\lib\distutils\command\sdist.py
+m distutils.config          C:\Program Files (x86)\Python38-32\lib\distutils\config.py
+m distutils.core            C:\Program Files (x86)\Python38-32\lib\distutils\core.py
+m distutils.cygwinccompiler C:\Program Files (x86)\Python38-32\lib\distutils\cygwinccompiler.py
+m distutils.debug           C:\Program Files (x86)\Python38-32\lib\distutils\debug.py
+m distutils.dep_util        C:\Program Files (x86)\Python38-32\lib\distutils\dep_util.py
+m distutils.dir_util        C:\Program Files (x86)\Python38-32\lib\distutils\dir_util.py
+m distutils.dist            C:\Program Files (x86)\Python38-32\lib\distutils\dist.py
+m distutils.errors          C:\Program Files (x86)\Python38-32\lib\distutils\errors.py
+m distutils.extension       C:\Program Files (x86)\Python38-32\lib\distutils\extension.py
+m distutils.fancy_getopt    C:\Program Files (x86)\Python38-32\lib\distutils\fancy_getopt.py
+m distutils.file_util       C:\Program Files (x86)\Python38-32\lib\distutils\file_util.py
+m distutils.filelist        C:\Program Files (x86)\Python38-32\lib\distutils\filelist.py
+m distutils.log             C:\Program Files (x86)\Python38-32\lib\distutils\log.py
+m distutils.msvc9compiler   C:\Program Files (x86)\Python38-32\lib\distutils\msvc9compiler.py
+m distutils.msvccompiler    C:\Program Files (x86)\Python38-32\lib\distutils\msvccompiler.py
+m distutils.spawn           C:\Program Files (x86)\Python38-32\lib\distutils\spawn.py
+m distutils.sysconfig       C:\Program Files (x86)\Python38-32\lib\distutils\sysconfig.py
+m distutils.text_file       C:\Program Files (x86)\Python38-32\lib\distutils\text_file.py
+m distutils.unixccompiler   C:\Program Files (x86)\Python38-32\lib\distutils\unixccompiler.py
+m distutils.util            C:\Program Files (x86)\Python38-32\lib\distutils\util.py
+m distutils.version         C:\Program Files (x86)\Python38-32\lib\distutils\version.py
+m distutils.versionpredicate C:\Program Files (x86)\Python38-32\lib\distutils\versionpredicate.py
+m doctest                   C:\Program Files (x86)\Python38-32\lib\doctest.py
+m dummy_threading           C:\Program Files (x86)\Python38-32\lib\dummy_threading.py
+P email                     C:\Program Files (x86)\Python38-32\lib\email\__init__.py
+m email._encoded_words      C:\Program Files (x86)\Python38-32\lib\email\_encoded_words.py
+m email._header_value_parser C:\Program Files (x86)\Python38-32\lib\email\_header_value_parser.py
+m email._parseaddr          C:\Program Files (x86)\Python38-32\lib\email\_parseaddr.py
+m email._policybase         C:\Program Files (x86)\Python38-32\lib\email\_policybase.py
+m email.base64mime          C:\Program Files (x86)\Python38-32\lib\email\base64mime.py
+m email.charset             C:\Program Files (x86)\Python38-32\lib\email\charset.py
+m email.contentmanager      C:\Program Files (x86)\Python38-32\lib\email\contentmanager.py
+m email.encoders            C:\Program Files (x86)\Python38-32\lib\email\encoders.py
+m email.errors              C:\Program Files (x86)\Python38-32\lib\email\errors.py
+m email.feedparser          C:\Program Files (x86)\Python38-32\lib\email\feedparser.py
+m email.generator           C:\Program Files (x86)\Python38-32\lib\email\generator.py
+m email.header              C:\Program Files (x86)\Python38-32\lib\email\header.py
+m email.headerregistry      C:\Program Files (x86)\Python38-32\lib\email\headerregistry.py
+m email.iterators           C:\Program Files (x86)\Python38-32\lib\email\iterators.py
+m email.message             C:\Program Files (x86)\Python38-32\lib\email\message.py
+m email.parser              C:\Program Files (x86)\Python38-32\lib\email\parser.py
+m email.policy              C:\Program Files (x86)\Python38-32\lib\email\policy.py
+m email.quoprimime          C:\Program Files (x86)\Python38-32\lib\email\quoprimime.py
+m email.utils               C:\Program Files (x86)\Python38-32\lib\email\utils.py
+P encodings                 C:\Program Files (x86)\Python38-32\lib\encodings\__init__.py
+m encodings.aliases         C:\Program Files (x86)\Python38-32\lib\encodings\aliases.py
+m encodings.ascii           C:\Program Files (x86)\Python38-32\lib\encodings\ascii.py
+m encodings.base64_codec    C:\Program Files (x86)\Python38-32\lib\encodings\base64_codec.py
+m encodings.big5            C:\Program Files (x86)\Python38-32\lib\encodings\big5.py
+m encodings.big5hkscs       C:\Program Files (x86)\Python38-32\lib\encodings\big5hkscs.py
+m encodings.bz2_codec       C:\Program Files (x86)\Python38-32\lib\encodings\bz2_codec.py
+m encodings.charmap         C:\Program Files (x86)\Python38-32\lib\encodings\charmap.py
+m encodings.cp037           C:\Program Files (x86)\Python38-32\lib\encodings\cp037.py
+m encodings.cp1006          C:\Program Files (x86)\Python38-32\lib\encodings\cp1006.py
+m encodings.cp1026          C:\Program Files (x86)\Python38-32\lib\encodings\cp1026.py
+m encodings.cp1125          C:\Program Files (x86)\Python38-32\lib\encodings\cp1125.py
+m encodings.cp1140          C:\Program Files (x86)\Python38-32\lib\encodings\cp1140.py
+m encodings.cp1250          C:\Program Files (x86)\Python38-32\lib\encodings\cp1250.py
+m encodings.cp1251          C:\Program Files (x86)\Python38-32\lib\encodings\cp1251.py
+m encodings.cp1252          C:\Program Files (x86)\Python38-32\lib\encodings\cp1252.py
+m encodings.cp1253          C:\Program Files (x86)\Python38-32\lib\encodings\cp1253.py
+m encodings.cp1254          C:\Program Files (x86)\Python38-32\lib\encodings\cp1254.py
+m encodings.cp1255          C:\Program Files (x86)\Python38-32\lib\encodings\cp1255.py
+m encodings.cp1256          C:\Program Files (x86)\Python38-32\lib\encodings\cp1256.py
+m encodings.cp1257          C:\Program Files (x86)\Python38-32\lib\encodings\cp1257.py
+m encodings.cp1258          C:\Program Files (x86)\Python38-32\lib\encodings\cp1258.py
+m encodings.cp273           C:\Program Files (x86)\Python38-32\lib\encodings\cp273.py
+m encodings.cp424           C:\Program Files (x86)\Python38-32\lib\encodings\cp424.py
+m encodings.cp437           C:\Program Files (x86)\Python38-32\lib\encodings\cp437.py
+m encodings.cp500           C:\Program Files (x86)\Python38-32\lib\encodings\cp500.py
+m encodings.cp720           C:\Program Files (x86)\Python38-32\lib\encodings\cp720.py
+m encodings.cp737           C:\Program Files (x86)\Python38-32\lib\encodings\cp737.py
+m encodings.cp775           C:\Program Files (x86)\Python38-32\lib\encodings\cp775.py
+m encodings.cp850           C:\Program Files (x86)\Python38-32\lib\encodings\cp850.py
+m encodings.cp852           C:\Program Files (x86)\Python38-32\lib\encodings\cp852.py
+m encodings.cp855           C:\Program Files (x86)\Python38-32\lib\encodings\cp855.py
+m encodings.cp856           C:\Program Files (x86)\Python38-32\lib\encodings\cp856.py
+m encodings.cp857           C:\Program Files (x86)\Python38-32\lib\encodings\cp857.py
+m encodings.cp858           C:\Program Files (x86)\Python38-32\lib\encodings\cp858.py
+m encodings.cp860           C:\Program Files (x86)\Python38-32\lib\encodings\cp860.py
+m encodings.cp861           C:\Program Files (x86)\Python38-32\lib\encodings\cp861.py
+m encodings.cp862           C:\Program Files (x86)\Python38-32\lib\encodings\cp862.py
+m encodings.cp863           C:\Program Files (x86)\Python38-32\lib\encodings\cp863.py
+m encodings.cp864           C:\Program Files (x86)\Python38-32\lib\encodings\cp864.py
+m encodings.cp865           C:\Program Files (x86)\Python38-32\lib\encodings\cp865.py
+m encodings.cp866           C:\Program Files (x86)\Python38-32\lib\encodings\cp866.py
+m encodings.cp869           C:\Program Files (x86)\Python38-32\lib\encodings\cp869.py
+m encodings.cp874           C:\Program Files (x86)\Python38-32\lib\encodings\cp874.py
+m encodings.cp875           C:\Program Files (x86)\Python38-32\lib\encodings\cp875.py
+m encodings.cp932           C:\Program Files (x86)\Python38-32\lib\encodings\cp932.py
+m encodings.cp949           C:\Program Files (x86)\Python38-32\lib\encodings\cp949.py
+m encodings.cp950           C:\Program Files (x86)\Python38-32\lib\encodings\cp950.py
+m encodings.euc_jis_2004    C:\Program Files (x86)\Python38-32\lib\encodings\euc_jis_2004.py
+m encodings.euc_jisx0213    C:\Program Files (x86)\Python38-32\lib\encodings\euc_jisx0213.py
+m encodings.euc_jp          C:\Program Files (x86)\Python38-32\lib\encodings\euc_jp.py
+m encodings.euc_kr          C:\Program Files (x86)\Python38-32\lib\encodings\euc_kr.py
+m encodings.gb18030         C:\Program Files (x86)\Python38-32\lib\encodings\gb18030.py
+m encodings.gb2312          C:\Program Files (x86)\Python38-32\lib\encodings\gb2312.py
+m encodings.gbk             C:\Program Files (x86)\Python38-32\lib\encodings\gbk.py
+m encodings.hex_codec       C:\Program Files (x86)\Python38-32\lib\encodings\hex_codec.py
+m encodings.hp_roman8       C:\Program Files (x86)\Python38-32\lib\encodings\hp_roman8.py
+m encodings.hz              C:\Program Files (x86)\Python38-32\lib\encodings\hz.py
+m encodings.idna            C:\Program Files (x86)\Python38-32\lib\encodings\idna.py
+m encodings.iso2022_jp      C:\Program Files (x86)\Python38-32\lib\encodings\iso2022_jp.py
+m encodings.iso2022_jp_1    C:\Program Files (x86)\Python38-32\lib\encodings\iso2022_jp_1.py
+m encodings.iso2022_jp_2    C:\Program Files (x86)\Python38-32\lib\encodings\iso2022_jp_2.py
+m encodings.iso2022_jp_2004 C:\Program Files (x86)\Python38-32\lib\encodings\iso2022_jp_2004.py
+m encodings.iso2022_jp_3    C:\Program Files (x86)\Python38-32\lib\encodings\iso2022_jp_3.py
+m encodings.iso2022_jp_ext  C:\Program Files (x86)\Python38-32\lib\encodings\iso2022_jp_ext.py
+m encodings.iso2022_kr      C:\Program Files (x86)\Python38-32\lib\encodings\iso2022_kr.py
+m encodings.iso8859_1       C:\Program Files (x86)\Python38-32\lib\encodings\iso8859_1.py
+m encodings.iso8859_10      C:\Program Files (x86)\Python38-32\lib\encodings\iso8859_10.py
+m encodings.iso8859_11      C:\Program Files (x86)\Python38-32\lib\encodings\iso8859_11.py
+m encodings.iso8859_13      C:\Program Files (x86)\Python38-32\lib\encodings\iso8859_13.py
+m encodings.iso8859_14      C:\Program Files (x86)\Python38-32\lib\encodings\iso8859_14.py
+m encodings.iso8859_15      C:\Program Files (x86)\Python38-32\lib\encodings\iso8859_15.py
+m encodings.iso8859_16      C:\Program Files (x86)\Python38-32\lib\encodings\iso8859_16.py
+m encodings.iso8859_2       C:\Program Files (x86)\Python38-32\lib\encodings\iso8859_2.py
+m encodings.iso8859_3       C:\Program Files (x86)\Python38-32\lib\encodings\iso8859_3.py
+m encodings.iso8859_4       C:\Program Files (x86)\Python38-32\lib\encodings\iso8859_4.py
+m encodings.iso8859_5       C:\Program Files (x86)\Python38-32\lib\encodings\iso8859_5.py
+m encodings.iso8859_6       C:\Program Files (x86)\Python38-32\lib\encodings\iso8859_6.py
+m encodings.iso8859_7       C:\Program Files (x86)\Python38-32\lib\encodings\iso8859_7.py
+m encodings.iso8859_8       C:\Program Files (x86)\Python38-32\lib\encodings\iso8859_8.py
+m encodings.iso8859_9       C:\Program Files (x86)\Python38-32\lib\encodings\iso8859_9.py
+m encodings.johab           C:\Program Files (x86)\Python38-32\lib\encodings\johab.py
+m encodings.koi8_r          C:\Program Files (x86)\Python38-32\lib\encodings\koi8_r.py
+m encodings.koi8_t          C:\Program Files (x86)\Python38-32\lib\encodings\koi8_t.py
+m encodings.koi8_u          C:\Program Files (x86)\Python38-32\lib\encodings\koi8_u.py
+m encodings.kz1048          C:\Program Files (x86)\Python38-32\lib\encodings\kz1048.py
+m encodings.latin_1         C:\Program Files (x86)\Python38-32\lib\encodings\latin_1.py
+m encodings.mac_arabic      C:\Program Files (x86)\Python38-32\lib\encodings\mac_arabic.py
+m encodings.mac_centeuro    C:\Program Files (x86)\Python38-32\lib\encodings\mac_centeuro.py
+m encodings.mac_croatian    C:\Program Files (x86)\Python38-32\lib\encodings\mac_croatian.py
+m encodings.mac_cyrillic    C:\Program Files (x86)\Python38-32\lib\encodings\mac_cyrillic.py
+m encodings.mac_farsi       C:\Program Files (x86)\Python38-32\lib\encodings\mac_farsi.py
+m encodings.mac_greek       C:\Program Files (x86)\Python38-32\lib\encodings\mac_greek.py
+m encodings.mac_iceland     C:\Program Files (x86)\Python38-32\lib\encodings\mac_iceland.py
+m encodings.mac_latin2      C:\Program Files (x86)\Python38-32\lib\encodings\mac_latin2.py
+m encodings.mac_roman       C:\Program Files (x86)\Python38-32\lib\encodings\mac_roman.py
+m encodings.mac_romanian    C:\Program Files (x86)\Python38-32\lib\encodings\mac_romanian.py
+m encodings.mac_turkish     C:\Program Files (x86)\Python38-32\lib\encodings\mac_turkish.py
+m encodings.mbcs            C:\Program Files (x86)\Python38-32\lib\encodings\mbcs.py
+m encodings.oem             C:\Program Files (x86)\Python38-32\lib\encodings\oem.py
+m encodings.palmos          C:\Program Files (x86)\Python38-32\lib\encodings\palmos.py
+m encodings.ptcp154         C:\Program Files (x86)\Python38-32\lib\encodings\ptcp154.py
+m encodings.punycode        C:\Program Files (x86)\Python38-32\lib\encodings\punycode.py
+m encodings.quopri_codec    C:\Program Files (x86)\Python38-32\lib\encodings\quopri_codec.py
+m encodings.raw_unicode_escape C:\Program Files (x86)\Python38-32\lib\encodings\raw_unicode_escape.py
+m encodings.rot_13          C:\Program Files (x86)\Python38-32\lib\encodings\rot_13.py
+m encodings.shift_jis       C:\Program Files (x86)\Python38-32\lib\encodings\shift_jis.py
+m encodings.shift_jis_2004  C:\Program Files (x86)\Python38-32\lib\encodings\shift_jis_2004.py
+m encodings.shift_jisx0213  C:\Program Files (x86)\Python38-32\lib\encodings\shift_jisx0213.py
+m encodings.tis_620         C:\Program Files (x86)\Python38-32\lib\encodings\tis_620.py
+m encodings.undefined       C:\Program Files (x86)\Python38-32\lib\encodings\undefined.py
+m encodings.unicode_escape  C:\Program Files (x86)\Python38-32\lib\encodings\unicode_escape.py
+m encodings.utf_16          C:\Program Files (x86)\Python38-32\lib\encodings\utf_16.py
+m encodings.utf_16_be       C:\Program Files (x86)\Python38-32\lib\encodings\utf_16_be.py
+m encodings.utf_16_le       C:\Program Files (x86)\Python38-32\lib\encodings\utf_16_le.py
+m encodings.utf_32          C:\Program Files (x86)\Python38-32\lib\encodings\utf_32.py
+m encodings.utf_32_be       C:\Program Files (x86)\Python38-32\lib\encodings\utf_32_be.py
+m encodings.utf_32_le       C:\Program Files (x86)\Python38-32\lib\encodings\utf_32_le.py
+m encodings.utf_7           C:\Program Files (x86)\Python38-32\lib\encodings\utf_7.py
+m encodings.utf_8           C:\Program Files (x86)\Python38-32\lib\encodings\utf_8.py
+m encodings.utf_8_sig       C:\Program Files (x86)\Python38-32\lib\encodings\utf_8_sig.py
+m encodings.uu_codec        C:\Program Files (x86)\Python38-32\lib\encodings\uu_codec.py
+m encodings.zlib_codec      C:\Program Files (x86)\Python38-32\lib\encodings\zlib_codec.py
+m enum                      C:\Program Files (x86)\Python38-32\lib\enum.py
+m errno                     
+m faulthandler              
+m fileinput                 C:\Program Files (x86)\Python38-32\lib\fileinput.py
+m fnmatch                   C:\Program Files (x86)\Python38-32\lib\fnmatch.py
+m fractions                 C:\Program Files (x86)\Python38-32\lib\fractions.py
+m ftplib                    C:\Program Files (x86)\Python38-32\lib\ftplib.py
+m functools                 C:\Program Files (x86)\Python38-32\lib\functools.py
+m gc                        
+m genericpath               C:\Program Files (x86)\Python38-32\lib\genericpath.py
+m getopt                    C:\Program Files (x86)\Python38-32\lib\getopt.py
+m getpass                   C:\Program Files (x86)\Python38-32\lib\getpass.py
+m gettext                   C:\Program Files (x86)\Python38-32\lib\gettext.py
+m glob                      C:\Program Files (x86)\Python38-32\lib\glob.py
+m gzip                      C:\Program Files (x86)\Python38-32\lib\gzip.py
+m hashlib                   C:\Program Files (x86)\Python38-32\lib\hashlib.py
+m heapq                     C:\Program Files (x86)\Python38-32\lib\heapq.py
+m hmac                      C:\Program Files (x86)\Python38-32\lib\hmac.py
+P html                      C:\Program Files (x86)\Python38-32\lib\html\__init__.py
+m html.entities             C:\Program Files (x86)\Python38-32\lib\html\entities.py
+P http                      C:\Program Files (x86)\Python38-32\lib\http\__init__.py
+m http.client               C:\Program Files (x86)\Python38-32\lib\http\client.py
+m http.cookiejar            C:\Program Files (x86)\Python38-32\lib\http\cookiejar.py
+m http.server               C:\Program Files (x86)\Python38-32\lib\http\server.py
+m imp                       C:\Program Files (x86)\Python38-32\lib\imp.py
+P importlib                 C:\Program Files (x86)\Python38-32\lib\importlib\__init__.py
+m importlib._bootstrap      C:\Program Files (x86)\Python38-32\lib\importlib\_bootstrap.py
+m importlib._bootstrap_external C:\Program Files (x86)\Python38-32\lib\importlib\_bootstrap_external.py
+m importlib.abc             C:\Program Files (x86)\Python38-32\lib\importlib\abc.py
+m importlib.machinery       C:\Program Files (x86)\Python38-32\lib\importlib\machinery.py
+m importlib.metadata        C:\Program Files (x86)\Python38-32\lib\importlib\metadata.py
+m importlib.util            C:\Program Files (x86)\Python38-32\lib\importlib\util.py
+m inspect                   C:\Program Files (x86)\Python38-32\lib\inspect.py
+m io                        C:\Program Files (x86)\Python38-32\lib\io.py
+m itertools                 
+P json                      C:\Program Files (x86)\Python38-32\lib\json\__init__.py
+m json.decoder              C:\Program Files (x86)\Python38-32\lib\json\decoder.py
+m json.encoder              C:\Program Files (x86)\Python38-32\lib\json\encoder.py
+m json.scanner              C:\Program Files (x86)\Python38-32\lib\json\scanner.py
+m keyword                   C:\Program Files (x86)\Python38-32\lib\keyword.py
+P lib2to3                   C:\Program Files (x86)\Python38-32\lib\lib2to3\__init__.py
+m lib2to3.btm_matcher       C:\Program Files (x86)\Python38-32\lib\lib2to3\btm_matcher.py
+m lib2to3.btm_utils         C:\Program Files (x86)\Python38-32\lib\lib2to3\btm_utils.py
+m lib2to3.fixer_util        C:\Program Files (x86)\Python38-32\lib\lib2to3\fixer_util.py
+m lib2to3.patcomp           C:\Program Files (x86)\Python38-32\lib\lib2to3\patcomp.py
+P lib2to3.pgen2             C:\Program Files (x86)\Python38-32\lib\lib2to3\pgen2\__init__.py
+m lib2to3.pgen2.driver      C:\Program Files (x86)\Python38-32\lib\lib2to3\pgen2\driver.py
+m lib2to3.pgen2.grammar     C:\Program Files (x86)\Python38-32\lib\lib2to3\pgen2\grammar.py
+m lib2to3.pgen2.literals    C:\Program Files (x86)\Python38-32\lib\lib2to3\pgen2\literals.py
+m lib2to3.pgen2.parse       C:\Program Files (x86)\Python38-32\lib\lib2to3\pgen2\parse.py
+m lib2to3.pgen2.pgen        C:\Program Files (x86)\Python38-32\lib\lib2to3\pgen2\pgen.py
+m lib2to3.pgen2.token       C:\Program Files (x86)\Python38-32\lib\lib2to3\pgen2\token.py
+m lib2to3.pgen2.tokenize    C:\Program Files (x86)\Python38-32\lib\lib2to3\pgen2\tokenize.py
+m lib2to3.pygram            C:\Program Files (x86)\Python38-32\lib\lib2to3\pygram.py
+m lib2to3.pytree            C:\Program Files (x86)\Python38-32\lib\lib2to3\pytree.py
+m lib2to3.refactor          C:\Program Files (x86)\Python38-32\lib\lib2to3\refactor.py
+m linecache                 C:\Program Files (x86)\Python38-32\lib\linecache.py
+m locale                    C:\Program Files (x86)\Python38-32\lib\locale.py
+P logging                   C:\Program Files (x86)\Python38-32\lib\logging\__init__.py
+m logging.handlers          C:\Program Files (x86)\Python38-32\lib\logging\handlers.py
+m lzma                      C:\Program Files (x86)\Python38-32\lib\lzma.py
+m marshal                   
+m math                      
+m mimetypes                 C:\Program Files (x86)\Python38-32\lib\mimetypes.py
+m mmap                      
+m msvcrt                    
+P multiprocessing           C:\Program Files (x86)\Python38-32\lib\multiprocessing\__init__.py
+m multiprocessing.connection C:\Program Files (x86)\Python38-32\lib\multiprocessing\connection.py
+m multiprocessing.context   C:\Program Files (x86)\Python38-32\lib\multiprocessing\context.py
+P multiprocessing.dummy     C:\Program Files (x86)\Python38-32\lib\multiprocessing\dummy\__init__.py
+m multiprocessing.dummy.connection C:\Program Files (x86)\Python38-32\lib\multiprocessing\dummy\connection.py
+m multiprocessing.forkserver C:\Program Files (x86)\Python38-32\lib\multiprocessing\forkserver.py
+m multiprocessing.heap      C:\Program Files (x86)\Python38-32\lib\multiprocessing\heap.py
+m multiprocessing.managers  C:\Program Files (x86)\Python38-32\lib\multiprocessing\managers.py
+m multiprocessing.pool      C:\Program Files (x86)\Python38-32\lib\multiprocessing\pool.py
+m multiprocessing.popen_fork C:\Program Files (x86)\Python38-32\lib\multiprocessing\popen_fork.py
+m multiprocessing.popen_forkserver C:\Program Files (x86)\Python38-32\lib\multiprocessing\popen_forkserver.py
+m multiprocessing.popen_spawn_posix C:\Program Files (x86)\Python38-32\lib\multiprocessing\popen_spawn_posix.py
+m multiprocessing.popen_spawn_win32 C:\Program Files (x86)\Python38-32\lib\multiprocessing\popen_spawn_win32.py
+m multiprocessing.process   C:\Program Files (x86)\Python38-32\lib\multiprocessing\process.py
+m multiprocessing.queues    C:\Program Files (x86)\Python38-32\lib\multiprocessing\queues.py
+m multiprocessing.reduction C:\Program Files (x86)\Python38-32\lib\multiprocessing\reduction.py
+m multiprocessing.resource_sharer C:\Program Files (x86)\Python38-32\lib\multiprocessing\resource_sharer.py
+m multiprocessing.resource_tracker C:\Program Files (x86)\Python38-32\lib\multiprocessing\resource_tracker.py
+m multiprocessing.shared_memory C:\Program Files (x86)\Python38-32\lib\multiprocessing\shared_memory.py
+m multiprocessing.sharedctypes C:\Program Files (x86)\Python38-32\lib\multiprocessing\sharedctypes.py
+m multiprocessing.spawn     C:\Program Files (x86)\Python38-32\lib\multiprocessing\spawn.py
+m multiprocessing.synchronize C:\Program Files (x86)\Python38-32\lib\multiprocessing\synchronize.py
+m multiprocessing.util      C:\Program Files (x86)\Python38-32\lib\multiprocessing\util.py
+m netrc                     C:\Program Files (x86)\Python38-32\lib\netrc.py
+m nntplib                   C:\Program Files (x86)\Python38-32\lib\nntplib.py
+m nt                        
+m ntpath                    C:\Program Files (x86)\Python38-32\lib\ntpath.py
+m nturl2path                C:\Program Files (x86)\Python38-32\lib\nturl2path.py
+m numbers                   C:\Program Files (x86)\Python38-32\lib\numbers.py
+P numpy                     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\__init__.py
+m numpy.__config__          C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\__config__.py
+m numpy._distributor_init   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\_distributor_init.py
+m numpy._globals            C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\_globals.py
+m numpy._pytesttester       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\_pytesttester.py
+P numpy.compat              C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\compat\__init__.py
+m numpy.compat._inspect     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\compat\_inspect.py
+m numpy.compat.py3k         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\compat\py3k.py
+m numpy.compat.setup        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\compat\setup.py
+P numpy.compat.tests        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\compat\tests\__init__.py
+m numpy.compat.tests.test_compat C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\compat\tests\test_compat.py
+m numpy.conftest            C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\conftest.py
+P numpy.core                C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\__init__.py
+m numpy.core._add_newdocs   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_add_newdocs.py
+m numpy.core._asarray       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_asarray.py
+m numpy.core._dtype         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_dtype.py
+m numpy.core._dtype_ctypes  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_dtype_ctypes.py
+m numpy.core._exceptions    C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_exceptions.py
+m numpy.core._internal      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_internal.py
+m numpy.core._methods       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_methods.py
+m numpy.core._multiarray_tests C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_multiarray_tests.cp38-win32.pyd
+m numpy.core._multiarray_umath C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_multiarray_umath.cp38-win32.pyd
+m numpy.core._operand_flag_tests C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_operand_flag_tests.cp38-win32.pyd
+m numpy.core._rational_tests C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_rational_tests.cp38-win32.pyd
+m numpy.core._string_helpers C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_string_helpers.py
+m numpy.core._struct_ufunc_tests C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_struct_ufunc_tests.cp38-win32.pyd
+m numpy.core._type_aliases  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_type_aliases.py
+m numpy.core._ufunc_config  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_ufunc_config.py
+m numpy.core._umath_tests   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_umath_tests.cp38-win32.pyd
+m numpy.core.arrayprint     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\arrayprint.py
+m numpy.core.cversions      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\cversions.py
+m numpy.core.defchararray   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\defchararray.py
+m numpy.core.einsumfunc     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\einsumfunc.py
+m numpy.core.fromnumeric    C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\fromnumeric.py
+m numpy.core.function_base  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\function_base.py
+m numpy.core.generate_numpy_api C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\generate_numpy_api.py
+m numpy.core.getlimits      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\getlimits.py
+m numpy.core.machar         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\machar.py
+m numpy.core.memmap         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\memmap.py
+m numpy.core.multiarray     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\multiarray.py
+m numpy.core.numeric        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\numeric.py
+m numpy.core.numerictypes   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\numerictypes.py
+m numpy.core.overrides      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\overrides.py
+m numpy.core.records        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\records.py
+m numpy.core.setup          C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\setup.py
+m numpy.core.setup_common   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\setup_common.py
+m numpy.core.shape_base     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\shape_base.py
+P numpy.core.tests          C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\__init__.py
+m numpy.core.tests._locales C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\_locales.py
+m numpy.core.tests.test__exceptions C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test__exceptions.py
+m numpy.core.tests.test_abc C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_abc.py
+m numpy.core.tests.test_api C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_api.py
+m numpy.core.tests.test_arrayprint C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_arrayprint.py
+m numpy.core.tests.test_datetime C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_datetime.py
+m numpy.core.tests.test_defchararray C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_defchararray.py
+m numpy.core.tests.test_deprecations C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_deprecations.py
+m numpy.core.tests.test_dtype C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_dtype.py
+m numpy.core.tests.test_einsum C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_einsum.py
+m numpy.core.tests.test_errstate C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_errstate.py
+m numpy.core.tests.test_extint128 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_extint128.py
+m numpy.core.tests.test_function_base C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_function_base.py
+m numpy.core.tests.test_getlimits C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_getlimits.py
+m numpy.core.tests.test_half C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_half.py
+m numpy.core.tests.test_indexerrors C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_indexerrors.py
+m numpy.core.tests.test_indexing C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_indexing.py
+m numpy.core.tests.test_issue14735 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_issue14735.py
+m numpy.core.tests.test_item_selection C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_item_selection.py
+m numpy.core.tests.test_longdouble C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_longdouble.py
+m numpy.core.tests.test_machar C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_machar.py
+m numpy.core.tests.test_mem_overlap C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_mem_overlap.py
+m numpy.core.tests.test_memmap C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_memmap.py
+m numpy.core.tests.test_multiarray C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_multiarray.py
+m numpy.core.tests.test_nditer C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_nditer.py
+m numpy.core.tests.test_numeric C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_numeric.py
+m numpy.core.tests.test_numerictypes C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_numerictypes.py
+m numpy.core.tests.test_overrides C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_overrides.py
+m numpy.core.tests.test_print C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_print.py
+m numpy.core.tests.test_records C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_records.py
+m numpy.core.tests.test_regression C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_regression.py
+m numpy.core.tests.test_scalar_ctors C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_scalar_ctors.py
+m numpy.core.tests.test_scalar_methods C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_scalar_methods.py
+m numpy.core.tests.test_scalarbuffer C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_scalarbuffer.py
+m numpy.core.tests.test_scalarinherit C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_scalarinherit.py
+m numpy.core.tests.test_scalarmath C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_scalarmath.py
+m numpy.core.tests.test_scalarprint C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_scalarprint.py
+m numpy.core.tests.test_shape_base C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_shape_base.py
+m numpy.core.tests.test_ufunc C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_ufunc.py
+m numpy.core.tests.test_umath C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_umath.py
+m numpy.core.tests.test_umath_accuracy C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_umath_accuracy.py
+m numpy.core.tests.test_umath_complex C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_umath_complex.py
+m numpy.core.tests.test_unicode C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\tests\test_unicode.py
+m numpy.core.umath          C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\umath.py
+m numpy.core.umath_tests    C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\umath_tests.py
+m numpy.ctypeslib           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\ctypeslib.py
+P numpy.distutils           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\__init__.py
+m numpy.distutils.__config__ C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\__config__.py
+m numpy.distutils._shell_utils C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\_shell_utils.py
+m numpy.distutils.ccompiler C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\ccompiler.py
+P numpy.distutils.command   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\__init__.py
+m numpy.distutils.command.autodist C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\autodist.py
+m numpy.distutils.command.bdist_rpm C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\bdist_rpm.py
+m numpy.distutils.command.build C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\build.py
+m numpy.distutils.command.build_clib C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\build_clib.py
+m numpy.distutils.command.build_ext C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\build_ext.py
+m numpy.distutils.command.build_py C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\build_py.py
+m numpy.distutils.command.build_scripts C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\build_scripts.py
+m numpy.distutils.command.build_src C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\build_src.py
+m numpy.distutils.command.config C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\config.py
+m numpy.distutils.command.config_compiler C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\config_compiler.py
+m numpy.distutils.command.develop C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\develop.py
+m numpy.distutils.command.egg_info C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\egg_info.py
+m numpy.distutils.command.install C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\install.py
+m numpy.distutils.command.install_clib C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\install_clib.py
+m numpy.distutils.command.install_data C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\install_data.py
+m numpy.distutils.command.install_headers C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\install_headers.py
+m numpy.distutils.command.sdist C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\command\sdist.py
+m numpy.distutils.compat    C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\compat.py
+m numpy.distutils.conv_template C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\conv_template.py
+m numpy.distutils.core      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\core.py
+m numpy.distutils.cpuinfo   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\cpuinfo.py
+m numpy.distutils.exec_command C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\exec_command.py
+m numpy.distutils.extension C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\extension.py
+P numpy.distutils.fcompiler C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\fcompiler\__init__.py
+m numpy.distutils.fcompiler.absoft C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\fcompiler\absoft.py
+m numpy.distutils.fcompiler.compaq C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\fcompiler\compaq.py
+m numpy.distutils.fcompiler.environment C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\fcompiler\environment.py
+m numpy.distutils.fcompiler.g95 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\fcompiler\g95.py
+m numpy.distutils.fcompiler.gnu C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\fcompiler\gnu.py
+m numpy.distutils.fcompiler.hpux C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\fcompiler\hpux.py
+m numpy.distutils.fcompiler.ibm C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\fcompiler\ibm.py
+m numpy.distutils.fcompiler.intel C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\fcompiler\intel.py
+m numpy.distutils.fcompiler.lahey C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\fcompiler\lahey.py
+m numpy.distutils.fcompiler.mips C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\fcompiler\mips.py
+m numpy.distutils.fcompiler.nag C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\fcompiler\nag.py
+m numpy.distutils.fcompiler.none C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\fcompiler\none.py
+m numpy.distutils.fcompiler.pathf95 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\fcompiler\pathf95.py
+m numpy.distutils.fcompiler.pg C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\fcompiler\pg.py
+m numpy.distutils.fcompiler.sun C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\fcompiler\sun.py
+m numpy.distutils.fcompiler.vast C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\fcompiler\vast.py
+m numpy.distutils.from_template C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\from_template.py
+m numpy.distutils.intelccompiler C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\intelccompiler.py
+m numpy.distutils.lib2def   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\lib2def.py
+m numpy.distutils.line_endings C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\line_endings.py
+m numpy.distutils.log       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\log.py
+m numpy.distutils.mingw32ccompiler C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\mingw32ccompiler.py
+m numpy.distutils.misc_util C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\misc_util.py
+m numpy.distutils.msvc9compiler C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\msvc9compiler.py
+m numpy.distutils.msvccompiler C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\msvccompiler.py
+m numpy.distutils.npy_pkg_config C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\npy_pkg_config.py
+m numpy.distutils.numpy_distribution C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\numpy_distribution.py
+m numpy.distutils.pathccompiler C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\pathccompiler.py
+m numpy.distutils.setup     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\setup.py
+m numpy.distutils.system_info C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\system_info.py
+P numpy.distutils.tests     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\tests\__init__.py
+m numpy.distutils.tests.test_exec_command C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\tests\test_exec_command.py
+m numpy.distutils.tests.test_fcompiler C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\tests\test_fcompiler.py
+m numpy.distutils.tests.test_fcompiler_gnu C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\tests\test_fcompiler_gnu.py
+m numpy.distutils.tests.test_fcompiler_intel C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\tests\test_fcompiler_intel.py
+m numpy.distutils.tests.test_fcompiler_nagfor C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\tests\test_fcompiler_nagfor.py
+m numpy.distutils.tests.test_from_template C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\tests\test_from_template.py
+m numpy.distutils.tests.test_mingw32ccompiler C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\tests\test_mingw32ccompiler.py
+m numpy.distutils.tests.test_misc_util C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\tests\test_misc_util.py
+m numpy.distutils.tests.test_npy_pkg_config C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\tests\test_npy_pkg_config.py
+m numpy.distutils.tests.test_shell_utils C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\tests\test_shell_utils.py
+m numpy.distutils.tests.test_system_info C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\tests\test_system_info.py
+m numpy.distutils.unixccompiler C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\distutils\unixccompiler.py
+P numpy.doc                 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\doc\__init__.py
+m numpy.doc.basics          C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\doc\basics.py
+m numpy.doc.broadcasting    C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\doc\broadcasting.py
+m numpy.doc.byteswapping    C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\doc\byteswapping.py
+m numpy.doc.constants       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\doc\constants.py
+m numpy.doc.creation        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\doc\creation.py
+m numpy.doc.dispatch        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\doc\dispatch.py
+m numpy.doc.glossary        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\doc\glossary.py
+m numpy.doc.indexing        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\doc\indexing.py
+m numpy.doc.internals       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\doc\internals.py
+m numpy.doc.misc            C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\doc\misc.py
+m numpy.doc.structured_arrays C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\doc\structured_arrays.py
+m numpy.doc.subclassing     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\doc\subclassing.py
+m numpy.doc.ufuncs          C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\doc\ufuncs.py
+m numpy.dual                C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\dual.py
+P numpy.f2py                C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\__init__.py
+m numpy.f2py.__main__       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\__main__.py
+m numpy.f2py.__version__    C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\__version__.py
+m numpy.f2py.auxfuncs       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\auxfuncs.py
+m numpy.f2py.capi_maps      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\capi_maps.py
+m numpy.f2py.cb_rules       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\cb_rules.py
+m numpy.f2py.cfuncs         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\cfuncs.py
+m numpy.f2py.common_rules   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\common_rules.py
+m numpy.f2py.crackfortran   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\crackfortran.py
+m numpy.f2py.diagnose       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\diagnose.py
+m numpy.f2py.f2py2e         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\f2py2e.py
+m numpy.f2py.f2py_testing   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\f2py_testing.py
+m numpy.f2py.f90mod_rules   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\f90mod_rules.py
+m numpy.f2py.func2subr      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\func2subr.py
+m numpy.f2py.rules          C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\rules.py
+m numpy.f2py.setup          C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\setup.py
+P numpy.f2py.tests          C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\__init__.py
+m numpy.f2py.tests.test_array_from_pyobj C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_array_from_pyobj.py
+m numpy.f2py.tests.test_assumed_shape C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_assumed_shape.py
+m numpy.f2py.tests.test_block_docstring C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_block_docstring.py
+m numpy.f2py.tests.test_callback C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_callback.py
+m numpy.f2py.tests.test_common C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_common.py
+m numpy.f2py.tests.test_compile_function C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_compile_function.py
+m numpy.f2py.tests.test_kind C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_kind.py
+m numpy.f2py.tests.test_mixed C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_mixed.py
+m numpy.f2py.tests.test_parameter C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_parameter.py
+m numpy.f2py.tests.test_quoted_character C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_quoted_character.py
+m numpy.f2py.tests.test_regression C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_regression.py
+m numpy.f2py.tests.test_return_character C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_return_character.py
+m numpy.f2py.tests.test_return_complex C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_return_complex.py
+m numpy.f2py.tests.test_return_integer C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_return_integer.py
+m numpy.f2py.tests.test_return_logical C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_return_logical.py
+m numpy.f2py.tests.test_return_real C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_return_real.py
+m numpy.f2py.tests.test_semicolon_split C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_semicolon_split.py
+m numpy.f2py.tests.test_size C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_size.py
+m numpy.f2py.tests.test_string C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\test_string.py
+m numpy.f2py.tests.util     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\tests\util.py
+m numpy.f2py.use_rules      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\f2py\use_rules.py
+P numpy.fft                 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\fft\__init__.py
+m numpy.fft._pocketfft      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\fft\_pocketfft.py
+m numpy.fft._pocketfft_internal C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\fft\_pocketfft_internal.cp38-win32.pyd
+m numpy.fft.helper          C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\fft\helper.py
+m numpy.fft.setup           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\fft\setup.py
+P numpy.fft.tests           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\fft\tests\__init__.py
+m numpy.fft.tests.test_helper C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\fft\tests\test_helper.py
+m numpy.fft.tests.test_pocketfft C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\fft\tests\test_pocketfft.py
+P numpy.lib                 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\__init__.py
+m numpy.lib._datasource     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\_datasource.py
+m numpy.lib._iotools        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\_iotools.py
+m numpy.lib._version        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\_version.py
+m numpy.lib.arraypad        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\arraypad.py
+m numpy.lib.arraysetops     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\arraysetops.py
+m numpy.lib.arrayterator    C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\arrayterator.py
+m numpy.lib.financial       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\financial.py
+m numpy.lib.format          C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\format.py
+m numpy.lib.function_base   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\function_base.py
+m numpy.lib.histograms      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\histograms.py
+m numpy.lib.index_tricks    C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\index_tricks.py
+m numpy.lib.mixins          C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\mixins.py
+m numpy.lib.nanfunctions    C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\nanfunctions.py
+m numpy.lib.npyio           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\npyio.py
+m numpy.lib.polynomial      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\polynomial.py
+m numpy.lib.recfunctions    C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\recfunctions.py
+m numpy.lib.scimath         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\scimath.py
+m numpy.lib.setup           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\setup.py
+m numpy.lib.shape_base      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\shape_base.py
+m numpy.lib.stride_tricks   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\stride_tricks.py
+P numpy.lib.tests           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\__init__.py
+m numpy.lib.tests.test__datasource C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test__datasource.py
+m numpy.lib.tests.test__iotools C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test__iotools.py
+m numpy.lib.tests.test__version C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test__version.py
+m numpy.lib.tests.test_arraypad C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_arraypad.py
+m numpy.lib.tests.test_arraysetops C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_arraysetops.py
+m numpy.lib.tests.test_arrayterator C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_arrayterator.py
+m numpy.lib.tests.test_financial C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_financial.py
+m numpy.lib.tests.test_format C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_format.py
+m numpy.lib.tests.test_function_base C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_function_base.py
+m numpy.lib.tests.test_histograms C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_histograms.py
+m numpy.lib.tests.test_index_tricks C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_index_tricks.py
+m numpy.lib.tests.test_io   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_io.py
+m numpy.lib.tests.test_mixins C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_mixins.py
+m numpy.lib.tests.test_nanfunctions C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_nanfunctions.py
+m numpy.lib.tests.test_packbits C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_packbits.py
+m numpy.lib.tests.test_polynomial C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_polynomial.py
+m numpy.lib.tests.test_recfunctions C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_recfunctions.py
+m numpy.lib.tests.test_regression C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_regression.py
+m numpy.lib.tests.test_shape_base C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_shape_base.py
+m numpy.lib.tests.test_stride_tricks C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_stride_tricks.py
+m numpy.lib.tests.test_twodim_base C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_twodim_base.py
+m numpy.lib.tests.test_type_check C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_type_check.py
+m numpy.lib.tests.test_ufunclike C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_ufunclike.py
+m numpy.lib.tests.test_utils C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\tests\test_utils.py
+m numpy.lib.twodim_base     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\twodim_base.py
+m numpy.lib.type_check      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\type_check.py
+m numpy.lib.ufunclike       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\ufunclike.py
+m numpy.lib.user_array      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\user_array.py
+m numpy.lib.utils           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\lib\utils.py
+P numpy.linalg              C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\linalg\__init__.py
+m numpy.linalg._umath_linalg C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\linalg\_umath_linalg.cp38-win32.pyd
+m numpy.linalg.lapack_lite  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\linalg\lapack_lite.cp38-win32.pyd
+m numpy.linalg.linalg       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\linalg\linalg.py
+m numpy.linalg.setup        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\linalg\setup.py
+P numpy.linalg.tests        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\linalg\tests\__init__.py
+m numpy.linalg.tests.test_build C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\linalg\tests\test_build.py
+m numpy.linalg.tests.test_deprecations C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\linalg\tests\test_deprecations.py
+m numpy.linalg.tests.test_linalg C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\linalg\tests\test_linalg.py
+m numpy.linalg.tests.test_regression C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\linalg\tests\test_regression.py
+P numpy.ma                  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\ma\__init__.py
+m numpy.ma.bench            C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\ma\bench.py
+m numpy.ma.core             C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\ma\core.py
+m numpy.ma.extras           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\ma\extras.py
+m numpy.ma.mrecords         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\ma\mrecords.py
+m numpy.ma.setup            C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\ma\setup.py
+P numpy.ma.tests            C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\ma\tests\__init__.py
+m numpy.ma.tests.test_core  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\ma\tests\test_core.py
+m numpy.ma.tests.test_deprecations C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\ma\tests\test_deprecations.py
+m numpy.ma.tests.test_extras C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\ma\tests\test_extras.py
+m numpy.ma.tests.test_mrecords C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\ma\tests\test_mrecords.py
+m numpy.ma.tests.test_old_ma C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\ma\tests\test_old_ma.py
+m numpy.ma.tests.test_regression C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\ma\tests\test_regression.py
+m numpy.ma.tests.test_subclassing C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\ma\tests\test_subclassing.py
+m numpy.ma.testutils        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\ma\testutils.py
+m numpy.ma.timer_comparison C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\ma\timer_comparison.py
+m numpy.matlib              C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\matlib.py
+P numpy.matrixlib           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\matrixlib\__init__.py
+m numpy.matrixlib.defmatrix C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\matrixlib\defmatrix.py
+m numpy.matrixlib.setup     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\matrixlib\setup.py
+P numpy.matrixlib.tests     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\matrixlib\tests\__init__.py
+m numpy.matrixlib.tests.test_defmatrix C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\matrixlib\tests\test_defmatrix.py
+m numpy.matrixlib.tests.test_interaction C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\matrixlib\tests\test_interaction.py
+m numpy.matrixlib.tests.test_masked_matrix C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\matrixlib\tests\test_masked_matrix.py
+m numpy.matrixlib.tests.test_matrix_linalg C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\matrixlib\tests\test_matrix_linalg.py
+m numpy.matrixlib.tests.test_multiarray C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\matrixlib\tests\test_multiarray.py
+m numpy.matrixlib.tests.test_numeric C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\matrixlib\tests\test_numeric.py
+m numpy.matrixlib.tests.test_regression C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\matrixlib\tests\test_regression.py
+P numpy.polynomial          C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\__init__.py
+m numpy.polynomial._polybase C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\_polybase.py
+m numpy.polynomial.chebyshev C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\chebyshev.py
+m numpy.polynomial.hermite  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\hermite.py
+m numpy.polynomial.hermite_e C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\hermite_e.py
+m numpy.polynomial.laguerre C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\laguerre.py
+m numpy.polynomial.legendre C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\legendre.py
+m numpy.polynomial.polynomial C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\polynomial.py
+m numpy.polynomial.polyutils C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\polyutils.py
+m numpy.polynomial.setup    C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\setup.py
+P numpy.polynomial.tests    C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\tests\__init__.py
+m numpy.polynomial.tests.test_chebyshev C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\tests\test_chebyshev.py
+m numpy.polynomial.tests.test_classes C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\tests\test_classes.py
+m numpy.polynomial.tests.test_hermite C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\tests\test_hermite.py
+m numpy.polynomial.tests.test_hermite_e C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\tests\test_hermite_e.py
+m numpy.polynomial.tests.test_laguerre C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\tests\test_laguerre.py
+m numpy.polynomial.tests.test_legendre C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\tests\test_legendre.py
+m numpy.polynomial.tests.test_polynomial C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\tests\test_polynomial.py
+m numpy.polynomial.tests.test_polyutils C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\tests\test_polyutils.py
+m numpy.polynomial.tests.test_printing C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\polynomial\tests\test_printing.py
+P numpy.random              C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\__init__.py
+m numpy.random._bit_generator C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\_bit_generator.cp38-win32.pyd
+m numpy.random._bounded_integers C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\_bounded_integers.cp38-win32.pyd
+m numpy.random._common      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\_common.cp38-win32.pyd
+m numpy.random._generator   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\_generator.cp38-win32.pyd
+m numpy.random._mt19937     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\_mt19937.cp38-win32.pyd
+m numpy.random._pcg64       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\_pcg64.cp38-win32.pyd
+m numpy.random._philox      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\_philox.cp38-win32.pyd
+m numpy.random._pickle      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\_pickle.py
+m numpy.random._sfc64       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\_sfc64.cp38-win32.pyd
+m numpy.random.mtrand       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\mtrand.cp38-win32.pyd
+m numpy.random.setup        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\setup.py
+P numpy.random.tests        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\tests\__init__.py
+P numpy.random.tests.data   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\tests\data\__init__.py
+m numpy.random.tests.test_direct C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\tests\test_direct.py
+m numpy.random.tests.test_extending C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\tests\test_extending.py
+m numpy.random.tests.test_generator_mt19937 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\tests\test_generator_mt19937.py
+m numpy.random.tests.test_generator_mt19937_regressions C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\tests\test_generator_mt19937_regressions.py
+m numpy.random.tests.test_random C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\tests\test_random.py
+m numpy.random.tests.test_randomstate C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\tests\test_randomstate.py
+m numpy.random.tests.test_randomstate_regression C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\tests\test_randomstate_regression.py
+m numpy.random.tests.test_regression C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\tests\test_regression.py
+m numpy.random.tests.test_seed_sequence C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\tests\test_seed_sequence.py
+m numpy.random.tests.test_smoke C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\tests\test_smoke.py
+m numpy.setup               C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\setup.py
+P numpy.testing             C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\testing\__init__.py
+P numpy.testing._private    C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\testing\_private\__init__.py
+m numpy.testing._private.decorators C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\testing\_private\decorators.py
+m numpy.testing._private.noseclasses C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\testing\_private\noseclasses.py
+m numpy.testing._private.nosetester C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\testing\_private\nosetester.py
+m numpy.testing._private.parameterized C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\testing\_private\parameterized.py
+m numpy.testing._private.utils C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\testing\_private\utils.py
+m numpy.testing.print_coercion_tables C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\testing\print_coercion_tables.py
+m numpy.testing.setup       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\testing\setup.py
+P numpy.testing.tests       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\testing\tests\__init__.py
+m numpy.testing.tests.test_decorators C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\testing\tests\test_decorators.py
+m numpy.testing.tests.test_doctesting C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\testing\tests\test_doctesting.py
+m numpy.testing.tests.test_utils C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\testing\tests\test_utils.py
+m numpy.testing.utils       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\testing\utils.py
+P numpy.tests               C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\tests\__init__.py
+m numpy.tests.test_ctypeslib C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\tests\test_ctypeslib.py
+m numpy.tests.test_matlib   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\tests\test_matlib.py
+m numpy.tests.test_numpy_version C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\tests\test_numpy_version.py
+m numpy.tests.test_public_api C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\tests\test_public_api.py
+m numpy.tests.test_reloading C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\tests\test_reloading.py
+m numpy.tests.test_scripts  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\tests\test_scripts.py
+m numpy.tests.test_warnings C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\tests\test_warnings.py
+m numpy.version             C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\version.py
+m opcode                    C:\Program Files (x86)\Python38-32\lib\opcode.py
+m operator                  C:\Program Files (x86)\Python38-32\lib\operator.py
+m optparse                  C:\Program Files (x86)\Python38-32\lib\optparse.py
+m os                        C:\Program Files (x86)\Python38-32\lib\os.py
+m pathlib                   C:\Program Files (x86)\Python38-32\lib\pathlib.py
+m pdb                       C:\Program Files (x86)\Python38-32\lib\pdb.py
+m pickle                    C:\Program Files (x86)\Python38-32\lib\pickle.py
+m pipes                     C:\Program Files (x86)\Python38-32\lib\pipes.py
+P pkg_resources             C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\pkg_resources\__init__.py
+P pkg_resources._vendor     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\pkg_resources\_vendor\__init__.py
+m pkg_resources._vendor.appdirs C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\pkg_resources\_vendor\appdirs.py
+P pkg_resources._vendor.packaging C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\pkg_resources\_vendor\packaging\__init__.py
+m pkg_resources._vendor.packaging.__about__ C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\pkg_resources\_vendor\packaging\__about__.py
+m pkg_resources._vendor.packaging._compat C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\pkg_resources\_vendor\packaging\_compat.py
+m pkg_resources._vendor.packaging._structures C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\pkg_resources\_vendor\packaging\_structures.py
+m pkg_resources._vendor.packaging.markers C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\pkg_resources\_vendor\packaging\markers.py
+m pkg_resources._vendor.packaging.requirements C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\pkg_resources\_vendor\packaging\requirements.py
+m pkg_resources._vendor.packaging.specifiers C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\pkg_resources\_vendor\packaging\specifiers.py
+m pkg_resources._vendor.packaging.utils C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\pkg_resources\_vendor\packaging\utils.py
+m pkg_resources._vendor.packaging.version C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\pkg_resources\_vendor\packaging\version.py
+m pkg_resources._vendor.pyparsing C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\pkg_resources\_vendor\pyparsing.py
+m pkg_resources._vendor.six C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\pkg_resources\_vendor\six.py
+P pkg_resources.extern      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\pkg_resources\extern\__init__.py
+m pkg_resources.py31compat  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\pkg_resources\py31compat.py
+m pkgutil                   C:\Program Files (x86)\Python38-32\lib\pkgutil.py
+m platform                  C:\Program Files (x86)\Python38-32\lib\platform.py
+m plistlib                  C:\Program Files (x86)\Python38-32\lib\plistlib.py
+m posixpath                 C:\Program Files (x86)\Python38-32\lib\posixpath.py
+m pprint                    C:\Program Files (x86)\Python38-32\lib\pprint.py
+m py_compile                C:\Program Files (x86)\Python38-32\lib\py_compile.py
+m pydoc                     C:\Program Files (x86)\Python38-32\lib\pydoc.py
+P pydoc_data                C:\Program Files (x86)\Python38-32\lib\pydoc_data\__init__.py
+m pydoc_data.topics         C:\Program Files (x86)\Python38-32\lib\pydoc_data\topics.py
+m pyexpat                   C:\Program Files (x86)\Python38-32\DLLs\pyexpat.pyd
+m qt_gl_render_manager__init__ C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\cx_Freeze\initscripts\Console.py
+m qt_gl_render_manager__main__ qt_gl_render_manager.py
+m queue                     C:\Program Files (x86)\Python38-32\lib\queue.py
+m quopri                    C:\Program Files (x86)\Python38-32\lib\quopri.py
+m random                    C:\Program Files (x86)\Python38-32\lib\random.py
+m re                        C:\Program Files (x86)\Python38-32\lib\re.py
+m reprlib                   C:\Program Files (x86)\Python38-32\lib\reprlib.py
+m rlcompleter               C:\Program Files (x86)\Python38-32\lib\rlcompleter.py
+m runpy                     C:\Program Files (x86)\Python38-32\lib\runpy.py
+P sdl2                      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\__init__.py
+m sdl2.audio                C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\audio.py
+m sdl2.blendmode            C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\blendmode.py
+m sdl2.clipboard            C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\clipboard.py
+m sdl2.cpuinfo              C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\cpuinfo.py
+m sdl2.dll                  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\dll.py
+m sdl2.endian               C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\endian.py
+m sdl2.error                C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\error.py
+m sdl2.events               C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\events.py
+m sdl2.filesystem           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\filesystem.py
+m sdl2.gamecontroller       C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\gamecontroller.py
+m sdl2.gesture              C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\gesture.py
+m sdl2.haptic               C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\haptic.py
+m sdl2.hints                C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\hints.py
+m sdl2.joystick             C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\joystick.py
+m sdl2.keyboard             C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\keyboard.py
+m sdl2.keycode              C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\keycode.py
+m sdl2.loadso               C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\loadso.py
+m sdl2.log                  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\log.py
+m sdl2.messagebox           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\messagebox.py
+m sdl2.mouse                C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\mouse.py
+m sdl2.pixels               C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\pixels.py
+m sdl2.platform             C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\platform.py
+m sdl2.power                C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\power.py
+m sdl2.rect                 C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\rect.py
+m sdl2.render               C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\render.py
+m sdl2.rwops                C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\rwops.py
+m sdl2.scancode             C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\scancode.py
+m sdl2.shape                C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\shape.py
+m sdl2.stdinc               C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\stdinc.py
+m sdl2.surface              C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\surface.py
+m sdl2.syswm                C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\syswm.py
+m sdl2.timer                C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\timer.py
+m sdl2.touch                C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\touch.py
+m sdl2.version              C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\version.py
+m sdl2.video                C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2\video.py
+P sdl2dll                   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\sdl2dll\__init__.py
+m secrets                   C:\Program Files (x86)\Python38-32\lib\secrets.py
+m select                    C:\Program Files (x86)\Python38-32\DLLs\select.pyd
+m selectors                 C:\Program Files (x86)\Python38-32\lib\selectors.py
+P setuptools                C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\__init__.py
+m setuptools._deprecation_warning C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\_deprecation_warning.py
+m setuptools.archive_util   C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\archive_util.py
+P setuptools.command        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\command\__init__.py
+m setuptools.command.bdist_egg C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\command\bdist_egg.py
+m setuptools.command.bdist_rpm C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\command\bdist_rpm.py
+m setuptools.command.develop C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\command\develop.py
+m setuptools.command.easy_install C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\command\easy_install.py
+m setuptools.command.egg_info C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\command\egg_info.py
+m setuptools.command.install C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\command\install.py
+m setuptools.command.install_scripts C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\command\install_scripts.py
+m setuptools.command.py36compat C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\command\py36compat.py
+m setuptools.command.sdist  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\command\sdist.py
+m setuptools.command.setopt C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\command\setopt.py
+m setuptools.config         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\config.py
+m setuptools.depends        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\depends.py
+m setuptools.dist           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\dist.py
+m setuptools.extension      C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\extension.py
+P setuptools.extern         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\extern\__init__.py
+m setuptools.glibc          C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\glibc.py
+m setuptools.glob           C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\glob.py
+m setuptools.monkey         C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\monkey.py
+m setuptools.namespaces     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\namespaces.py
+m setuptools.package_index  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\package_index.py
+m setuptools.pep425tags     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\pep425tags.py
+m setuptools.py27compat     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\py27compat.py
+m setuptools.py33compat     C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\py33compat.py
+m setuptools.sandbox        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\sandbox.py
+m setuptools.ssl_support    C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\ssl_support.py
+m setuptools.unicode_utils  C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\unicode_utils.py
+m setuptools.version        C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\version.py
+m setuptools.wheel          C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\wheel.py
+m setuptools.windows_support C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\setuptools\windows_support.py
+m shlex                     C:\Program Files (x86)\Python38-32\lib\shlex.py
+m shutil                    C:\Program Files (x86)\Python38-32\lib\shutil.py
+m signal                    C:\Program Files (x86)\Python38-32\lib\signal.py
+m site                      C:\Program Files (x86)\Python38-32\lib\site.py
+m smtplib                   C:\Program Files (x86)\Python38-32\lib\smtplib.py
+m socket                    C:\Program Files (x86)\Python38-32\lib\socket.py
+m socketserver              C:\Program Files (x86)\Python38-32\lib\socketserver.py
+m sre_compile               C:\Program Files (x86)\Python38-32\lib\sre_compile.py
+m sre_constants             C:\Program Files (x86)\Python38-32\lib\sre_constants.py
+m sre_parse                 C:\Program Files (x86)\Python38-32\lib\sre_parse.py
+m ssl                       C:\Program Files (x86)\Python38-32\lib\ssl.py
+m stat                      C:\Program Files (x86)\Python38-32\lib\stat.py
+m string                    C:\Program Files (x86)\Python38-32\lib\string.py
+m stringprep                C:\Program Files (x86)\Python38-32\lib\stringprep.py
+m struct                    C:\Program Files (x86)\Python38-32\lib\struct.py
+m subprocess                C:\Program Files (x86)\Python38-32\lib\subprocess.py
+m sys                       
+m sysconfig                 C:\Program Files (x86)\Python38-32\lib\sysconfig.py
+m tarfile                   C:\Program Files (x86)\Python38-32\lib\tarfile.py
+m tempfile                  C:\Program Files (x86)\Python38-32\lib\tempfile.py
+P test                      C:\Program Files (x86)\Python38-32\lib\test\__init__.py
+P test.support              C:\Program Files (x86)\Python38-32\lib\test\support\__init__.py
+m test.support.testresult   C:\Program Files (x86)\Python38-32\lib\test\support\testresult.py
+m textwrap                  C:\Program Files (x86)\Python38-32\lib\textwrap.py
+m threading                 C:\Program Files (x86)\Python38-32\lib\threading.py
+m time                      
+m timeit                    C:\Program Files (x86)\Python38-32\lib\timeit.py
+m token                     C:\Program Files (x86)\Python38-32\lib\token.py
+m tokenize                  C:\Program Files (x86)\Python38-32\lib\tokenize.py
+m traceback                 C:\Program Files (x86)\Python38-32\lib\traceback.py
+m tracemalloc               C:\Program Files (x86)\Python38-32\lib\tracemalloc.py
+m tty                       C:\Program Files (x86)\Python38-32\lib\tty.py
+m types                     C:\Program Files (x86)\Python38-32\lib\types.py
+m typing                    C:\Program Files (x86)\Python38-32\lib\typing.py
+m unicodedata               C:\Program Files (x86)\Python38-32\DLLs\unicodedata.pyd
+P unittest                  C:\Program Files (x86)\Python38-32\lib\unittest\__init__.py
+m unittest.async_case       C:\Program Files (x86)\Python38-32\lib\unittest\async_case.py
+m unittest.case             C:\Program Files (x86)\Python38-32\lib\unittest\case.py
+m unittest.loader           C:\Program Files (x86)\Python38-32\lib\unittest\loader.py
+m unittest.main             C:\Program Files (x86)\Python38-32\lib\unittest\main.py
+m unittest.mock             C:\Program Files (x86)\Python38-32\lib\unittest\mock.py
+m unittest.result           C:\Program Files (x86)\Python38-32\lib\unittest\result.py
+m unittest.runner           C:\Program Files (x86)\Python38-32\lib\unittest\runner.py
+m unittest.signals          C:\Program Files (x86)\Python38-32\lib\unittest\signals.py
+m unittest.suite            C:\Program Files (x86)\Python38-32\lib\unittest\suite.py
+m unittest.util             C:\Program Files (x86)\Python38-32\lib\unittest\util.py
+P urllib                    C:\Program Files (x86)\Python38-32\lib\urllib\__init__.py
+m urllib.error              C:\Program Files (x86)\Python38-32\lib\urllib\error.py
+m urllib.parse              C:\Program Files (x86)\Python38-32\lib\urllib\parse.py
+m urllib.request            C:\Program Files (x86)\Python38-32\lib\urllib\request.py
+m urllib.response           C:\Program Files (x86)\Python38-32\lib\urllib\response.py
+m uu                        C:\Program Files (x86)\Python38-32\lib\uu.py
+m uuid                      C:\Program Files (x86)\Python38-32\lib\uuid.py
+m warnings                  C:\Program Files (x86)\Python38-32\lib\warnings.py
+m weakref                   C:\Program Files (x86)\Python38-32\lib\weakref.py
+m webbrowser                C:\Program Files (x86)\Python38-32\lib\webbrowser.py
+m winreg                    
+P xml                       C:\Program Files (x86)\Python38-32\lib\xml\__init__.py
+P xml.etree                 C:\Program Files (x86)\Python38-32\lib\xml\etree\__init__.py
+m xml.etree.ElementPath     C:\Program Files (x86)\Python38-32\lib\xml\etree\ElementPath.py
+m xml.etree.ElementTree     C:\Program Files (x86)\Python38-32\lib\xml\etree\ElementTree.py
+P xml.parsers               C:\Program Files (x86)\Python38-32\lib\xml\parsers\__init__.py
+m xml.parsers.expat         C:\Program Files (x86)\Python38-32\lib\xml\parsers\expat.py
+P xmlrpc                    C:\Program Files (x86)\Python38-32\lib\xmlrpc\__init__.py
+m xmlrpc.client             C:\Program Files (x86)\Python38-32\lib\xmlrpc\client.py
+m zipfile                   C:\Program Files (x86)\Python38-32\lib\zipfile.py
+m zipimport                 C:\Program Files (x86)\Python38-32\lib\zipimport.py
+m zlib                      
+
+Missing modules:
+? Cython.Compiler.Version imported from numpy.random.tests.test_extending
+? OpenGL.platform.PLATFORM imported from OpenGL.GLU.glunurbs, OpenGL.GLU.quadrics, OpenGL.GLU.tess, OpenGL.raw.GL._errors, OpenGL.raw.GL._types
+? OpenGL.platform.createBaseFunction imported from OpenGL.GLU.quadrics, OpenGL.GLU.tess
+? OpenGL_accelerate imported from OpenGL.acceleratesupport
+? OpenGL_accelerate.arraydatatype imported from OpenGL.arrays.arraydatatype, OpenGL.arrays.arrayhelpers, OpenGL.converters
+? OpenGL_accelerate.errorchecker imported from OpenGL.error
+? OpenGL_accelerate.latebind imported from OpenGL.latebind, OpenGL.wrapper
+? OpenGL_accelerate.vbo imported from OpenGL.arrays.vbo
+? OpenGL_accelerate.wrapper imported from OpenGL.arrays.arrayhelpers, OpenGL.converters, OpenGL.wrapper
+? PyQt5.QtCore imported from qt_gl_render_manager__main__
+? PyQt5.QtWidgets imported from qt_gl_render_manager__main__
+? StringIO imported from numpy.core.tests.test_print, numpy.distutils.tests.test_exec_command, numpy.lib.format, numpy.lib.tests.test_regression, numpy.lib.tests.test_utils, numpy.lib.utils, numpy.testing._private.utils, pkg_resources._vendor.six
+? __builtin__ imported from numpy, numpy.core.numeric, numpy.core.numerictypes, numpy.core.tests.test_multiarray, numpy.distutils.misc_util, numpy.lib._iotools, numpy.lib.function_base, numpy.lib.tests.test_format, numpy.ma.core, pkg_resources._vendor.pyparsing
+? __main__ imported from bdb, pdb, pkg_resources, rlcompleter
+? __version__ imported from numpy.f2py.setup
+? _curses imported from curses, curses.has_key
+? _dummy_threading imported from dummy_threading
+? _frozen_importlib imported from importlib, importlib.abc, zipimport
+? _frozen_importlib_external imported from importlib, importlib._bootstrap, importlib.abc, zipimport
+? _manylinux imported from setuptools.pep425tags
+? _posixshmem imported from multiprocessing.resource_tracker, multiprocessing.shared_memory
+? _posixsubprocess imported from multiprocessing.util, subprocess
+? _scproxy imported from urllib.request
+? _uuid imported from uuid
+? _winreg imported from numpy.distutils.cpuinfo, pkg_resources._vendor.appdirs, platform
+? backports.ssl_match_hostname imported from setuptools.ssl_support
+? cffi imported from numpy.random.tests.test_direct, numpy.random.tests.test_extending
+? code_generators.genapi imported from numpy.core.cversions
+? code_generators.numpy_api imported from numpy.core.cversions
+? collections.Callable imported from sdl2.rwops
+? collections.Iterable imported from pkg_resources._vendor.pyparsing
+? collections.Mapping imported from numpy.lib.npyio
+? collections.MutableMapping imported from pkg_resources._vendor.pyparsing
+? com.sun imported from pkg_resources._vendor.appdirs
+? com.sun.jna imported from pkg_resources._vendor.appdirs
+? com.sun.jna.platform imported from pkg_resources._vendor.appdirs
+? commands imported from numpy.distutils.cpuinfo
+? concurrent.futures.ThreadPoolExecutor imported from distutils.command.build_ext
+? copy_reg imported from numpy.core
+? cpickle imported from numpy.compat.py3k
+? cython imported from numpy.random.tests.test_extending
+? dummy_thread imported from numpy.core.arrayprint
+? future_builtins imported from numpy.lib.npyio, numpy.lib.recfunctions
+? genapi imported from numpy.core.generate_numpy_api
+? grp imported from distutils.archive_util, pathlib, shutil, tarfile
+? java.lang imported from platform
+? md5 imported from numpy.core.tests.test_regression, numpy.f2py.tests.util
+? multiprocessing.AuthenticationError imported from multiprocessing.connection
+? multiprocessing.BufferTooShort imported from multiprocessing.connection
+? multiprocessing.TimeoutError imported from multiprocessing.pool
+? multiprocessing.get_context imported from multiprocessing.managers, multiprocessing.pool, multiprocessing.sharedctypes
+? multiprocessing.get_start_method imported from multiprocessing.spawn
+? multiprocessing.set_start_method imported from multiprocessing.spawn
+? netbios imported from uuid
+? nose imported from numpy.testing._private.decorators, numpy.testing._private.noseclasses, numpy.testing._private.utils, numpy.testing.tests.test_decorators, numpy.testing.tests.test_doctesting
+? nose.plugins imported from numpy.testing._private.noseclasses, numpy.testing._private.nosetester
+? nose.plugins.base imported from numpy.testing._private.noseclasses
+? nose.plugins.builtin imported from numpy.testing._private.nosetester
+? nose.plugins.errorclass imported from numpy.testing._private.noseclasses
+? nose.util imported from numpy.testing._private.noseclasses
+? numarray imported from numpy.distutils.system_info
+? numba imported from numpy.random.tests.test_extending
+? numpy._build_utils.apple_accelerate imported from numpy.core.setup
+? numpy.core.equal imported from numpy.lib.user_array
+? numpy.core.float32 imported from numpy.testing._private.utils
+? numpy.core.geterrobj imported from numpy.linalg.linalg
+? numpy.core.greater_equal imported from numpy.lib.user_array
+? numpy.core.integer imported from numpy.fft.helper
+? numpy.core.intp imported from numpy.linalg.linalg, numpy.testing._private.utils
+? numpy.core.less_equal imported from numpy.lib.user_array
+? numpy.core.object_ imported from numpy.linalg.linalg, numpy.testing._private.utils
+? numpy.core.signbit imported from numpy.testing._private.utils
+? numpy.core.subtract imported from numpy.lib.user_array
+? numpy.random.RandomState imported from numpy.random.tests.test_direct
+? numpy.random._examples.cffi imported from numpy.random.tests.test_extending
+? numpy.random._examples.numba imported from numpy.random.tests.test_extending
+? numpy.random.randint imported from numpy.core.tests.test_numeric, numpy.lib.tests.test_arrayterator, numpy.lib.tests.test_shape_base
+? numpy.random.random imported from numpy.fft.tests.test_pocketfft
+? numpy.testing.noseclasses imported from numpy.testing.tests.test_doctesting
+? numpy_api imported from numpy.core.generate_numpy_api
+? numpy_distutils imported from numpy.f2py.diagnose
+? numpy_distutils.command.build_flib imported from numpy.f2py.diagnose
+? numpy_distutils.command.cpuinfo imported from numpy.f2py.diagnose
+? numpy_distutils.cpuinfo imported from numpy.f2py.diagnose
+? numpy_distutils.fcompiler imported from numpy.f2py.diagnose
+? ordereddict imported from pkg_resources._vendor.pyparsing
+? org.python.core imported from copy, pickle
+? org.python.modules.posix.PosixModule imported from setuptools.sandbox
+? os.path imported from distutils.file_util, numpy.compat.tests.test_compat, numpy.core.cversions, numpy.core.memmap, numpy.core.setup, numpy.distutils.fcompiler.pg, numpy.distutils.tests.test_misc_util, numpy.random.setup, numpy.random.tests.test_direct, numpy.tests.test_scripts, os, pkg_resources, pkgutil, py_compile, sysconfig, tracemalloc, unittest, unittest.util
+? pathlib2 imported from numpy.core.tests.test_multiarray
+? pickle5 imported from numpy.compat.py3k
+? pkg_resources.extern.appdirs imported from pkg_resources
+? pkg_resources.extern.packaging imported from pkg_resources
+? pkg_resources.extern.pyparsing imported from pkg_resources._vendor.packaging.markers, pkg_resources._vendor.packaging.requirements
+? pkg_resources.extern.six imported from pkg_resources, pkg_resources.py31compat
+? pkg_resources.extern.six.moves imported from pkg_resources
+? pkg_resources.extern.six.moves.urllib imported from pkg_resources._vendor.packaging.requirements
+? posix imported from os, shutil
+? psutil imported from numpy.testing._private.utils
+? pwd imported from distutils.archive_util, distutils.util, getpass, http.server, netrc, pathlib, posixpath, shutil, tarfile, webbrowser
+? pytest imported from numpy._pytesttester, numpy.conftest, numpy.core.tests._locales, numpy.core.tests.test_api, numpy.core.tests.test_arrayprint, numpy.core.tests.test_datetime, numpy.core.tests.test_deprecations, numpy.core.tests.test_dtype, numpy.core.tests.test_errstate, numpy.core.tests.test_extint128, numpy.core.tests.test_half, numpy.core.tests.test_indexing, numpy.core.tests.test_issue14735, numpy.core.tests.test_longdouble, numpy.core.tests.test_mem_overlap, numpy.core.tests.test_memmap, numpy.core.tests.test_multiarray, numpy.core.tests.test_nditer, numpy.core.tests.test_numeric, numpy.core.tests.test_numerictypes, numpy.core.tests.test_overrides, numpy.core.tests.test_print, numpy.core.tests.test_records, numpy.core.tests.test_regression, numpy.core.tests.test_scalar_ctors, numpy.core.tests.test_scalar_methods, numpy.core.tests.test_scalarbuffer, numpy.core.tests.test_scalarmath, numpy.core.tests.test_scalarprint, numpy.core.tests.test_shape_base, numpy.core.tests.test_ufunc, numpy.core.tests.test_umath, numpy.core.tests.test_umath_accuracy, numpy.core.tests.test_umath_complex, numpy.distutils.tests.test_fcompiler, numpy.distutils.tests.test_mingw32ccompiler, numpy.distutils.tests.test_shell_utils, numpy.distutils.tests.test_system_info, numpy.f2py.tests.test_array_from_pyobj, numpy.f2py.tests.test_assumed_shape, numpy.f2py.tests.test_block_docstring, numpy.f2py.tests.test_callback, numpy.f2py.tests.test_common, numpy.f2py.tests.test_compile_function, numpy.f2py.tests.test_kind, numpy.f2py.tests.test_mixed, numpy.f2py.tests.test_parameter, numpy.f2py.tests.test_quoted_character, numpy.f2py.tests.test_regression, numpy.f2py.tests.test_return_character, numpy.f2py.tests.test_return_complex, numpy.f2py.tests.test_return_integer, numpy.f2py.tests.test_return_logical, numpy.f2py.tests.test_return_real, numpy.f2py.tests.test_semicolon_split, numpy.f2py.tests.test_size, numpy.f2py.tests.test_string, numpy.f2py.tests.util, numpy.fft.tests.test_pocketfft, numpy.lib.tests.test__datasource, numpy.lib.tests.test_arraypad, numpy.lib.tests.test_arraysetops, numpy.lib.tests.test_format, numpy.lib.tests.test_function_base, numpy.lib.tests.test_histograms, numpy.lib.tests.test_index_tricks, numpy.lib.tests.test_io, numpy.lib.tests.test_nanfunctions, numpy.lib.tests.test_packbits, numpy.lib.tests.test_recfunctions, numpy.lib.tests.test_shape_base, numpy.lib.tests.test_utils, numpy.linalg.tests.test_build, numpy.linalg.tests.test_linalg, numpy.ma.tests.test_core, numpy.ma.tests.test_extras, numpy.matrixlib.tests.test_interaction, numpy.polynomial.tests.test_classes, numpy.random.tests.test_direct, numpy.random.tests.test_extending, numpy.random.tests.test_generator_mt19937, numpy.random.tests.test_generator_mt19937_regressions, numpy.random.tests.test_randomstate, numpy.random.tests.test_randomstate_regression, numpy.random.tests.test_smoke, numpy.testing._private.utils, numpy.testing.tests.test_decorators, numpy.testing.tests.test_utils, numpy.tests.test_ctypeslib, numpy.tests.test_matlib, numpy.tests.test_public_api, numpy.tests.test_scripts, numpy.tests.test_warnings
+? pytz imported from numpy.core.tests.test_datetime, numpy.core.tests.test_deprecations
+? resource imported from numpy.linalg.tests.test_linalg, test.support
+? scipy imported from numpy.testing._private.nosetester
+? setup_common imported from numpy.core.setup
+? setuptools.extern.packaging imported from setuptools.command.egg_info, setuptools.dist
+? setuptools.extern.packaging.utils imported from setuptools.wheel
+? setuptools.extern.packaging.version imported from setuptools.config
+? setuptools.extern.six imported from setuptools, setuptools.command.bdist_egg, setuptools.command.develop, setuptools.command.easy_install, setuptools.command.egg_info, setuptools.command.sdist, setuptools.config, setuptools.dist, setuptools.monkey, setuptools.package_index, setuptools.pep425tags, setuptools.py27compat, setuptools.py33compat, setuptools.sandbox, setuptools.unicode_utils, setuptools.wheel
+? setuptools.extern.six.moves imported from setuptools, setuptools.command.easy_install, setuptools.command.egg_info, setuptools.command.py36compat, setuptools.command.setopt, setuptools.dist, setuptools.extension, setuptools.namespaces, setuptools.package_index, setuptools.py33compat, setuptools.sandbox, setuptools.ssl_support
+? setuptools.extern.six.moves.configparser imported from setuptools.dist
+? termios imported from getpass, tty
+? thread imported from numpy.core.arrayprint
+? tkinter imported from test.support
+? urllib2 imported from numpy.lib._datasource, numpy.lib.tests.test__datasource
+? urlparse imported from numpy.lib._datasource, numpy.lib.tests.test__datasource
+? vms_lib imported from platform
+? win32api imported from distutils.msvccompiler, pkg_resources._vendor.appdirs
+? win32com.shell imported from pkg_resources._vendor.appdirs
+? win32con imported from distutils.msvccompiler
+? win32evtlog imported from logging.handlers
+? win32evtlogutil imported from logging.handlers
+? win32pdh imported from numpy.testing._private.utils
+? win32wnet imported from uuid
+? wincertstore imported from setuptools.ssl_support
+This is not necessarily a problem - the modules may not be needed on this platform.
+
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\PyQt5\QtCore.pyd -> build\exe.win32-3.8\lib\PyQt5\QtCore.pyd
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\PyQt5\Qt\bin\Qt5Core.dll -> build\exe.win32-3.8\lib\PyQt5\Qt5Core.dll
+copying C:\Program Files (x86)\Python38-32\python3.dll -> build\exe.win32-3.8\lib\PyQt5\python3.dll
+copying C:\Program Files (x86)\Python38-32\VCRUNTIME140.dll -> build\exe.win32-3.8\lib\PyQt5\VCRUNTIME140.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-runtime-l1-1-0.dll -> build\exe.win32-3.8\lib\PyQt5\api-ms-win-crt-runtime-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-stdio-l1-1-0.dll -> build\exe.win32-3.8\lib\PyQt5\api-ms-win-crt-stdio-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-string-l1-1-0.dll -> build\exe.win32-3.8\lib\PyQt5\api-ms-win-crt-string-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-heap-l1-1-0.dll -> build\exe.win32-3.8\lib\PyQt5\api-ms-win-crt-heap-l1-1-0.dll
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\PyQt5\QtGui.pyd -> build\exe.win32-3.8\lib\PyQt5\QtGui.pyd
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\PyQt5\Qt\bin\Qt5Gui.dll -> build\exe.win32-3.8\lib\PyQt5\Qt5Gui.dll
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\PyQt5\QtWidgets.pyd -> build\exe.win32-3.8\lib\PyQt5\QtWidgets.pyd
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\PyQt5\Qt\bin\Qt5Widgets.dll -> build\exe.win32-3.8\lib\PyQt5\Qt5Widgets.dll
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_multiarray_tests.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\core\_multiarray_tests.cp38-win32.pyd
+copying C:\Program Files (x86)\Python38-32\python38.dll -> build\exe.win32-3.8\lib\numpy\core\python38.dll
+copying C:\Program Files (x86)\Python38-32\VCRUNTIME140.dll -> build\exe.win32-3.8\lib\numpy\core\VCRUNTIME140.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-runtime-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\core\api-ms-win-crt-runtime-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-utility-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\core\api-ms-win-crt-utility-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-heap-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\core\api-ms-win-crt-heap-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-math-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\core\api-ms-win-crt-math-l1-1-0.dll
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_multiarray_umath.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\core\_multiarray_umath.cp38-win32.pyd
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-stdio-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\core\api-ms-win-crt-stdio-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-string-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\core\api-ms-win-crt-string-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-convert-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\core\api-ms-win-crt-convert-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-time-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\core\api-ms-win-crt-time-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-locale-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\core\api-ms-win-crt-locale-l1-1-0.dll
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_operand_flag_tests.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\core\_operand_flag_tests.cp38-win32.pyd
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_rational_tests.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\core\_rational_tests.cp38-win32.pyd
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_struct_ufunc_tests.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\core\_struct_ufunc_tests.cp38-win32.pyd
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_umath_tests.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\core\_umath_tests.cp38-win32.pyd
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\fft\_pocketfft_internal.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\fft\_pocketfft_internal.cp38-win32.pyd
+copying C:\Program Files (x86)\Python38-32\python38.dll -> build\exe.win32-3.8\lib\numpy\fft\python38.dll
+copying C:\Program Files (x86)\Python38-32\VCRUNTIME140.dll -> build\exe.win32-3.8\lib\numpy\fft\VCRUNTIME140.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-math-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\fft\api-ms-win-crt-math-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-heap-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\fft\api-ms-win-crt-heap-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-runtime-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\fft\api-ms-win-crt-runtime-l1-1-0.dll
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\linalg\_umath_linalg.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\linalg\_umath_linalg.cp38-win32.pyd
+copying C:\Program Files (x86)\Python38-32\python38.dll -> build\exe.win32-3.8\lib\numpy\linalg\python38.dll
+copying C:\Program Files (x86)\Python38-32\VCRUNTIME140.dll -> build\exe.win32-3.8\lib\numpy\linalg\VCRUNTIME140.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-stdio-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\linalg\api-ms-win-crt-stdio-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-heap-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\linalg\api-ms-win-crt-heap-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-math-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\linalg\api-ms-win-crt-math-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-runtime-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\linalg\api-ms-win-crt-runtime-l1-1-0.dll
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\linalg\lapack_lite.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\linalg\lapack_lite.cp38-win32.pyd
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\_bit_generator.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\random\_bit_generator.cp38-win32.pyd
+copying C:\Program Files (x86)\Python38-32\python38.dll -> build\exe.win32-3.8\lib\numpy\random\python38.dll
+copying C:\Program Files (x86)\Python38-32\VCRUNTIME140.dll -> build\exe.win32-3.8\lib\numpy\random\VCRUNTIME140.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-runtime-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\random\api-ms-win-crt-runtime-l1-1-0.dll
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\_bounded_integers.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\random\_bounded_integers.cp38-win32.pyd
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-math-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\random\api-ms-win-crt-math-l1-1-0.dll
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-heap-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\random\api-ms-win-crt-heap-l1-1-0.dll
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\_common.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\random\_common.cp38-win32.pyd
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\_generator.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\random\_generator.cp38-win32.pyd
+copying C:\Program Files (x86)\Intel\UCRT\api-ms-win-crt-stdio-l1-1-0.dll -> build\exe.win32-3.8\lib\numpy\random\api-ms-win-crt-stdio-l1-1-0.dll
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\_mt19937.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\random\_mt19937.cp38-win32.pyd
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\_pcg64.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\random\_pcg64.cp38-win32.pyd
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\_philox.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\random\_philox.cp38-win32.pyd
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\_sfc64.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\random\_sfc64.cp38-win32.pyd
+copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\random\mtrand.cp38-win32.pyd -> build\exe.win32-3.8\lib\numpy\random\mtrand.cp38-win32.pyd
+copying C:\Program Files (x86)\Python38-32\DLLs\_asyncio.pyd -> build\exe.win32-3.8\lib\_asyncio.pyd
+copying C:\Program Files (x86)\Python38-32\DLLs\_bz2.pyd -> build\exe.win32-3.8\lib\_bz2.pyd
+copying C:\Program Files (x86)\Python38-32\DLLs\_ctypes.pyd -> build\exe.win32-3.8\lib\_ctypes.pyd
+copying C:\Program Files (x86)\Python38-32\DLLs\_decimal.pyd -> build\exe.win32-3.8\lib\_decimal.pyd
+copying C:\Program Files (x86)\Python38-32\DLLs\_elementtree.pyd -> build\exe.win32-3.8\lib\_elementtree.pyd
+copying C:\Program Files (x86)\Python38-32\DLLs\_hashlib.pyd -> build\exe.win32-3.8\lib\_hashlib.pyd
+copying C:\Program Files (x86)\Python38-32\DLLs\_lzma.pyd -> build\exe.win32-3.8\lib\_lzma.pyd
+copying C:\Program Files (x86)\Python38-32\DLLs\_multiprocessing.pyd -> build\exe.win32-3.8\lib\_multiprocessing.pyd
+copying C:\Program Files (x86)\Python38-32\DLLs\_overlapped.pyd -> build\exe.win32-3.8\lib\_overlapped.pyd
+copying C:\Program Files (x86)\Python38-32\DLLs\_queue.pyd -> build\exe.win32-3.8\lib\_queue.pyd
+copying C:\Program Files (x86)\Python38-32\DLLs\_socket.pyd -> build\exe.win32-3.8\lib\_socket.pyd
+copying C:\Program Files (x86)\Python38-32\DLLs\_ssl.pyd -> build\exe.win32-3.8\lib\_ssl.pyd
+copying C:\Program Files (x86)\Python38-32\DLLs\_testcapi.pyd -> build\exe.win32-3.8\lib\_testcapi.pyd
+copying C:\Program Files (x86)\Python38-32\DLLs\pyexpat.pyd -> build\exe.win32-3.8\lib\pyexpat.pyd
+copying C:\Program Files (x86)\Python38-32\DLLs\select.pyd -> build\exe.win32-3.8\lib\select.pyd
+copying C:\Program Files (x86)\Python38-32\DLLs\unicodedata.pyd -> build\exe.win32-3.8\lib\unicodedata.pyd
+copying C:\Program Files (x86)\Python38-32\DLLs\libcrypto-1_1.dll -> build\exe.win32-3.8\lib\libcrypto-1_1.dll
+copying C:\Program Files (x86)\Python38-32\DLLs\libssl-1_1.dll -> build\exe.win32-3.8\lib\libssl-1_1.dll
+copying C:\Program Files (x86)\Python38-32\DLLs\libffi-7.dll -> build\exe.win32-3.8\lib\libffi-7.dll

@@ -1,4 +1,5 @@
-/target
+/build
 /venv
 *.pyc
 *.pyo
+/tests/prototypes/build
