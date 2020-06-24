@@ -10,9 +10,9 @@ in mediump float Kd;
 
 void main()
 {
-	mediump vec4 Ka = vec4(0.35, 0.35, 0.35, 1);
-	mediump float stripe = mod((uv.x + uv.y) / 64.0, 1.0);
-	stripe = (stripe > 0.5 ? 1.0 : 0.25);
+    mediump vec4 Ka = vec4(0.35, 0.35, 0.35, 1);
+    mediump float stripe = mod((uv.x + uv.y) / 64.0, 1.0);
+    stripe = (stripe > 0.5 ? 1.0 : 0.25);
 
     outColour = stripe * vec4(colour, 1) * (Kd + Ka);
 }

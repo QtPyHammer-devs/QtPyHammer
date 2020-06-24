@@ -12,7 +12,7 @@ uniform sampler2D texture; /* Texture Atlas or Array */
 
 void main()
 {
-	mediump vec4 albedo = texture2D(texture, uv);
+    mediump vec4 albedo = texture2D(texture, uv);
 
-	outColour = albedo;
+    outColour = albedo;
 }

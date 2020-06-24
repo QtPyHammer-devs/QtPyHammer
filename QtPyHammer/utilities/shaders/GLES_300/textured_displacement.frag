@@ -14,8 +14,8 @@ uniform sampler2D blend_texture2;
 
 void main()
 {
-	mediump vec4 albedo1 = texture2D(blend_texture1, uv);
-	mediump vec4 albedo2 = texture2D(blend_texture2, uv);
-	
-	outColour = mix(albedo1, albedo2, blend);
+    mediump vec4 albedo1 = texture2D(blend_texture1, uv);
+    mediump vec4 albedo2 = texture2D(blend_texture2, uv);
+
+    outColour = mix(albedo1, albedo2, blend);
 }

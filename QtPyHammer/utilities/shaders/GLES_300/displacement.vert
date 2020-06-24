@@ -19,10 +19,10 @@ void main()
     position = vertex_position;
     normal = vertex_normal;
     uv = vec2(vertex_uv.x, -vertex_uv.y);
-	blend = blend_alpha;
+    blend = blend_alpha;
 
-	colour = mix(vec3(.15, .5, .15), vec3(.25, .25, .30), blend_alpha);
-	Kd = abs(normal.z / 3.0 + 1.0/3.0 * normal.y / 3.0 + 2.0/3.0 * normal.x / 3.0);
+    colour = mix(vec3(.0, .4, .75), vec3(.65, .0, .45), blend_alpha);
+    Kd = abs(normal.z / 3.0 + 1.0/3.0 * normal.y / 3.0 + 2.0/3.0 * normal.x / 3.0);
 
-	gl_Position = MVP_matrix * vec4(vertex_position, 1);
+    gl_Position = MVP_matrix * vec4(vertex_position, 1);
 }

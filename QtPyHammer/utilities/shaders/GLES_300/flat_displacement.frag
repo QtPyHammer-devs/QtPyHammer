@@ -11,7 +11,7 @@ in mediump float Kd;
 
 void main()
 {
-	mediump vec4 Ka = vec4(0.25, 0.25, 0.25, 1);
+    mediump vec4 Ka = vec4(0.25, 0.25, 0.25, 1);
 
-	outColour = vec4(colour, 1) * (Kd + Ka);
+    outColour = vec4(colour, 1) * (Kd + Ka);
 }

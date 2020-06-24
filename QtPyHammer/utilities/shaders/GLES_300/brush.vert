@@ -18,9 +18,9 @@ void main()
     position = vertex_position;
     normal = vertex_normal;
     uv = vec2(vertex_uv.x, -vertex_uv.y);
-	colour = editor_colour;
+    colour = editor_colour;
 
-	Kd = abs(normal.z / 3.0 + 1.0/3.0 * normal.y / 3.0 + 2.0/3.0 * normal.x / 3.0);
+    Kd = abs(normal.z / 3.0 + 1.0/3.0 * normal.y / 3.0 + 2.0/3.0 * normal.x / 3.0);
 
-	gl_Position = MVP_matrix * vec4(vertex_position, 1);
+    gl_Position = MVP_matrix * vec4(vertex_position, 1);
 }
