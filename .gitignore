@@ -1,5 +1,5 @@
-/build
-/venv
-*.pyc
-*.pyo
-/tests/prototypes/build
+venv/
+*/__pycache__/
+*.py[cdo]
+QtPyHammer/build
+tests/prototypes/build
