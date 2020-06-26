@@ -25,8 +25,6 @@ class manager:
 
         self.buffer_update_queue = []
         # ^ buffer, start, length, data
-        self.mappings_update_queue = []
-        # ^ type, ids, lengths
 
         self.vertex_buffer_size = self.memory_limit // 2
         self.index_buffer_size = self.memory_limit // 2
