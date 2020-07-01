@@ -3,12 +3,12 @@ from enum import Enum
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from . import viewport # ui.viewport
 # sibling package imports
 import os, sys
 current_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
 sys.path.append(os.path.join(current_dir, "../"))
 import ops # ops.vmf & ops.timeline
+from ui import viewport
 # from utilities import entity # for loading & creating entities
 from utilities import render
 from utilities import solid
@@ -25,7 +25,7 @@ class selection_mode(Enum):
 
 class Workspace(QtWidgets.QWidget):
     """Holds the .vmf data and viewport(s)"""
-    def __init__(self, vmf_path, parent):
+    def __init__(self, vmf_path, parent=None):
         super(Workspace, self).__init__(parent)
         self.viewport = viewport.MapViewport3D(self)
         # self.viewport.setViewMode.connect(...)

@@ -1,11 +1,15 @@
 from PyQt5 import QtWidgets
 
-from . import vmf
+import os, sys
+current_dir = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(current_dir)
+import vmf
 
 def open_vmf():
-    vmf_browser = QtWidgets.QFileDialog() # cannot define widgets until after QApplication in main.py
-    vmf_browser.setDirectory("F:/Modding/tf2 maps/") # default map directory
-    vmf_browser.setDefaultSuffix("vmf") # for saving
+    vmf_browser = QtWidgets.QFileDialog()
+    mapsrc_dir = os.path.join(current_dir, "../../test_maps/")
+    vmf_browser.setDirectory(mapsrc_dir)
+    vmf_browser.setDefaultSuffix("vmf")
     vmf_path, ext = vmf_browser.getOpenFileName(filter="Valve Map Format (*.vmf)")
     if vmf_path == "": # no file was selected
         return False

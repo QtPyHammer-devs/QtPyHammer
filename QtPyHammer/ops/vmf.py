@@ -1,8 +1,10 @@
 """Interface for editing .vmf files and updating the associated edit timeline"""
 import sys
 
-sys.path.insert(0, "../") # sibling packages
-# import ops.timeline as timeline
+import os, sys
+current_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
+sys.path.append(os.path.join(current_dir, "../"))
+# from ops import timeline
 # from utilities import entity
 from utilities import solid
 from utilities.vmf import parse_lines, lines_from
