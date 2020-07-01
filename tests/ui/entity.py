@@ -2,7 +2,7 @@ import sys
 
 from PyQt5 import QtWidgets
 
-sys.path.insert("../../src/main/python/ui")
+sys.path.append("../../src/main/python/ui")
 import entity
 
 

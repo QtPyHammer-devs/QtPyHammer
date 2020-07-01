@@ -1,12 +1,14 @@
 import math
-import sys
 
 import numpy as np
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-sys.path.insert(0, "../")
+# sibling package imports
+import os, sys
+current_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
+sys.path.append(os.path.join(current_dir, "../"))
 from utilities import camera, render, vector
 
 
@@ -25,7 +27,7 @@ view_modes = ["flat", "textured", "wireframe"]
 
 class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
     raycast = QtCore.pyqtSignal(vector.vec3, vector.vec3) # emits ray
-    def __init__(self, parent, fps=60):
+    def __init__(self, parent=None, fps=60):
         super(MapViewport3D, self).__init__(parent=parent)
         # RENDERING
         self.render_manager = render.manager()

@@ -1,7 +1,7 @@
 import itertools
 import textwrap
 
-import fgdtools
+import fgdtools # will be loaded by utilities.entity when it exists
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 

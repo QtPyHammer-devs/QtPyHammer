@@ -1,13 +1,15 @@
 """QtPyHammer Workspace that holds and manages an open .vmf file"""
 from enum import Enum
-import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from . import viewport # ui.viewport
-sys.path.insert(0, "../")
+# sibling package imports
+import os, sys
+current_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
+sys.path.append(os.path.join(current_dir, "../"))
 import ops # ops.vmf & ops.timeline
-# from utilities import entity
+# from utilities import entity # for loading & creating entities
 from utilities import render
 from utilities import solid
 from utilities import vector
