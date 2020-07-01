@@ -3,7 +3,7 @@ import sys
 
 from PyQt5 import QtCore, QtWidgets
 
-sys.path.insert(0, "../src/main/python")
+sys.path.insert(0, "../../QtPyHammer")
 from ui import viewport
 
 
