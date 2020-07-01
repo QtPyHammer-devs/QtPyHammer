@@ -66,7 +66,7 @@ class manager:
             current_dir = os.path.dirname(os.path.realpath(__file__)) + "/.."
         shader_folder = f"{current_dir}/shaders/{self.shader_version}/"
         compile_shader = lambda f, t: compileShader(open(shader_folder + f, "rb"), t)
-        vert_brush =  compile_shader("brush.vert", GL_VERTEX_SHADER)
+        vert_brush = compile_shader("brush.vert", GL_VERTEX_SHADER)
         vert_displacement = compile_shader("displacement.vert", GL_VERTEX_SHADER)
         frag_flat_brush = compile_shader("flat_brush.frag", GL_FRAGMENT_SHADER)
         frag_flat_displacement = compile_shader("flat_displacement.frag", GL_FRAGMENT_SHADER)
