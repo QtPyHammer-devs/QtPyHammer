@@ -114,7 +114,7 @@ if __name__ == '__main__':
                 (-1, 1, -1), (1, 1, -1), (1, -1, -1), (-1, -1, -1)]
     indices = [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7]
 
-    TEST = "SDL"
+    TEST = "QT"
 
     if TEST == "QT":
         import sys
