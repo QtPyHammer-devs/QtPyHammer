@@ -8,7 +8,7 @@ from OpenGL.GL import *
 from OpenGL.GL.shaders import compileShader, compileProgram
 from PyQt5 import QtCore, QtWidgets
 
-local_path = os.abspath(__file__)
+local_path = os.path.abspath(__file__)
 sys.path.append(local_path + "../../QtPyHammer/")
 from utilities import render
 from utilities import solid

@@ -2,7 +2,7 @@ import os
 import sys
 import unittest
 
-local_path =  os.abspath(__file__)
+local_path =  os.path.abspath(__file__)
 sys.path.insert(0, local_path + "../../src/main/python/")
 from utilities import solid
 
