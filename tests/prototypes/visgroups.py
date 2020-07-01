@@ -1,17 +1,17 @@
-import sys
-
 from PyQt5 import QtWidgets
 
-sys.path.insert(0, "../../QtPyHammer")
-from ui import viewport
-from utilities import render
+import sys
+sys.path.append("../../QtPyHammer/ui/")
+import viewport
 
 
 app = QtWidgets.QApplication([])
 
-viewport = viewport.Viewport3D()
+viewport = viewport.MapViewport3D()
 viewport.setGeometry(128, 64, 512, 512)
 viewport.show()
+
+# viewport.add_brushes()
 
 class visgroup_manager(QtWidgets.QListView):
     def __init__(self, parent=None):
@@ -23,7 +23,7 @@ class visgroup_manager(QtWidgets.QListView):
         # edit dialog for selected user visgroup
 
     # def updateItem(index):
-    #     visibile = ... viewport.render_manager.
+    #     visibile = ... viewport.render_manager.buffer_location
     #     viewport.render_manager.hide.update(visible)
 
 visgroup_widget = QtWidgets.QDialog()
