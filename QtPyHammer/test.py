@@ -1,3 +1,4 @@
+import os
 import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -10,10 +11,10 @@ def except_hook(cls, exception, traceback): # for debugging Qt slots
     
 sys.excepthook = except_hook
 app = QtWidgets.QApplication(sys.argv)
-# load user config(s)
-# read .fgd(s) for entity_data
-# prepare .vpks (grab directories)
-# mount & tag custom data (check the gameinfo.txt for paths, accept others)
+# TEST CODE
 window = ui.core.MainWindow()
 window.showMaximized()
+current_dir = dir_path = os.path.dirname(os.path.realpath(__file__)) + "/"
+window.new_tab(current_dir + "../test_maps/pl_upward_d.vmf")
+# END TEST CODE
 sys.exit(app.exec_())
