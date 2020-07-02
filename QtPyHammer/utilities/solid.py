@@ -1,7 +1,8 @@
 import itertools
 import re
 
-from . import vector, vmf
+from . import vector
+from . import vmf
 
 
 def triangle_of(string):

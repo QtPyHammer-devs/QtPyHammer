@@ -5,11 +5,9 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-# sibling package imports
-import os, sys
-current_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
-sys.path.append(os.path.join(current_dir, "../"))
-from utilities import camera, render, vector
+from ..utilities import camera
+from ..utilities import render
+from ..utilities import vector
 
 
 # arrow keys aren't registering? why? do we need a separate function?
