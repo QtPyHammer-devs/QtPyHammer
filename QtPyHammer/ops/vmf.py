@@ -1,7 +1,7 @@
 """Interface for editing .vmf files and updating the associated edit timeline"""
 # from ..ops import timeline
 # from ..utilities import entity
-from ..utilities import solid
+from ..utilities.solid import solid
 from ..utilities.vmf import parse_lines, lines_from
 
 
@@ -26,19 +26,26 @@ class VmfInterface:
             source_entities = [self.source_vmf.entity]
         elif hasattr(self.source_vmf, "entities"):
             source_entities.extend(self.source_vmf.entities)
+        self.brush_entities = []
         for entity in source_entities:
             if hasattr(entity, "solid"): # brush entity
                 if hasattr(entity.solid, "id"):
                     source_brushes.append(entity.solid)
+                    tag = (entity.classname, int(entity.id), int(entity.solid.id))
+                    self.brush_entities.append(tag)
             elif hasattr(entity, "solids"): # multi-brush entity
                 if hasattr(entity.solids[0], "id"):
                     # ^ some entities may have both a "solid" flag & an embedded brush
                     # -- not checking this here, may be an issue later
                     source_brushes.extend(entity.solids)
+                    for s in entity.solids:
+                        tag = (entity.classname, int(entity.id), int(s.id))
+                        self.brush_entities.append(tag)
+        print(self.brush_entities)
         qph_brushes = []
         for i, source_brush in enumerate(source_brushes):
             try:
-                qph_brush = solid.solid(source_brush)
+                qph_brush = solid(source_brush)
                 qph_brushes.append(qph_brush)
             except Exception as exc:
                 self.log.append(f"Solid #{i} id: {source_brush.id} is invalid.\n{exc}")
