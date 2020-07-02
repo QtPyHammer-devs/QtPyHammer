@@ -9,10 +9,10 @@ def except_hook(cls, exception, traceback): # for debugging Qt slots
     sys.__excepthook__(cls, exception, traceback)
     
 sys.excepthook = except_hook
-app = QtWidgets.QApplication(sys.argv)
+app = QtWidgets.QApplication([])
 # TEST CODE
 window = MainWindow()
 window.showMaximized()
-window.new_tab("test_maps/pl_upward_d.vmf")
+window.new_tab(f"test_maps/{sys.argv[1]}.vmf")
 # END TEST CODE
 sys.exit(app.exec_())
