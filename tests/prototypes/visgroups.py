@@ -11,31 +11,62 @@ viewport = VmfTab("../../test_maps/test2.vmf")
 viewport.setGeometry(128, 64, 512, 512)
 viewport.show()
 
-class visgroup_manager(QtWidgets.QTreeWidget):
-    # QTreeView gives a collapsable view of a Model
-    # want each entry to be a QCheckBox
-    # model should do the indentation
-    def __init__(self, parent=None):
-        super(visgroup_manager, self).__init__(parent)
+class visgroup_item(QtWidgets.QTreeWidgetItem):
+    def __init__(self, name):
+        # want to represent each entry with a QCheckBox
+        # each will also have a connection based on state
+        super(visgroup_item, self).__init__([name], 0)
+
+    def addChild(self, name):
+        super(visgroup_item, self).addChild(visgroup_item(name))
+
+    def addChildren(self, *names):
+        children = [visgroup_item(n) for n in names]
+        super(visgroup_item, self).addChildren(children)
+        
+
+class auto_visgroup_manager(QtWidgets.QTreeWidget): # QTreeView
+    def __init__(self, parent=None): # workspace to link to
+        super(auto_visgroup_manager, self).__init__(parent)
+        self.setHeaderHidden(True)
+        # AUTO VISGROUPS TREE
+        world = visgroup_item("World Geometry")
+        world.addChild("Displacements")
+        world.addChild("Skybox")
+        world.addChild("Entities")
+        entities = world.child(2)
+        entities.addChildren("Point Entities", "Brush Entities", "Triggers")
+        world.addChild("World Detail")
+        detail = world.child(3)
+        detail.addChildren("Props", "func_detail")
+        
+        self.addTopLevelItem(world)
+        world.setExpanded(True)
+        world.child(2).setExpanded(True)
+        world.child(3).setExpanded(True)
+
         # self._model = QtWidgets.QAbstractItemModel()
         # # ^ subclass which models a viewport's render_manager's visibles
         # # -- via the workspace tab's vmf object
         # self.setModel(self._model)
-        # generate auto visgroups from viewport.render_manager
-        # update functions as getters?
-        # dynamic user visgroups?
+
+        # connect auto visgroups to viewport.render_manager
+        # updates to the model affect the render_manager via functions that
+        # -- apply the filters
+        # TODO: track hidden by selection and hidden by visgroup separately
+        # BONUS:
+        # -- dynamic user collection / visgroups; filtered by region & material
 
         # have an edit dialog for selected user visgroup
-
-        # QtWidgets.QCheckBox(label)
 
 visgroup_widget = QtWidgets.QDialog()
 layout = QtWidgets.QVBoxLayout()
 layout.setContentsMargins(0, 0, 0, 0)
 visgroup_widget.setLayout(layout)
 visgroup_widget.layout().addWidget(QtWidgets.QTabWidget())
-visgroup_widget.layout().itemAt(0).widget().addTab(visgroup_manager(), "Auto")
-visgroup_widget.layout().itemAt(0).widget().addTab(visgroup_manager(), "User")
+tab_manager = visgroup_widget.layout().itemAt(0).widget()
+tab_manager.addTab(auto_visgroup_manager(), "Auto")
+tab_manager.addTab(QtWidgets.QWidget(), "User")
 visgroup_widget.setGeometry(64 + 128 + 512, 64 + 128, 192, 256)
 visgroup_widget.show()
 
