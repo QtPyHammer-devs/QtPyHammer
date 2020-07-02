@@ -96,7 +96,9 @@ class browser(QtWidgets.QDialog):
     def load_entity(self, index): # ADD SmartEdit toggle & tooltips
         entity = self.entities[index]
         self.current_entity = entity
-        self.entity_label = QtWidgets.QLabel(self.current_entity.name) # also entity's name property (if it has one), or "Unnamed"
+        self.entity_label = QtWidgets.QLabel(self.current_entity.name)
+        # ^ f"{entitiy.name} {'- ' + selection's targetname (if != '')}"
+        # TODO: change comments tab's label to ^
         try: # remove logic & flags tabs (if used)
             self.removeTab(2)
             self.removeTab(2)
