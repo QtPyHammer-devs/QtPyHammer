@@ -41,10 +41,16 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.mouse_vector = vector.vec2()
         self.setFocusPolicy(QtCore.Qt.ClickFocus) # get mouse inputs
         # ^ user must click on viewport
-        # REFRESH RATE
-        self.fps = fps
+        # REFRESH TIMER
         self.dt = 1 / fps # will desynchronise, use time.time()
         self.timer = QtCore.QTimer()
+        self.timer.setInterval(1000 / fps)
+        self.timer.timeout.connect(self.update)
+        # TODO: in ui.core.MainWindow.tab_master:
+        # this viewport isn't visible: timer.stop()
+        # this viewport is visible again: timer.start()
+        # perhaps even use one timer for all viewports
+        # -- dynamically connect / disconnect the timer
 
     def update(self): # called on timer once initializeGL is run
         # UPDATE CAMERA
@@ -65,8 +71,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
     def initializeGL(self):
         self.render_manager.init_GL()
         self.set_view_mode("flat") # sets shaders & GL state
-        self.timer.timeout.connect(self.update)
-        self.timer.start(1000 / self.fps) # call PaintGL
+        self.timer.start()
 
     # calling the slot by it's name creates a QVariant Error
     # which for some reason does not trace correctly
@@ -194,8 +199,8 @@ class MapViewport2D(QtWidgets.QOpenGLWidget): # QtWidgets.QGraphicsView ?
     def __init__(self, fps=30, parent=None):
         self.fps = fps
         self.timer = QtCore.QTimer()
+        self.timer.setInterval(1000 / fps)
         self.timer.timeout.connect(self.update)
-        self.timer.start(1000 / fps)
         self.dt = 1 / fps # time elapsed for update() (camera.velocity *= dt)
         # ^ will desynchronise, use time.time()
         self.camera = camera.freecam(None, None, 128)
