@@ -106,9 +106,8 @@ class MainWindow(QtWidgets.QMainWindow):
 ##        self.actions["Tools>Ungroup"].triggered.connect(
         tools_menu.addSeparator()
         self.actions["Tools>Brush to Entity"] = tools_menu.addAction("&Tie to Entitiy")
-##        ent_browser = entity.browser(self)
-##        self.actions["Tools>Brush to Entity"].triggered.connect(ent_browser.exec)
-        self.actions["Tools>Brush to Entity"].setEnabled(False)
+        ent_browser = entity.browser(self)
+        self.actions["Tools>Brush to Entity"].triggered.connect(ent_browser.exec)
         # ent_browser.exec demands attention before closing
         # we want the dialog to stay in front, but also to be able to ignore it
         # otherwise we can't use the viewport(s) with it open

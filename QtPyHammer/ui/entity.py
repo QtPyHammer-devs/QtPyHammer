@@ -1,8 +1,11 @@
 import itertools
+import os
 import textwrap
 
-import fgdtools # will be loaded by utilities.entity when it exists
+import fgdtools
 from PyQt5 import QtCore, QtGui, QtWidgets
+
+# from .. import utilities.entity
 
 
 class browser(QtWidgets.QDialog):
@@ -15,17 +18,21 @@ class browser(QtWidgets.QDialog):
         # center with:
         # self.setGeometry(QStyle.alignedRect(QtCore.Qt.LefttoRight, QtCore.Qt.AlignCenter, self.size(), parent.parent.desktop().availableGeometry()))
 
-        tf_fgd = fgdtools.parser.FgdParse("../../test_fgds/tf.fgd") # get fgd(s) from user config(s)
-        all_entities = list(itertools.chain(tf_fgd.entities, *[fgd.entities for fgd in tf_fgd.includes]))
+        fgd_dir = os.path.join(os.path.dirname(__file__), "../../test_fgds/")
+        # ^ get fgd(s) file locations from user config(s)
+        tf_fgd = fgdtools.parser.FgdParse(os.path.join(fgd_dir, "tf.fgd"))
+        all_entities = list(tf_fgd.entities)
+        for fgd in tf_fgd.includes:
+            all_entities.extend(fgd.entities)
         point_or_solid = lambda e: e.class_type in ("PointClass", "SolidClass")
-        entities = list(filter(point_or_solid, tf_fgd.entities))
-        self.entities = sorted(entities, key=lambda e: e.name)
-        # ^ sorted alphabetically
-        # set default entity from config(s)
-        default_entity = self.entities.index(tf_fgd.entity_by_name("prop_dynamic"))
+        filtered_entities = list(filter(point_or_solid, all_entities))
+        self.entities = sorted(filtered_entities, key=lambda e: e.name)
+        default_entity = "prop_dynamic" # set in config(s)
         # test prop_dynamic for flags and logic
         # test team_control_point for more field types
-        self.current_entity = self.entities[default_entity]
+        entity_names = [e.name for e in self.entities]
+        self.current_index = entity_names.index(default_entity)
+        self.current_entity = self.entities[self.current_index]
 
         self.base_widget = QtWidgets.QTabWidget()
         base_layout = QtWidgets.QVBoxLayout()
@@ -48,7 +55,7 @@ class browser(QtWidgets.QDialog):
         layout = QtWidgets.QVBoxLayout()
         ent_select = QtWidgets.QComboBox()
         ent_select.addItems([e.name for e in self.entities])
-        ent_select.setCurrentIndex(default_entity)
+        ent_select.setCurrentIndex(self.current_index)
         ent_select.currentIndexChanged.connect(self.load_entity)
         ent_select_layout = QtWidgets.QHBoxLayout()
         ent_select_layout.addWidget(ent_select)
@@ -56,16 +63,17 @@ class browser(QtWidgets.QDialog):
         ent_select_layout.addWidget(QtWidgets.QPushButton("Paste"))
         self.smart_edit = QtWidgets.QPushButton("SmartEdit")
         self.smart_edit.setCheckable(True)
+        self.smart_edit.setChecked(True)
         self.ent_form_map = {} # row: (name, display_name)
-        def switch_keyvals():
+        def toggle_smart_edit():
             form = self.table.widget().layout()
             smartedit_on = self.smart_edit.isChecked()
             for row_index, names in self.ent_form_map.items():
                 name, display_name = names
-                other_name = name if smartedit_on else display_name
+                other_name = display_name if smartedit_on else name
                 label = form.itemAt(row_index, QtWidgets.QFormLayout.LabelRole)
                 label.widget().setText(other_name)
-        self.smart_edit.clicked.connect(switch_keyvals)
+        self.smart_edit.clicked.connect(toggle_smart_edit)
         ent_select_layout.addWidget(self.smart_edit)
         ent_select_layout.setStretch(0, 2)
         layout.insertLayout(0, ent_select_layout)
@@ -84,9 +92,6 @@ class browser(QtWidgets.QDialog):
         layout.addWidget(QtWidgets.QTextEdit()) # filter for .vmf breaking characters
         comments_tab.setLayout(layout)
         self.base_widget.addTab(comments_tab, "Comments")
-
-        self.load_entity(default_entity)
-
 
     def load_entity(self, index): # ADD SmartEdit toggle & tooltips
         entity = self.entities[index]
@@ -149,8 +154,7 @@ class browser(QtWidgets.QDialog):
                 # selector. ??? .connect(highlight_row(i))
             else:
                 selector = QtWidgets.QLineEdit(str(p.default_value))
-
-            field_name = p.name if self.smart_edit.isChecked() else p.display_name
+            field_name = p.display_name if self.smart_edit.isChecked() else p.name
             field_label = QtWidgets.QLabel("<{}>".format(p.value_type) + field_name)
             if isinstance(p.description, str):
                 description = textwrap.fill(p.description, width=40)
