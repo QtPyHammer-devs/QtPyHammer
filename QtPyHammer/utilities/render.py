@@ -416,12 +416,14 @@ def remove_span(span_list, span):
         if start <= S < E <= end: # span ecclipses (S, L)
             continue
         else:
-            if S < start: # span overlaps start of (S, L)
-                new_end = min([E, start])
-                out.append((S, new_end - S))
-            if E < end: # span overlaps tail of (S, L)
+            if S <= start: # span overlaps start of (S, L)
                 new_start = max([S, end])
                 out.append((new_start, E - new_start))
+            elif E <= end: # span overlaps tail of (S, L)
+                new_end = min([E, start])
+                out.append((S, new_end - S))
+            else:
+                out.append((S, L))
     return out
 
 # DRAWING FUNCTIONS

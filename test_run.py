@@ -7,8 +7,8 @@ from QtPyHammer.ui.core import MainWindow
 
 def except_hook(cls, exception, traceback): # for debugging Qt slots
     sys.__excepthook__(cls, exception, traceback)
-    
 sys.excepthook = except_hook
+
 app = QtWidgets.QApplication([])
 # TEST CODE
 window = MainWindow()

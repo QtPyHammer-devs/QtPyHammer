@@ -6,6 +6,11 @@ from QtPyHammer.ui.workspace import VmfTab
 from QtPyHammer.utilities import render
 
 
+def except_hook(cls, exception, traceback): # for debugging Qt slots
+    sys.__excepthook__(cls, exception, traceback)
+sys.excepthook = except_hook
+
+
 app = QtWidgets.QApplication([])
 
 workspace = VmfTab("../../test_maps/test2.vmf")
