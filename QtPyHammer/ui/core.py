@@ -1,7 +1,6 @@
 """QtPyHammer MainWindow class & other core ui classes"""
 import os
 import re
-import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import numpy as np
@@ -9,12 +8,13 @@ from OpenGL.GL import *
 from OpenGL.GL.shaders import compileShader, compileProgram
 from OpenGL.GLU import *
 
-from . import entity, tabs, viewport # ui
-sys.path.insert(0, "../") # sibling packages
-import ops # connects buttons to functions
+from ..ui import entity
+from ..ui import viewport
+from ..ui import workspace
+from .. import ops
 
 
-current_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
+current_dir = os.path.dirname(os.path.realpath(__file__))
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -106,12 +106,12 @@ class MainWindow(QtWidgets.QMainWindow):
 ##        self.actions["Tools>Ungroup"].triggered.connect(
         tools_menu.addSeparator()
         self.actions["Tools>Brush to Entity"] = tools_menu.addAction("&Tie to Entitiy")
-##        self.actions["Tools>Brush to Entity"].setEnabled(False)
 ##        ent_browser = entity.browser(self)
 ##        self.actions["Tools>Brush to Entity"].triggered.connect(ent_browser.exec)
-        # exec demands attention before closing
+        self.actions["Tools>Brush to Entity"].setEnabled(False)
+        # ent_browser.exec demands attention before closing
         # we want the dialog to stay in front, but also to be able to ignore it
-        # otherwise we can't select in 3D with it open
+        # otherwise we can't use the viewport(s) with it open
         self.actions["Tools>Entity to Brush"] = tools_menu.addAction("&Move to World")
         self.actions["Tools>Entity to Brush"].setEnabled(False)
 ##        self.actions["Tools>Entity to Brush"].triggered.connect(
@@ -278,7 +278,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # load hotkeys config (change to QSettings)
         global current_dir
-        hotkeys_config = open(current_dir + "../configs/core_binds.txt")
+        hotkeys_config = open(os.path.join(current_dir, "../configs/core_binds.txt"))
         for line_no, line in enumerate(hotkeys_config.readlines()):
             line = line.rstrip("\r\n")
             if line == "":
@@ -328,8 +328,8 @@ class MainWindow(QtWidgets.QMainWindow):
         elif vmf_path == None: # new file
             filename = "untitled"
             global current_dir
-            vmf_path = current_dir + "../configs/blank.vmf"
+            vmf_path = os.path.join(current_dir, "../configs/blank.vmf")
         else: # load the requested file (vmf_path) into a new tab
             filename = os.path.basename(vmf_path)
-        tab = tabs.Workspace(vmf_path, parent=self)
+        tab = workspace.VmfTab(vmf_path, parent=self)
         self.tab_master.addTab(tab, filename)

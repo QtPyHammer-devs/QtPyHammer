@@ -1,20 +1,16 @@
 """Interface for editing .vmf files and updating the associated edit timeline"""
-import sys
-
-import os, sys
-current_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
-sys.path.append(os.path.join(current_dir, "../"))
-# from ops import timeline
-# from utilities import entity
-from utilities import solid
-from utilities.vmf import parse_lines, lines_from
+# from ..ops import timeline
+# from ..utilities import entity
+from ..utilities import solid
+from ..utilities.vmf import parse_lines, lines_from
 
 
-class interface:
+class VmfInterface:
     def __init__(self, parent, vmf_file):
         self.parent = parent # to update the MapTab's render manager
         self.log = []
         self.source_vmf = parse_lines(vmf_file.readlines())
+        # self.edit_timeline = timeline()
         # the following should be editable from a QDialog
         self.skybox = self.source_vmf.world.skyname
         self.detail_material = self.source_vmf.world.detailmaterial

@@ -2,7 +2,7 @@ import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-import ui.core
+from QtPyHammer.ui.core import MainWindow
 
 
 def except_hook(cls, exception, traceback): # for debugging Qt slots
@@ -14,6 +14,6 @@ app = QtWidgets.QApplication(sys.argv)
 # read .fgd(s) for entity_data
 # prepare .vpks (grab directories)
 # mount & tag custom data (check the gameinfo.txt for paths, accept others)
-window = ui.core.MainWindow()
+window = MainWindow()
 window.showMaximized()
 sys.exit(app.exec_())

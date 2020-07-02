@@ -1,17 +1,15 @@
 from PyQt5 import QtWidgets
 
 import sys
-sys.path.append("../../QtPyHammer/ui/")
-import tabs
+sys.path.append("../../")
+from QtPyHammer.ui.workspace import VmfTab
 
 
 app = QtWidgets.QApplication([])
 
-viewport = tabs.Workspace("../../test_maps/test2.vmf")
+viewport = VmfTab("../../test_maps/test2.vmf")
 viewport.setGeometry(128, 64, 512, 512)
 viewport.show()
-
-# viewport.add_brushes()
 
 class visgroup_manager(QtWidgets.QTreeWidget):
     # QTreeView gives a collapsable view of a Model
@@ -27,7 +25,7 @@ class visgroup_manager(QtWidgets.QTreeWidget):
         # update functions as getters?
         # dynamic user visgroups?
 
-        # have a child edit dialog for selected user visgroup
+        # have an edit dialog for selected user visgroup
 
         # QtWidgets.QCheckBox(label)
 

@@ -1,9 +1,11 @@
+import os
+
 from PyQt5 import QtWidgets
 
-import os, sys
+from . import vmf
+
+
 current_dir = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(current_dir)
-import vmf
 
 def open_vmf():
     vmf_browser = QtWidgets.QFileDialog()
@@ -13,4 +15,5 @@ def open_vmf():
     vmf_path, ext = vmf_browser.getOpenFileName(filter="Valve Map Format (*.vmf)")
     if vmf_path == "": # no file was selected
         return False
-    return vmf_path
+    else:
+        return vmf_path

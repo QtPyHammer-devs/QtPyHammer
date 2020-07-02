@@ -3,17 +3,14 @@ from enum import Enum
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-# sibling package imports
-import os, sys
-current_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
-sys.path.append(os.path.join(current_dir, "../"))
-import ops # ops.vmf & ops.timeline
-from ui import viewport
-# from utilities import entity # for loading & creating entities
-from utilities import render
-from utilities import solid
-from utilities import vector
-from utilities import vmf
+from . import viewport
+from ..ops.vmf import VmfInterface
+# from ..ops import timeline
+# from ..utilities import entity
+from ..utilities import render
+from ..utilities import solid
+from ..utilities import vector
+from ..utilities import vmf
 
 
 class selection_mode(Enum):
@@ -23,13 +20,13 @@ class selection_mode(Enum):
     face = 3
 
 
-class Workspace(QtWidgets.QWidget):
+class VmfTab(QtWidgets.QWidget):
     """Holds the .vmf data and viewport(s)"""
     def __init__(self, vmf_path, parent=None):
-        super(Workspace, self).__init__(parent)
+        super(VmfTab, self).__init__(parent)
         self.viewport = viewport.MapViewport3D(self)
         # self.viewport.setViewMode.connect(...)
-        self.vmf = ops.vmf.interface(self, open(vmf_path))
+        self.vmf = VmfInterface(self, open(vmf_path))
         layout = QtWidgets.QVBoxLayout() # holds the viewport
         # ^ QSplitter(s) will be used for quad viewports
         layout.addWidget(self.viewport)
@@ -68,4 +65,4 @@ class Workspace(QtWidgets.QWidget):
 
     def close(self):
         # release used memory eg. self.viewport.render_manager buffers
-        super(Workspace, self).close()
+        super(VmfTab, self).close()
