@@ -44,8 +44,8 @@ class manager:
         # span = (start, length)
         # -- what if key = (renderable_type, [(func, *args)], [(func, *args)])
         # -- ^ namedtuple("key", ["renderable_type", "setup", "tear_down"])
-        self.hidden = {"brush": [], "displacement": [], "model": []}
-        # ^ type: (start, length)
+        self.hidden = {"brush": set(), "displacement": set(), "model": set()}
+        # ^ type: {renderable_id, ...}
         # -- hidden by user, not visgroups
 
     def init_GL(self):
@@ -136,48 +136,18 @@ class manager:
         
 
     def track_span(self, buffer, renderable_type, span_to_track):
-        start, length = span_to_track
-        end = start + length
         target = self.buffer_allocation_map[buffer][renderable_type]
-        if len(target) == 0:
-            self.buffer_allocation_map[buffer][renderable_type] = [span_to_track]
-            return
-        for i, span in enumerate(target):
-            S, L = span
-            E = S + L
-            if S < end and E < start:
-                continue # (S, L) is before span_to_track and doesn't touch it
-            elif S == end: # span_to_track leads (S, L)
-                old = target.pop(i)
-                target.insert(i, (S, L + length))
-            elif E == start: # span_to_track tails (S, L)
-                S, L = target.pop(i)
-                target.insert(i, (S, L + length))
-            elif S > end:
-                break # past the end of span_to_track [we're done!]
+        updated_map = add_span(target, span_to_track)
+        self.buffer_allocation_map[buffer][renderable_type] = updated_map
 
     def untrack_span(self, buffer, renderable_type, span_to_untrack):
-        # need to do something similar to hide renderables
-        r_start, r_length = span_to_remove # span_to_remove is R
-        r_end = r_start + r_length
-        out = [] # all spans which do not intersect R
-        for start, length in spans: # current span
-            end = start + length # current end
-            if r_start <= start < end <= r_end:
-                continue # R eclipses current span
-            else:
-                if start < r_start:
-                    new_end = min([end, r_start])
-                    out.append((start, new_end - start)) # segment before R
-                if r_end < end:
-                    new_start = max([start, r_end])
-                    out.append((new_start, end - new_start)) # segment after R
-        return out
+        target = self.buffer_allocation_map[buffer][renderable_type]
+        updated_map = remove_span(target, span_to_track)
+        self.buffer_allocation_map[buffer][renderable_type] = updated_map
 
     def update_mapping(self, buffer, renderable_type, start, ids, lengths):
         span = (start, sum(lengths))
         self.track_span(buffer, renderable_type, span)
-        # ^ add span to self.buffer_allocation_map
         for renderable_id, length in zip(ids, lengths):
             renderable = (renderable_type, renderable_id)
             if renderable not in self.buffer_location:
@@ -415,6 +385,44 @@ def square_neighbours(x, y, edge_length): # edge_length = (2^power) + 1
                 if j >= 0 and j < edge_length:
                     if not (i != x and j != y):
                         yield i * edge_length + j
+
+def add_span(span_list, span):
+    if len(span_list) == 0:
+        return [span]
+    start, length = span
+    end = start + length
+    for i, span in enumerate(span_list):
+        S, L = span
+        E = S + L
+        if S < end and E < start:
+            continue # (S, L) is before span_to_track and doesn't touch it
+        elif S == end or E == start: # span leads (S, L) or span tails (S, L)
+            span_list.pop(i)
+            span_list.insert(i, (S, L + length))
+            break
+        elif S > end: # span leads (S, L) & does not touch it
+            span_list.insert(i, (start, length))
+            break
+    else:
+        span_list.append((start, length))
+    return span_list
+
+def remove_span(span_list, span):
+    start, length = span
+    end = start + length
+    out = []
+    for S, L in span_list:
+        E = S + L
+        if start <= S < E <= end: # span ecclipses (S, L)
+            continue
+        else:
+            if S < start: # span overlaps start of (S, L)
+                new_end = min([E, start])
+                out.append((S, new_end - S))
+            if E < end: # span overlaps tail of (S, L)
+                new_start = max([S, end])
+                out.append((new_start, E - new_start))
+    return out
 
 # DRAWING FUNCTIONS
 def yield_grid(limit, step): # "step" = Grid Scale (MainWindow action)
