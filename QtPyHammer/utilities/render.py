@@ -200,14 +200,13 @@ class manager:
         brush_data = dict()
         displacement_data = dict()
         for brush in brushes:
+            brush_data[brush.id] = brush_buffer_data(brush)
             if brush.is_displacement:
                 for face in brush.faces:
                     if not hasattr(face, "displacement"):
                         continue
                     data = displacement_buffer_data(face)
-                    displacement_data[(brush.id, face.id)] = data
-            else: # show brush if not a displacement
-                brush_data[brush.id] = brush_buffer_data(brush)
+                    displacement_data[(brush.id, face.id)] = data 
         self.add_renderables("brush", brush_data)
         self.add_renderables("displacement", displacement_data)
 
