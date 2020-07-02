@@ -3,13 +3,29 @@ from PyQt5 import QtWidgets
 import sys
 sys.path.append("../../")
 from QtPyHammer.ui.workspace import VmfTab
+from QtPyHammer.utilities import render
 
 
 app = QtWidgets.QApplication([])
 
-viewport = VmfTab("../../test_maps/test2.vmf")
-viewport.setGeometry(128, 64, 512, 512)
-viewport.show()
+workspace = VmfTab("../../test_maps/test2.vmf")
+workspace.setGeometry(128, 64, 512, 512)
+workspace.show()
+
+def hide_brush(render_manager, brush_id):
+    span = render_manager.buffer_location[("brush", brush_id)]["index"]
+    span_list = render_manager.draw_calls["brush"]
+    render_manager.draw_calls["brush"] = render.remove_span(span_list, span)
+    render_manager.hidden["brush"].add(brush_id)
+
+def show_brush(render_manager, brush_id):
+    span = render_manager.buffer_location[("brush", brush_id)]["index"]
+    span_list = render_manager.draw_calls["brush"]
+    render_manager.draw_calls["brush"] = render.add_span(span_list, span)
+    render_manager.hidden["brush"].discard(brush_id)
+
+hide_brush(workspace.viewport.render_manager, 2)
+
 
 class visgroup_item(QtWidgets.QTreeWidgetItem):
     def __init__(self, name):
