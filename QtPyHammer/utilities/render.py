@@ -21,8 +21,7 @@ class manager:
         MB = 10 ** 6
         GB = 10 ** 9
         self.memory_limit = 128 * MB # defined in settings
-        # ^ can't check the physical device limit until after init_GL is called
-
+        # ^ can't check the physical device limit until AFTER init_GL is called
         self.buffer_update_queue = []
         # ^ buffer, start, length, data
 
@@ -33,7 +32,6 @@ class manager:
         #                "index":  (start, length)}
         # renderable = {"type": "brush", "id": brush.id}
         # -- OR {"type": "displacement", "id": (brush.id, side.id)}
-
         self.buffer_allocation_map = {"vertex": {"brush": [],
                                                  "displacement": [],
                                                  "model": []},
@@ -41,9 +39,14 @@ class manager:
                                                 "displacement": [],
                                                 "model": []}}
         # ^ buffer: {type: [(start, length)]}
+        self.draw_calls = {"brush": [], "displacement": []}
+        # ^ renderable_type: [span, ...]
+        # span = (start, length)
+        # -- what if key = (renderable_type, [(func, *args)], [(func, *args)])
+        # -- ^ namedtuple("key", ["renderable_type", "setup", "tear_down"])
         self.hidden = {"brush": [], "displacement": [], "model": []}
         # ^ type: (start, length)
-        # -- doesn't do anything yet
+        # -- hidden by user, not visgroups
 
     def init_GL(self):
         glClearColor(0.0, 0.0, 0.0, 0.0)
@@ -114,10 +117,9 @@ class manager:
         draw_origin()
         draw_ray(vector.vec3(), vector.vec3(), 0)
         # TODO: dither transparency for tooltextures (skip, hint, trigger, clip)
-        for renderable_type in ("brush", "displacement"):
+        for renderable_type, spans in self.draw_calls.items():
             glUseProgram(self.shader[self.render_mode][renderable_type])
-            for start, length in self.buffer_allocation_map["index"][renderable_type]:
-                count = length // 4 # sizeof(GL_UNSIGNED_INT)
+            for start, count in spans:
                 glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, GLvoidp(start))
 
     def update(self):
@@ -131,6 +133,7 @@ class manager:
             if "matrix" in self.uniform[self.render_mode][renderable_type]:
                 location = self.uniform[self.render_mode][renderable_type]["matrix"]
                 glUniformMatrix4fv(location, 1, GL_FALSE, MV_matrix)
+        
 
     def track_span(self, buffer, renderable_type, span_to_track):
         start, length = span_to_track
@@ -295,11 +298,15 @@ class manager:
             ids = index_gaps[gap][1]
             lengths = [len(d) * 4 for d in index_gaps[gap][2]]
             self.update_mapping("index", renderable_type, start, ids, lengths)
+        # TEST
+        for start, length in self.buffer_allocation_map["index"][renderable_type]:
+            self.draw_calls[renderable_type].append((start, length // 4))
+        # TEST
 
 # renderable(s) to vertices & indices
 def brush_buffer_data(brush):
-    indices = []
     vertices = [] # [(*position, *normal, *uv, *colour), ...]
+    indices = []
     for face in brush.faces:
         polygon_indices = []
         normal = face.plane[0]
@@ -341,8 +348,8 @@ def displacement_buffer_data(face):
             uv = face.uv_at(barymetric)
             alpha = alpha / 255
             vertices.append((*position, *normal, *uv, alpha, 0, 0))
-    indices = disp_indices(displacement.power)
     vertices = list(itertools.chain(*vertices))
+    indices = disp_indices(displacement.power)
     return vertices, indices
 
 # polygon to triangles
