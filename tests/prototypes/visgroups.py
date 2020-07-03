@@ -16,17 +16,19 @@ workspace = VmfTab("../../test_maps/test2.vmf")
 workspace.setGeometry(128, 64, 512, 512)
 workspace.show()
 
-def hide_brush(render_manager, brush_id):
-    span = render_manager.buffer_location[("brush", brush_id)]["index"]
-    span_list = render_manager.draw_calls["brush"]
-    render_manager.draw_calls["brush"] = render.remove_span(span_list, span)
-    render_manager.hidden["brush"].add(brush_id)
+def hide_renderable(render_manager, renderable_id):
+    renderable_type = renderable_id[0]
+    span = render_manager.buffer_location[renderable_id]["index"]
+    span_list = render_manager.draw_calls[renderable_type]
+    render_manager.draw_calls[renderable_type] = render.remove_span(span_list, span)
+    render_manager.hidden[renderable_type].add(renderable_id)
 
-def show_brush(render_manager, brush_id):
-    span = render_manager.buffer_location[("brush", brush_id)]["index"]
-    span_list = render_manager.draw_calls["brush"]
-    render_manager.draw_calls["brush"] = render.add_span(span_list, span)
-    render_manager.hidden["brush"].discard(brush_id)
+def show_renderable(render_manager, renderable_id):
+    renderable_type = renderable_id[0]
+    span = render_manager.buffer_location[renderable_id]["index"]
+    span_list = render_manager.draw_calls[renderable_type]
+    render_manager.draw_calls[renderable_type] = render.add_span(span_list, span)
+    render_manager.hidden[renderable_type].discard(renderable_id)
 
 
 class visgroup_item(QtWidgets.QTreeWidgetItem):
@@ -97,20 +99,28 @@ class auto_visgroup_manager(QtWidgets.QTreeWidget): # QTreeView
         # .connect(self.viewport.render_manager.show_brush)
         def handle_visibility(item, column): # ignore item
             global workspace
-            brush_ids = []
+            renderable_ids = []
             visgroup = item.data(0, 0)
             if visgroup == "func_detail":
                 for classname, ent_id, brush_id in workspace.vmf.brush_entities:
                     if classname == "func_detail":
-                        brush_ids.append(brush_id)
+                        renderable_ids.append(("brush", brush_id))
+            elif visgroup == "Displacements":
+                for brush in workspace.vmf.brushes:
+                    if not brush.is_displacement:
+                        continue
+                    for side in brush.faces:
+                        if hasattr(side, "displacement"):
+                            disp_id = (brush.id, side.id)
+                            renderable_ids.append(("displacement", disp_id))
             # hide / show
             render_manager = workspace.viewport.render_manager
             if item.checkState == 0:
-                for brush_id in brush_ids:
-                    hide_brush(render_manager, brush_id)
+                for renderable_id in renderable_ids:
+                    hide_renderable(render_manager, renderable_id)
             if item.checkState == 2:
-                for brush_id in brush_ids:
-                    show_brush(render_manager, brush_id)
+                for renderable_id in renderable_ids:
+                    show_renderable(render_manager, renderable_id)
 
         self.itemChanged.connect(handle_visibility)
 
