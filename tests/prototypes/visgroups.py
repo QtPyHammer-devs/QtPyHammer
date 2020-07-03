@@ -113,6 +113,10 @@ class auto_visgroup_manager(QtWidgets.QTreeWidget): # QTreeView
                         if hasattr(side, "displacement"):
                             disp_id = (brush.id, side.id)
                             renderable_ids.append(("displacement", disp_id))
+            elif visgroup == "Skybox":
+                for brush in workspace.vmf.brushes:
+                    if any([f.material.startswith("TOOLS/TOOLSSKYBOX") for f in brush.faces]):
+                        renderable_ids.append(("brush", brush.id))
             # hide / show
             render_manager = workspace.viewport.render_manager
             if item.checkState == 0:
