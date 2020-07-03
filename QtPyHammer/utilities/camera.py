@@ -6,7 +6,7 @@ from OpenGL.GLU import *
 from . import vector
 
 keybinds = {'FORWARD': [], 'BACK': [], 'LEFT': [], 'RIGHT': [], 'UP': [], 'DOWN': []}
-sensitivity = 0.25
+sensitivity = 2
 
 
 class freecam:

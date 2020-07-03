@@ -155,7 +155,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
 
     def wheelEvent(self, event):
         if self.camera_moving:
-            self.camera.speed += event.angleDelta().y()
+            self.camera.speed = max(self.camera.speed + event.angleDelta().y(), 1)
 
     # Mouse Action = mousePressEvent -> mouseMoveEvent -> mouseReleaseEvent
     def mousePressEvent(self, event): # start of click
