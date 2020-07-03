@@ -30,8 +30,8 @@ class manager:
         self.buffer_location = {}
         # ^ renderable: {"vertex": (start, length),
         #                "index":  (start, length)}
-        # renderable = {"type": "brush", "id": brush.id}
-        # -- OR {"type": "displacement", "id": (brush.id, side.id)}
+        # renderable = ("brush", brush.id)
+        # -- OR ("displacement", (brush.id, side.id))
         self.buffer_allocation_map = {"vertex": {"brush": [],
                                                  "displacement": [],
                                                  "model": []},
@@ -44,9 +44,8 @@ class manager:
         # span = (start, length)
         # -- what if key = (renderable_type, [(func, *args)], [(func, *args)])
         # -- ^ namedtuple("key", ["renderable_type", "setup", "tear_down"])
-        self.hidden = {"brush": set(), "displacement": set(), "model": set()}
-        # ^ type: {renderable_id, ...}
-        # -- hidden by user, not visgroups
+        self.hidden = set() # hidden by user, not visgroup
+        # ^ renderable
 
     def init_GL(self):
         glClearColor(0.0, 0.0, 0.0, 0.0)
@@ -134,7 +133,7 @@ class manager:
             if "matrix" in self.uniform[self.render_mode][renderable_type]:
                 location = self.uniform[self.render_mode][renderable_type]["matrix"]
                 glUniformMatrix4fv(location, 1, GL_FALSE, MV_matrix)
-        
+
 
     def track_span(self, buffer, renderable_type, span_to_track):
         target = self.buffer_allocation_map[buffer][renderable_type]
@@ -284,14 +283,12 @@ class manager:
         span = self.buffer_location[renderable_id]["index"]
         span_list = self.draw_calls[renderable_type]
         self.draw_calls[renderable_type] = remove_span(span_list, span)
-        self.hidden[renderable_type].add(renderable_id)
 
     def show_renderable(self, renderable_id):
         renderable_type = renderable_id[0]
         span = self.buffer_location[renderable_id]["index"]
         span_list = self.draw_calls[renderable_type]
         self.draw_calls[renderable_type] = add_span(span_list, span)
-        self.hidden[renderable_type].discard(renderable_id)
 
 # renderable(s) to vertices & indices
 def brush_buffer_data(brush):

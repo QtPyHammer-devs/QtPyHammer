@@ -104,11 +104,10 @@ class auto_visgroup_manager(QtWidgets.QTreeWidget): # QTreeView
                         renderable_ids.append(("brush", brush.id))
             # hide / show
             render_manager = workspace.viewport.render_manager
-            if item.checkState == 0:
-                for renderable_id in renderable_ids:
+            for renderable_id in renderable_ids:
+                if item.checkState == 0:
                     render_manager.hide_renderable(renderable_id)
-            if item.checkState == 2:
-                for renderable_id in renderable_ids:
+                if item.checkState == 2:
                     render_manager.show_renderable(renderable_id)
 
         self.itemChanged.connect(handle_visibility)
