@@ -41,7 +41,6 @@ class VmfInterface:
                     for s in entity.solids:
                         tag = (entity.classname, int(entity.id), int(s.id))
                         self.brush_entities.append(tag)
-        print(self.brush_entities)
         qph_brushes = []
         for i, source_brush in enumerate(source_brushes):
             try:
