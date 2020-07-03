@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtCore, QtWidgets
 
 import sys
 sys.path.append("../../")
@@ -9,7 +9,6 @@ from QtPyHammer.utilities import render
 def except_hook(cls, exception, traceback): # for debugging Qt slots
     sys.__excepthook__(cls, exception, traceback)
 sys.excepthook = except_hook
-
 
 app = QtWidgets.QApplication([])
 
@@ -29,28 +28,56 @@ def show_brush(render_manager, brush_id):
     render_manager.draw_calls["brush"] = render.add_span(span_list, span)
     render_manager.hidden["brush"].discard(brush_id)
 
-hide_brush(workspace.viewport.render_manager, 2)
-
 
 class visgroup_item(QtWidgets.QTreeWidgetItem):
-    def __init__(self, name):
+    def __init__(self, name, parent=None):
         # want to represent each entry with a QCheckBox
         # each will also have a connection based on state
-        super(visgroup_item, self).__init__([name], 0)
+        super(visgroup_item, self).__init__(parent, [name], 1000)
+        self.updating_children = False
+
+    @property
+    def children(self):
+        return [self.child(i) for i in range(self.childCount())]
+
+    def setData(self, column, role, value):
+        super(visgroup_item, self).setData(column, role, value)
+        if role == 10: # checkState
+            if value != 1:
+                self.updating_children = True
+                for child in self.children:
+                    child.checkState = value
+                self.updating_children = False
+            if self.parent() != None:
+                if not self.parent().updating_children:
+                    siblings = self.parent().children
+                    sibling_state = {s.checkState for s in siblings}
+                    if len(sibling_state) == 1:
+                        self.parent().checkState = value
+                    else:
+                        self.parent().checkState = 1
+
+    @property
+    def checkState(self):
+        return super(visgroup_item, self).checkState(0)
+
+    @checkState.setter
+    def checkState(self, state): # formerly setCheckState
+        """0 = unchecked, 1 = partial, 2 = checked"""
+        super(visgroup_item, self).setCheckState(0, state) # column, state
 
     def addChild(self, name):
-        super(visgroup_item, self).addChild(visgroup_item(name))
+        super(visgroup_item, self).addChild(visgroup_item(name, self))
 
     def addChildren(self, *names):
-        children = [visgroup_item(n) for n in names]
+        children = [visgroup_item(n, self) for n in names]
         super(visgroup_item, self).addChildren(children)
-        
+
 
 class auto_visgroup_manager(QtWidgets.QTreeWidget): # QTreeView
     def __init__(self, parent=None): # workspace to link to
         super(auto_visgroup_manager, self).__init__(parent)
         self.setHeaderHidden(True)
-        # AUTO VISGROUPS TREE
         world = visgroup_item("World Geometry")
         world.addChild("Displacements")
         world.addChild("Skybox")
@@ -62,9 +89,30 @@ class auto_visgroup_manager(QtWidgets.QTreeWidget): # QTreeView
         detail.addChildren("Props", "func_detail")
         
         self.addTopLevelItem(world)
+        world.checkState = 2
         world.setExpanded(True)
         world.child(2).setExpanded(True)
         world.child(3).setExpanded(True)
+
+        # .connect(self.viewport.render_manager.show_brush)
+        def handle_visibility(item, column): # ignore item
+            global workspace
+            brush_ids = []
+            visgroup = item.data(0, 0)
+            if visgroup == "func_detail":
+                for classname, ent_id, brush_id in workspace.vmf.brush_entities:
+                    if classname == "func_detail":
+                        brush_ids.append(brush_id)
+            # hide / show
+            render_manager = workspace.viewport.render_manager
+            if item.checkState == 0:
+                for brush_id in brush_ids:
+                    hide_brush(render_manager, brush_id)
+            if item.checkState == 2:
+                for brush_id in brush_ids:
+                    show_brush(render_manager, brush_id)
+
+        self.itemChanged.connect(handle_visibility)
 
         # self._model = QtWidgets.QAbstractItemModel()
         # # ^ subclass which models a viewport's render_manager's visibles
