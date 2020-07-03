@@ -105,11 +105,13 @@ class auto_visgroup_manager(QtWidgets.QTreeWidget):
                 if any([f.material.startswith("TOOLS/TOOLSSKYBOX") for f in brush.faces]):
                     renderables.append(("brush", brush.id))
         # toggle visgroup
+        print(f"{render_manager.draw_calls} - ? = ", end="")
         for renderable in renderables:
             if item.checkState == 0:
                 render_manager.hide(renderable)
             if item.checkState == 2:
                 render_manager.show(renderable)
+        print(render_manager.draw_calls)
 
     # BONUS:
     # dynamic user collections / visgroups; filtered by region, material & classname
