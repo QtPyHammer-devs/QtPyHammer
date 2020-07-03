@@ -150,7 +150,15 @@ class manager:
         span = (start, sum(lengths))
         self.track_span(buffer, renderable_type, span)
         if buffer == "index":
-            self.draw_calls[renderable_type].append((start, sum(lengths)))
+            self.draw_calls[renderable_type] = add_span(self.draw_calls[renderable_type], span)         
+            if renderable_type == "displacement": # hide displacement brush
+                brush_ids = {brush_id for brush_id, side_id in ids}
+                brush_spans = []
+                for brush_id in brush_ids:
+                    span = self.buffer_location[("brush", brush_id)]["index"]
+                    brush_spans = add_span(brush_spans, span)
+                for span in brush_spans:
+                    self.draw_calls["brush"] = remove_span(self.draw_calls["brush"], span)
         for renderable_id, length in zip(ids, lengths):
             renderable = (renderable_type, renderable_id)
             if renderable not in self.buffer_location:
@@ -394,14 +402,15 @@ def add_span(span_list, span):
         E = S + L
         if S < end and E < start:
             continue # (S, L) is before span_to_track and doesn't touch it
-        elif S == end or E == start: # span leads (S, L) or span tails (S, L)
-            span_list.pop(i)
-            span_list.insert(i, (S, L + length))
-            break
-        elif S > end: # span leads (S, L) & does not touch it
+        elif end < S: # span leads (S, L) without touching it
             span_list.insert(i, (start, length))
             break
-    else:
+        elif S == end or E == start: # span leads (S, L) or span tails (S, L)
+            span_list.pop(i)
+            new_start = min(start, S)
+            span_list.insert(i, (new_start, L + length))
+            break
+    else: # span tails the final (S, L) without touching it
         span_list.append((start, length))
     return span_list
 
@@ -413,15 +422,15 @@ def remove_span(span_list, span):
         E = S + L
         if start <= S < E <= end: # span ecclipses (S, L)
             continue
-        else:
-            if S <= start: # span overlaps start of (S, L)
-                new_end = min([E, start])
-                out.append((S, new_end - S))
-            elif E <= end: # span overlaps tail of (S, L)
-                new_start = max([S, end])
-                out.append((new_start, E - new_start))
-            else:
-                out.append((S, L))
+        elif S <= start: # span overlaps tail of (S, L)
+            new_end = min([E, start])
+            out.append((S, new_end - S))
+            if end < E: # (S, L) ecclipses span
+                out.append((end, E - end))
+        elif end <= E: # span overlaps start of (S, L)
+            out.append((end, E - end))
+        else: # (S, L) tails span
+            out.append((S, L))
     return out
 
 # DRAWING FUNCTIONS
