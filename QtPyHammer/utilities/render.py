@@ -278,15 +278,15 @@ class manager:
             lengths = [len(d) * 4 for d in index_gaps[gap][2]]
             self.update_mapping("index", renderable_type, start, ids, lengths)
 
-    def hide_renderable(self, renderable_id):
-        renderable_type = renderable_id[0]
-        span = self.buffer_location[renderable_id]["index"]
+    def hide(self, renderable):
+        renderable_type = renderable[0]
+        span = self.buffer_location[renderable]["index"]
         span_list = self.draw_calls[renderable_type]
         self.draw_calls[renderable_type] = remove_span(span_list, span)
 
-    def show_renderable(self, renderable_id):
-        renderable_type = renderable_id[0]
-        span = self.buffer_location[renderable_id]["index"]
+    def show(self, renderable):
+        renderable_type = renderable[0]
+        span = self.buffer_location[renderable]["index"]
         span_list = self.draw_calls[renderable_type]
         self.draw_calls[renderable_type] = add_span(span_list, span)
 

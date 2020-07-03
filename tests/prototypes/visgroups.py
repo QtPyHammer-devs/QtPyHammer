@@ -19,8 +19,6 @@ workspace.show()
 
 class visgroup_item(QtWidgets.QTreeWidgetItem):
     def __init__(self, name, parent=None):
-        # want to represent each entry with a QCheckBox
-        # each will also have a connection based on state
         super(visgroup_item, self).__init__(parent, [name], 1000)
         self.updating_children = False
 
@@ -50,7 +48,7 @@ class visgroup_item(QtWidgets.QTreeWidgetItem):
         return super(visgroup_item, self).checkState(0)
 
     @checkState.setter
-    def checkState(self, state): # formerly setCheckState
+    def checkState(self, state):
         """0 = unchecked, 1 = partial, 2 = checked"""
         super(visgroup_item, self).setCheckState(0, state) # column, state
 
@@ -62,7 +60,8 @@ class visgroup_item(QtWidgets.QTreeWidgetItem):
         super(visgroup_item, self).addChildren(children)
 
 
-class auto_visgroup_manager(QtWidgets.QTreeWidget): # QTreeView
+class auto_visgroup_manager(QtWidgets.QTreeWidget):
+    # VmfRenderModel / QTreeView 
     def __init__(self, parent=None): # workspace to link to
         super(auto_visgroup_manager, self).__init__(parent)
         self.setHeaderHidden(True)
@@ -82,49 +81,39 @@ class auto_visgroup_manager(QtWidgets.QTreeWidget): # QTreeView
         world.child(2).setExpanded(True)
         world.child(3).setExpanded(True)
 
-        def handle_visibility(item, column): # ignore column
-            global workspace
-            renderable_ids = []
-            visgroup = item.data(0, 0)
-            if visgroup == "func_detail":
-                for classname, ent_id, brush_id in workspace.vmf.brush_entities:
-                    if classname == "func_detail":
-                        renderable_ids.append(("brush", brush_id))
-            elif visgroup == "Displacements":
-                for brush in workspace.vmf.brushes:
-                    if not brush.is_displacement:
-                        continue
-                    for side in brush.faces:
-                        if hasattr(side, "displacement"):
-                            disp_id = (brush.id, side.id)
-                            renderable_ids.append(("displacement", disp_id))
-            elif visgroup == "Skybox":
-                for brush in workspace.vmf.brushes:
-                    if any([f.material.startswith("TOOLS/TOOLSSKYBOX") for f in brush.faces]):
-                        renderable_ids.append(("brush", brush.id))
-            # hide / show
-            render_manager = workspace.viewport.render_manager
-            for renderable_id in renderable_ids:
-                if item.checkState == 0:
-                    render_manager.hide_renderable(renderable_id)
-                if item.checkState == 2:
-                    render_manager.show_renderable(renderable_id)
+        self.itemChanged.connect(self.handle_visibility)
 
-        self.itemChanged.connect(handle_visibility)
+    def handle_visibility(self, item, column): # ignore column
+        global workspace
+        render_manager = workspace.viewport.render_manager
+        renderables = []
+        visgroup = item.data(0, 0)
+        if visgroup == "func_detail":
+            for classname, ent_id, brush_id in workspace.vmf.brush_entities:
+                if classname == "func_detail":
+                    renderables.append(("brush", brush_id))
+        elif visgroup == "Displacements":
+            for brush in workspace.vmf.brushes:
+                if not brush.is_displacement:
+                    continue
+                for side in brush.faces:
+                    if hasattr(side, "displacement"):
+                        disp_id = (brush.id, side.id)
+                        renderables.append(("displacement", disp_id))
+        elif visgroup == "Skybox":
+            for brush in workspace.vmf.brushes:
+                if any([f.material.startswith("TOOLS/TOOLSSKYBOX") for f in brush.faces]):
+                    renderables.append(("brush", brush.id))
+        # toggle visgroup
+        for renderable in renderables:
+            if item.checkState == 0:
+                render_manager.hide(renderable)
+            if item.checkState == 2:
+                render_manager.show(renderable)
 
-        # self._model = QtWidgets.QAbstractItemModel()
-        # # ^ subclass which models a viewport's render_manager's visibles
-        # # -- via the workspace tab's vmf object
-        # self.setModel(self._model)
-
-        # connect auto visgroups to viewport.render_manager
-        # updates to the model affect the render_manager via functions that
-        # -- apply the filters
-        # TODO: track hidden by selection and hidden by visgroup separately
-        # BONUS:
-        # -- dynamic user collection / visgroups; filtered by region & material
-
-        # have an edit dialog for selected user visgroup
+    # BONUS:
+    # dynamic user collections / visgroups; filtered by region, material & classname
+    # have an edit dialog for selected user visgroup
 
 visgroup_widget = QtWidgets.QDialog()
 layout = QtWidgets.QVBoxLayout()
