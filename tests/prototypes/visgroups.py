@@ -16,20 +16,6 @@ workspace = VmfTab("../../test_maps/test2.vmf")
 workspace.setGeometry(128, 64, 512, 512)
 workspace.show()
 
-def hide_renderable(render_manager, renderable_id):
-    renderable_type = renderable_id[0]
-    span = render_manager.buffer_location[renderable_id]["index"]
-    span_list = render_manager.draw_calls[renderable_type]
-    render_manager.draw_calls[renderable_type] = render.remove_span(span_list, span)
-    render_manager.hidden[renderable_type].add(renderable_id)
-
-def show_renderable(render_manager, renderable_id):
-    renderable_type = renderable_id[0]
-    span = render_manager.buffer_location[renderable_id]["index"]
-    span_list = render_manager.draw_calls[renderable_type]
-    render_manager.draw_calls[renderable_type] = render.add_span(span_list, span)
-    render_manager.hidden[renderable_type].discard(renderable_id)
-
 
 class visgroup_item(QtWidgets.QTreeWidgetItem):
     def __init__(self, name, parent=None):
@@ -96,8 +82,7 @@ class auto_visgroup_manager(QtWidgets.QTreeWidget): # QTreeView
         world.child(2).setExpanded(True)
         world.child(3).setExpanded(True)
 
-        # .connect(self.viewport.render_manager.show_brush)
-        def handle_visibility(item, column): # ignore item
+        def handle_visibility(item, column): # ignore column
             global workspace
             renderable_ids = []
             visgroup = item.data(0, 0)
@@ -121,10 +106,10 @@ class auto_visgroup_manager(QtWidgets.QTreeWidget): # QTreeView
             render_manager = workspace.viewport.render_manager
             if item.checkState == 0:
                 for renderable_id in renderable_ids:
-                    hide_renderable(render_manager, renderable_id)
+                    render_manager.hide_renderable(renderable_id)
             if item.checkState == 2:
                 for renderable_id in renderable_ids:
-                    show_renderable(render_manager, renderable_id)
+                    render_manager.show_renderable(renderable_id)
 
         self.itemChanged.connect(handle_visibility)
 

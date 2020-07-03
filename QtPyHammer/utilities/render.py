@@ -150,7 +150,7 @@ class manager:
         span = (start, sum(lengths))
         self.track_span(buffer, renderable_type, span)
         if buffer == "index":
-            self.draw_calls[renderable_type] = add_span(self.draw_calls[renderable_type], span)         
+            self.draw_calls[renderable_type] = add_span(self.draw_calls[renderable_type], span)
             if renderable_type == "displacement": # hide displacement brush
                 brush_ids = {brush_id for brush_id, side_id in ids}
                 brush_spans = []
@@ -278,6 +278,20 @@ class manager:
             ids = index_gaps[gap][1]
             lengths = [len(d) * 4 for d in index_gaps[gap][2]]
             self.update_mapping("index", renderable_type, start, ids, lengths)
+
+    def hide_renderable(self, renderable_id):
+        renderable_type = renderable_id[0]
+        span = self.buffer_location[renderable_id]["index"]
+        span_list = self.draw_calls[renderable_type]
+        self.draw_calls[renderable_type] = remove_span(span_list, span)
+        self.hidden[renderable_type].add(renderable_id)
+
+    def show_renderable(self, renderable_id):
+        renderable_type = renderable_id[0]
+        span = self.buffer_location[renderable_id]["index"]
+        span_list = self.draw_calls[renderable_type]
+        self.draw_calls[renderable_type] = add_span(span_list, span)
+        self.hidden[renderable_type].discard(renderable_id)
 
 # renderable(s) to vertices & indices
 def brush_buffer_data(brush):
