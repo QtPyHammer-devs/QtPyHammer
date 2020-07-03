@@ -119,7 +119,8 @@ class manager:
         # TODO: dither transparency for tooltextures (skip, hint, trigger, clip)
         for renderable_type, spans in self.draw_calls.items():
             glUseProgram(self.shader[self.render_mode][renderable_type])
-            for start, count in spans:
+            for start, length in spans:
+                count = length // 4
                 glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, GLvoidp(start))
 
     def update(self):
@@ -148,6 +149,8 @@ class manager:
     def update_mapping(self, buffer, renderable_type, start, ids, lengths):
         span = (start, sum(lengths))
         self.track_span(buffer, renderable_type, span)
+        if buffer == "index":
+            self.draw_calls[renderable_type].append((start, sum(lengths)))
         for renderable_id, length in zip(ids, lengths):
             renderable = (renderable_type, renderable_id)
             if renderable not in self.buffer_location:
@@ -267,10 +270,6 @@ class manager:
             ids = index_gaps[gap][1]
             lengths = [len(d) * 4 for d in index_gaps[gap][2]]
             self.update_mapping("index", renderable_type, start, ids, lengths)
-        # TEST
-        for start, length in self.buffer_allocation_map["index"][renderable_type]:
-            self.draw_calls[renderable_type].append((start, length // 4))
-        # TEST
 
 # renderable(s) to vertices & indices
 def brush_buffer_data(brush):
@@ -416,11 +415,11 @@ def remove_span(span_list, span):
             continue
         else:
             if S <= start: # span overlaps start of (S, L)
-                new_start = max([S, end])
-                out.append((new_start, E - new_start))
-            elif E <= end: # span overlaps tail of (S, L)
                 new_end = min([E, start])
                 out.append((S, new_end - S))
+            elif E <= end: # span overlaps tail of (S, L)
+                new_start = max([S, end])
+                out.append((new_start, E - new_start))
             else:
                 out.append((S, L))
     return out
