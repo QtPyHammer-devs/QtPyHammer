@@ -50,7 +50,8 @@ class visgroup_item(QtWidgets.QTreeWidgetItem):
     @checkState.setter
     def checkState(self, state):
         """0 = unchecked, 1 = partial, 2 = checked"""
-        super(visgroup_item, self).setCheckState(0, state) # column, state
+        if state != self.checkState:
+            super(visgroup_item, self).setCheckState(0, state)
 
     def addChild(self, name):
         super(visgroup_item, self).addChild(visgroup_item(name, self))
@@ -65,21 +66,23 @@ class auto_visgroup_manager(QtWidgets.QTreeWidget):
     def __init__(self, parent=None): # workspace to link to
         super(auto_visgroup_manager, self).__init__(parent)
         self.setHeaderHidden(True)
-        world = visgroup_item("World Geometry")
-        world.addChild("Displacements")
-        world.addChild("Skybox")
-        world.addChild("Entities")
-        entities = world.child(2)
+        master = visgroup_item("All")
+        master.addChild("World Geometry")
+        world = master.child(0)
+        world.addChildren("Displacements", "Skybox")
+        master.addChild("Entities")
+        entities = master.child(1)
         entities.addChildren("Point Entities", "Brush Entities", "Triggers")
-        world.addChild("World Detail")
-        detail = world.child(3)
+        master.addChild("World Detail")
+        detail = master.child(2)
         detail.addChildren("Props", "func_detail")
         
-        self.addTopLevelItem(world)
-        world.checkState = 2
+        self.addTopLevelItem(master)
+        master.checkState = 2
+        master.setExpanded(True)
         world.setExpanded(True)
-        world.child(2).setExpanded(True)
-        world.child(3).setExpanded(True)
+        entities.setExpanded(True)
+        detail.setExpanded(True)
 
         self.itemChanged.connect(self.handle_visibility)
 
@@ -91,6 +94,10 @@ class auto_visgroup_manager(QtWidgets.QTreeWidget):
         if visgroup == "func_detail":
             for classname, ent_id, brush_id in workspace.vmf.brush_entities:
                 if classname == "func_detail":
+                    renderables.append(("brush", brush_id))
+        if visgroup == "Triggers":
+            for classname, ent_id, brush_id in workspace.vmf.brush_entities:
+                if classname.startswith("trigger_"):
                     renderables.append(("brush", brush_id))
         elif visgroup == "Displacements":
             for brush in workspace.vmf.brushes:
@@ -105,13 +112,13 @@ class auto_visgroup_manager(QtWidgets.QTreeWidget):
                 if any([f.material.startswith("TOOLS/TOOLSSKYBOX") for f in brush.faces]):
                     renderables.append(("brush", brush.id))
         # toggle visgroup
-        print(f"{render_manager.draw_calls} - ? = ", end="")
         for renderable in renderables:
             if item.checkState == 0:
+                print("Hiding", visgroup)
                 render_manager.hide(renderable)
             if item.checkState == 2:
+                print("Showing", visgroup)
                 render_manager.show(renderable)
-        print(render_manager.draw_calls)
 
     # BONUS:
     # dynamic user collections / visgroups; filtered by region, material & classname
