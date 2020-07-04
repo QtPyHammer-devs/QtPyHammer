@@ -426,22 +426,36 @@ def add_span(span_list, span):
     return span_list
 
 def remove_span(span_list, span):
+    print(f"{span_list} - {span} = ")
     start, length = span
     end = start + length
     out = []
     for S, L in span_list:
         E = S + L
-        if start <= S < E <= end: # span ecclipses (S, L)
-            continue
-        elif S <= start: # span overlaps tail of (S, L)
-            new_end = min([E, start])
-            out.append((S, new_end - S))
-            if end < E: # (S, L) ecclipses span
-                out.append((end, E - end))
-        elif end <= E: # span overlaps start of (S, L)
-            out.append((end, E - end))
-        else: # (S, L) tails span
+        if E < start: # span leads (S, L)
+            print("leads")
             out.append((S, L))
+            continue
+        if start <= S < E <= end: # span ecclipses (S, L)
+            print("ecclipse")
+            continue
+        if start < S < end < E: # span overlaps start of (S, L)
+            print(f"{(start, end)} overlap start {(S, E)}")
+            out.append((end, E - end))
+            continue
+        if S < start < end < E: # (S, L) ecclipses span
+            print(f"{(start, end)} overlap center {(S, E)}")
+            out.append((S, start - S))
+            out.append((end, E - end))
+            continue
+        if S < start < E < end: # span overlaps tail of (S, L)
+            print("overlap tail")
+            out.append((S, start - S))
+            continue
+        if end < S: # span tails (S, L)
+            out.append((S, L))
+            continue
+    print(out)
     return out
 
 # DRAWING FUNCTIONS
