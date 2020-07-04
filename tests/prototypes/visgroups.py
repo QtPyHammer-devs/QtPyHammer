@@ -114,10 +114,8 @@ class auto_visgroup_manager(QtWidgets.QTreeWidget):
         # toggle visgroup
         for renderable in renderables:
             if item.checkState == 0:
-                print("Hiding", visgroup)
                 render_manager.hide(renderable)
             if item.checkState == 2:
-                print("Showing", visgroup)
                 render_manager.show(renderable)
 
     # BONUS:
