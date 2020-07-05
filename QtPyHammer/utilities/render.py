@@ -432,27 +432,30 @@ def remove_span(span_list, span):
     out = []
     for S, L in span_list:
         E = S + L
-        if E < start: # span leads (S, L)
-            print("leads")
-            out.append((S, L))
-            continue
+        # specials
         if start <= S < E <= end: # span ecclipses (S, L)
-            print("ecclipse")
-            continue
-        if start < S < end < E: # span overlaps start of (S, L)
-            print(f"{(start, end)} overlap start {(S, E)}")
-            out.append((end, E - end))
+            print(f"{(start, end)} ecclipses {(S, E)}")
             continue
         if S < start < end < E: # (S, L) ecclipses span
             print(f"{(start, end)} overlap center {(S, E)}")
             out.append((S, start - S))
             out.append((end, E - end))
             continue
+        # basics
+        if end < S: # span leads (S, L)
+            print(f"{(start, end)} leads {(S, E)}")
+            out.append((S, L))
+            continue
+        if start < S < end < E: # span overlaps start of (S, L)
+            print(f"{(start, end)} overlap start {(S, E)}")
+            out.append((end, E - end))
+            continue
         if S < start < E < end: # span overlaps tail of (S, L)
-            print("overlap tail")
+            print(f"{(start, end)} overlaps tail {(S, E)}")
             out.append((S, start - S))
             continue
-        if end < S: # span tails (S, L)
+        if E < start: # span tails (S, L)
+            print(f"{(start, end)} tails {(S, E)}")
             out.append((S, L))
             continue
     print(out)
