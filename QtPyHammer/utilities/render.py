@@ -426,11 +426,13 @@ def add_span(span_list, span):
     return span_list
 
 def remove_span(span_list, span):
-    print(f"{span_list} - {span} = ")
+    rep = lambda s: (s[0], s[0] + s[1]) 
+    print(f"{list(map(rep, span_list))} - {rep(span)} = ")
     start, length = span
     end = start + length
     out = []
     for S, L in span_list:
+        print("/t", end="")
         E = S + L
         # specials
         if start <= S < E <= end: # span ecclipses (S, L)
@@ -458,7 +460,8 @@ def remove_span(span_list, span):
             print(f"{(start, end)} tails {(S, E)}")
             out.append((S, L))
             continue
-    print(out)
+    print(list(map(rep, out)))
+    print()
     return out
 
 # DRAWING FUNCTIONS
