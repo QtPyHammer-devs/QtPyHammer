@@ -432,7 +432,7 @@ def remove_span(span_list, span):
     end = start + length
     out = []
     for S, L in span_list:
-        print("/t", end="")
+        print("\t", end="")
         E = S + L
         # specials
         if start <= S < E <= end: # span ecclipses (S, L)
