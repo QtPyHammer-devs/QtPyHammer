@@ -12,9 +12,12 @@ sys.excepthook = except_hook
 
 app = QtWidgets.QApplication([])
 
+window = QtWidgets.QMainWindow()
+window.setLayout(QtWidgets.QHBoxLayout())
+
 workspace = VmfTab("../../test_maps/test2.vmf")
-workspace.setGeometry(128, 64, 512, 512)
-workspace.show()
+workspace.setMinimumSize(512, 512)
+window.setCentralWidget(workspace)
 
 
 class visgroup_item(QtWidgets.QTreeWidgetItem):
@@ -122,15 +125,14 @@ class auto_visgroup_manager(QtWidgets.QTreeWidget):
     # dynamic user collections / visgroups; filtered by region, material & classname
     # have an edit dialog for selected user visgroup
 
-visgroup_widget = QtWidgets.QDialog()
-layout = QtWidgets.QVBoxLayout()
-layout.setContentsMargins(0, 0, 0, 0)
-visgroup_widget.setLayout(layout)
-visgroup_widget.layout().addWidget(QtWidgets.QTabWidget())
-tab_manager = visgroup_widget.layout().itemAt(0).widget()
+visgroup_widget = QtWidgets.QDockWidget()
+tab_manager = QtWidgets.QTabWidget()
 tab_manager.addTab(auto_visgroup_manager(), "Auto")
 tab_manager.addTab(QtWidgets.QWidget(), "User")
-visgroup_widget.setGeometry(64 + 128 + 512, 64 + 128, 192, 256)
-visgroup_widget.show()
+visgroup_widget.layout().setContentsMargins(0, 0, 0, 0)
+visgroup_widget.layout().addWidget(tab_manager)
+visgroup_widget.setMinimumSize(192, 256)
+window.addDockWidget(QtCore.Qt.RightDockWidgetArea, visgroup_widget)
 
+window.show()
 app.exec_()
