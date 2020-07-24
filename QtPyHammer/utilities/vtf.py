@@ -105,13 +105,38 @@ def DXT1_decode(bytestream, width, height):
     return out
 
 class vtf:
+    """Read-only importer for Valve Texture File Format"""
     def __init__(self, filename):
         self.file = open(filename, "rb")
-        file_magic, major, minor, header_size = struct.unpack("4s3I", self.file.read(16))
-        assert file_magic == b"VTF\x00"
-        self.version = (major, minor)
-        self.header_size = header_size
-        # GOTO version?
+        unpack = lambda f: struct.unpack(f, self.file.read(struct.calcsize(f)))
+        assert unpack("4s") == b"VTF\x00"
+        major_version, minor_version = unpack("2I")
+        assert major_version == 7
+        if minor_version > 2:
+            raise NotImplementedError(f"Can't decode v7.{minor_version} VTF")
+        self.version = (major_version, minor_version)
+        self.header_size = unpack("I")
+        self.width, self.height = unpack("2H")
+        self.flags = unpack("I")
+        self.flag_names = {flags[f] for f in self.flags if self.flags & f}
+        self.frame_count, self.first_frame = unpack("2H4x")
+        self.reflectivity = unpack("3f4x")
+        self.bumpmap_scale, high_res_format = unpack("fI")
+        self.format = colour_format[high_res_format]
+        self.mipmap_count = unpack("B")[0]
+        thumbnail_format, self.thumbnail_width, self.thumbnail_height = unpack("I2B")
+        assert thumbnail_format == DXT1
+        if minor_version >= 2: # v7.2+
+            depth = unpack("H") # Z-slices
+        if minor_version >= 3: # v7.3+
+            ... # NotImplemented
+            # until you hit the header size:
+            # resource entries [unpack("3sBI")]
+            # -- 3s = tag; e.g. b"\x01\x00\x00" or b"CRC"
+            # ----- known tags:
+            #    --  b"\x01\x00\x00" Thumbnail
+            # -- B = flags; 0x2 = no data chunk (then offset = data?)
+            # -- I = offset; file.seek(offset); file.read(?) for data
 
     def __del__(self):
         self.file.close()
@@ -120,29 +145,10 @@ class vtf:
     @property
     def thumbnail(self):
         """returns the decoded thumbnail"""
-        self.file.seek(80) # end of header
-        thumb = self.file.read(self.thumbnail_width * self.thumbnail_height, 16 // 2)
-        return DXT1_decode(thumb, self.thumbnail_width, self.thumbnail_height, 16)
-
-
-class v7_2(vtf): # version 7.2
-    def __init__(self, filename):
-        super(v7_2, self).__init__(filename)
-        assert self.version == (7, 2)
-        assert self.header_size == 80
-        unpack = lambda f: struct.unpack(f, self.file.read(struct.calcsize(f)))
-        self.width, self.height = unpack("2H")
-        self.flags = unpack("I")
-        self.flag_names = {flags[f] for f in self.bit_flags if (self.bit_flags & f) != 0}
-        self.frame_count, self.first_frame = unpack("2H4x")
-        self.reflectivity = unpack("3f4x")
-        self.bumpmap_scale, high_res_format = unpack("fI")
-        self.format = colour_format[high_res_format]
-        # choose mipmap decoder function here
-        self._mipmap_count = unpack("B")[0]
-        thumbnail_format, self.thumbnail_width, self.thumbnail_height = unpack("I2B")
-        assert thumbnail_format == DXT1 # if it isn't, you've stuck unobtainium
-        depth = unpack("H") # Z-slices
+        self.file.seek(self.header_size) # maybe elsewhere if v7.3+
+        width, height = self.thumbnail_width, self.thumbnail_height
+        thumb = self.file.read(width * height // 2)
+        return DXT1_decode(thumb, width, height, 16)
 
     def mipmap(index, frame=0, face=0, z_slice=0):
         # NOTE: not all VTFs have frames, faces or z_slices
@@ -160,10 +166,60 @@ class v7_2(vtf): # version 7.2
         #------ slices: min to max (range(depth))
 
 
-# v7.3+, have resource entries struct.unpack("3sBI", file.read()):
-    # -- 3s = tag; e.g. b"\x01\x00\x00" or b"CRC"
-    # -- B = flags; 0x2 = no data chunk (then offset = data?)
-    # -- I = offset; file.seek(offset); file.read(?) for data
-
 if __name__ == "__main__":
-    ... # test a vtf here
+    import sys
+
+    from OpenGL.GL import *
+    from OpenGL.GL.shaders import compileShader, compileProgram
+    from PyQt5 import QtWidgets
+
+
+    def except_hook(cls, exception, traceback):
+        sys.__excepthook__(cls, exception, traceback)
+    sys.excepthook = except_hook # Python Qt Debug
+
+    app = QtWidgets.QApplication([])
+    class viewport(QtWidgets.QOpenGLWidget):
+        def __init__(self):
+            super(viewport, self).__init__(parent=None)
+        
+        def initializeGL(self):
+            data = b"\xFF\x00\xFF\x00\x00\x00" * 2
+            data += bytes(reversed(data)) # invert every second row
+            data *= 2
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 4, 4, 0, GL_RGB,
+                         GL_UNSIGNED_BYTE, data)
+            # ^ target, mipmap, gpu_format, width, height, border, data_format
+            # -- data_size, data
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+            vertex_source = """#version 450 core
+layout(location = 0) in vec3 vertexPosition;
+out vec3 position;
+void main() {
+    position = vertexPosition;
+    gl_Position = vec4(vertexPosition, 1); }"""
+            vertex = compileShader(vertex_source, GL_VERTEX_SHADER)
+            fragment_source = """#version 450 core
+layout(location = 0) out vec4 outColour;
+in vec3 position;
+uniform sampler2D albedo;
+void main() {
+    outColour = texture(albedo, position.xy); }"""
+            fragment = compileShader(fragment_source, GL_FRAGMENT_SHADER)
+            shader = compileProgram(vertex, fragment)
+            glLinkProgram(shader)
+            glUseProgram(shader)
+            
+        def paintGL(self):
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+            glBegin(GL_QUADS)
+            glVertex(-1, 1)
+            glVertex(1, 1)
+            glVertex(1, -1)
+            glVertex(-1, -1)
+            glEnd()
+    window = viewport()
+    window.setGeometry(128, 64, 576, 576)
+    window.show()
+    app.exec_()
