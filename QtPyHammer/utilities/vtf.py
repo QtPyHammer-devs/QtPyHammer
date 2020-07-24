@@ -76,8 +76,8 @@ def rgb_888_to_565(colour):
     return ((R << 11) + (G << 5) + B).to_bytes(2, "little")
 
 def DXT1_decode(bytestream, width, height):
-    out = [[b""] * width] * height # 1 x RGB_888 bytestring per pixel
-    # ^ TEST NEW OUTPUT WITH OPENGL
+    """returns a RGB_888 bytestring of length 12 * width, height"""
+    out = [b""] * height
     start = 0
     for y in range(0, height, 4):
         for x in range(0, width, 4):
@@ -98,10 +98,11 @@ def DXT1_decode(bytestream, width, height):
                 B = (byte >> 2) % 4
                 C = (byte >> 4) % 4
                 D = byte >> 6
-                pixels = [c[i] for i in (A, B, C, D)]
-                out = out[y + row_index][x : x + 4] = pixels
+                pixels = b"".join([c[i] for i in (A, B, C, D)])
+                out[y + row_index] = b"".join((out[y + row_index], pixels))
                 # ^ stitch into one byestring
             start += 8
+    out = b"".join(out)
     return out
 
 class vtf:
@@ -109,25 +110,26 @@ class vtf:
     def __init__(self, filename):
         self.file = open(filename, "rb")
         unpack = lambda f: struct.unpack(f, self.file.read(struct.calcsize(f)))
-        assert unpack("4s") == b"VTF\x00"
+        # ^ always returns a tuple, sometimes of len(1)
+        assert unpack("4s")[0] == b"VTF\x00"
         major_version, minor_version = unpack("2I")
         assert major_version == 7
         if minor_version > 2:
             raise NotImplementedError(f"Can't decode v7.{minor_version} VTF")
         self.version = (major_version, minor_version)
-        self.header_size = unpack("I")
+        self.header_size = unpack("I")[0]
         self.width, self.height = unpack("2H")
-        self.flags = unpack("I")
-        self.flag_names = {flags[f] for f in self.flags if self.flags & f}
+        self.flags = unpack("I")[0]
+        self.flag_names = {flags[f] for f in flags if self.flags & f}
         self.frame_count, self.first_frame = unpack("2H4x")
         self.reflectivity = unpack("3f4x")
         self.bumpmap_scale, high_res_format = unpack("fI")
         self.format = colour_format[high_res_format]
         self.mipmap_count = unpack("B")[0]
         thumbnail_format, self.thumbnail_width, self.thumbnail_height = unpack("I2B")
-        assert thumbnail_format == DXT1
+        assert thumbnail_format == 13 # DXT1
         if minor_version >= 2: # v7.2+
-            depth = unpack("H") # Z-slices
+            depth = unpack("H")[0] # Z-slices
         if minor_version >= 3: # v7.3+
             ... # NotImplemented
             # until you hit the header size:
@@ -140,7 +142,16 @@ class vtf:
 
     def __del__(self):
         self.file.close()
-        super(v7_2, self).__del__()
+        super(vtf, self).__del__()
+
+    def load_thumbnail(self):
+        width, height = self.thumbnail_width, self.thumbnail_height
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+                     GL_UNSIGNED_BYTE, self.thumbnail)
+        # ^ target, mipmap, gpu_format, width, height, border, data_format
+        # -- data_size, data
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 
     @property
     def thumbnail(self):
@@ -148,17 +159,27 @@ class vtf:
         self.file.seek(self.header_size) # maybe elsewhere if v7.3+
         width, height = self.thumbnail_width, self.thumbnail_height
         thumb = self.file.read(width * height // 2)
-        return DXT1_decode(thumb, width, height, 16)
+        return DXT1_decode(thumb, width, height)
 
-    def mipmap(index, frame=0, face=0, z_slice=0):
+    def load_mipmaps(self):
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
         # NOTE: not all VTFs have frames, faces or z_slices
-        size_of_thumbnail = self.thumbnail_width * self.thumbnail_height, 16 // 2
+        size_of_thumbnail = self.thumbnail_width * self.thumbnail_height // 2
         end_of_thumbnail = 80 + size_of_thumbnail
-        file.seek(end_of_thumbnail)
+        self.file.seek(end_of_thumbnail)
+        print(len(self.file.read()))
+        self.file.seek(end_of_thumbnail)
         # add a value based on encoding, format & mipmapsize / count
         # each mipmap is half in either dimension
         # note mipmap_count, frame_count, depth & cubemap flags
-        raise NotImplementedError()
+        width, height = self.width, int(self.height * 1.25)
+        raw_mipmap_size = width * height // 2
+        print(raw_mipmap_size)
+        raw_mipmaps = self.file.read(10936)
+        data = DXT1_decode(raw_mipmaps, width, height) # RGB_888
+        for i in range(1): # self.mipmap_count # SMALLEST TO LARGEST
+            glTexImage2D(GL_TEXTURE_2D, i, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data)
         # for each...
         # mipmaps: smallest to largest
         #-- frames: first to last
@@ -179,33 +200,30 @@ if __name__ == "__main__":
     sys.excepthook = except_hook # Python Qt Debug
 
     app = QtWidgets.QApplication([])
+
+    test_vtf = vtf("../../test_materials/customdev/dev_measuregeneric01green.vtf")
+##    test_vtf = vtf("../../test_materials/customdev/dev_measurewall01green.vtf")
+    
     class viewport(QtWidgets.QOpenGLWidget):
         def __init__(self):
             super(viewport, self).__init__(parent=None)
         
         def initializeGL(self):
-            data = b"\xFF\x00\xFF\x00\x00\x00" * 2
-            data += bytes(reversed(data)) # invert every second row
-            data *= 2
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 4, 4, 0, GL_RGB,
-                         GL_UNSIGNED_BYTE, data)
-            # ^ target, mipmap, gpu_format, width, height, border, data_format
-            # -- data_size, data
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+            # test_vtf.load_thumbnail() # <-- TESTED
+            test_vtf.load_mipmaps()
             vertex_source = """#version 450 core
 layout(location = 0) in vec3 vertexPosition;
 out vec3 position;
 void main() {
     position = vertexPosition;
     gl_Position = vec4(vertexPosition, 1); }"""
-            vertex = compileShader(vertex_source, GL_VERTEX_SHADER)
             fragment_source = """#version 450 core
 layout(location = 0) out vec4 outColour;
 in vec3 position;
 uniform sampler2D albedo;
 void main() {
-    outColour = texture(albedo, position.xy); }"""
+    outColour = texture(albedo, vec2(position.x, -position.y)); }"""
+            vertex = compileShader(vertex_source, GL_VERTEX_SHADER)
             fragment = compileShader(fragment_source, GL_FRAGMENT_SHADER)
             shader = compileProgram(vertex, fragment)
             glLinkProgram(shader)
@@ -214,11 +232,12 @@ void main() {
         def paintGL(self):
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             glBegin(GL_QUADS)
-            glVertex(-1, 1)
+            glVertex(0, 1)
             glVertex(1, 1)
-            glVertex(1, -1)
-            glVertex(-1, -1)
+            glVertex(1, 0)
+            glVertex(0, 0)
             glEnd()
+            
     window = viewport()
     window.setGeometry(128, 64, 576, 576)
     window.show()
