@@ -32,7 +32,7 @@ class texture_browser(QtWidgets.QDialog):
                 black = b"\x00\x00\x00"
                 data = magenta + black + black + magenta
                 image = QtGui.QImage(data, 2, 2, QtGui.QImage.Format_RGB888)
-                image.setDevicePixelRatio(0.03125) # scale *32
+                image.setDevicePixelRatio(1 / 32) # scale *32
                 label.setPixmap(QtGui.QPixmap.fromImage(image))
                 page.layout().addWidget(label, x, y)
         scroll_area.setWidget(page)
