@@ -77,6 +77,11 @@ def rgb_888_to_565(colour):
 
 def DXT1_decode(bytestream, width, height):
     """returns a RGB_888 bytestring of length 12 * width, height"""
+    if width % 4 != 0 or height % 4 != 0: # input doesn't split into 4x4 tiles
+        raise RuntimeError(f"Cannot decode into {width}x{height} size image")
+    if len(bytestream) < width * height: # not enough data to decode it all
+        missing = (width * height) - len(bytestream)
+        raise RuntimeError(f"Input is {missing} bytes short")
     out = [b""] * height
     start = 0
     for y in range(0, height, 4):
@@ -162,37 +167,46 @@ class vtf:
         return DXT1_decode(thumb, width, height)
 
     def load_mipmaps(self):
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+        # https://github.com/LogicAndTrick/sledge-formats/blob/master/Sledge.Formats.Texture/Vtf/VtfFile.cs#L130
         # NOTE: not all VTFs have frames, faces or z_slices
+        # seek to start
         size_of_thumbnail = self.thumbnail_width * self.thumbnail_height // 2
         end_of_thumbnail = 80 + size_of_thumbnail
         self.file.seek(end_of_thumbnail)
-        print(len(self.file.read()))
-        self.file.seek(end_of_thumbnail)
-        # add a value based on encoding, format & mipmapsize / count
-        # each mipmap is half in either dimension
-        # note mipmap_count, frame_count, depth & cubemap flags
-        width, height = self.width, int(self.height * 1.25)
-        raw_mipmap_size = width * height // 2
-        print(raw_mipmap_size)
-        raw_mipmaps = self.file.read(10936)
-        data = DXT1_decode(raw_mipmaps, width, height) # RGB_888
-        for i in range(1): # self.mipmap_count # SMALLEST TO LARGEST
-            glTexImage2D(GL_TEXTURE_2D, i, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data)
         # for each...
         # mipmaps: smallest to largest
         #-- frames: first to last
         #---- faces: first to last (???)
         #------ slices: min to max (range(depth))
-
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, self.mipmap_count - 1)
+        for i in range(self.mipmap_count - 1, 0, -1): # SMALLEST TO LARGEST
+            # ^ stops at 256x256px, not 512x512?
+            width = self.width >> i
+            height = self.height >> i
+            if width < 4:
+##                data = self.file.read(16)
+                pixel = bytes([int(255 * x) for x in self.reflectivity])
+                pixels = pixel * width * height
+            else:
+                data = self.file.read(width * height)
+                pixels = DXT1_decode(data, width, height) # RGB_888
+            glTexImage2D(GL_TEXTURE_2D, i, GL_RGB, width, height, 0, GL_RGB,
+                         GL_UNSIGNED_BYTE, pixels)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+            # ^ forces texture to use base mipmap
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 1)
+            # ^ sets base mipmap (default == 0)
+        print(bool(glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_RESIDENT)))
+        # ^ is texture mipmap complete?
+        # https://www.khronos.org/opengl/wiki/Texture#Texture_completeness
 
 if __name__ == "__main__":
     import sys
 
     from OpenGL.GL import *
     from OpenGL.GL.shaders import compileShader, compileProgram
-    from PyQt5 import QtWidgets
+    from PyQt5 import QtCore, QtWidgets
 
 
     def except_hook(cls, exception, traceback):
@@ -201,16 +215,28 @@ if __name__ == "__main__":
 
     app = QtWidgets.QApplication([])
 
-    test_vtf = vtf("../../test_materials/customdev/dev_measuregeneric01green.vtf")
-##    test_vtf = vtf("../../test_materials/customdev/dev_measurewall01green.vtf")
+##    test_vtf = vtf("../../test_materials/customdev/dev_measuregeneric01green.vtf")
+    test_vtf = vtf("../../test_materials/customdev/dev_measurewall01green.vtf")
     
     class viewport(QtWidgets.QOpenGLWidget):
         def __init__(self):
             super(viewport, self).__init__(parent=None)
+            self.mipmap = test_vtf.mipmap_count - 1
+
+        def keyPressEvent(self, event):
+            key = event.key()
+            if key == QtCore.Qt.Key_Left:
+                self.mipmap = max(self.mipmap - 1, 0)
+            elif key == QtCore.Qt.Key_Right:
+                self.mipmap = min(self.mipmap + 1, test_vtf.mipmap_count - 1)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, self.mipmap)
+            # no visible changes occur /;
         
         def initializeGL(self):
+            glClearColor(.25, .25, .25, 1.0)
             # test_vtf.load_thumbnail() # <-- TESTED
             test_vtf.load_mipmaps()
+            self.active_texture = test_vtf.mipmap_count - 1
             vertex_source = """#version 450 core
 layout(location = 0) in vec3 vertexPosition;
 out vec3 position;
@@ -237,6 +263,7 @@ void main() {
             glVertex(1, 0)
             glVertex(0, 0)
             glEnd()
+
             
     window = viewport()
     window.setGeometry(128, 64, 576, 576)
