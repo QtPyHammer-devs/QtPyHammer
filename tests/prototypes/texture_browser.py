@@ -4,7 +4,6 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 sys.path.insert(0, "../../QtPyHammer")
-print(os.listdir("../../QtPyHammer"))
 from utilities import vtf
 
 
@@ -25,16 +24,22 @@ class texture_browser(QtWidgets.QDialog):
         scroll_area = QtWidgets.QScrollArea()
         page = QtWidgets.QWidget()
         page.setLayout(QtWidgets.QGridLayout())
-        for y in range(12):
-            for x in range(8):
-                label = QtWidgets.QLabel()
-                magenta = b"\xFF\x00\xFF"
-                black = b"\x00\x00\x00"
-                data = magenta + black + black + magenta
-                image = QtGui.QImage(data, 2, 2, QtGui.QImage.Format_RGB888)
-                image.setDevicePixelRatio(1 / 32) # scale *32
-                label.setPixmap(QtGui.QPixmap.fromImage(image))
-                page.layout().addWidget(label, x, y)
+        materials = "../../test_materials"
+        filenames = []
+        filenames.append(f"{materials}/customdev/dev_measuregeneric01green.vtf")
+        filenames.append(f"{materials}/customdev/dev_measurewall01green.vtf")
+        textures = {f: vtf.vtf(f) for f in filenames}
+        for x, name in enumerate(textures):
+            label = QtWidgets.QLabel()
+            texture = textures[name]
+            width = texture.thumbnail_width
+            height = texture.thumbnail_height
+            image = QtGui.QImage(texture.thumbnail, width, height,
+                                 QtGui.QImage.Format_RGB888)
+            label.setPixmap(QtGui.QPixmap.fromImage(image))
+            label.setScaledContents(True)
+            label.setMinimumSize(128, 128)
+            page.layout().addWidget(label, 0, x)
         scroll_area.setWidget(page)
         scroll_area.setHorizontalScrollBarPolicy(1) # Always Off
         scroll_area.setVerticalScrollBarPolicy(2) # Always On
