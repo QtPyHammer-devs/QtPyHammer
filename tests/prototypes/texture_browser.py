@@ -21,29 +21,25 @@ class texture_browser(QtWidgets.QDialog):
         # top has a scrolling page of texture thumbnails
         # bottom has filters, searchbar, OK & Cancel buttons
         layout = QtWidgets.QVBoxLayout()
-        scroll_area = QtWidgets.QScrollArea()
-        page = QtWidgets.QWidget()
-        page.setLayout(QtWidgets.QGridLayout())
-        materials = "../../test_materials"
         filenames = []
-        filenames.append(f"{materials}/customdev/dev_measuregeneric01green.vtf")
-        filenames.append(f"{materials}/customdev/dev_measurewall01green.vtf")
-        textures = {f: vtf.vtf(f) for f in filenames}
-        for x, name in enumerate(textures):
-            label = QtWidgets.QLabel()
-            texture = textures[name]
-            width = texture.thumbnail_width
-            height = texture.thumbnail_height
-            image = QtGui.QImage(texture.thumbnail, width, height,
+        filenames.append("customdev/dev_measuregeneric01green.vtf")
+        filenames.append("customdev/dev_measurewall01green.vtf")
+        materials = "../../test_materials"
+        textures = [(f, vtf.vtf(f"{materials}/{f}")) for f in filenames]
+        texture_previews = QtWidgets.QListWidget() # could also be QListView
+        texture_previews.setViewMode(QtWidgets.QListWidget.IconMode)
+        texture_previews.setIconSize(QtCore.QSize(128, 128))
+        texture_previews.setResizeMode(QtWidgets.QListWidget.Adjust)
+        for texture_name, texture_vtf in textures:
+            width = texture_vtf.thumbnail_width
+            height = texture_vtf.thumbnail_height
+            image = QtGui.QImage(texture_vtf.thumbnail, width, height,
                                  QtGui.QImage.Format_RGB888)
-            label.setPixmap(QtGui.QPixmap.fromImage(image))
-            label.setScaledContents(True)
-            label.setMinimumSize(128, 128)
-            page.layout().addWidget(label, 0, x)
-        scroll_area.setWidget(page)
-        scroll_area.setHorizontalScrollBarPolicy(1) # Always Off
-        scroll_area.setVerticalScrollBarPolicy(2) # Always On
-        layout.addWidget(scroll_area)
+            image = image.scaled(128, 128) # must upscale for QIcon manually
+            icon = QtGui.QIcon(QtGui.QPixmap.fromImage(image))
+            item = QtWidgets.QListWidgetItem(icon, texture_name)
+            texture_previews.addItem(item)
+        layout.addWidget(texture_previews)
         layout.addWidget(QtWidgets.QLabel("Search Options")) # placeholder
         # ^ https://doc.qt.io/qt-5/qlabel.html
         # -- QLabels can hold text or images, great for markers
