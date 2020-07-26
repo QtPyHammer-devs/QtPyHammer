@@ -147,7 +147,6 @@ class vtf:
 
     def __del__(self):
         self.file.close()
-        super(vtf, self).__del__()
 
     def load_thumbnail(self):
         width, height = self.thumbnail_width, self.thumbnail_height
@@ -163,7 +162,7 @@ class vtf:
         """returns the decoded thumbnail"""
         self.file.seek(self.header_size) # maybe elsewhere if v7.3+
         width, height = self.thumbnail_width, self.thumbnail_height
-        thumb = self.file.read(width * height // 2)
+        thumb = self.file.read(width * height)
         return DXT1_decode(thumb, width, height)
 
     def load_mipmaps(self):
@@ -215,8 +214,8 @@ if __name__ == "__main__":
 
     app = QtWidgets.QApplication([])
 
-##    test_vtf = vtf("../../test_materials/customdev/dev_measuregeneric01green.vtf")
-    test_vtf = vtf("../../test_materials/customdev/dev_measurewall01green.vtf")
+    test_vtf = vtf("../../test_materials/customdev/dev_measuregeneric01green.vtf")
+##    test_vtf = vtf("../../test_materials/customdev/dev_measurewall01green.vtf")
     
     class viewport(QtWidgets.QOpenGLWidget):
         def __init__(self):
@@ -234,8 +233,8 @@ if __name__ == "__main__":
         
         def initializeGL(self):
             glClearColor(.25, .25, .25, 1.0)
-            # test_vtf.load_thumbnail() # <-- TESTED
-            test_vtf.load_mipmaps()
+            test_vtf.load_thumbnail() # <-- TESTED
+##            test_vtf.load_mipmaps()
             self.active_texture = test_vtf.mipmap_count - 1
             vertex_source = """#version 300 es
 layout(location = 0) in mediump vec3 vertexPosition;
