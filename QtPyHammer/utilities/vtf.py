@@ -237,15 +237,15 @@ if __name__ == "__main__":
             # test_vtf.load_thumbnail() # <-- TESTED
             test_vtf.load_mipmaps()
             self.active_texture = test_vtf.mipmap_count - 1
-            vertex_source = """#version 450 core
-layout(location = 0) in vec3 vertexPosition;
-out vec3 position;
+            vertex_source = """#version 300 es
+layout(location = 0) in mediump vec3 vertexPosition;
+out mediump vec3 position;
 void main() {
     position = vertexPosition;
     gl_Position = vec4(vertexPosition, 1); }"""
-            fragment_source = """#version 450 core
-layout(location = 0) out vec4 outColour;
-in vec3 position;
+            fragment_source = """#version 300 es
+layout(location = 0) out mediump vec4 outColour;
+in mediump vec3 position;
 uniform sampler2D albedo;
 void main() {
     outColour = texture(albedo, vec2(position.x, -position.y)); }"""
