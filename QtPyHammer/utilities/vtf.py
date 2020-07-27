@@ -8,10 +8,10 @@ colour_format = {
     2: "RGB_888",
     3: "BGR_888",
     4: "RGB_565",
-    5: "I8",
-    6: "IA88",
-    7: "P8", # 8-bit paletted colour
-    8: "A8",
+    5: "I_8",
+    6: "IA_88",
+    7: "P_8", # 8-bit paletted colour
+    8: "A_8",
     9: "RGB_888_BLUESCREEN",
     10: "BGR_888_BLUESCREEN",
     11: "ARGB_8888",
@@ -30,8 +30,16 @@ colour_format = {
     24: "RGBA_16161616",
     25: "UVLX_8888"}
 
+colour_format_bpp = {0: 32, 1: 32,
+                     2: 24, 3: 24, 4: 16,
+                     5: 8, 6: 16, 7: 8, 8: 8,
+                     9: 24, 10: 24,
+                     11: 32, 12: 32,
+                     13: 8, 14: 16, 15: 16, # DXTs
+                     16: 32, 17: 16, 18: 16,
+                     19: 8, 20: 16, 21: 16, 22: 32,
+                     23: 64, 24: 64, 25: 32}
 
-# flags
 flags = {
     0x00000001: "point_sample", # GL_NEAREST, pixelate
     0x00000002: "trilinear",
@@ -128,8 +136,8 @@ class vtf:
         self.flag_names = {flags[f] for f in flags if self.flags & f}
         self.frame_count, self.first_frame = unpack("2H4x")
         self.reflectivity = unpack("3f4x")
-        self.bumpmap_scale, high_res_format = unpack("fI")
-        self.format = colour_format[high_res_format]
+        self.bumpmap_scale, self.format = unpack("fI")
+        # format name = colour_format[high_res_format]
         self.mipmap_count = unpack("B")[0]
         thumbnail_format, self.thumbnail_width, self.thumbnail_height = unpack("I2B")
         assert thumbnail_format == 13 # DXT1
@@ -148,6 +156,14 @@ class vtf:
     def __del__(self):
         self.file.close()
 
+    @property
+    def thumbnail(self):
+        """returns the decoded thumbnail"""
+        self.file.seek(self.header_size) # maybe elsewhere if v7.3+
+        width, height = self.thumbnail_width, self.thumbnail_height
+        thumb = self.file.read(width * height)
+        return DXT1_decode(thumb, width, height)
+
     def load_thumbnail(self):
         width, height = self.thumbnail_width, self.thumbnail_height
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
@@ -157,19 +173,35 @@ class vtf:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 
-    @property
-    def thumbnail(self):
-        """returns the decoded thumbnail"""
-        self.file.seek(self.header_size) # maybe elsewhere if v7.3+
-        width, height = self.thumbnail_width, self.thumbnail_height
-        thumb = self.file.read(width * height)
-        return DXT1_decode(thumb, width, height)
+    def mipmap(self, index):
+        if index < 0:
+            raise RuntimeError("Invalid mipmap index")
+        no_mips = bool(self.flags & 0x100)
+        if no_mips and index > 0:
+            raise RuntimeError(f"File only has one mipmap")
+        if index > self.mipmap_count - 1:
+            raise RuntimeError(f"Mipmap {index} not in file")
+        bytes_per_pixel = colour_format_bpp[self.format] // 8
+        size = lambda w, h: w * h * bytes_per_pixel
+        offset = 0
+        for i in range(self.mipmap_count - 1 - index):
+            mipmap_width = self.width >> i
+            mipmap_height = self.height >> i
+            print(f"skipping {mipmap_width}x{mipmap_height}")
+            offset += size(mipmap_width, mipmap_height)
+        thumbnail_size = self.thumbnail_width * self.thumbnail_height
+        thumbnail_end = 80 + thumbnail_size
+        self.file.seek(end_of_thumbnail + offset)
+        mipmap_width = self.width >> index
+        mipmap_height = self.height >> index
+        data = self.file.read(size(mipmap_width, mipmap_height))
+        return mipmap_width, mipmap_height, data
 
     def load_mipmaps(self):
         # https://github.com/LogicAndTrick/sledge-formats/blob/master/Sledge.Formats.Texture/Vtf/VtfFile.cs#L130
         # NOTE: not all VTFs have frames, faces or z_slices
         # seek to start
-        size_of_thumbnail = self.thumbnail_width * self.thumbnail_height // 2
+        size_of_thumbnail = self.thumbnail_width * self.thumbnail_height
         end_of_thumbnail = 80 + size_of_thumbnail
         self.file.seek(end_of_thumbnail)
         # for each...
@@ -183,22 +215,29 @@ class vtf:
             width = self.width >> i
             height = self.height >> i
             if width < 4:
-##                data = self.file.read(16)
-                pixel = bytes([int(255 * x) for x in self.reflectivity])
-                pixels = pixel * width * height
+                data = self.file.read(16)
+                pixels = DXT1_decode(data, 4, 4) # RGB_888
+##                pixel = bytes([int(255 * x) for x in self.reflectivity])
+##                pixels = pixel * width * height
             else:
                 data = self.file.read(width * height)
                 pixels = DXT1_decode(data, width, height) # RGB_888
+            if i == 0:
+                print(pixels)
             glTexImage2D(GL_TEXTURE_2D, i, GL_RGB, width, height, 0, GL_RGB,
                          GL_UNSIGNED_BYTE, pixels)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
             # ^ forces texture to use base mipmap
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 1)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 3)
             # ^ sets base mipmap (default == 0)
         print(bool(glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_RESIDENT)))
         # ^ is texture mipmap complete?
         # https://www.khronos.org/opengl/wiki/Texture#Texture_completeness
+        end = self.file.tell()
+        self.file.read()
+        true_end = self.file.tell()
+        print(true_end - end, "bytes left")
 
 if __name__ == "__main__":
     import sys
@@ -214,8 +253,10 @@ if __name__ == "__main__":
 
     app = QtWidgets.QApplication([])
 
-    test_vtf = vtf("../../test_materials/customdev/dev_measuregeneric01green.vtf")
-##    test_vtf = vtf("../../test_materials/customdev/dev_measurewall01green.vtf")
+    materials = "../../test_materials"
+    test_vtf = vtf(f"{materials}/test.vtf")
+##    test_vtf = vtf(f"{materials}/customdev/dev_measuregeneric01green.vtf")
+##    test_vtf = vtf(f"{materials}/test_materials/customdev/dev_measurewall01green.vtf")
     
     class viewport(QtWidgets.QOpenGLWidget):
         def __init__(self):
@@ -233,12 +274,23 @@ if __name__ == "__main__":
         
         def initializeGL(self):
             glClearColor(.25, .25, .25, 1.0)
-            test_vtf.load_thumbnail() # <-- TESTED
-##            test_vtf.load_mipmaps()
-            self.active_texture = test_vtf.mipmap_count - 1
-            vertex_source = """#version 300 es
-layout(location = 0) in mediump vec3 vertexPosition;
-out mediump vec3 position;
+            # test_vtf.load_thumbnail() # <-- TESTED
+            # test_vtf.load_mipmaps()
+##            width, height, data = test_vtf.mipmap(8)
+            thumb_size = test_vtf.thumbnail_width * test_vtf.thumbnail_height
+            thumb_end = 80 + thumb_size
+            test_vtf.file.seek(thumb_end)
+            width, height = 8, 5 # why does this look close to right?
+            data = test_vtf.file.read()
+            print(colour_format[test_vtf.format], f"{width}x{height}")
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+                         GL_UNSIGNED_BYTE, data)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+            
+            vertex_source = """#version 450 core
+layout(location = 0) in vec3 vertexPosition;
+out vec3 position;
 void main() {
     position = vertexPosition;
     gl_Position = vec4(vertexPosition, 1); }"""
