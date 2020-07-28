@@ -20,6 +20,7 @@ class browser(QtWidgets.QDialog):
 
         fgd_dir = os.path.join(os.path.dirname(__file__), "../../test_fgds/")
         # ^ get fgd(s) file locations from user config(s)
+        # the fgd shouldn't be parsed here anyway
         tf_fgd = fgdtools.parser.FgdParse(os.path.join(fgd_dir, "tf.fgd"))
         all_entities = list(tf_fgd.entities)
         for fgd in tf_fgd.includes:
