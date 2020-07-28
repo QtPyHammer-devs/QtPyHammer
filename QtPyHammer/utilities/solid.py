@@ -167,4 +167,5 @@ def clip(poly, plane):
             # .vmf floating-point accuracy sucks
             split_verts["back"].append(cut_point)
             split_verts["front"].append(cut_point)
+            # ^ won't one of these points be added twice?
     return split_verts
