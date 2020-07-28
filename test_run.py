@@ -32,7 +32,7 @@ dark_palette.setColor(palette.Link, QtGui.QColor(42, 130, 218))
 dark_palette.setColor(palette.Highlight, QtGui.QColor(42, 130, 218))
 dark_palette.setColor(palette.HighlightedText, QtCore.Qt.black)
 dark_palette.setColor(palette.Disabled, palette.HighlightedText, locked)
-# qpalette.light, midlight, dark, mid, shadow
+dark_palette.setColor(palette.Disabled, palette.Light, base)
 app.setPalette(dark_palette)
 app.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }")
 
