@@ -8,7 +8,8 @@ current_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
 
 build_exe_options = {"excludes": ["tkinter"],
                      "includes": ["ctypes", "itertools", "struct", "sys", "time",
-                                  "numpy", "OpenGL.GL", "OpenGL.GLU", "PyQt5", "sdl2"]}
+                                  "numpy", "PyQt5", "sdl2"],
+                     "packages": ["OpenGL"]}
 
 base = None
 if sys.platform == "win32":
@@ -20,5 +21,5 @@ setup(name = "qt_gl_render_manager",
       options = {"build_exe": build_exe_options},
       executables = [Executable("qt_gl_render_manager.py",
                                 targetName="qt_gl_render_manager.exe",
-                                icon="../../icons/QtPy.ico",
+                                icon="../../QtPyHammer/icons/QtPy.ico",
                                 base=base)])
