@@ -2,6 +2,7 @@
 import os
 import re
 
+import fgdtools
 from PyQt5 import QtCore, QtGui, QtWidgets
 import numpy as np
 from OpenGL.GL import *
@@ -19,6 +20,7 @@ current_dir = os.path.dirname(os.path.realpath(__file__))
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(QtWidgets.QMainWindow, self).__init__(parent)
+        global current_dir
         self.setWindowTitle("QtPyHammer")
         self.setMinimumSize(640, 480)
 
@@ -106,11 +108,18 @@ class MainWindow(QtWidgets.QMainWindow):
 ##        self.actions["Tools>Ungroup"].triggered.connect(
         tools_menu.addSeparator()
         self.actions["Tools>Brush to Entity"] = tools_menu.addAction("&Tie to Entitiy")
-        ent_browser = entity.browser(self)
-        self.actions["Tools>Brush to Entity"].triggered.connect(ent_browser.exec)
-        # ent_browser.exec demands attention before closing
-        # we want the dialog to stay in front, but also to be able to ignore it
-        # otherwise we can't use the viewport(s) with it open
+        fgd_dir = os.path.join(current_dir, "../../test_fgds/") # TEST
+        # ^ get real fgd_dir from user config
+        try:
+            tf_fgd = fgdtools.parser.FgdParse(os.path.join(fgd_dir, "tf.fgd"))
+            entities = list(tf_fgd.entities)
+            for fgd in tf_fgd.includes:
+                entities.extend(fgd.entities)
+            ent_browser = entity.browser(entities, parent=self)
+            self.actions["Tools>Brush to Entity"].triggered.connect(ent_browser.show)
+        except Exception as exc:
+            raise exc
+            self.actions["Tools>Brush to Entity"].setEnabled(False)
         self.actions["Tools>Entity to Brush"] = tools_menu.addAction("&Move to World")
         self.actions["Tools>Entity to Brush"].setEnabled(False)
 ##        self.actions["Tools>Entity to Brush"].triggered.connect(
@@ -276,7 +285,6 @@ class MainWindow(QtWidgets.QMainWindow):
             open_url("https://tf2maps.net"))
 
         # load hotkeys config (change to QSettings)
-        global current_dir
         hotkeys_config = open(os.path.join(current_dir, "../configs/core_binds.txt"))
         for line_no, line in enumerate(hotkeys_config.readlines()):
             line = line.rstrip("\r\n")

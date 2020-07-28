@@ -9,26 +9,19 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class browser(QtWidgets.QDialog):
-    def __init__(self, parent=None):
-        super(browser, self).__init__(parent)
-        self.setModal(True)
+    def __init__(self, entities, parent):
+        super(browser, self).__init__(parent, QtCore.Qt.Tool)
+        if len(entities) == 0:
+            raise RuntimeError("No entites to browse!")
         self.setWindowTitle("Entity Browser")
         # self.setWindowIcon(parent.entity_icon)
         self.setGeometry(780, 220, 360, 640)
         # center with:
-        # self.setGeometry(QStyle.alignedRect(QtCore.Qt.LefttoRight, QtCore.Qt.AlignCenter, self.size(), parent.parent.desktop().availableGeometry()))
-
-        fgd_dir = os.path.join(os.path.dirname(__file__), "../../test_fgds/")
-        # ^ get fgd(s) file locations from user config(s)
-        # the fgd shouldn't be parsed here anyway
-        tf_fgd = fgdtools.parser.FgdParse(os.path.join(fgd_dir, "tf.fgd"))
-        all_entities = list(tf_fgd.entities)
-        for fgd in tf_fgd.includes:
-            all_entities.extend(fgd.entities)
+        # self.setGeometry(QStyle.alignedRect(QtCore.Qt.LefttoRight,QtCore.Qt.AlignCenter, self.size(), parent.parent.desktop().availableGeometry()))
         point_or_solid = lambda e: e.class_type in ("PointClass", "SolidClass")
-        filtered_entities = list(filter(point_or_solid, all_entities))
+        filtered_entities = list(filter(point_or_solid, entities))
         self.entities = sorted(filtered_entities, key=lambda e: e.name)
-        default_entity = "prop_dynamic" # set in config(s)
+        default_entity = "prop_dynamic" # set in user config
         # test prop_dynamic for flags and logic
         # test team_control_point for more field types
         entity_names = [e.name for e in self.entities]
@@ -100,11 +93,15 @@ class browser(QtWidgets.QDialog):
         self.entity_label = QtWidgets.QLabel(self.current_entity.name)
         # ^ f"{entitiy.name} {'- ' + selection's targetname (if != '')}"
         # TODO: change comments tab's label to ^
-        try: # remove logic & flags tabs (if used)
-            self.removeTab(2)
-            self.removeTab(2)
-        except:
-            pass
+        # remove logic & flags tabs (if used)
+        # loop over all tabs, check names, delete if logic or flags
+        tabs_to_delete = []
+        for i in range(self.base_widget.count()):
+            tab_name = self.base_widget.tabText(i)
+            if tab_name in ("Logic", "Flags"):
+                tabs_to_delete.append(i)
+        for i in tabs_to_delete:
+            self.base_widget.removeTab(i)
         self.desc_label.setText(entity.description.split(".")[0]) # paragraph in fgd amendment
         properties = [*filter(lambda p: isinstance(p, fgdtools.parser.FgdEntityProperty), entity.properties)]
         inputs = [*filter(lambda i: isinstance(i, fgdtools.parser.FgdEntityInput), entity.properties)]
