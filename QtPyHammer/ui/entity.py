@@ -86,29 +86,34 @@ class browser(QtWidgets.QDialog):
         layout.addWidget(QtWidgets.QTextEdit()) # filter for .vmf breaking characters
         comments_tab.setLayout(layout)
         self.base_widget.addTab(comments_tab, "Comments")
+        self.load_entity(self.current_index)
 
     def load_entity(self, index): # ADD SmartEdit toggle & tooltips
         entity = self.entities[index]
         self.current_entity = entity
         self.entity_label = QtWidgets.QLabel(self.current_entity.name)
         # ^ f"{entitiy.name} {'- ' + selection's targetname (if != '')}"
-        # TODO: change comments tab's label to ^
-        # remove logic & flags tabs (if used)
-        # loop over all tabs, check names, delete if logic or flags
+##        self.widget(1).layout().itemAt(0).setText(self.current_entity.name)
+        # TODO: change comments tab's label to ^ (breaks atm)
         tabs_to_delete = []
         for i in range(self.base_widget.count()):
             tab_name = self.base_widget.tabText(i)
             if tab_name in ("Logic", "Flags"):
                 tabs_to_delete.append(i)
-        for i in tabs_to_delete:
+        for i in reversed(tabs_to_delete):
             self.base_widget.removeTab(i)
+        # ^ maybe recycle the old tabs?
         self.desc_label.setText(entity.description.split(".")[0]) # paragraph in fgd amendment
         properties = [*filter(lambda p: isinstance(p, fgdtools.parser.FgdEntityProperty), entity.properties)]
         inputs = [*filter(lambda i: isinstance(i, fgdtools.parser.FgdEntityInput), entity.properties)]
         outputs = [*filter(lambda o: isinstance(o, fgdtools.parser.FgdEntityOutput), entity.properties)]
         # split properly in some version of fgdtools (prob 1.0.0 but it's broken?)
         if len(inputs) > 0 or len(outputs) > 0: # OR ANY inputs recieved
-            self.base_widget.addTab(QtWidgets.QWidget(), "Logic")
+            logic_widget = QtWidgets.QWidget() # <- make it's own class
+            logic_widget.setLayout(QtWidgets.QVBoxLayout())
+            logic_widget.layout().addWidget(QtWidgets.QLabel("Inputs"))
+            logic_widget.layout().addWidget(QtWidgets.QLabel("Outputs"))
+            self.base_widget.addTab(logic_widget, "Logic")
         entity_widget = QtWidgets.QWidget()
         form = QtWidgets.QFormLayout()
         for p in [p for p in properties if p.value_type == "flags"]: # loop once and make flags = p
