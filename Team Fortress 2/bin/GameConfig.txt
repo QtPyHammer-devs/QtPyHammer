@@ -1,0 +1,53 @@
+"Configs"
+{
+	"Games"
+	{
+		"Half-Life 2"
+		{
+			"GameDir"		"D:\SteamLibrary\steamapps\common\Team Fortress 2\hl2"
+			"Hammer"
+			{
+				"GameData0"		"D:\SteamLibrary\steamapps\common\Team Fortress 2\bin\halflife2.fgd"
+				"TextureFormat"		"5"
+				"MapFormat"		"4"
+				"DefaultTextureScale"		"0.250000"
+				"DefaultLightmapScale"		"16"
+				"GameExe"		"D:\SteamLibrary\steamapps\common\Team Fortress 2\hl2.exe"
+				"DefaultSolidEntity"		"func_detail"
+				"DefaultPointEntity"		"info_player_start"
+				"BSP"		"C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\bin\vbsp.exe"
+				"Vis"		"C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\bin\vvis.exe"
+				"Light"		"C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\bin\vrad.exe"
+				"GameExeDir"		"C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2"
+				"MapDir"		"C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\sourcesdk_content\hl2\mapsrc"
+				"BSPDir"		"C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\hl2\maps"
+				"CordonTexture"		"tools\toolsskybox"
+				"MaterialExcludeCount"		"0"
+			}
+		}
+		"Team Fortress 2"
+		{
+			"GameDir"		"D:\SteamLibrary\steamapps\common\Team Fortress 2\tf"
+			"Hammer"
+			{
+				"GameData0"		"D:\SteamLibrary\steamapps\common\Team Fortress 2\bin\tf-puddy.fgd"
+				"TextureFormat"		"5"
+				"MapFormat"		"4"
+				"DefaultTextureScale"		"0.250000"
+				"DefaultLightmapScale"		"16"
+				"GameExe"		"D:\SteamLibrary\steamapps\common\Team Fortress 2\hl2.exe"
+				"DefaultSolidEntity"		"func_detail"
+				"DefaultPointEntity"		"prop_static"
+				"BSP"		"D:\SteamLibrary\steamapps\common\Team Fortress 2\bin\vbsp.exe"
+				"Vis"		"D:\SteamLibrary\steamapps\common\Team Fortress 2\bin\vvis.exe"
+				"Light"		"D:\SteamLibrary\steamapps\common\Team Fortress 2\bin\vrad.exe"
+				"GameExeDir"		"D:\SteamLibrary\steamapps\common\Team Fortress 2"
+				"MapDir"		"E:\Mod\tf2\mapsrc"
+				"BSPDir"		"D:\SteamLibrary\steamapps\common\Team Fortress 2\tf\maps"
+				"CordonTexture"		"tools\toolsskybox"
+				"MaterialExcludeCount"		"0"
+			}
+		}
+	}
+	"SDKVersion"		"5"
+}

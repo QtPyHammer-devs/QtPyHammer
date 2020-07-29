@@ -116,6 +116,8 @@ class browser(QtWidgets.QDialog):
             self.base_widget.addTab(logic_widget, "Logic")
         entity_widget = QtWidgets.QWidget()
         form = QtWidgets.QFormLayout()
+        form.setRowWrapPolicy(QtWidgets.QFormLayout.WrapAllRows)
+        form.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpaningFieldsGrow)
         for p in [p for p in properties if p.value_type == "flags"]: # loop once and make flags = p
             # should ask about having this simplified in fgdtools
             flags_tab = QtWidgets.QWidget()
