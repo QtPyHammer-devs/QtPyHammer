@@ -3,6 +3,7 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from QtPyHammer.ui.core import MainWindow
+from QtPyHammer.ops.palette import load_palette
 
 
 def except_hook(cls, exception, traceback): # for debugging Qt slots
@@ -10,35 +11,19 @@ def except_hook(cls, exception, traceback): # for debugging Qt slots
 sys.excepthook = except_hook
 
 app = QtWidgets.QApplication([])
-# DARK MODE
 app.setStyle(QtWidgets.QStyleFactory.create("Fusion"))
-palette = QtGui.QPalette
-dark_palette = palette()
-base = QtGui.QColor(45, 45, 45)
-locked = QtGui.QColor(127, 127, 127)
-dark_palette.setColor(palette.Window, base)
-dark_palette.setColor(palette.WindowText, QtCore.Qt.white)
-dark_palette.setColor(palette.Base, QtGui.QColor(18,18,18))
-dark_palette.setColor(palette.AlternateBase, base)
-dark_palette.setColor(palette.ToolTipBase, QtCore.Qt.white)
-dark_palette.setColor(palette.ToolTipText, QtCore.Qt.white)
-dark_palette.setColor(palette.Text, QtCore.Qt.white);
-dark_palette.setColor(palette.Disabled, palette.Text, locked)
-dark_palette.setColor(palette.Button, base)
-dark_palette.setColor(palette.ButtonText, QtCore.Qt.white)
-dark_palette.setColor(palette.Disabled, palette.ButtonText, locked)
-dark_palette.setColor(palette.BrightText, QtCore.Qt.red)
-dark_palette.setColor(palette.Link, QtGui.QColor(42, 130, 218))
-dark_palette.setColor(palette.Highlight, QtGui.QColor(42, 130, 218))
-dark_palette.setColor(palette.HighlightedText, QtCore.Qt.black)
-dark_palette.setColor(palette.Disabled, palette.HighlightedText, locked)
-dark_palette.setColor(palette.Disabled, palette.Light, base)
-app.setPalette(dark_palette)
-app.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }")
+# load all palettes os.listdir
+light_mode = load_palette("light_mode")
+dark_mode = load_palette("dark_mode")
+# set the default from settings.ini # test_run.py will use private_setting.ini (add to .gitignore)
+app.setPalette(light_mode) # default palette
+if sys.platform == "win32":
+    reg = QtCore.QSettings("HKEY_CURRENT_USER/Software/Microsoft/Windows/CurrentVersion/Themes/Personalize", QtCore.QSettings.NativeFormat)
+    if reg.value("AppsUseLightTheme") == 0:
+        app.setPalette(dark_mode)
+        app.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }")
 
-# TEST CODE
 window = MainWindow()
 window.showMaximized()
-window.new_tab(f"test_maps/{sys.argv[1]}.vmf")
-# END TEST CODE
+window.new_tab(f"Team Fortress 2/tf/mapsrc/{sys.argv[1]}.vmf")
 sys.exit(app.exec_())
