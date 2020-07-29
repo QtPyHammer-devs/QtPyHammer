@@ -2,7 +2,6 @@
 import os
 import re
 
-import fgdtools
 from PyQt5 import QtCore, QtGui, QtWidgets
 import numpy as np
 from OpenGL.GL import *
@@ -14,8 +13,6 @@ from ..ui import viewport
 from ..ui import workspace
 from .. import ops
 
-
-current_dir = os.path.dirname(os.path.realpath(__file__))
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -108,16 +105,11 @@ class MainWindow(QtWidgets.QMainWindow):
 ##        self.actions["Tools>Ungroup"].triggered.connect(
         tools_menu.addSeparator()
         self.actions["Tools>Brush to Entity"] = tools_menu.addAction("&Tie to Entitiy")
-        fgd_dir = os.path.join(current_dir, "../../test_fgds/") # TEST
-        # ^ get real fgd_dir from user config
         try:
-            tf_fgd = fgdtools.parser.FgdParse(os.path.join(fgd_dir, "tf.fgd"))
-            entities = list(tf_fgd.entities)
-            for fgd in tf_fgd.includes:
-                entities.extend(fgd.entities)
-            ent_browser = entity.browser(entities, parent=self)
+            ent_browser = entity.browser(parent=self)
             self.actions["Tools>Brush to Entity"].triggered.connect(ent_browser.show)
         except Exception as exc:
+            # log the full exception for debug
             print("Failed to load .fgds!")
             self.actions["Tools>Brush to Entity"].setEnabled(False)
         self.actions["Tools>Entity to Brush"] = tools_menu.addAction("&Move to World")
@@ -284,21 +276,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["Help>TF2Maps"].triggered.connect(
             open_url("https://tf2maps.net"))
 
-        # load hotkeys config (change to QSettings)
-        hotkeys_config = open(os.path.join(current_dir, "../configs/core_binds.txt"))
-        for line_no, line in enumerate(hotkeys_config.readlines()):
-            line = line.rstrip("\r\n")
-            if line == "":
+        app = QtWidgets.QApplication.instance()
+        for action in app.hotkeys.allKeys():
+            if action not in self.actions:
                 continue
-            try:
-                action, shortcut = re.split("[\ \t]{2,}", line)
-            except Exception as exc:
-                print(f"line {line_no:03d} '{line}'")
-            try:
-                self.actions[action].setShortcut(shortcut)
-            except AttributeError:
-                print(f"{action} is not a registered action")
-        hotkeys_config.close()
+            shortcut = app.hotkeys.value(action)
+            self.actions[action].setShortcut(shortcut)
 
         self.setMenuBar(self.main_menu)
 
@@ -334,8 +317,7 @@ class MainWindow(QtWidgets.QMainWindow):
             return
         elif vmf_path == None: # new file
             filename = "untitled"
-            global current_dir
-            vmf_path = os.path.join(current_dir, "../configs/blank.vmf")
+            vmf_path = "configs/blank.vmf"
         else: # load the requested file (vmf_path) into a new tab
             filename = os.path.basename(vmf_path)
         tab = workspace.VmfTab(vmf_path, parent=self)

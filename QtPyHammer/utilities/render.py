@@ -62,11 +62,7 @@ class manager:
             self.shader_version = "GLSL_450"
         elif major >= 3 and minor >= 0:
             self.shader_version = "GLES_300"
-        if getattr(sys, "frozen", False): # compiled
-            current_dir = os.path.dirname(sys.executable)
-        else:
-            current_dir = os.path.dirname(os.path.realpath(__file__)) + "/.."
-        shader_folder = f"{current_dir}/shaders/{self.shader_version}/"
+        shader_folder = f"shaders/{self.shader_version}/"
         compile_shader = lambda f, t: compileShader(open(shader_folder + f, "rb"), t)
         vert_brush = compile_shader("brush.vert", GL_VERTEX_SHADER)
         vert_displacement = compile_shader("displacement.vert", GL_VERTEX_SHADER)

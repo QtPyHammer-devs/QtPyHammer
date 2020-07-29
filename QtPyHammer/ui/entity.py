@@ -9,8 +9,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class browser(QtWidgets.QDialog):
-    def __init__(self, entities, parent):
+    def __init__(self, parent):
         super(browser, self).__init__(parent, QtCore.Qt.Tool)
+        entities = QtWidgets.QApplication.instance().entities
         if len(entities) == 0:
             raise RuntimeError("No entites to browse!")
         self.setWindowTitle("Entity Browser")
@@ -116,8 +117,7 @@ class browser(QtWidgets.QDialog):
             self.base_widget.addTab(logic_widget, "Logic")
         entity_widget = QtWidgets.QWidget()
         form = QtWidgets.QFormLayout()
-        form.setRowWrapPolicy(QtWidgets.QFormLayout.WrapAllRows)
-        form.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpaningFieldsGrow)
+        form.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
         for p in [p for p in properties if p.value_type == "flags"]: # loop once and make flags = p
             # should ask about having this simplified in fgdtools
             flags_tab = QtWidgets.QWidget()
