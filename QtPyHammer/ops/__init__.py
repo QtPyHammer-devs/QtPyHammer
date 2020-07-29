@@ -3,7 +3,6 @@ import os
 from PyQt5 import QtWidgets
 
 from . import vmf
-from . import palette
 
 
 current_dir = os.path.dirname(os.path.realpath(__file__))

@@ -1,7 +1,8 @@
-from PyQt5 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
-def load_palette(filename):
-    palette_ini = QtCore.QSettings(f"configs/palettes/{filename}.ini", QtCore.QSettings.IniFormat)
+
+def load_theme(filename):
+    palette_ini = QtCore.QSettings(filename, QtCore.QSettings.IniFormat)
     palette = QtGui.QPalette()
     def read(ini_key, colour_group, colour_role):
         string = palette_ini.value(ini_key)
@@ -33,8 +34,8 @@ def load_palette(filename):
         palette_ini.endGroup()
     return palette
 
-def save_palette(palette, filename):
-    palette_ini = QtCore.QSettings(f"configs/palettes/{filename}.ini", QtCore.QSettings.IniFormat)
+def save_theme(palette, filename):
+    palette_ini = QtCore.QSettings(filename, QtCore.QSettings.IniFormat)
     def write(ini_key, colour_group, colour_role):
         colour = palette.color(colour_group, colour_role)
         ini_value = f"{colour.red()} {colour.blue()} {colour.green()}"
@@ -63,3 +64,14 @@ def save_palette(palette, filename):
         write("link", group, palette.Link)
         write("linkVisited", group, palette.LinkVisited)
         palette_ini.endGroup()
+
+
+class theme_editor(QtWidgets.QWidget):
+    # preview panel
+    layout = QtWidgets.QHBoxLayout()
+    form = QtWidgets.QFormLayout() # editor form
+##    form.addRow("role", colour_picker)
+##    # ^ coloured label that opens a colour wheel
+    # layout.addWidget(editor_form)
+    # ...
+    # layout.addWidget(preview_widget)
