@@ -25,14 +25,19 @@ app.themes = dict()
 for filename in os.listdir("configs/themes/"):
     theme_name = filename.rpartition(".")[0] # filename without extention
     app.themes[theme_name] = load_theme(f"configs/themes/{filename}")
-theme = preferences.value("Theme", "light_mode")
+theme = preferences.value("Theme", "default")
+if theme not in app.themes:
+    theme = "default"
 app.setStyle(QtWidgets.QStyleFactory.create("Fusion"))
 app.setPalette(app.themes[theme])
 
 if sys.platform == "win32":
     reg = QtCore.QSettings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", QtCore.QSettings.NativeFormat)
     if reg.value("AppsUseLightTheme") == 0:
-        app.setPalette(app.themes["dark_mode"])
+        dark_theme = f"{theme}_dark"
+        if dark_theme not in app.themes:
+            dark_theme = "default_dark"
+        app.setPalette(app.themes[dark_theme])
         app.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }")
         # ^ allow themes to include .css files
         # -- will need some way to indicate which widgets have them set
