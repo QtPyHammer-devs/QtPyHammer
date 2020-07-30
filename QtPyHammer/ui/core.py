@@ -109,6 +109,7 @@ class MainWindow(QtWidgets.QMainWindow):
             ent_browser = entity.browser(parent=self)
             self.actions["Tools>Brush to Entity"].triggered.connect(ent_browser.show)
         except Exception as exc:
+            raise exc
             # log the full exception for debug
             print("Failed to load .fgds!")
             self.actions["Tools>Brush to Entity"].setEnabled(False)

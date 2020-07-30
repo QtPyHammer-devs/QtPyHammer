@@ -1,5 +1,5 @@
 cx-Freeze==6.1
-fgdtools==0.2.0
+fgdtools==1.0.1
 numpy==1.18.5
 PyOpenGL==3.1.5
 PyQt5>=5.15.0

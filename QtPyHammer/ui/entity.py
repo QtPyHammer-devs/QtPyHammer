@@ -11,18 +11,18 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class browser(QtWidgets.QDialog):
     def __init__(self, parent):
         super(browser, self).__init__(parent, QtCore.Qt.Tool)
-        entities = QtWidgets.QApplication.instance().entities
-        if len(entities) == 0:
-            raise RuntimeError("No entites to browse!")
         self.setWindowTitle("Entity Browser")
         # self.setWindowIcon(parent.entity_icon)
         self.setGeometry(780, 220, 360, 640)
         # center with:
         # self.setGeometry(QStyle.alignedRect(QtCore.Qt.LefttoRight,QtCore.Qt.AlignCenter, self.size(), parent.parent.desktop().availableGeometry()))
+        app = QtWidgets.QApplication.instance()
+        if len(app.fgd.entities) == 0:
+            raise RuntimeError("No entites to browse!")
         point_or_solid = lambda e: e.class_type in ("PointClass", "SolidClass")
-        filtered_entities = list(filter(point_or_solid, entities))
+        filtered_entities = list(filter(point_or_solid, app.fgd.entities))
         self.entities = sorted(filtered_entities, key=lambda e: e.name)
-        default_entity = "prop_dynamic" # set in user config
+        default_entity = app.game_config.value("Hammer/DefaultPointEntity", "prop_static")
         # test prop_dynamic for flags and logic
         # test team_control_point for more field types
         entity_names = [e.name for e in self.entities]
@@ -125,7 +125,7 @@ class browser(QtWidgets.QDialog):
             flags_scroll = QtWidgets.QScrollArea()
             flags_list = QtWidgets.QVBoxLayout()
             flags_layout.addWidget(self.entity_label)
-            for o in p.options:
+            for o in p.choices:
                 flags_list.addWidget(QtWidgets.QCheckBox(o.display_name))
             flags_list.addStretch(1)
             flags_scroll.setLayout(flags_list)
@@ -145,9 +145,9 @@ class browser(QtWidgets.QDialog):
                 selector = colour_picker(default=p.default_value)
             elif p.value_type == "choices":
                 selector = QtWidgets.QComboBox()
-                options = {i: o.value for i, o in enumerate(p.options)}
-                selector.addItems([str(o.display_name) for o in p.options])
-                selector.setCurrentIndex([i for i, v in options.items() if v == p.default_value][0])
+                choices = {i: o.value for i, o in enumerate(p.choices)}
+                selector.addItems([str(o.display_name) for o in p.choices])
+                selector.setCurrentIndex([i for i, v in choices.items() if v == p.default_value][0])
             elif p.value_type == "integer":
                 # set "skin" min & max from model (props)
                 selector = QtWidgets.QSpinBox()
@@ -169,7 +169,7 @@ class browser(QtWidgets.QDialog):
                 description = p.display_name
             field_label.setToolTip(description)
             field_label.setWhatsThis(description)
-            # doesn't appear to work
+            # ^ doesn't appear to work
             if isinstance(selector, QtWidgets.QWidget):
                 selector.setToolTip(description)
                 selector.setWhatsThis(description)
@@ -227,12 +227,13 @@ class colour_picker(QtWidgets.QHBoxLayout):
                     except: # cannot get the strength from self.text
                         strength = default.split()[3]
                     self.setText("{} {} {} {}".format(*new_colour.getRgb()[:3], strength))
-            # preview the colour, but how?
+            # TODO: preview the colour
+            # QLabel with 1px QPixmap in the chosen colour
         self.button.clicked.connect(pick_colour)
         self.addWidget(self.text_field)
         self.addWidget(self.button)
 
-    # make a class from a FgdEntity object
+    # TODO: utilities.entity: make a class from a FgdEntity object
 ##class BasicEntitiy:
 ##    def __init__(self, base):
 ##        for property in base.properties:

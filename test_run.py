@@ -43,11 +43,9 @@ if sys.platform == "win32":
         # -- will need some way to indicate which widgets have them set
 
 # load all entities from the .fgd
-fgd_file = app.game_config.value("Hammer/GameData0") # the .fgd
-fgd = fgdtools.parser.FgdParse(fgd_file)
-app.entities = list(fgd.entities)
-for included_fgd in fgd.includes:
-    app.entities.extend(included_fgd.entities)
+##fgd_file = app.game_config.value("Hammer/GameData0") # the .fgd
+fgd_file = "Team Fortress 2/bin/tf.fgd"
+app.fgd = fgdtools.parser.FgdParse(fgd_file)
 
 # check gameinfo.txt for extra content paths
 # allow the user to load custom content from their own folders
