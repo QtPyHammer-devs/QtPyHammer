@@ -2823,6 +2823,8 @@ m QtPyHammer.ops.vmf        C:\Users\Jared\Documents\GitHub\QtPyHammer\QtPyHamme
 P QtPyHammer.ui             C:\Users\Jared\Documents\GitHub\QtPyHammer\QtPyHammer\ui\__init__.py
 m QtPyHammer.ui.core        C:\Users\Jared\Documents\GitHub\QtPyHammer\QtPyHammer\ui\core.py
 m QtPyHammer.ui.entity      C:\Users\Jared\Documents\GitHub\QtPyHammer\QtPyHammer\ui\entity.py
+P QtPyHammer.ui.user_preferences C:\Users\Jared\Documents\GitHub\QtPyHammer\QtPyHammer\ui\user_preferences\__init__.py
+m QtPyHammer.ui.user_preferences.theme C:\Users\Jared\Documents\GitHub\QtPyHammer\QtPyHammer\ui\user_preferences\theme.py
 m QtPyHammer.ui.viewport    C:\Users\Jared\Documents\GitHub\QtPyHammer\QtPyHammer\ui\viewport.py
 m QtPyHammer.ui.workspace   C:\Users\Jared\Documents\GitHub\QtPyHammer\QtPyHammer\ui\workspace.py
 P QtPyHammer.utilities      C:\Users\Jared\Documents\GitHub\QtPyHammer\QtPyHammer\utilities\__init__.py
@@ -3812,9 +3814,9 @@ Missing modules:
 ? OpenGL_accelerate.numpy_formathandler imported from OpenGL.arrays.numpymodule
 ? OpenGL_accelerate.vbo imported from OpenGL.arrays.vbo
 ? OpenGL_accelerate.wrapper imported from OpenGL.arrays.arrayhelpers, OpenGL.converters, OpenGL.wrapper
-? PyQt5.QtCore imported from QtPyHammer.ui.core, QtPyHammer.ui.entity, QtPyHammer.ui.viewport, QtPyHammer.ui.workspace, qtpyhammer__main__
-? PyQt5.QtGui imported from QtPyHammer.ui.core, QtPyHammer.ui.entity, QtPyHammer.ui.viewport, QtPyHammer.ui.workspace, QtPyHammer.utilities.render, qtpyhammer__main__
-? PyQt5.QtWidgets imported from QtPyHammer.ops, QtPyHammer.ui.core, QtPyHammer.ui.entity, QtPyHammer.ui.viewport, QtPyHammer.ui.workspace, qtpyhammer__main__
+? PyQt5.QtCore imported from QtPyHammer.ui.core, QtPyHammer.ui.entity, QtPyHammer.ui.user_preferences.theme, QtPyHammer.ui.viewport, QtPyHammer.ui.workspace, qtpyhammer__main__
+? PyQt5.QtGui imported from QtPyHammer.ui.core, QtPyHammer.ui.entity, QtPyHammer.ui.user_preferences.theme, QtPyHammer.ui.viewport, QtPyHammer.ui.workspace, QtPyHammer.utilities.render, qtpyhammer__main__
+? PyQt5.QtWidgets imported from QtPyHammer.ops, QtPyHammer.ui.core, QtPyHammer.ui.entity, QtPyHammer.ui.user_preferences, QtPyHammer.ui.user_preferences.theme, QtPyHammer.ui.viewport, QtPyHammer.ui.workspace, qtpyhammer__main__
 ? StringIO imported from numpy.core.tests.test_print, numpy.distutils.tests.test_exec_command, numpy.lib.format, numpy.lib.tests.test_regression, numpy.lib.tests.test_utils, numpy.lib.utils, numpy.testing._private.utils, pkg_resources._vendor.six
 ? __builtin__ imported from numpy, numpy.core.numeric, numpy.core.numerictypes, numpy.core.tests.test_multiarray, numpy.distutils.misc_util, numpy.lib._iotools, numpy.lib.function_base, numpy.lib.tests.test_format, numpy.ma.core, pkg_resources._vendor.pyparsing, pyparsing
 ? __main__ imported from bdb, pdb, pkg_resources, rlcompleter
@@ -3943,6 +3945,7 @@ copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\PyQt5\
 copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\PyQt5\Qt\bin\Qt5Gui.dll -> build\exe.win-amd64-3.8\lib\PyQt5\Qt5Gui.dll
 copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\PyQt5\QtWidgets.pyd -> build\exe.win-amd64-3.8\lib\PyQt5\QtWidgets.pyd
 copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\PyQt5\Qt\bin\Qt5Widgets.dll -> build\exe.win-amd64-3.8\lib\PyQt5\Qt5Widgets.dll
+Copying data from package QtPyHammer.ui.user_preferences...
 copying C:\Users\Jared\Documents\GitHub\QtPyHammer\venv\lib\site-packages\numpy\core\_multiarray_tests.cp38-win_amd64.pyd -> build\exe.win-amd64-3.8\lib\numpy\core\_multiarray_tests.cp38-win_amd64.pyd
 copying C:\Users\Jared\AppData\Local\Programs\Python\Python38\python38.dll -> build\exe.win-amd64-3.8\lib\numpy\core\python38.dll
 copying C:\Users\Jared\AppData\Local\Programs\Python\Python38\VCRUNTIME140.dll -> build\exe.win-amd64-3.8\lib\numpy\core\VCRUNTIME140.dll
@@ -4006,24 +4009,32 @@ copying C:\Users\Jared\AppData\Local\Programs\Python\Python38\DLLs\_tkinter.pyd 
 copying C:\Users\Jared\AppData\Local\Programs\Python\Python38\DLLs\pyexpat.pyd -> build\exe.win-amd64-3.8\lib\pyexpat.pyd
 copying C:\Users\Jared\AppData\Local\Programs\Python\Python38\DLLs\select.pyd -> build\exe.win-amd64-3.8\lib\select.pyd
 copying C:\Users\Jared\AppData\Local\Programs\Python\Python38\DLLs\unicodedata.pyd -> build\exe.win-amd64-3.8\lib\unicodedata.pyd
-copying QtPyHammer\configs\blank.vmf -> build\exe.win-amd64-3.8\configs\blank.vmf
-copying QtPyHammer\configs\core_binds.txt -> build\exe.win-amd64-3.8\configs\core_binds.txt
-copying QtPyHammer\shaders\blend.frag -> build\exe.win-amd64-3.8\shaders\blend.frag
-copying QtPyHammer\shaders\WorldVertexTransition_ps14.psh -> build\exe.win-amd64-3.8\shaders\WorldVertexTransition_ps14.psh
-copying QtPyHammer\shaders\GLES_300\brush.vert -> build\exe.win-amd64-3.8\shaders\GLES_300\brush.vert
-copying QtPyHammer\shaders\GLES_300\displacement.vert -> build\exe.win-amd64-3.8\shaders\GLES_300\displacement.vert
-copying QtPyHammer\shaders\GLES_300\flat_brush.frag -> build\exe.win-amd64-3.8\shaders\GLES_300\flat_brush.frag
-copying QtPyHammer\shaders\GLES_300\flat_displacement.frag -> build\exe.win-amd64-3.8\shaders\GLES_300\flat_displacement.frag
-copying QtPyHammer\shaders\GLES_300\stripey_brush.frag -> build\exe.win-amd64-3.8\shaders\GLES_300\stripey_brush.frag
-copying QtPyHammer\shaders\GLES_300\textured_brush.frag -> build\exe.win-amd64-3.8\shaders\GLES_300\textured_brush.frag
-copying QtPyHammer\shaders\GLES_300\textured_displacement.frag -> build\exe.win-amd64-3.8\shaders\GLES_300\textured_displacement.frag
-copying QtPyHammer\shaders\GLSL_450\brush.vert -> build\exe.win-amd64-3.8\shaders\GLSL_450\brush.vert
-copying QtPyHammer\shaders\GLSL_450\displacement.vert -> build\exe.win-amd64-3.8\shaders\GLSL_450\displacement.vert
-copying QtPyHammer\shaders\GLSL_450\flat_brush.frag -> build\exe.win-amd64-3.8\shaders\GLSL_450\flat_brush.frag
-copying QtPyHammer\shaders\GLSL_450\flat_displacement.frag -> build\exe.win-amd64-3.8\shaders\GLSL_450\flat_displacement.frag
-copying QtPyHammer\shaders\GLSL_450\stripey_brush.frag -> build\exe.win-amd64-3.8\shaders\GLSL_450\stripey_brush.frag
-copying QtPyHammer\shaders\GLSL_450\textured_brush.frag -> build\exe.win-amd64-3.8\shaders\GLSL_450\textured_brush.frag
-copying QtPyHammer\shaders\GLSL_450\textured_displacement.frag -> build\exe.win-amd64-3.8\shaders\GLSL_450\textured_displacement.frag
+copying configs\blank.vmf -> build\exe.win-amd64-3.8\configs\blank.vmf
+copying configs\hotkeys.ini -> build\exe.win-amd64-3.8\configs\hotkeys.ini
+copying configs\preferences.ini -> build\exe.win-amd64-3.8\configs\preferences.ini
+creating directory build\exe.win-amd64-3.8\configs\games
+copying configs\games\convert.py -> build\exe.win-amd64-3.8\configs\games\convert.py
+copying configs\games\Half-Life 2.ini -> build\exe.win-amd64-3.8\configs\games\Half-Life 2.ini
+copying configs\games\Team Fortress 2.ini -> build\exe.win-amd64-3.8\configs\games\Team Fortress 2.ini
+creating directory build\exe.win-amd64-3.8\configs\themes
+copying configs\themes\dark_mode.ini -> build\exe.win-amd64-3.8\configs\themes\dark_mode.ini
+copying configs\themes\light_mode.ini -> build\exe.win-amd64-3.8\configs\themes\light_mode.ini
+copying shaders\blend.frag -> build\exe.win-amd64-3.8\shaders\blend.frag
+copying shaders\WorldVertexTransition_ps14.psh -> build\exe.win-amd64-3.8\shaders\WorldVertexTransition_ps14.psh
+copying shaders\GLES_300\brush.vert -> build\exe.win-amd64-3.8\shaders\GLES_300\brush.vert
+copying shaders\GLES_300\displacement.vert -> build\exe.win-amd64-3.8\shaders\GLES_300\displacement.vert
+copying shaders\GLES_300\flat_brush.frag -> build\exe.win-amd64-3.8\shaders\GLES_300\flat_brush.frag
+copying shaders\GLES_300\flat_displacement.frag -> build\exe.win-amd64-3.8\shaders\GLES_300\flat_displacement.frag
+copying shaders\GLES_300\stripey_brush.frag -> build\exe.win-amd64-3.8\shaders\GLES_300\stripey_brush.frag
+copying shaders\GLES_300\textured_brush.frag -> build\exe.win-amd64-3.8\shaders\GLES_300\textured_brush.frag
+copying shaders\GLES_300\textured_displacement.frag -> build\exe.win-amd64-3.8\shaders\GLES_300\textured_displacement.frag
+copying shaders\GLSL_450\brush.vert -> build\exe.win-amd64-3.8\shaders\GLSL_450\brush.vert
+copying shaders\GLSL_450\displacement.vert -> build\exe.win-amd64-3.8\shaders\GLSL_450\displacement.vert
+copying shaders\GLSL_450\flat_brush.frag -> build\exe.win-amd64-3.8\shaders\GLSL_450\flat_brush.frag
+copying shaders\GLSL_450\flat_displacement.frag -> build\exe.win-amd64-3.8\shaders\GLSL_450\flat_displacement.frag
+copying shaders\GLSL_450\stripey_brush.frag -> build\exe.win-amd64-3.8\shaders\GLSL_450\stripey_brush.frag
+copying shaders\GLSL_450\textured_brush.frag -> build\exe.win-amd64-3.8\shaders\GLSL_450\textured_brush.frag
+copying shaders\GLSL_450\textured_displacement.frag -> build\exe.win-amd64-3.8\shaders\GLSL_450\textured_displacement.frag
 copying C:\Users\Jared\AppData\Local\Programs\Python\Python38\DLLs\libcrypto-1_1.dll -> build\exe.win-amd64-3.8\lib\libcrypto-1_1.dll
 copying C:\Users\Jared\AppData\Local\Programs\Python\Python38\DLLs\libssl-1_1.dll -> build\exe.win-amd64-3.8\lib\libssl-1_1.dll
 copying C:\Users\Jared\AppData\Local\Programs\Python\Python38\DLLs\libffi-7.dll -> build\exe.win-amd64-3.8\lib\libffi-7.dll
