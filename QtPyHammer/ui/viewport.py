@@ -16,8 +16,8 @@ camera.keybinds = {"FORWARD": [QtCore.Qt.Key_W], "BACK": [QtCore.Qt.Key_S],
                    "RIGHT": [QtCore.Qt.Key_D, QtCore.Qt.RightArrow],
                    "UP": [QtCore.Qt.Key_Q, QtCore.Qt.UpArrow],
                    "DOWN": [QtCore.Qt.Key_E, QtCore.Qt.DownArrow]}
-# ^ defined in settings ^
-camera.sensitivity = 2 # defined in settings
+
+camera.sensitivity = 2
 
 view_modes = ["flat", "textured", "wireframe"]
 # "silhouette" view mode, lights on flat gray brushwork & props
@@ -53,12 +53,6 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         # -- dynamically connect / disconnect the timer
 
     def update(self): # called on timer once initializeGL is run
-        # UPDATE CAMERA
-        if self.camera_moving: # TOGGLED ON: take user inputs
-            self.camera.update(self.mouse_vector, self.keys, self.dt)
-            if self.moved_last_tick == False: # prevent drift
-                self.mouse_vector = vector.vec2()
-            self.moved_last_tick = False
         self.makeCurrent()
         self.render_manager.update()
         self.doneCurrent()
@@ -97,6 +91,13 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         aspect = self.render_manager.aspect
         draw_distance = self.render_manager.draw_distance
         gluPerspective(fov, aspect, 0.1, draw_distance)
+        # UPDATE CAMERA
+        ms = self.timer.remainingTime() / self.timer.interval() / 1000
+        if self.camera_moving: # TOGGLED ON: take user inputs
+            self.camera.update(self.mouse_vector, self.keys, self.dt + ms)
+            if self.moved_last_tick == False: # prevent drift
+                self.mouse_vector = vector.vec2()
+            self.moved_last_tick = False
         self.camera.set()
         # ^ cannot call gluPerspective in render.manager.draw
         # -- this order of operations must be preserved
@@ -136,6 +137,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
             if self.camera_moving: # start tracking cursor
                 self.setMouseTracking(True)
                 self.cursor_start = QtGui.QCursor.pos()
+                self.last_mouse_position = vector.vec2(self.cursor_start.x(), self.cursor_start.y())
                 center = QtCore.QPoint(self.width() / 2, self.height() / 2)
                 QtGui.QCursor.setPos(self.mapToGlobal(center))
                 self.grabMouse()
@@ -175,14 +177,19 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         super(MapViewport3D, self).mousePressEvent(event)
 
     def mouseMoveEvent(self, event):
-        # use blender camera controls when not self.camera_moving
+        # TODO: use blender camera controls when not self.camera_moving
         if self.camera_moving:
-            center = QtCore.QPoint(self.width() / 2, self.height() / 2)
             self.current_mouse_position = vector.vec2(event.pos().x(), event.pos().y())
-            self.mouse_vector = self.current_mouse_position - vector.vec2(center.x(), center.y())
-            QtGui.QCursor.setPos(self.mapToGlobal(center))
+            self.mouse_vector = self.current_mouse_position - self.last_mouse_position
+            self.last_mouse_position = self.current_mouse_position
             self.moved_last_tick = True
         super(MapViewport3D, self).mouseMoveEvent(event)
+
+    def leaveEvent(self, event): # cursor leaves widget
+        if self.camera_moving:
+            center = QtCore.QPoint(self.width() / 2, self.height() / 2)
+            QtGui.QCursor.setPos(self.mapToGlobal(center))
+        super(MapViewport3D, self).leaveEvent(event)
 
     def mouseReleaseEvent(self, event): # end of click
         if event.button() == QtCore.Qt.LeftButton: # defined in settings
