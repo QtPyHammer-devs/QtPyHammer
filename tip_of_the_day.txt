@@ -4,4 +4,3 @@ Check https://teamwork.tf/community/map-stats to see if someone came up with the
 
 https://docs.google.com/spreadsheets/d/1vzK6g2DA4PWlcw6cIy2BITWyjXh3ilWXSNJ7Ucl4hFM/edit?usp=sharing
 Idolon's Payload & Payload Race Minimum Round Times
-# Auto map timings are handy (use .nav?)
