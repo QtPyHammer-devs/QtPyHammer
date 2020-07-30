@@ -16,8 +16,8 @@ app = QtWidgets.QApplication([])
 # ^ app can be accessed from anywhere with QtWidgets.QApplication.instance()
 
 # load all config files
-preferences = QtCore.QSettings("configs/preferences.ini", QtCore.QSettings.IniFormat)
-game = preferences.value("Game", "Team Fortress 2")
+app.preferences = QtCore.QSettings("configs/preferences.ini", QtCore.QSettings.IniFormat)
+game = app.preferences.value("Game", "Team Fortress 2")
 app.game_config = QtCore.QSettings(f"configs/games/{game}.ini", QtCore.QSettings.IniFormat)
 app.hotkeys = QtCore.QSettings("configs/hotkeys.ini", QtCore.QSettings.IniFormat)
 
@@ -25,7 +25,7 @@ app.themes = dict()
 for filename in os.listdir("configs/themes/"):
     theme_name = filename.rpartition(".")[0] # filename without extention
     app.themes[theme_name] = load_theme(f"configs/themes/{filename}")
-theme = preferences.value("Theme", "default")
+theme = app.preferences.value("Theme", "default")
 if theme not in app.themes:
     theme = "default"
 app.setStyle(QtWidgets.QStyleFactory.create("Fusion"))

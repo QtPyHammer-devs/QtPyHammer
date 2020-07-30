@@ -10,14 +10,11 @@ from ..utilities import render
 from ..utilities import vector
 
 
-# arrow keys aren't registering? why? do we need a separate function?
 camera.keybinds = {"FORWARD": [QtCore.Qt.Key_W], "BACK": [QtCore.Qt.Key_S],
-                   "LEFT": [QtCore.Qt.Key_A, QtCore.Qt.LeftArrow],
-                   "RIGHT": [QtCore.Qt.Key_D, QtCore.Qt.RightArrow],
-                   "UP": [QtCore.Qt.Key_Q, QtCore.Qt.UpArrow],
-                   "DOWN": [QtCore.Qt.Key_E, QtCore.Qt.DownArrow]}
-
-camera.sensitivity = 2
+                   "LEFT": [QtCore.Qt.Key_A],
+                   "RIGHT": [QtCore.Qt.Key_D],
+                   "UP": [QtCore.Qt.Key_Q],
+                   "DOWN": [QtCore.Qt.Key_E]}
 
 view_modes = ["flat", "textured", "wireframe"]
 # "silhouette" view mode, lights on flat gray brushwork & props
@@ -27,6 +24,8 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
     raycast = QtCore.pyqtSignal(vector.vec3, vector.vec3) # emits ray
     def __init__(self, parent=None, fps=60):
         super(MapViewport3D, self).__init__(parent=parent)
+        preferences = QtWidgets.QApplication.instance().preferences
+        camera.sensitivity = float(preferences.value("Input/MouseSensitivity", "2.0"))
         # RENDERING
         self.render_manager = render.manager()
         # model draw distance (defined in settings)
@@ -131,6 +130,8 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
     ##########################
     
     def keyPressEvent(self, event):
+        # arrow keys aren't registering? why?
+        # do they got to a different method?
         self.keys.add(event.key())
         if event.key() == QtCore.Qt.Key_Z:
             self.camera_moving = False if self.camera_moving else True
