@@ -300,706 +300,807 @@
 [
 	attribute_name(choices) : "Attribute" : 1 : "The Attribute name" =
 	[
-		"damage penalty" : "??? damage penalty"
-		"damage bonus" : "+??? damage bonus"
-		"clip size penalty" : "??? clip size"
-		"clip size bonus" : "+??? clip size"
-		"fire rate penalty" : "??? slower firing speed"
-		"fire rate bonus" : "+??? faster firing speed"
-		"heal rate penalty" : "??? heal rate"
-		"heal rate bonus" : "+??? heal rate"
-		"ubercharge rate penalty" : "??? UberCharge rate"
-		"ubercharge rate bonus" : "+??? UberCharge rate"
-		"overheal bonus" : "+??? max overheal"
-		"overheal decay penalty" : "??? shorter overheal time"
-		"overheal decay bonus" : "+??? longer overheal time"
-		"overheal decay disabled" : "Overheal bonus doesn't decay"
-		"crit mod disabled" : "No random critical hits"
-		"heal on hit for rapidfire" : "On Hit: +??? health"
-		"add uber charge on hit" : "On Hit: ??? UberCharge added"
-		"medigun charge is crit boost" : "UberCharge grants 100% critical chance"
-		"tmp dmgbuff on hit" : "On Hit: +??? damage bonus"
-		"crit vs burning players" : "100% critical hit vs burning players"
-		"dmg penalty vs nonburning" : "??? damage vs non-burning players"
-		"no crit vs nonburning" : "No critical hits vs non-burning players"
-		"mod flamethrower push" : "No compression blast"
-		"mod flamethrower back crit" : "100% critical hits from behind"
-		"hidden secondary max ammo penalty" : "hidden secondary max ammo penalty"
-		"max health additive bonus" : "+??? max health on wearer"
-		"alt-fire disabled" : "Attrib_AltFire_Disabled"
-		"crit mod disabled hidden" : "No random critical hits"
-		"alt-fire is vampire" : "Attrib_AltFire_Is_Vampire"
-		"fists have radial buff" : "On Kill: +50 health on nearby teammates"
-		"critboost on kill" : "On Kill: ??? seconds of 100% critical chance"
-		"slow enemy on hit" : "On Hit: ??? chance to slow target"
-		"set cloak is feign death" : "Cloak Type: Feign Death"
-		"mult cloak meter consume rate" : "+??? cloak drain rate"
-		"mult cloak meter regen rate" : "+??? cloak regen rate"
-		"spread penalty" : "??? less accurate"
-		"hidden primary max ammo bonus" : "hidden primary max ammo bonusn"
-		"mod bat launches balls" : "Alt-Fire: Launches a ball that stuns opponents"
-		"dmg penalty vs nonstunned" : "??? damage vs non-stunned players"
-		"zoom speed mod disabled" : "No move speed penalty from zoom"
-		"sniper charge per sec" : "+??? charge rate"
-		"sniper no headshots" : "No headshots"
-		"scattergun no reload single" : "scattergun no reload single"
-		"scattergun has knockback" : "Knockback on the target and shooter"
-		"bullets per shot bonus" : "+??? bullets per shot"
-		"sniper zoom penalty" : "??? zoom reduction"
-		"sniper no charge" : "No zoom or damage charge"
-		"set cloak is movement based" : "Cloak Type: Motion Sensitive"
-		"no double jump" : "Disables double jump"
-		"absorb damage while cloaked" : "Absorbs ??? damage while cloaked"
-		"revolver use hit locations" : "Crits on headshot"
-		"backstab shield" : "Blocks a single backstab attempt"
-		"fire retardant" : "Wearer cannot ignite"
-		"move speed penalty" : "??? slower move speed on wearer"
-		"obsolete ammo penalty" : "obsolete ammo penalty"
-		"jarate description" : "Coated enemies take mini-crits"
-		"health regen" : "+??? health regenerated per second on wearer"
-		"self dmg push force increased" : "+??? self damage force"
-		"self dmg push force decreased" : "??? self damage force"
-		"dmg taken from fire reduced" : "+??? fire damage resistance on wearer"
-		"dmg taken from fire increased" : "??? fire damage vulnerability on wearer"
-		"dmg taken from crit reduced" : "+??? critical hit damage resistance on wearer"
-		"dmg taken from crit increased" : "??? critical hit damage vulnerability on wearer"
-		"dmg taken from blast reduced" : "+??? explosive damage resistance on wearer"
-		"dmg taken from blast increased" : "??? explosive damage vulnerability on wearer"
-		"dmg taken from bullets reduced" : "+??? bullet damage resistance on wearer"
-		"dmg taken from bullets increased" : "??? bullet damage vulnerability on wearer"
-		"increase player capture value" : "+??? capture rate on wearer"
-		"health from healers reduced" : "??? health from healers on wearer"
-		"health from healers increased" : "+??? health from healers on wearer"
-		"weapon burn dmg increased" : "+??? afterburn damage bonus"
-		"weapon burn dmg reduced" : "??? afterburn damage penalty"
-		"weapon burn time increased" : "+??? afterburn duration"
-		"weapon burn time reduced" : "??? afterburn duration"
-		"aiming movespeed increased" : "+??? faster move speed while deployed"
-		"maxammo primary increased" : "+??? max primary ammo on wearer"
-		"maxammo primary reduced" : "??? max primary ammo on wearer"
-		"maxammo secondary increased" : "+??? max secondary ammo on wearer"
-		"maxammo secondary reduced" : "??? max secondary ammo on wearer"
-		"maxammo metal increased" : "+??? max metal on wearer"
-		"maxammo metal reduced" : "??? max metal on wearer"
-		"cloak consume rate increased" : "-??? cloak duration"
-		"cloak consume rate decreased" : "+??? cloak duration"
-		"cloak regen rate increased" : "+??? cloak regeneration rate"
-		"cloak regen rate decreased" : "??? cloak regeneration rate"
-		"minigun spinup time increased" : "??? slower spin up time"
-		"minigun spinup time decreased" : "??? faster spin up time"
-		"max pipebombs increased" : "+??? max pipebombs out"
-		"max pipebombs decreased" : "??? max pipebombs out"
-		"SRifle Charge rate increased" : "??? faster power charge"
-		"SRifle Charge rate decreased" : "??? slower power charge"
-		"Construction rate increased" : "??? faster construction rate"
-		"Construction rate decreased" : "??? slower construction rate"
-		"Repair rate increased" : "??? faster repair rate"
-		"Repair rate decreased" : "??? slower repair rate"
-		"Reload time increased" : "??? slower reload time"
-		"Reload time decreased" : "??? faster reload time"
-		"selfdmg on hit for rapidfire" : "On Hit: ??? health"
-		"Blast radius increased" : "+??? explosion radius"
-		"Blast radius decreased" : "??? explosion radius"
-		"Projectile range increased" : "+??? projectile range"
-		"Projectile range decreased" : "??? projectile range"
-		"Projectile speed increased" : "+??? projectile speed"
-		"Projectile speed decreased" : "??? projectile speed"
-		"overheal penalty" : "??? max overheal"
-		"weapon spread bonus" : "??? more accurate"
-		"move speed bonus" : "+??? faster move speed on wearer"
-		"health from packs increased" : "+??? health from packs on wearer"
-		"health from packs decreased" : "??? health from packs on wearer"
-		"heal on hit for slowfire" : "On Hit: +??? health"
-		"selfdmg on hit for slowfire" : "On Hit: ??? health"
-		"ammo regen" : "+??? ammo regenerated every 5 seconds on wearer"
-		"metal regen" : "+??? metal regenerated every 5 seconds on wearer"
-		"mod mini-crit airborne" : "Mini-crits targets launched airborne by explosions"
-		"mod shovel damage boost" : "Damage increases as the user becomes injured"
-		"mod soldier buff type" : "mod soldier buff type"
-		"dmg falloff increased" : "Attrib_Dmg_Falloff_Increased"
-		"dmg falloff decreased" : "??? splash damage fall off"
-		"sticky detonate mode" : "Detonates stickybombs near the crosshair and directly under your feet"
-		"sticky arm time penalty" : "??? sec slower bomb arm time"
-		"stickies detonate stickies" : "Able to destroy enemy stickybombs"
-		"mod demo buff type" : "mod demo buff type"
-		"speed boost when active" : "??? speed boost while active weapon"
-		"mod wrench builds minisentry" : "Replaces the Sentry with a fast building Mini-Sentry"
-		"max health additive penalty" : "??? max health on wearer"
-		"sticky arm time bonus" : "??? sec faster bomb arm time"
-		"sticky air burst mode" : "Launched bombs shatter on surfaces"
-		"provide on active" : "When weapon is active:"
-		"health drain" : "??? health drained per second on wearer"
-		"medic regen bonus" : "+??? natural regen rate"
-		"medic regen penalty" : "-??? natural regen rate"
-		"community description" : "Given to valuable Community Contributors"
-		"soldier model index" : "Medal no. ???"
-		"attach particle effect" : "Effect: ???"
-		"rocket jump damage reduction" : "??? blast damage from rocket jumps"
-		"mod sentry killed revenge" : "When your sentry is destroyed you"
-		"dmg bonus vs buildings" : "??? damage vs buildings"
-		"dmg penalty vs players" : "??? damage vs players"
-		"lunchbox adds maxhealth bonus" : "Adds +50 max health for 30 seconds"
-		"hidden maxhealth non buffed" : "+??? max health on wearer"
-		"selfmade description" : "I made this!"
-		"set item tint RGB" : "Item tint color code: ???"
-		"custom employee number" : "Hire Date: ???"
-		"lunchbox adds minicrits" : "Sets weapon mode #???"
-		"taunt is highfive" : "taunt is highfive"
-		"damage applies to sappers" : "Damage removes Sappers"
-		"Wrench index" : "Wrench no. ???"
-		"building cost reduction" : "??? metal reduction in building cost"
-		"bleeding duration" : "On Hit: Bleed for ??? seconds"
-		"turn to gold" : "Imbued with an ancient power"
-		"DEPRECATED socketed item definition id DEPRECATED" : "Attrib_Socket"
-		"custom texture lo" : "custom texture lo"
-		"cannot trade" : "Not Tradable"
-		"disguise on backstab" : "Upon a successful backstab against a human target, you rapidly disguise as your victim"
-		"cannot disguise" : "Wearer cannot disguise"
-		"silent killer" : "Silent Killer: No attack noise from backstabs"
-		"disguise speed penalty" : "??? sec slower disguise speed"
-		"add cloak on kill" : "+??? cloak on kill"
-		"cloak blink time penalty" : "??? sec longer cloak blink time"
-		"quiet unstealth" : "Reduced decloak sound volume"
-		"flame size penalty" : "??? less flame spread area"
-		"flame size bonus" : "+??? more flame spread area"
-		"flame life penalty" : "??? less flame distance"
-		"flame life bonus" : "+??? more flame distance"
-		"charged airblast" : "Airblast can now be charged, which will push enemies further"
-		"add cloak on hit" : "+??? cloak on hit"
-		"disguise damage reduction" : "Attrib_DisguiseDamageReduction"
-		"disguise no burn" : "Immune to fire damage while disguised"
-		"dmg from sentry reduced" : "+??? sentry damage resistance on wearer"
-		"airblast cost increased" : "+??? airblast cost"
-		"airblast cost decreased" : "??? airblast cost"
-		"purchased" : "Purchased: Not Tradable or Usable in Crafting"
-		"flame ammopersec increased" : "+??? flamethrower ammo consumed per second"
-		"flame ammopersec decreased" : "??? flamethrower ammo consumed per second"
-		"jarate duration" : "On Hit: Jarate applied to target for ??? seconds"
-		"no death from headshots" : "The wearer cannot be killed by headshots"
-		"deploy time increased" : "??? longer weapon switch"
-		"deploy time decreased" : "??? faster weapon switch"
-		"minicrits become crits" : "Crits whenever it would normally mini-crit"
-		"heal on kill" : "+??? health restored on kill"
-		"no self blast dmg" : "No self inflicted blast damage taken"
-		"slow enemy on hit major" : "On Hit: Slow target movement by 40% for ???s"
-		"aiming movespeed decreased" : "??? slower move speed while deployed"
-		"duel loser account id" : "Attrib_DuelLoserAccountID"
-		"event date" : "Date Received: ???"
-		"gifter account id" : "Gift from: ???"
-		"set supply crate series" : "Crate Series #???"
-		"preserve ubercharge" : "On death up to ??? of your stored"
-		"elevate quality" : "elevate quality"
-		"active health regen" : "+??? health regenerated per second on wearer"
-		"active health degen" : "??? health drained per second on wearer"
-		"referenced item id low" : "referenced item id low"
-		"referenced item id high" : "eferenced item id high"
-		"referenced item def" : "Contains: ???"
-		"always tradable" : "Always Tradable"
-		"noise maker" : "Noise Maker"
-		"halloween item" : "This is a special Halloween ??? item"
-		"collection bits" : "collection bits"
-		"fires healing bolts" : "Fires special bolts that heal teammates and deal damage based on distance traveled"
-		"enables aoe heal" : "On Taunt: Applies a healing effect to all nearby teammates"
-		"gesture speed increase" : "+??? faster taunt speed on wearer"
-		"charge time increased" : "??? sec increase in charge duration"
-		"drop health pack on kill" : "On Kill: A small health pack is dropped"
-		"hit self on miss" : "On Miss: Hit yourself. Idiot."
-		"dmg from ranged reduced" : "??? damage from ranged sources while active"
-		"dmg from melee increased" : "+??? damage from melee sources while active"
-		"blast dmg to self increased" : "+??? damage to self"
-		"Set DamageType Ignite" : "On Hit: target is engulfed in flames"
-		"minicrit vs burning player" : "100% minicrits vs burning players"
-		"paint effect" : "paint effect"
-		"tradable after date" : "Tradable After: ???"
-		"force level display" : "force level display"
-		"random level curve replacement" : "No Description"
-		"kill eater" : "No Description"
-		"apply z velocity on damage" : "apply z velocity on damage"
-		"apply look velocity on damage" : "apply look velocity on damage"
-		"sanguisuge" : "On Backstab: Absorbs the health from your victim."
-		"mark for death" : "On Hit: One target at a time is marked for death, causing all damage taken to be mini-crits"
-		"decapitate type" : "decapitate type"
-		"restore health on kill" : "On Kill: Restores you to ??? health"
-		"mult decloak rate" : "Attrib_DecloakRate"
-		"mult sniper charge after bodyshot" : "On Scoped Bodyshot: Rifle charge rate increased by ???"
-		"mult sniper charge after miss" : "On Scoped Miss: Rifle charge rate decreased by ???"
-		"dmg bonus while half dead" : "??? increase in damage when health <50% of max"
-		"dmg penalty while half alive" : "??? decrease in damage when health >50% of max"
-		"honorbound" : "Honorbound: Once drawn cannot be sheathed until it kills."
-		"custom texture hi" : "custom texture hi"
-		"makers mark id" : "Crafted by ???"
-		"unique craft index" : "unique craft index"
-		"mod medic killed revenge" : "When the medic healing you is killed you"
-		"medigun charge is megaheal" : "UberCharge increases healing by 300% and grants immunity to movement-impairing effects"
-		"mod medic killed minicrit boost" : "When the medic healing you is killed"
-		"mod medic healed damage bonus" : "While a medic is healing you,"
-		"mod medic healed deploy time penalty" : "While not being healed by a medic,"
-		"mod shovel speed boost" : "Move speed increases as the user becomes injured"
-		"mod weapon blocks healing" : "Blocks healing while in use"
-		"mult sniper charge after headshot" : "On Scoped Headshot: Rifle charge rate increased by ???"
-		"minigun no spin sounds" : "Silent Killer: No barrel spin sound"
-		"ubercharge rate bonus for healer" : "+??? UberCharge rate for the medic healing you"
-		"reload time decreased while healed" : "??? faster reload time while being healed"
-		"reload time increased hidden" : "??? slower reload time"
-		"mod medic killed marked for death" : "When the medic healing you is killed"
-		"mod rage on hit penalty" : "??? rage lost on hit"
-		"mod rage on hit bonus" : "??? rage gained on hit"
-		"mod rage damage boost" : "Gains a damage bonus as rage increases, up to ???"
-		"mult charge turn control" : "+??? increase in turning control while charging"
-		"no charge impact range" : "Can deal charge impact damage at any range"
-		"charge impact damage increased" : "+??? increase in charge impact damage"
-		"charge recharge rate increased" : "+??? increase in charge recharge rate"
-		"air dash count" : "Grants Triple Jump: The third jump deals 10 damage when used"
-		"speed buff ally" : "On Hit Ally: Boosts both players' speed for several seconds"
-		"damage force reduction" : "??? reduction in push force taken from damage"
-		"mult cloak rate" : "??? sec increase in time to cloak"
-		"airblast functionality flags" : "airblast functionality flags"
-		"airblast pushback scale" : "+??? airblast push force"
-		"mult airblast refire time" : "mult airblast refire time"
-		"airblast vertical pushback scale" : "irblast vertical pushback scale"
-		"ammo becomes health" : "All ammo collected becomes health"
-		"boots falling stomp" : "Deals 3x falling damage to the player you land on"
-		"deflection size multiplier" : "Attrib_DeflectionSizeMultiplier"
-		"set item tint RGB 2" : "Item tint color code: ???"
-		"saxxy award category" : "Winner: ??? %s2"
-		"melee bounds multiplier" : "melee bounds multiplier"
-		"melee range multiplier" : "melee range multiplier"
-		"mod mini-crit airborne deploy" : "Mini-crits airborne targets for ??? seconds after being deployed"
-		"projectile penetration" : "Projectiles penetrate enemy players"
-		"mod crit while airborne" : "Deals crits while the wielder is rocket jumping"
-		"mult sniper charge penalty DISPLAY ONLY" : "Base charge rate decreased by ???"
-		"mod see enemy health" : "Allows you to see enemy health"
-		"powerup max charges" : "Holds a maximum of ??? charges"
-		"powerup charges" : "Currently holds ??? charges"
-		"powerup duration" : "Each charge lasts ??? seconds"
-		"critboost" : "Consumable: Become Crit Boosted for 5 seconds"
-		"ubercharge" : "Consumable: Become Ubercharged for 5 seconds"
-		"cancel falling damage" : "Wearer never takes falling damage"
-		"bidirectional teleport" : "Teleporters can be used in both directions"
-		"multiple sentries" : "Attrib_MultipleSentries"
-		"effect bar recharge rate increased" : "+??? increase in recharge rate"
-		"maxammo grenades1 increased" : "+??? max misc ammo on wearer"
-		"override projectile type" : "override projectile type"
-		"energy weapon no ammo" : "Does not require ammo"
-		"energy weapon charged shot" : "Alt-Fire: A charged shot that mini-crits"
-		"energy weapon penetration" : "Projectile penetrates enemy targets"
-		"energy weapon no hurt building" : "Deals only 20% damage to buildings"
-		"energy weapon no deflect" : "Projectile cannot be deflected"
-		"engy building health bonus" : "+??? max building health"
-		"engy sentry damage bonus" : "+??? Sentry Gun damage bonus"
-		"no crit boost" : "Cannot be crit boosted"
-		"centerfire projectile" : "centerfire projectile"
-		"kill eater score type" : "kill eater score type"
-		"kill eater score type 2" : "kill eater score type 2"
-		"kill eater 2" : "kill eater 2"
-		"has pipboy build interface" : "has pipboy build interface"
-		"sapper kills collect crits" : "Gives one guaranteed critical hit for each"
-		"sniper only fire zoomed" : "Cannot fire unless zoomed"
-		"mod ammo per shot" : "Per Shot: -??? ammo"
-		"add onhit addammo" : "On Hit: damage dealt is returned as ammo"
-		"electrical airblast DISPLAY ONLY" : "On Fire: Generates an electrical field that destroys"
-		"mod use metal ammo type" : "Uses metal for ammo"
-		"expiration date" : "This item will expire on ???."
-		"mod max primary clip override" : "mod max primary clip override"
-		"sniper full charge damage bonus" : "On Full Charge: +??? damage per shot"
-		"sniper fires tracer DISPLAY ONLY" : "Fires tracer rounds"
-		"sniper no headshot without full charge" : "No headshots when not fully charged"
-		"mod no reload DISPLAY ONLY" : "No reload necessary"
-		"sniper penetrate players when charged" : "On Full Charge: Projectiles penetrate players"
-		"crit kill will gib" : "Killing an enemy with a critical hit will dismember your victim. Painfully."
-		"recall" : "Consumable: Instantly teleport to spawn"
-		"unlimited quantity" : "Unlimited use"
-		"disable weapon hiding for animations" : "disable weapon hiding for animations"
-		"applies snare effect" : "??? movement speed on targets"
-		"uber duration bonus" : "Uber duration increased ??? seconds"
-		"refill_ammo" : "Consumable: Instantly refill all weapon clips and ammo"
-		"store sort override DEPRECATED" : "ore sort override DEPRECATEE"
-		"faster reload rate" : "+??? faster reload time"
-		"increase buff duration" : "+??? buff duration"
-		"robo sapper" : "Increased robot Sapper radius and duration"
-		"build rate bonus" : "+??? faster build speed"
-		"taunt is press and hold" : "taunt is press and hold"
-		"attack projectiles" : "Bullets destroy rockets and grenades in-flight"
-		"accuracy scales damage" : "Accuracy scales damage"
-		"currency bonus" : "+??? bonus currency from packs"
-		"increased jump height" : "+??? greater jump height"
-		"building instant upgrade" : "Consumable: Instantly upgrade all buildings to max level"
-		"disable fancy class select anim" : "disable fancy class select anim"
-		"airblast vulnerability multiplier" : "Attrib_AirBlastVulnerabilityMultipier"
-		"override footstep sound set" : "override footstep sound set"
-		"spawn with physics toy" : "spawn with physics toy"
-		"fish damage override" : "fish damage override"
-		"special dsp" : "special dsp"
-		"bombinomicon effect on death" : "Explode spectacularly on death"
-		"clip size bonus upgrade" : "+??? clip size"
-		"hide enemy health" : "Unable to see enemy health"
-		"subtract victim medigun charge on hit" : "On Hit: Victim loses ??? Medigun charge"
-		"subtract victim cloak on hit" : "On Hit: Victim loses ??? cloak"
-		"reveal cloaked victim on hit" : "On Hit Spy: Reveal cloaked Spy"
-		"reveal disguised victim on hit" : "On Hit Spy: Reveal disguised Spy"
-		"jarate backstabber" : "When backstabbed: Jarate attacker"
-		"engy sentry fire rate increased" : "+??? sentry firing speed"
-		"engy sentry radius increased" : "+??? sentry range"
-		"engy dispenser radius increased" : "+??? dispenser range"
-		"mod bat launches ornaments" : "Alt-Fire: Launches a festive ornament that shatters causing bleed"
-		"freeze backstab victim" : "Backstab turns victim to ice"
-		"fire rate penalty HIDDEN" : "fire rate penalty HIDDEN"
-		"energy weapon no drain" : "energy weapon no drain"
-		"ragdolls become ash" : "agdolls become ash"
-		"engy disposable sentries" : "Build +??? additional disposable-sentry"
-		"alt fire teleport to spawn" : "On Alt-Fire: Teleport to spawn"
-		"cannot pick up buildings" : "Cannot carry buildings"
-		"stun enemies wielding same weapon" : "Stuns enemies who are also wielding this weapon"
-		"airblast disabled" : "No airblast"
-		"increase buff duration HIDDEN" : "increase buff duration HIDDEN"
-		"crit forces victim to laugh" : "Critical hit forces victim to laugh"
-		"melts in fire" : "Melts in fire, regenerates after ??? seconds"
-		"damage all connected" : "All players connected via Medigun beams are hit"
-		"become fireproof on hit by fire" : "On Hit by Fire: Become fireproof for ??? seconds"
-		"crit from behind" : "Always critical hit from behind"
-		"crit does no damage" : "Critical hits do no damage"
-		"add jingle to footsteps" : "Jingle all the way"
-		"set icicle knife mode" : "set icicle knife mode"
-		"mod stun waist high airborne" : "On Hit: If enemy's belt is at or above eye level,"
-		"extinguish earns revenge crits" : "Alt-Fire: Extinguish teammates to gain guaranteed critical hits"
-		"burn damage earns rage" : "All fire damage charges 'Mmmph', activate to refill health and crit for several seconds"
-		"tickle enemies wielding same weapon" : "On Hit: Force enemies to laugh who are also wearing this item"
-		"attach particle effect static" : "Effect: ???"
-		"taunt success sound" : "Attrib_TauntSoundSuccess"
-		"accepted wedding ring account id 1" : "A perpetual bond of commitment between ???"
-		"accepted wedding ring account id 2" : "and ???, forever and ever and ever. XoXoX"
-		"tool escrow until date" : "Usable After: ???"
-		"generate rage on damage" : "+??? rage on damage"
-		"aiming no flinch" : "No flinching when aiming"
-		"aiming knockback resistance" : "Knockback reduced by ??? when aiming"
-		"sniper aiming movespeed decreased" : "??? slower move speed when aiming"
-		"kill eater user 1" : "No Description"
-		"kill eater user score type 1" : "No Description"
-		"kill eater user 2" : "No Description"
-		"kill eater user score type 2" : "No Description"
-		"kill eater user 3" : "No Description"
-		"kill eater user score type 3" : "No Description"
-		"strange part new counter ID" : "No Description"
-		"mvm completed challenges bitmask" : "No Description"
-		"rage on kill" : "Gain Focus on kills and assists"
-		"kill eater kill type" : "No Description"
-		"shot penetrate all players" : "Shots go through multiple enemies"
-		"headshot damage increase" : "Headshots deal an extra +??? damage"
-		"mystery solving time decrease" : "Reduces mystery solving time by up to ???"
-		"damage penalty on bodyshot" : "??? damage on body shot"
-		"sniper rage DISPLAY ONLY" : "Focus activates on Fire when Focus meter is full"
-		"fire rate bonus HIDDEN" : "No Description"
-		"explosive sniper shot" : "Increased headshot explosion radius and damage to nearby enemies"
-		"melee attack rate bonus" : "+??? faster melee attack speed"
-		"projectile penetration heavy" : "Bullets penetrate +??? enemies"
-		"rage on assists" : "Attrib_RageGainOnAssists"
-		"armor piercing" : "Allow backstabs against Giant Robots at ??? damage"
-		"cannot pick up intelligence" : "Wearer cannot carry the intelligence briefcase"
-		"chance of hunger decrease" : "Reduces chance of hunger by up to ???"
-		"cannot be backstabbed" : "Cannot be backstabbed"
-		"squad surplus claimer id DEPRECATED" : "Squad surplus claimed by: ???"
-		"share consumable with patient" : "Using your Power Up Canteen will apply the same bonus effect to your heal target"
-		"airblast vertical vulnerability multiplier" : "Attrib_AirBlastVerticalVulnerabilityMultipier"
-		"vision opt in flags" : "No Description"
-		"crit vs disguised players" : "100% critical hit vs disguised players"
-		"crit vs non burning players" : "100% critical hit vs non-burning players"
-		"kill forces attacker to laugh" : "On Kill: Burst into joyous laughter"
-		"damage bonus while undisguised" : "+??? damage bonus while undisguised"
-		"projectile spread angle penalty" : "+??? degrees random projectile deviation"
-		"dmg taken increased" : "??? damage vulnerability on wearer"
-		"auto fires full clip" : "Hold Fire to load up to three rockets"
-		"self mark for death" : "You are marked for death while active, and for short period after switching weapons"
-		"counts as assister is some kind of pet this update is going to be awesome" : "No Description"
-		"mod flaregun fires pellets with knockback" : "Flare knocks back target on hit"
-		"can overload" : "Overloading the chamber will cause a misfire"
-		"hype on damage" : "On Hit: Builds Boost"
-		"hype resets on jump" : "Boost resets on jump"
-		"pyro year number" : "Witnessed the ??? inferno"
-		"no primary ammo from dispensers" : "Cannot collect ammo from dispensers"
-		"pyrovision only DISPLAY ONLY" : "Only visible in Pyroland"
-		"clip size penalty HIDDEN" : "No Description"
-		"sapper damage bonus" : "+??? sapper damage bonus"
-		"sapper damage penalty" : "??? sapper damage penalty"
-		"sapper damage leaches health" : "+??? health regenerated per second for each active sapper"
-		"sapper health bonus" : "??? sapper health bonus"
-		"sapper health penalty" : "??? sapper health penalty"
-		"ring of fire while aiming" : "Sustains a ring of flames while deployed"
-		"uses ammo while aiming" : "??? ammo consumed per second while deployed"
-		"sapper degenerates buildings" : "Reverses enemy building construction"
-		"sapper damage penalty hidden" : "sapper damage penalty hidden"
-		"cleaver description" : "Throw at your enemies to make them bleed!"
-		"ragdolls plasma effect" : "No Description"
-		"crit vs stunned players" : "100% critical hit vs stunned players"
-		"crit vs wet players" : "100% critical hit vs wet players"
-		"override item level desc string" : "override item level desc string"
-		"clip size upgrade atomic" : "+??? clip size"
-		"major move speed bonus" : "major move speed bonus"
-		"major increased jump height" : "major increased jump heightn"
-		"head scale" : "Disables double jump"
-		"pyrovision opt in DISPLAY ONLY" : "On Equip: Visit Pyroland"
-		"halloweenvision opt in DISPLAY ONLY" : "halloweenvision opt in DISPLAY ONLY"
-		"halloweenvision filter DISPLAY ONLY" : "halloweenvision filter DISPLAY ONLY"
-		"player skin override" : "player skin override"
-		"never craftable" : "never craftable"
-		"zombiezombiezombiezombie" : "zombiezombiezombiezombie"
-		"merasmus hat level display ONLY" : "Killed Merasmus at level ???"
-		"strange restriction type 1" : "strange restriction type 1"
-		"strange restriction value 1" : "strange restriction value 1"
-		"strange restriction type 2" : "strange restriction type 2"
-		"strange restriction value 2" : "strange restriction value 2"
-		"strange restriction user type 1" : "strange restriction user type 1"
-		"strange restriction user value 1" : "strange restriction user value 1"
-		"strange restriction user type 2" : "strange restriction user type 2"
-		"strange restriction user value 2" : "strange restriction user value 2"
-		"strange restriction user type 3" : "strange restriction user type 3"
-		"strange restriction user value 3" : "strange restriction user value 3"
-		"engineer sentry build rate multiplier" : "engineer sentry build rate multiplier"
-		"engineer teleporter build rate multiplier" : "engineer teleporter build rate multiplier"
-		"grenade launcher mortar mode" : "grenade launcher mortar mode"
-		"grenade not explode on impact" : "grenade not explode on impact"
-		"strange score selector" : "strange score selector"
-		"engineer building teleporting pickup" : "engineer building teleporting pickup"
-		"grenade damage reduction on world contact" : "grenade damage reduction on world contact"
-		"engineer rage on dmg" : "engineer rage on dmg"
-		"mark for death on building pickup" : "mark for death on building pickup"
-		"medigun charge is resists" : "medigun charge is resists"
-		"arrow heals buildings" : "+arrow heals buildings"
-		"Projectile speed increased HIDDEN" : "+Projectile speed increased HIDDEN"
-		"damage bonus HIDDEN" : "+damage bonus HIDDEN"
-		"+cannonball push back" : ""
-		"+rage giving scale" : ""
-		"-overheal fill rate reduced" : ""
-		"+canteen specialist" : ""
-		"+overheal expert" : ""
-		"+mad milk syringes" : ""
-		"+rocket specialist" : ""
-		"+SET BONUS: move speed set bonus" : ""
-		"+SET BONUS: health regen set bonus" : ""
-		"+SET BONUS: dmg taken from crit reduced set bonus" : ""
-		"+SET BONUS: dmg taken from fire reduced set bonus" : ""
-		"+healing mastery" : ""
-		"+kill eater 3" : ""
-		"+kill eater score type 3" : ""
-		"+strange restriction type 3" : ""
-		"+strange restriction value 3" : ""
-		"+bot custom jump particle" : ""
-		"+generate rage on heal" : ""
-		"+custom name attr" : ""
-		"+custom desc attr" : ""
-		"medigun bullet resist passive" : ""
-		"+medigun blast resist passive" : ""
-		"+medigun fire resist passive" : ""
-		"+medigun bullet resist deployed" : ""
-		"+medigun blast resist deployed" : ""
-		"+medigun fire resist deployed" : ""
-		"+medigun crit bullet percent bar deplete" : ""
-		"+medigun crit blast percent bar deplete" : ""
-		"+medigun crit fire percent bar deplete" : ""
-		"+throwable fire speed" : ""
-		"+throwable damage" : ""
-		"+throwable healing" : ""
-		"=throwable particle trail only" : ""
-		"-SET BONUS: dmg taken from bullets increased" : ""
-		"+SET BONUS: max health additive bonus" : ""
-		"+scattergun knockback mult" : ""
-		"+particle effect vertical offset" : ""
-		"+particle effect use head origin" : ""
-		"+use large smoke explosion" : ""
-		"+damage causes airblast" : ""
-		"+increased jump height from weapon" : ""
-		"-damage force increase" : ""
-		"+healing received bonus" : ""
-		"+afterburn immunity" : ""
-		"+decoded by itemdefindex" : ""
-		"-hype decays over time" : ""
-		"+SET BONUS: custom taunt particle attr" : ""
-		"-airblast vulnerability multiplier hidden" : ""
-		"-damage force increase hidden" : ""
-		"-damage force increase text" : ""
-		"+SET BONUS: calling card on kill" : ""
-		"=righthand pose parameter" : ""
-		"=set throwable type" : ""
-		"+add head on hit" : ""
-		"=item style override" : ""
-		"=paint decal enum" : ""
-		"=show paint description" : ""
-		"=bot medic uber health threshold" : ""
-		"=bot medic uber deploy delay duration" : ""
-		"+single wep deploy time decreased" : ""
-		"+halloween reload time decreased" : ""
-		"+halloween fire rate bonus" : ""
-		"+halloween increased jump height" : ""
-		"+special taunt" : ""
-		"+revive" : ""
-		"+taunt attack name" : ""
-		"+taunt attack time" : ""
-		"+taunt force move forward" : ""
-		"+taunt mimic" : ""
-		"+taunt success sound" : ""
-		"+taunt success sound offset" : ""
-		"+taunt success sound loop" : ""
-		"+taunt success sound loop offset" : ""
-		"+increased air control" : ""
-		"+rocket launch impulse" : ""
-		"+minicritboost on kill" : ""
-		"-no metal from dispensers while active" : ""
-		"+projectile entity name" : ""
-		"+is throwable primable" : ""
-		"+throwable detonation time" : ""
-		"+throwable recharge time" : ""
-		"+closerange backattack minicrits" : ""
-		"-torso scale" : ""
-		"+rocketjump attackrate bonus" : ""
-		"+is throwable chargeable" : ""
-		"+back headshot" : ""
-		"+rj air bombardment" : ""
-		"+projectile particle name" : ""
-		"+air jump on attack" : ""
-		"+sniper crit no scope" : ""
-		"+sniper independent zoom DISPLAY ONLY" : ""
-		"+axtinguisher properties" : ""
-		"+full charge turn control" : ""
-		"+parachute attribute" : ""
-		"+taunt force weapon slot" : ""
-		"+mini rockets" : ""
-		"+rocket jump damage reduction HIDDEN" : ""
-		"+clipsize increase on kill" : ""
-		"+breadgloves properties" : ""
-		"+taunt turn speed" : ""
-		"-sniper fires tracer HIDDEN" : ""
-		"+fire rate bonus with reduced health" : ""
-		"+tag__summer2014" : ""
-		"+crate generation code" : ""
-		"-stickybomb fizzle time" : ""
-		"+stickybomb charge rate" : ""
-		"+grenade no bounce" : ""
-		"+class select override vcd" : ""
-		"+custom projectile model" : ""
-		"-lose demo charge on damage when charging" : ""
-		"+grenade no spin" : ""
-		"-grenade detonation damage penalty" : ""
-		"+taunt turn acceleration time" : ""
-		"+taunt move acceleration time" : ""
-		"+taunt move speed" : ""
-		"+shuffle crate item def min" : ""
-		"+shuffle crate item def max" : ""
-		"=limited quantity item" : ""
-		"+SET BONUS: alien isolation xeno bonus pos" : ""
-		"-SET BONUS: alien isolation xeno bonus neg" : ""
-		"+SET BONUS: alien isolation merc bonus pos" : ""
-		"-SET BONUS: alien isolation merc bonus neg" : ""
-		"-disable weapon switch" : ""
-		"-hand scale" : ""
-		"+display duck leaderboard" : ""
-		"+duck rating" : ""
-		"+duck badge level" : ""
-		"+tag__eotlearlysupport" : ""
-		"+unlimited quantity hidden" : ""
-		"+duckstreaks active" : ""
-		"+panic_attack" : ""
-		"-panic_attack_negative" : ""
-		"-auto fires full clip penalty" : ""
-		"-auto fires when full" : ""
-		"+force weapon switch" : ""
-		"=weapon_uses_stattrak_module" : ""
-		"=is_operation_pass" : ""
-		"=weapon_stattrak_module_scale" : ""
-		"=set_item_texture_wear" : ""
-		"-cloak_consume_on_feign_death_activate" : ""
-		"+stickybomb_charge_damage_increase" : ""
-		"-NoCloakWhenCloaked" : ""
-		"-ReducedCloakFromAmmo" : ""
-		"+elevate to unusual if applicable" : ""
-		"=weapon_allow_inspect" : ""
-		"-metal_pickup_decreased" : ""
-		"-lose hype on take damage" : ""
-		"-healing received penalty" : ""
-		"+crit_vs_burning_FLARES_DISPLAY_ONLY" : ""
-		"+speed_boost_on_kill" : ""
-		"+speed_boost_on_hit" : ""
-		"+spunup_damage_resistance" : ""
-		"-ubercharge overheal rate penalty" : ""
-		"-reduced_healing_from_medics" : ""
-		"+health on radius damage" : ""
-		"=style changes on strange level" : ""
-		"=cannot restore" : ""
-		"=hide crate series number" : ""
-		"=has team color paintkit" : ""
-		"=cosmetic_allow_inspect" : ""
-		"=hat only unusual effect" : ""
-		"=items traded in for" : ""
-		"=texture_wear_default" : ""
-		"=taunt only unusual effect" : ""
-		"=deactive date" : ""
-		"=is giger counter" : ""
-		"=hide_strange_prefix" : ""
-		"=always_transmit_so" : ""
-		"=allow_halloween_offering" : ""
-		"=cannot_transmute" : ""
-		"-single wep holster time increased" : ""
-		"-single wep deploy time increased" : ""
-		"-charge time decreased" : ""
-		"-dmg penalty vs buildings" : ""
-		"-charge impact damage decreased" : ""
-		"=non economy" : ""
-		"+charge meter on hit" : ""
-		"+minicrit_boost_when_charged" : ""
-		"+minicrit_boost_charge_rate" : ""
-		"=is_a_sword" : ""
-		"+ammo gives charge" : ""
-		"+extinguish restores health" : ""
-		"+extinguish reduces cooldown" : ""
-		"=cannot giftwrap" : ""
-		"+fuse bonus" : ""
-		"+move speed bonus shield required" : ""
-		"+damage bonus vs sentry target" : ""
-		"+mod teleporter cost" : ""
-		"+damage blast push" : ""
-		"+move speed bonus resource level" : ""
-		"+hype on damage" : ""
-		"+dmg taken from fire reduced on active" : ""
-		"+damage bonus vs burning" : ""
-		"+min_viewmodel_offset" : ""
-		"+dmg pierces resists absorbs" : ""
-		"-energy buff dmg taken multiplier" : ""
-		"-lose revenge crits on death DISPLAY ONLY" : ""
-		"CARD: damage bonus" : "+??? damage bonus"
-		"CARD: dmg taken from bullets reduced" : "+??? bullet damage resistance on wearer"
-		"CARD: move speed bonus" : "+??? faster move speed on wearer"
-		"CARD: health regen" : "+??? health regenerated per second on wearer"
-		"SPELL: set item tint RGB" : "???"
-		"SPELL: set Halloween footstep type" : "???"
-		"SPELL: Halloween voice modulation" : "Voices From Below"
-		"SPELL: Halloween pumpkin explosions" : "Pumpkin Bombs"
-		"SPELL: Halloween green flames" : "Halloween Fire"
-		"SPELL: Halloween death ghosts" : "Exorcism"
-		"+Attack not cancel charge" : ""
-		"=start drop date" : ""
-		"=end drop date" : ""
-		"=tool target item" : ""
-		"+killstreak effect" : ""
-		"+killstreak idleeffect" : ""
-		"=spellbook page attr id" : ""
-		"+Halloween Spellbook Page: Tumidum" : ""
-		"+Halloween Spellbook Page: Gratanter" : ""
-		"+Halloween Spellbook Page: Audere" : ""
-		"+Halloween Spellbook Page: Congeriae" : ""
-		"+Halloween Spellbook Page: Veteris" : ""
-		"+additional halloween response criteria name" : ""
-		"=loot rarity" : ""
-		"=quality text override" : ""
-		"=item name text override" : ""
-		"+killstreak tier" : ""
-		"=wide item level" : ""
-		"=is australium item" : ""
-		"=is marketable" : ""
-		"=allowed in medieval mode" : ""
-		"+crit on hard hit" : ""
-		"=quest earned standard points" : ""
-		"=quest earned bonus points" : ""
-		"=item drop wave" : ""
+		"damage penalty" :		"??? damage penalty"
+		"damage bonus" :		"+??? damage bonus"
+		"clip size penalty" :	"??? clip size"
+		"clip size bonus" :		"+??? clip size"
+		"fire rate penalty" :	"??? slower firing speed"
+		"fire rate bonus" :		"+??? faster firing speed"
+		"heal rate penalty" :	"??? heal rate"
+		"heal rate bonus" :		"+??? heal rate"
+		"ubercharge rate penalty" :		"??? UberCharge rate"
+		"ubercharge rate bonus" :		"+??? UberCharge rate"
+		"overheal bonus" :				"+??? max overheal"
+		"overheal decay penalty" :		"??? shorter overheal time"
+		"overheal decay bonus" :		"+??? longer overheal time"
+		"overheal decay disabled" :		"Overheal bonus doesn't decay"
+		"crit mod disabled" :			"No random critical hits"
+		"heal on hit for rapidfire" :	"On Hit: +??? health"
+		"add uber charge on hit" :		"On Hit: ??? UberCharge added"
+		"medigun charge is crit boost" :		"UberCharge grants 100% critical chance"
+		"tmp dmgbuff on hit" :			"On Hit: +??? damage bonus"
+		"crit vs burning players" :		"100% critical hit vs burning players"
+		"dmg penalty vs nonburning" :	"??? damage vs non-burning players"
+		"no crit vs nonburning" :		"No critical hits vs non-burning players"
+		"mod flamethrower push" :		"No compression blast"
+		"mod flamethrower back crit" :		"100% critical hits from behind"
+		"hidden secondary max ammo penalty" :		"hidden secondary max ammo penalty"
+		"max health additive bonus" :		"+??? max health on wearer"
+		"alt-fire disabled" :		"Alt-Fire Disabled"
+		"crit mod disabled hidden" :		"No random critical hits"
+		"alt-fire is vampire" :		"Alt-Fire Is Vampire"
+		"fists have radial buff" :		"On Kill: +50 health on nearby teammates"
+		"critboost on kill" :		"On Kill: ??? seconds of 100% critical chance"
+		"slow enemy on hit" :		"On Hit: ??? chance to slow target"
+		"set cloak is feign death" :		"Cloak Type: Feign Death"
+		"mult cloak meter consume rate" :		"+??? cloak drain rate"
+		"mult cloak meter regen rate" :		"+??? cloak regen rate"
+		"spread penalty" :		"??? less accurate"
+		"hidden primary max ammo bonus" :		"hidden primary max ammo bonusn"
+		"mod bat launches balls" :		"Alt-Fire: Launches a ball that stuns opponents"
+		"dmg penalty vs nonstunned" :		"??? damage vs non-stunned players"
+		"zoom speed mod disabled" :		"No move speed penalty from zoom"
+		"sniper charge per sec" :		"+??? charge rate"
+		"sniper no headshots" :		"No headshots"
+		"scattergun no reload single" :		"scattergun no reload single"
+		"scattergun has knockback" :		"Knockback on the target and shooter"
+		"bullets per shot bonus" :		"+??? bullets per shot"
+		"sniper zoom penalty" :		"??? zoom reduction"
+		"sniper no charge" :		"No zoom or damage charge"
+		"set cloak is movement based" :		"Cloak Type: Motion Sensitive"
+		"no double jump" :		"Disables double jump"
+		"absorb damage while cloaked" :		"Absorbs ??? damage while cloaked"
+		"revolver use hit locations" :		"Crits on headshot"
+		"backstab shield" :		"Blocks a single backstab attempt"
+		"fire retardant" :		"Wearer cannot ignite"
+		"move speed penalty" :		"??? slower move speed on wearer"
+		"obsolete ammo penalty" :		"obsolete ammo penalty"
+		"jarate description" :		"Coated enemies take mini-crits"
+		"health regen" :		"+??? health regenerated per second on wearer"
+		"self dmg push force increased" :		"+??? self damage force"
+		"self dmg push force decreased" :		"??? self damage force"
+		"dmg taken from fire reduced" :		"+??? fire damage resistance on wearer"
+		"dmg taken from fire increased" :		"??? fire damage vulnerability on wearer"
+		"dmg taken from crit reduced" :		"+??? critical hit damage resistance on wearer"
+		"dmg taken from crit increased" :		"??? critical hit damage vulnerability on wearer"
+		"dmg taken from blast reduced" :		"+??? explosive damage resistance on wearer"
+		"dmg taken from blast increased" :		"??? explosive damage vulnerability on wearer"
+		"dmg taken from bullets reduced" :		"+??? bullet damage resistance on wearer"
+		"dmg taken from bullets increased" :		"??? bullet damage vulnerability on wearer"
+		"increase player capture value" :		"+??? capture rate on wearer"
+		"health from healers reduced" :		"??? health from healers on wearer"
+		"health from healers increased" :		"+??? health from healers on wearer"
+		"weapon burn dmg increased" :		"+??? afterburn damage bonus"
+		"weapon burn dmg reduced" :		"??? afterburn damage penalty"
+		"weapon burn time increased" :		"+??? afterburn duration"
+		"weapon burn time reduced" :		"??? afterburn duration"
+		"aiming movespeed increased" :		"+??? faster move speed while deployed"
+		"maxammo primary increased" :		"+??? max primary ammo on wearer"
+		"maxammo primary reduced" :		"??? max primary ammo on wearer"
+		"maxammo secondary increased" :		"+??? max secondary ammo on wearer"
+		"maxammo secondary reduced" :		"??? max secondary ammo on wearer"
+		"maxammo metal increased" :		"+??? max metal on wearer"
+		"maxammo metal reduced" :		"??? max metal on wearer"
+		"cloak consume rate increased" :		"-??? cloak duration"
+		"cloak consume rate decreased" :		"+??? cloak duration"
+		"cloak regen rate increased" :		"+??? cloak regeneration rate"
+		"cloak regen rate decreased" :		"??? cloak regeneration rate"
+		"minigun spinup time increased" :		"??? slower spin up time"
+		"minigun spinup time decreased" :		"??? faster spin up time"
+		"max pipebombs increased" :		"+??? max pipebombs out"
+		"max pipebombs decreased" :		"??? max pipebombs out"
+		"SRifle Charge rate increased" :		"??? faster power charge"
+		"SRifle Charge rate decreased" :		"??? slower power charge"
+		"Construction rate increased" :		"??? faster construction rate"
+		"Construction rate decreased" :		"??? slower construction rate"
+		"Repair rate increased" :		"??? faster repair rate"
+		"Repair rate decreased" :		"??? slower repair rate"
+		"Reload time increased" :		"??? slower reload time"
+		"Reload time decreased" :		"??? faster reload time"
+		"selfdmg on hit for rapidfire" :		"On Hit: ??? health"
+		"Blast radius increased" :		"+??? explosion radius"
+		"Blast radius decreased" :		"??? explosion radius"
+		"Projectile range increased" :		"+??? projectile range"
+		"Projectile range decreased" :		"??? projectile range"
+		"Projectile speed increased" :		"+??? projectile speed"
+		"Projectile speed decreased" :		"??? projectile speed"
+		"overheal penalty" :		"??? max overheal"
+		"weapon spread bonus" :		"??? more accurate"
+		"move speed bonus" :		"+??? faster move speed on wearer"
+		"health from packs increased" :		"+??? health from packs on wearer"
+		"health from packs decreased" :		"??? health from packs on wearer"
+		"heal on hit for slowfire" :		"On Hit: +??? health"
+		"selfdmg on hit for slowfire" :		"On Hit: ??? health"
+		"ammo regen" :		"+??? ammo regenerated every 5 seconds on wearer"
+		"metal regen" :		"+??? metal regenerated every 5 seconds on wearer"
+		"mod mini-crit airborne" :		"Mini-crits targets launched airborne by explosions"
+		"mod shovel damage boost" :		"Damage increases as the user becomes injured"
+		"mod soldier buff type" :		"mod soldier buff type"
+		"dmg falloff increased" :		"Attrib Damage Falloff Increased"
+		"dmg falloff decreased" :		"??? splash damage fall off"
+		"sticky detonate mode" :		"Detonates stickybombs near the crosshair and directly under your feet"
+		"sticky arm time penalty" :		"??? sec slower bomb arm time"
+		"stickies detonate stickies" :		"Able to destroy enemy stickybombs"
+		"mod demo buff type" :		"mod demo buff type"
+		"speed boost when active" :		"??? speed boost while active weapon"
+		"mod wrench builds minisentry" :		"Replaces the Sentry with a fast building Mini-Sentry"
+		"max health additive penalty" :		"??? max health on wearer"
+		"sticky arm time bonus" :		"??? sec faster bomb arm time"
+		"sticky air burst mode" :		"Launched bombs shatter on surfaces"
+		"provide on active" :		"When weapon is active:"
+		"health drain" :		"??? health drained per second on wearer"
+		"medic regen bonus" :		"+??? natural regen rate"
+		"medic regen penalty" :		"-??? natural regen rate"
+		"community description" :		"Given to valuable Community Contributors"
+		"soldier model index" :		"Medal no. ???"
+		"attach particle effect" :		"Effect: ???"
+		"rocket jump damage reduction" :		"??? blast damage from rocket jumps"
+		"mod sentry killed revenge" :		"When your sentry is destroyed you"
+		"dmg bonus vs buildings" :		"??? damage vs buildings"
+		"dmg penalty vs players" :		"??? damage vs players"
+		"lunchbox adds maxhealth bonus" :		"Adds +50 max health for 30 seconds"
+		"hidden maxhealth non buffed" :		"+??? max health on wearer"
+		"selfmade description" :		"I made this!"
+		"set item tint RGB" :		"Item tint color code: ???"
+		"custom employee number" :		"Hire Date: ???"
+		"lunchbox adds minicrits" :		"Sets weapon mode #???"
+		"taunt is highfive" :		"taunt is highfive"
+		"damage applies to sappers" :		"Damage removes Sappers"
+		"Wrench index" :		"Wrench no. ???"
+		"building cost reduction" :		"??? metal reduction in building cost"
+		"bleeding duration" :		"On Hit: Bleed for ??? seconds"
+		"turn to gold" :		"Imbued with an ancient power"
+		"DEPRECATED socketed item definition id DEPRECATED" :		"Socket"
+		"custom texture lo" :		"custom texture lo"
+		"cannot trade" :		"Not Tradable"
+		"disguise on backstab" :		"Upon a successful backstab against a human target, you rapidly disguise as your victim"
+		"cannot disguise" :		"Wearer cannot disguise"
+		"silent killer" :		"Silent Killer: No attack noise from backstabs"
+		"disguise speed penalty" :		"??? sec slower disguise speed"
+		"add cloak on kill" :		"+??? cloak on kill"
+		"cloak blink time penalty" :		"??? sec longer cloak blink time"
+		"quiet unstealth" :		"Reduced decloak sound volume"
+		"flame size penalty" :		"??? less flame spread area"
+		"flame size bonus" :		"+??? more flame spread area"
+		"flame life penalty" :		"??? less flame distance"
+		"flame life bonus" :		"+??? more flame distance"
+		"charged airblast" :		"Airblast can now be charged, which will push enemies further"
+		"add cloak on hit" :		"+??? cloak on hit"
+		"disguise damage reduction" :		"Disguise Damage Reduction"
+		"disguise no burn" :		"Immune to fire damage while disguised"
+		"dmg from sentry reduced" :		"+??? sentry damage resistance on wearer"
+		"airblast cost increased" :		"+??? airblast cost"
+		"airblast cost decreased" :		"??? airblast cost"
+		"purchased" :		"Purchased: Not Tradable or Usable in Crafting"
+		"flame ammopersec increased" :		"+??? flamethrower ammo consumed per second"
+		"flame ammopersec decreased" :		"??? flamethrower ammo consumed per second"
+		"jarate duration" :		"On Hit: Jarate applied to target for ??? seconds"
+		"no death from headshots" :		"The wearer cannot be killed by headshots"
+		"deploy time increased" :		"??? longer weapon switch"
+		"deploy time decreased" :		"??? faster weapon switch"
+		"minicrits become crits" :		"Crits whenever it would normally mini-crit"
+		"heal on kill" :		"+??? health restored on kill"
+		"no self blast dmg" :		"No self inflicted blast damage taken"
+		"slow enemy on hit major" :		"On Hit: Slow target movement by 40% for ???s"
+		"aiming movespeed decreased" :		"??? slower move speed while deployed"
+		"duel loser account id" :		"Duel Loser Account ID"
+		"event date" :				"Date Received: ???"
+		"gifter account id" :		"Gift from: ???"
+		"set supply crate series" :		"Crate Series #???"
+		"preserve ubercharge" :		"On death up to ??? of your stored"
+		"elevate quality" :			"elevate quality"
+		"active health regen" :		"+??? health regenerated per second on wearer"
+		"active health degen" :		"??? health drained per second on wearer"
+		"referenced item id low" :		"referenced item id low"
+		"referenced item id high" :		"eferenced item id high"
+		"referenced item def" :		"Contains: ???"
+		"always tradable" :		"Always Tradable"
+		"noise maker" :		"Noise Maker"
+		"halloween item" :		"This is a special Halloween ??? item"
+		"collection bits" :		"collection bits"
+		"fires healing bolts" :		"Fires special bolts that heal teammates and deal damage based on distance traveled"
+		"enables aoe heal" :		"On Taunt: Applies a healing effect to all nearby teammates"
+		"gesture speed increase" :		"+??? faster taunt speed on wearer"
+		"charge time increased" :		"??? sec increase in charge duration"
+		"drop health pack on kill" :		"On Kill: A small health pack is dropped"
+		"hit self on miss" :		"On Miss: Hit yourself. Idiot."
+		"dmg from ranged reduced" :		"??? damage from ranged sources while active"
+		"dmg from melee increased" :		"+??? damage from melee sources while active"
+		"blast dmg to self increased" :		"+??? damage to self"
+		"Set DamageType Ignite" :		"On Hit: target is engulfed in flames"
+		"minicrit vs burning player" :		"100% minicrits vs burning players"
+		"paint effect" :		"paint effect"
+		"tradable after date" :		"Tradable After: ???"
+		"force level display" :		"Force level display"
+		"random level curve replacement" :		"Random level curve replacement"
+		"kill eater" :		"Kill Eater"
+		"apply z velocity on damage" :		"apply z velocity on damage"
+		"apply look velocity on damage" :		"apply look velocity on damage"
+		"sanguisuge" :		"On Backstab: Absorbs the health from your victim."
+		"mark for death" :		"On Hit: One target at a time is marked for death, causing all damage taken to be mini-crits"
+		"decapitate type" :		"decapitate type"
+		"restore health on kill" :		"On Kill: Restores you to ??? health"
+		"mult decloak rate" :		"Decloak Rate"
+		"mult sniper charge after bodyshot" :		"On Scoped Bodyshot: Rifle charge rate increased by ???"
+		"mult sniper charge after miss" :		"On Scoped Miss: Rifle charge rate decreased by ???"
+		"dmg bonus while half dead" :		"??? increase in damage when health <50% of max"
+		"dmg penalty while half alive" :		"??? decrease in damage when health >50% of max"
+		"honorbound" :		"Honorbound: Once drawn cannot be sheathed until it kills."
+		"custom texture hi" :		"custom texture hi"
+		"makers mark id" :		"Crafted by ???"
+		"unique craft index" :		"unique craft index"
+		"mod medic killed revenge" :		"When the medic healing you is killed you"
+		"medigun charge is megaheal" :		"UberCharge increases healing by 300% and grants immunity to movement-impairing effects"
+		"mod medic killed minicrit boost" :		"When the medic healing you is killed"
+		"mod medic healed damage bonus" :		"While a medic is healing you,"
+		"mod medic healed deploy time penalty" :		"While not being healed by a medic,"
+		"mod shovel speed boost" :		"Move speed increases as the user becomes injured"
+		"mod weapon blocks healing" :		"Blocks healing while in use"
+		"mult sniper charge after headshot" :		"On Scoped Headshot: Rifle charge rate increased by ???"
+		"minigun no spin sounds" :		"Silent Killer: No barrel spin sound"
+		"ubercharge rate bonus for healer" :		"+??? UberCharge rate for the medic healing you"
+		"reload time decreased while healed" :		"??? faster reload time while being healed"
+		"reload time increased hidden" :		"??? slower reload time"
+		"mod medic killed marked for death" :		"When the medic healing you is killed"
+		"mod rage on hit penalty" :		"??? rage lost on hit"
+		"mod rage on hit bonus" :		"??? rage gained on hit"
+		"mod rage damage boost" :		"Gains a damage bonus as rage increases, up to ???"
+		"mult charge turn control" :		"+??? increase in turning control while charging"
+		"no charge impact range" :		"Can deal charge impact damage at any range"
+		"charge impact damage increased" :		"+??? increase in charge impact damage"
+		"charge recharge rate increased" :		"+??? increase in charge recharge rate"
+		"air dash count" :		"Grants Triple Jump: The third jump deals 10 damage when used"
+		"speed buff ally" :		"On Hit Ally: Boosts both players' speed for several seconds"
+		"damage force reduction" :		"??? reduction in push force taken from damage"
+		"mult cloak rate" :		"??? sec increase in time to cloak"
+		"airblast functionality flags" :		"airblast functionality flags"
+		"airblast pushback scale" :		"+??? airblast push force"
+		"mult airblast refire time" :		"mult airblast refire time"
+		"airblast vertical pushback scale" :		"irblast vertical pushback scale"
+		"ammo becomes health" :		"All ammo collected becomes health"
+		"boots falling stomp" :		"Deals 3x falling damage to the player you land on"
+		"deflection size multiplier" :		"Deflection Size Multiplier"
+		"set item tint RGB 2" :		"Item tint color code: ???"
+		"saxxy award category" :		"Winner: ??? %s2"
+		"melee bounds multiplier" :		"melee bounds multiplier"
+		"melee range multiplier" :		"melee range multiplier"
+		"mod mini-crit airborne deploy" :		"Mini-crits airborne targets for ??? seconds after being deployed"
+		"projectile penetration" :		"Projectiles penetrate enemy players"
+		"mod crit while airborne" :		"Deals crits while the wielder is rocket jumping"
+		"mult sniper charge penalty DISPLAY ONLY" :		"Base charge rate decreased by ???"
+		"mod see enemy health" :		"Allows you to see enemy health"
+		"powerup max charges" :		"Holds a maximum of ??? charges"
+		"powerup charges" :		"Currently holds ??? charges"
+		"powerup duration" :		"Each charge lasts ??? seconds"
+		"critboost" :		"Consumable: Become Crit Boosted for 5 seconds"
+		"ubercharge" :		"Consumable: Become Ubercharged for 5 seconds"
+		"cancel falling damage" :		"Wearer never takes falling damage"
+		"bidirectional teleport" :		"Teleporters can be used in both directions"
+		"multiple sentries" :		"MultipleSentries"
+		"effect bar recharge rate increased" :		"+??? increase in recharge rate"
+		"maxammo grenades1 increased" :		"+??? max misc ammo on wearer"
+		"override projectile type" :		"override projectile type"
+		"energy weapon no ammo" :		"Does not require ammo"
+		"energy weapon charged shot" :		"Alt-Fire: A charged shot that mini-crits"
+		"energy weapon penetration" :		"Projectile penetrates enemy targets"
+		"energy weapon no hurt building" :		"Deals only 20% damage to buildings"
+		"energy weapon no deflect" :		"Projectile cannot be deflected"
+		"engy building health bonus" :		"+??? max building health"
+		"engy sentry damage bonus" :		"+??? Sentry Gun damage bonus"
+		"no crit boost" :		"Cannot be crit boosted"
+		"centerfire projectile" :		"centerfire projectile"
+		"kill eater score type" :		"kill eater score type"
+		"kill eater score type 2" :		"kill eater score type 2"
+		"kill eater 2" :		"kill eater 2"
+		"has pipboy build interface" :		"has pipboy build interface"
+		"sapper kills collect crits" :		"Gives one guaranteed critical hit for each"
+		"sniper only fire zoomed" :		"Cannot fire unless zoomed"
+		"mod ammo per shot" :		"Per Shot: -??? ammo"
+		"add onhit addammo" :		"On Hit: damage dealt is returned as ammo"
+		"electrical airblast DISPLAY ONLY" :		"On Fire: Generates an electrical field that destroys"
+		"mod use metal ammo type" :		"Uses metal for ammo"
+		"expiration date" :		"This item will expire on ???."
+		"mod max primary clip override" :		"mod max primary clip override"
+		"sniper full charge damage bonus" :		"On Full Charge: +??? damage per shot"
+		"sniper fires tracer DISPLAY ONLY" :		"Fires tracer rounds"
+		"sniper no headshot without full charge" :		"No headshots when not fully charged"
+		"mod no reload DISPLAY ONLY" :		"No reload necessary"
+		"sniper penetrate players when charged" :		"On Full Charge: Projectiles penetrate players"
+		"crit kill will gib" :		"Killing an enemy with a critical hit will dismember your victim. Painfully."
+		"recall" :		"Consumable: Instantly teleport to spawn"
+		"unlimited quantity" :		"Unlimited use"
+		"disable weapon hiding for animations" :		"disable weapon hiding for animations"
+		"applies snare effect" :		"??? movement speed on targets"
+		"uber duration bonus" :		"Uber duration increased ??? seconds"
+		"refill_ammo" :		"Consumable: Instantly refill all weapon clips and ammo"
+		"store sort override DEPRECATED" :		"ore sort override DEPRECATEE"
+		"faster reload rate" :		"+??? faster reload time"
+		"increase buff duration" :		"+??? buff duration"
+		"robo sapper" :		"Increased robot Sapper radius and duration"
+		"build rate bonus" :		"+??? faster build speed"
+		"taunt is press and hold" :		"taunt is press and hold"
+		"attack projectiles" :		"Bullets destroy rockets and grenades in-flight"
+		"accuracy scales damage" :		"Accuracy scales damage"
+		"currency bonus" :		"+??? bonus currency from packs"
+		"increased jump height" :		"+??? greater jump height"
+		"building instant upgrade" :		"Consumable: Instantly upgrade all buildings to max level"
+		"disable fancy class select anim" :		"disable fancy class select anim"
+		"airblast vulnerability multiplier" :		"AirBlast Vulnerability Multipier"
+		"override footstep sound set" :		"override footstep sound set"
+		"spawn with physics toy" :		"spawn with physics toy"
+		"fish damage override" :		"fish damage override"
+		"special dsp" :		"special dsp"
+		"bombinomicon effect on death" :		"Explode spectacularly on death"
+		"clip size bonus upgrade" :		"+??? clip size"
+		"hide enemy health" :		"Unable to see enemy health"
+		"subtract victim medigun charge on hit" :		"On Hit: Victim loses ??? Medigun charge"
+		"subtract victim cloak on hit" :		"On Hit: Victim loses ??? cloak"
+		"reveal cloaked victim on hit" :		"On Hit Spy: Reveal cloaked Spy"
+		"reveal disguised victim on hit" :		"On Hit Spy: Reveal disguised Spy"
+		"jarate backstabber" :		"When backstabbed: Jarate attacker"
+		"engy sentry fire rate increased" :		"+??? sentry firing speed"
+		"engy sentry radius increased" :		"+??? sentry range"
+		"engy dispenser radius increased" :		"+??? dispenser range"
+		"mod bat launches ornaments" :		"Alt-Fire: Launches a festive ornament that shatters causing bleed"
+		"freeze backstab victim" :		"Backstab turns victim to ice"
+		"fire rate penalty HIDDEN" :		"fire rate penalty HIDDEN"
+		"energy weapon no drain" :		"energy weapon no drain"
+		"ragdolls become ash" :		"agdolls become ash"
+		"engy disposable sentries" :		"Build +??? additional disposable-sentry"
+		"alt fire teleport to spawn" :		"On Alt-Fire: Teleport to spawn"
+		"cannot pick up buildings" :		"Cannot carry buildings"
+		"stun enemies wielding same weapon" :		"Stuns enemies who are also wielding this weapon"
+		"airblast disabled" :		"No airblast"
+		"increase buff duration HIDDEN" :		"increase buff duration HIDDEN"
+		"crit forces victim to laugh" :		"Critical hit forces victim to laugh"
+		"melts in fire" :		"Melts in fire, regenerates after ??? seconds"
+		"damage all connected" :		"All players connected via Medigun beams are hit"
+		"become fireproof on hit by fire" :		"On Hit by Fire: Become fireproof for ??? seconds"
+		"crit from behind" :		"Always critical hit from behind"
+		"crit does no damage" :		"Critical hits do no damage"
+		"add jingle to footsteps" :		"Jingle all the way"
+		"set icicle knife mode" :		"set icicle knife mode"
+		"mod stun waist high airborne" :		"On Hit: If enemy's belt is at or above eye level,"
+		"extinguish earns revenge crits" :		"Alt-Fire: Extinguish teammates to gain guaranteed critical hits"
+		"burn damage earns rage" :		"All fire damage charges 'Mmmph', activate to refill health and crit for several seconds"
+		"tickle enemies wielding same weapon" :		"On Hit: Force enemies to laugh who are also wearing this item"
+		"attach particle effect static" :		"Effect: ???"
+		"taunt success sound" :		"TauntSoundSuccess"
+		"accepted wedding ring account id 1" :		"A perpetual bond of commitment between ???"
+		"accepted wedding ring account id 2" :		"and ???, forever and ever and ever. XoXoX"
+		"tool escrow until date" :		"Usable After: ???"
+		"generate rage on damage" :		"+??? rage on damage"
+		"aiming no flinch" :		"No flinching when aiming"
+		"aiming knockback resistance" :		"Knockback reduced by ??? when aiming"
+		"sniper aiming movespeed decreased" :		"??? slower move speed when aiming"
+		"kill eater user 1" :		"Kill eater user 1"
+		"kill eater user score type 1" :		"Kill eater user score type 1"
+		"kill eater user 2" :		"Kill eater user 2"
+		"kill eater user score type 2" :		"Kill eater user score type 2"
+		"kill eater user 3" :		"Kill eater user 3"
+		"kill eater user score type 3" :		"Kill eater user score type 3"
+		"strange part new counter ID" :		"Strange part new counter ID"
+		"mvm completed challenges bitmask" :		"Mvm completed challenges bitmask"
+		"rage on kill" :		"Gain Focus on kills and assists"
+		"kill eater kill type" :		"Kill eater kill type"
+		"shot penetrate all players" :		"Shots go through multiple enemies"
+		"headshot damage increase" :		"Headshots deal an extra +??? damage"
+		"mystery solving time decrease" :		"Reduces mystery solving time by up to ???"
+		"damage penalty on bodyshot" :		"??? damage on body shot"
+		"sniper rage DISPLAY ONLY" :		"Focus activates on Fire when Focus meter is full"
+		"fire rate bonus HIDDEN" :		"+??? Firing Speed HIDDEN"
+		"explosive sniper shot" :		"Increased headshot explosion radius and damage to nearby enemies"
+		"melee attack rate bonus" :		"+??? faster melee attack speed"
+		"projectile penetration heavy" :		"Bullets penetrate +??? enemies"
+		"rage on assists" :		"Rage Gain On Assists"
+		"armor piercing" :		"Allow backstabs against Giant Robots at ??? damage"
+		"cannot pick up intelligence" :		"Wearer cannot carry the intelligence briefcase"
+		"chance of hunger decrease" :		"Reduces chance of hunger by up to ???"
+		"cannot be backstabbed" :		"Cannot be backstabbed"
+		"squad surplus claimer id DEPRECATED" :		"Squad surplus claimed by: ???"
+		"share consumable with patient" :		"Using your Power Up Canteen will apply the same bonus effect to your heal target"
+		"airblast vertical vulnerability multiplier" :		"AirBlast Vertical Vulnerability Multipier"
+		"vision opt in flags" :		"Vision opt in flags"
+		"crit vs disguised players" :		"100% critical hit vs disguised players"
+		"crit vs non burning players" :		"100% critical hit vs non-burning players"
+		"kill forces attacker to laugh" :		"On Kill: Burst into joyous laughter"
+		"damage bonus while undisguised" :		"+??? damage bonus while undisguised"
+		"projectile spread angle penalty" :		"+??? degrees random projectile deviation"
+		"dmg taken increased" :		"??? damage vulnerability on wearer"
+		"auto fires full clip" :		"Hold Fire to load up to three rockets"
+		"self mark for death" :		"You are marked for death while active, and for short period after switching weapons"
+		"counts as assister is some kind of pet this update is going to be awesome" :		"counts as assister is some kind of pet this update is going to be awesome"
+		"mod flaregun fires pellets with knockback" :		"Flare knocks back target on hit"
+		"can overload" :		"Overloading the chamber will cause a misfire"
+		"hype on damage" :		"On Hit: Builds Boost"
+		"hype resets on jump" :		"Boost resets on jump"
+		"pyro year number" :		"Witnessed the ??? inferno"
+		"no primary ammo from dispensers" :		"Cannot collect ammo from dispensers"
+		"pyrovision only DISPLAY ONLY" :		"Only visible in Pyroland"
+		"clip size penalty HIDDEN" :		"-??? clip size HIDDEN"
+		"sapper damage bonus" :		"+??? sapper damage bonus"
+		"sapper damage penalty" :		"??? sapper damage penalty"
+		"sapper damage leaches health" :		"+??? health regenerated per second for each active sapper"
+		"sapper health bonus" :		"??? sapper health bonus"
+		"sapper health penalty" :		"??? sapper health penalty"
+		"ring of fire while aiming" :		"Sustains a ring of flames while deployed"
+		"uses ammo while aiming" :		"??? ammo consumed per second while deployed"
+		"sapper degenerates buildings" :		"Reverses enemy building construction"
+		"sapper damage penalty hidden" :		"sapper damage penalty hidden"
+		"cleaver description" :		"Throw at your enemies to make them bleed!"
+		"ragdolls plasma effect" :		"Ragdolls plasma effect"
+		"crit vs stunned players" :		"100% critical hit vs stunned players"
+		"crit vs wet players" :		"100% critical hit vs wet players"
+		"override item level desc string" :		"override item level desc string"
+		"clip size upgrade atomic" :		"+??? clip size"
+		"major move speed bonus" :		"major move speed bonus"
+		"major increased jump height" :		"major increased jump heightn"
+		"head scale" :		"Disables double jump"
+		"pyrovision opt in DISPLAY ONLY" :		"On Equip: Visit Pyroland"
+		"halloweenvision opt in DISPLAY ONLY" :		"halloweenvision opt in DISPLAY ONLY"
+		"halloweenvision filter DISPLAY ONLY" :		"halloweenvision filter DISPLAY ONLY"
+		"player skin override" :		"player skin override"
+		"never craftable" :		"never craftable"
+		"zombiezombiezombiezombie" :		"zombiezombiezombiezombie"
+		"merasmus hat level display ONLY" :		"Killed Merasmus at level ???"
+		"strange restriction type 1" :		"strange restriction type 1"
+		"strange restriction value 1" :		"strange restriction value 1"
+		"strange restriction type 2" :		"strange restriction type 2"
+		"strange restriction value 2" :		"strange restriction value 2"
+		"strange restriction user type 1" :		"strange restriction user type 1"
+		"strange restriction user value 1" :		"strange restriction user value 1"
+		"strange restriction user type 2" :		"strange restriction user type 2"
+		"strange restriction user value 2" :		"strange restriction user value 2"
+		"strange restriction user type 3" :		"strange restriction user type 3"
+		"strange restriction user value 3" :		"strange restriction user value 3"
+		"engineer sentry build rate multiplier" :		"engineer sentry build rate multiplier"
+		"engineer teleporter build rate multiplier" :		"engineer teleporter build rate multiplier"
+		"grenade launcher mortar mode" :		"grenade launcher mortar mode"
+		"grenade not explode on impact" :		"grenade not explode on impact"
+		"strange score selector" :		"strange score selector"
+		"engineer building teleporting pickup" :		"engineer building teleporting pickup"
+		"grenade damage reduction on world contact" :		"grenade damage reduction on world contact"
+		"engineer rage on dmg" :		"engineer rage on dmg"
+		"mark for death on building pickup" :		"mark for death on building pickup"
+		"medigun charge is resists" :		"medigun charge is resists"
+		"arrow heals buildings" :		"+arrow heals buildings"
+		"Projectile speed increased HIDDEN" :		"+Projectile speed increased HIDDEN"
+		"damage bonus HIDDEN" :		"+damage bonus HIDDEN"
+		"cannonball push back" :		"Cannonballs push players back on impact"
+		"rage giving scale" :		"rage giving scale"
+		"overheal fill rate reduced" :		"??? Overheal build rate"
+		"canteen specialist" :		"Canteen Specialist"
+		"overheal expert" :		"Overheal Expert"
+		"mad milk syringes" :		"Mad Milk Syringes"
+		"rocket specialist" :		"Rocket Specialist"
+		"SET BONUS: move speed set bonus" :		"+???  faster move speed on wearer"
+		"SET BONUS: health regen set bonus" :		"+??? health regenerated per second on wearer"
+		"SET BONUS: dmg taken from crit reduced set bonus" :		"??? critical hit damage resistance on wearer"
+		"SET BONUS: dmg taken from fire reduced set bonus" :		"??? fire damage resistance on wearer"
+		"healing mastery" :		"Healing Mastery"
+		"kill eater 3" :		"kill eater 3"
+		"kill eater score type 3" :		"kill eater score type 3"
+		"strange restriction type 3" :		"strange restriction type 3"
+		"strange restriction value 3" :		"strange restriction value 3"
+		"bot custom jump particle" :		"bot custom jump particle"
+		"generate rage on heal" :		"Projectile Shield"
+		"custom name attr" :		"custom name attr"
+		"custom desc attr" :		"custom desc attr"
+		"medigun bullet resist passive" :		"medigun bullet resist passive"
+		"medigun blast resist passive" :		"medigun blast resist passive"
+		"medigun fire resist passive" :		"medigun fire resist passive"
+		"medigun bullet resist deployed" :		"medigun bullet resist deployed"
+		"medigun blast resist deployed" :		"medigun blast resist deployed"
+		"medigun fire resist deployed" :		"medigun fire resist deployed"
+		"medigun crit bullet percent bar deplete" :		"medigun crit bullet percent bar deplete"
+		"medigun crit blast percent bar deplete" :		"medigun crit blast percent bar deplete"
+		"medigun crit fire percent bar deplete" :		"medigun crit fire percent bar deplete"
+		"throwable fire speed" :		"throwable fire speed"
+		"throwable damage" :		"throwable damages"
+		"throwable healing" :		"throwable healing"
+		"throwable particle trail only" :		"throwable particle trail only"
+		"SET BONUS: dmg taken from bullets increased" :		"??? bullet damage vulnerability on wearer"
+		"SET BONUS: max health additive bonus" :		"??? max health on wearer"
+		"scattergun knockback mult" :		"scattergun knockback mult"
+		"particle effect vertical offset" :		"Particle effect vertical offset"
+		"particle effect use head origin" :		"Particle effect use head origin"
+		"use large smoke explosion" :		"Use Large Smoke Explosion"
+		"damage causes airblast" :		"Damage causes Airblast"
+		"increased jump height from weapon" :		"??? greater jump height when active"
+		"damage force increase" :		"??? increase in push force taken from damage"
+		"healing received bonus" :		"+??? bonus healing from all sources"
+		"afterburn immunity" :		"Immune to the effects of afterburn"
+		"decoded by itemdefindex" :		"decoded by itemdefindex"
+		"hype decays over time" :		"Hype Decays Over Time"
+		"SET BONUS: custom taunt particle attr" :		"Extra effects when taunting"
+		"airblast vulnerability multiplier hidden" :		"??? reduction in airblast vulnerability"
+		"damage force increase hidden" :		"??? increase in push force taken from damage HIDDEN"
+		"damage force increase text" :		"Increase in push force taken from damage and airblast"
+		"SET BONUS: calling card on kill" :		"Leave a Calling Card on your victims"
+		"righthand pose parameter" :		"Righthand pose parameter"
+		"set throwable type" :		"Set Throwable Type"
+		"add head on hit" :		"Add Head on Hit"
+		"item style override" :		"item style override"
+		"paint decal enum" :		"paint decal enum"
+		"show paint description" :		"show paint description"
+		"bot medic uber health threshold" :		"bot medic uber health threshold"
+		"bot medic uber deploy delay duration" :		"bot medic uber deploy delay duration"
+		"single wep deploy time decreased" :		"This weapon deploys ??? faster"
+		"halloween reload time decreased" :		"halloween reload time decreased"
+		"halloween fire rate bonus" :		"halloween fire rate bonus"
+		"halloween increased jump height" :		"halloween increased jump height"
+		"special taunt" :		"Special Taunt"
+		"revive" :		"Revive Teammates"
+		"taunt attack name" :		"taunt attack name"
+		"taunt attack time" :		"taunt attack time"
+		"taunt force move forward" :		"taunt force move forward"
+		"taunt mimic" :		"taunt mimic"
+		"taunt success sound" :		"taunt success sound"
+		"taunt success sound offset" :		"taunt success sound offset"
+		"taunt success sound loop" :		"taunt success sound loop"
+		"taunt success sound loop offset" :		"taunt success sound loop offset"
+		"increased air control" :		"??? increased air control"
+		"rocket launch impulse" :		"rocket launch impulse"
+		"minicritboost on kill" :		"On Kill: Gain Mini-crits for %s1 seconds"
+		"no metal from dispensers while active" :		"No metal from dispensers when active"
+		"projectile entity name" :		"projectile entity name"
+		"is throwable primable" :		"is throwable primable"
+		"throwable detonation time" :		"throwable detonation time"
+		"throwable recharge time" :		"throwable recharge time"
+		"closerange backattack minicrits" :		"Mini-crits targets when fired at their back from close range"
+		"torso scale" :		"Torso Scale"
+		"rocketjump attackrate bonus" :		"Increased attack speed and smaller blast radius while blast jumping"
+		"is throwable chargeable" :		"is throwable chargeable"
+		"back headshot" :		"Back Headshot"
+		"rj air bombardment" :		"Fires 3 barrages while explosive jumping"
+		"projectile particle name" :		"Projectile Particle name"
+		"air jump on attack" :		"Air jump on attack"
+		"sniper crit no scope" :		"Charge and fire shots independent of zoom"
+		"sniper independent zoom DISPLAY ONLY" :		"Zoom does not affect charge"
+		"axtinguisher properties" :		"100% critical hits burning players from behind\nMini-crits burning players from the front"
+		"full charge turn control" :		"Full turning control while charging"
+		"parachute attribute" :		"parachute attribute"
+		"taunt force weapon slot" :		"taunt force weapon slot"
+		"mini rockets" :		"Mini Rocket"
+		"rocket jump damage reduction HIDDEN" :		"??? blast damage from rocket jumps HIDDEN"
+		"clipsize increase on kill" :		"Clip size increased on kill"
+		"breadgloves properties" :		"breadgloves properties"
+		"taunt turn speed" :		"taunt turn speed"
+		"sniper fires tracer HIDDEN" :		"Fires tracer rounds HIDDEN"
+		"fire rate bonus with reduced health" :		"Fire rate increases as health decreases"
+		"tag__summer2014" :		"Rewarded for participating in the 2014 Summer Adventure"
+		"crate generation code" :		"crate generation code"
+		"stickybomb fizzle time" :		"Stickybombs fizzle ??? seconds after landing"
+		"stickybomb charge rate" :		"Max charge time decreased by ???"
+		"grenade no bounce" :		"Grenades have very little bounce and roll"
+		"class select override vcd" :		"class select override vcd"
+		"custom projectile model" :		"Custom projectile model"
+		"lose demo charge on damage when charging" :		"Taking damage while shield charging reduces remaining charging time"
+		"grenade no spin" :		"grenade no spin"
+		"grenade detonation damage penalty" :		"??? damage on grenades that explode on timer"
+		"taunt turn acceleration time" :		"taunt turn acceleration time"
+		"taunt move acceleration time" :		"taunt move acceleration time"
+		"taunt move speed" :		"taunt move speed"
+		"shuffle crate item def min" :		"shuffle crate item def min"
+		"shuffle crate item def max" :		"shuffle crate item def max"
+		"limited quantity item" :		"limited quantity item"
+		"SET BONUS: alien isolation xeno bonus pos" :		"Increased Melee damage against Isolated Merc Set"
+		"SET BONUS: alien isolation xeno bonus neg" :		"Increased Nostromo Napalmer damage taken from Isolated Merc Set"
+		"SET BONUS: alien isolation merc bonus pos" :		"Increased Nostromo Napalmer damage against Isolationist Pack Set"
+		"SET BONUS: alien isolation merc bonus neg" :		"Increased Melee damage taken from Isolationist Pack Set"
+		"disable weapon switch" :		"Disable Weapon Switch"
+		"hand scale" :		"Hand Scale"
+		"display duck leaderboard" :		"display duck leaderboard"
+		"duck rating" :		"Duck XP Level : ???"
+		"duck badge level" :		"Duck Power : ??? / 5"
+		"tag__eotlearlysupport" :		"Early Supporter of End of the Line Community Update"
+		"unlimited quantity hidden" :		"Unlimited quantity hidden"
+		"duckstreaks active" :		"Duckstreaks Active"
+		"panic_attack" :		"Hold fire to load up to 4 shells"
+		"panic_attack_negative" :		"Weapon spread increases as health decreases"
+		"auto fires full clip penalty" :		"auto fires full clip penalty"
+		"auto fires when full" :		"auto fires when full"
+		"force weapon switch" :		"force weapon switch"
+		"weapon_uses_stattrak_module" :		"weapon uses stattrak module"
+		"is_operation_pass" :		"is operation pass"
+		"weapon_stattrak_module_scale" :		"weapon stattrak module scale"
+		"set_item_texture_wear" :		"set item texture wear"
+		"cloak_consume_on_feign_death_activate" :		"??? cloak meter when Feign Death is activated"
+		"stickybomb_charge_damage_increase" :		"Up to +??? damage based on charge"
+		"NoCloakWhenCloaked" :		"No cloak meter from ammo boxes when invisible"
+		"ReducedCloakFromAmmo" :		"??? cloak meter from ammo boxes"
+		"elevate to unusual if applicable" :		"elevate to unusual if applicable"
+		"weapon_allow_inspect" :		"weapon allow inspect"
+		"metal_pickup_decreased" :		"??? less metal from pickups and dispensers"
+		"lose hype on take damage" :		"Boost reduced when hit"
+		"healing received penalty" :		"??? less healing from all sources"
+		"crit_vs_burning_FLARES_DISPLAY_ONLY" :		"100% critical hit vs burning players"
+		"speed_boost_on_kill" :		"Gain a speed boost on kill"
+		"speed_boost_on_hit" :		"On Hit: Gain a speed boost"
+		"spunup_damage_resistance" :		"%s1% damage resistance when below 50% health and spun up"
+		"ubercharge overheal rate penalty" :		"%s1% ÜberCharge rate on Overhealed patients"
+		"reduced_healing_from_medics" :		"??? less healing from Medic sources"
+		"health on radius damage" :		"On Hit: Gain up to +??? health per attack"
+		"style changes on strange level" :		"style changes on strange level"
+		"cannot restore" :		"cannot restore"
+		"hide crate series number" :		"hide crate series number"
+		"has team color paintkit" :		"Team Colored Decorated Weapon"
+		"cosmetic_allow_inspect" :		"cosmetic allow inspect"
+		"hat only unusual effect" :		"hat only unusual effect"
+		"items traded in for" :		"Items Traded in : ???"
+		"texture_wear_default" :		"texture wear default"
+		"taunt only unusual effect" :		"taunt only unusual effect"
+		"deactive date" :		"deactive date"
+		"is giger counter" :		"is giger counter"
+		"hide_strange_prefix" :		"hide strange prefix"
+		"always_transmit_so" :		"always transmit so"
+		"allow_halloween_offering" :		"allow halloween offering"
+		"cannot_transmute" :		"cannot transmute"
+		"single wep holster time increased" :		"This weapon holsters ??? slower"
+		"single wep deploy time increased" :		"This weapon deploys ??? slower"
+		"charge time decreased" :		"??? sec decrease in charge duration"
+		"dmg penalty vs buildings" :		"??? damage penalty vs buildings"
+		"charge impact damage decreased" :		"??? decrease in charge impact damage"
+		"non economy" :		"Not Tradable, Marketable, Usable in Crafting, or Gift Wrappable"
+		"charge meter on hit" :		"Melee hits refill %s1% of your charge meter"
+		"minicrit_boost_when_charged" :		"Secondary fire when charged grants mini-crits for %s1 seconds"
+		"minicrit_boost_charge_rate" :		"Dealing damage fills charge meter"
+		"is_a_sword" :		"This Weapon has a large melee range and\ndeploys and holsters slower"
+		"ammo gives charge" :		"Ammo boxes collected also refill your charge meter"
+		"extinguish restores health" :		"Extinguishing teammates restores ??? health"
+		"extinguish reduces cooldown" :		"Extinguishing teammates reduces cooldown by ???"
+		"cannot giftwrap" :		"cannot giftwrap"
+		"tool needs giftwrap" :		"tool needs giftwrap"
+		"fuse bonus" :		"+??? fuse time on grenades"
+		"move speed bonus shield required" :		"+??? faster move speed on wearer (shield required)"
+		"damage bonus vs sentry target" :		"??? increased damage to your sentry's target"
+		"mod teleporter cost" :		"??? metal cost when constructing or upgrading teleporters"
+		"damage blast push" :		"damage blast push"
+		"move speed bonus resource level" :		"move speed bonus resource level"
+		"hype on damage" :		"On Hit: Builds Hype"
+		"dmg taken from fire reduced on active" :		"+??? fire damage resistance while deployed"
+		"damage bonus vs burning" :		"??? damage bonus vs burning players"
+		"min_viewmodel_offset" :		"min viewmodel offset"
+		"dmg pierces resists absorbs" :		"Attacks pierce damage resistance effects and bonuses"
+		"energy buff dmg taken multiplier" :		"energy buff dmg taken multiplier"
+		"lose revenge crits on death DISPLAY ONLY" :		"Revenge crits are lost on death"
+		"patient overheal penalty" :		"-??? maximum overheal on wearer"
+		"item_meter_charge_rate" :		"item_meter_charge_rate"
+		"mult_spread_scale_first_shot" :		"mult_spread_scale_first_shot"
+		"unusualifier_attribute_template_name" :		"unusualifier attribute template name"
+		"tool_target_item_icon_offset" :		"tool target item icon offset"
+		"add_head_on_kill" :		"Collect the organs of your victims"
+		"mult_spread_scales_consecutive" :		"Successive shots become less accurate"
+		"fixed_shot_pattern" :		"Fires a wide, fixed shot pattern"
+		"mod_cloak_no_regen_from_items" :		"mod cloak no regen from items"
+		"ubercharge_preserved_on_spawn_max" :		"Collect the organs of people you hit"
+		"mod_air_control_blast_jump" :		"??? increased air control when blast jumping"
+		"spunup_push_force_immunity" :		"Immune to push force from damage and airblast when spun up"
+		"mod_mark_attacker_for_death" :		"mod mark attacker for death"
+		"use_model_cache_icon" :		"use model cache icon"
+		"mod_disguise_consumes_cloak" :		"Normal disguises require (and consume) a full cloak meter"
+		"inspect_viewmodel_offset" :		"inspect_viewmodel_offset"
+		"is_passive_weapon" :		"is passive weapon"
+		"no_jump" :		"No Jump"
+		"no_duck" :		"No Duck"
+		"no_attack" :		"No Attack"
+		"airblast_destroy_projectile" :		"airblast destroy projectile"
+		"airblast_pushback_disabled" :		"airblast pushback disabled"
+		"airblast_pushback_no_stun" :		"airblast_pushback no stun"
+		"airblast_pushback_no_viewpunch" :		"airblast pushback no viewpunch"
+		"airblast_deflect_projectiles_disabled" :		"airblast deflect rojectiles disabled"
+		"airblast_put_out_teammate_disabled" :		"airblast put out teammate disabled"
+		"afterburn duration penalty" :		"afterburn duration penalty"
+		"afterburn duration bonus" :		"afterburn duration bonus"
+		"aoe_deflection" :		"aoe deflection"
+		"mult_end_flame_size" :		"mult end flame size"
+		"airblast_give_teammate_speed_boost" :		"airblast give teammate speed_boost"
+		"airblast_turn_projectile_to_ammo" :		"airblast turn projectile to ammo"
+		"paintkit_proto_def_index" :		"paintkit proto def index"
+		"taunt_attr_player_invis_percent" :		"taunt_attr_player_invis_percent"
+		"redirected_flame_size_mult" :		"redirected_flame_size_mult"
+		"flame_reflect_on_collision" :		"flame_reflect_on_collision"
+		"flame_spread_degree" :		"flame_spread_degree"
+		"holster_anim_time" :		"holster_anim_time"
+		"flame_gravity" :		"flame_gravity"
+		"flame_ignore_player_velocity" :		"flame_ignore_player_velocity"
+		"flame_drag" :		"flame_drag"
+		"flame_speed" :		"flame_speed"
+		"grenades1resupply_denied" :		"grenades1_resupply_denied"
+		"grenades2_resupply_denied" :		"grenades2_resupply_denied"
+		"grenades3_resupply_denied" :		"grenades3_resupply_denied"
+		"item_meter_resupply_denied" :		"Spawning and resupply do not affect the Gas meter"
+		"mult_player_movespeed_active" :		"+??? faster move speed on wearer"
+		"mult_dmgtaken_active" :		"??? damage vulnerability on wearer"
+		"mult_patient_overheal_penalty_active" :		"-??? maximum overheal on wearer"
+		"mult_health_fromhealers_penalty_active" :		"-??? health from healers on wearer"
+		"mod_maxhealth_drain_rate" :		"Maximum health is drained while item is active"
+		"item_meter_charge_type" :		"item_meter_charge_type"
+		"max_flame_reflection_count" :		"max_flame_reflection_count"
+		"flame_reflection_add_life_time" :		"flame_reflection_add_life_time"
+		"reflected_flame_dmg_reduction" :		"reflected_flame_dmg_reduction"
+		"flame_lifetime" :		"flame_lifetime"
+		"flame_random_life_time_offset" :		"flame_random_life_time_offset"
+		"flame_up_speed" :		"flame_up_speed"
+		"custom_paintkit_seed_lo" :		"custom_paintkit_seed_lo"
+		"custom_paintkit_seed_hi" :		"custom_paintkit_seed_hi"
+		"crit_dmg_falloff" :		"Critical damage is affected by range"
+		"crits_become_minicrits" :		"Crits whenever it would normally minicrits"
+		"falling_impact_radius_pushback" :		"Push enemies back when you land (force and radius based on velocity)"
+		"falling_impact_radius_stun" :		"Stun enemies when you land"
+		"thermal_thruster_air_launch" :		"Able to re-launch while already in-flight"
+		"thermal_thruster" :		"thermal_thruster"
+		"mult_item_meter_charge_rate" :		"??? faster recharge rate"
+		"explode_on_ignite" :		"Explode On Ignite"
+		"lunchbox healing decreased" :		"-??? healing effect"
+		"speed_boost_on_hit_enemy" :		"Gain a speed boost when you hit an enemy player"
+		"item_meter_starts_empty_DISPLAY_ONLY" :		"Gas meter starts empty"
+		"item_meter_charge_type_3_DISPLAY_ONLY" :		"Gas meter builds with damage done and/or time"
+		"repair health to metal ratio DISPLAY ONLY" :		"???-to-1 health-to-metal ratio when repairing buildings"
+
+		"CARD: damage bonus" :		"??? damage bonus"
+		"CARD: dmg taken from bullets reduced" :		"??? bullet damage resistance on wearer"
+		"CARD: move speed bonus" :		"??? faster move speed on wearer"
+		"CARD: health regen" :		"??? health regenerated per second on wearer"
+		"SPELL: set item tint RGB" :		"???"
+		"SPELL: set Halloween footstep type" :		"???"
+		"SPELL: Halloween voice modulation" :		"Voices From Below"
+		"SPELL: Halloween pumpkin explosions" :		"Pumpkin Bombs"
+		"SPELL: Halloween green flames" :		"Halloween Fire"
+		"SPELL: Halloween death ghosts" :		"Exorcism"
+		"Attack not cancel charge" :		"Attack not cancel charge"
+		"start drop date" :		"start drop date"
+		"end drop date" :		"nd drop date"
+		"tool target item" :		"tool target item"
+		"killstreak effect" :		"Killstreaker: ???"
+		"killstreak idleeffect" :		"Sheen: ???"
+		"spellbook page attr id" :		"spellbook page attr id"
+		"Halloween Spellbook Page: Tumidum" :		"Pages of Tumidum: ???"
+		"Halloween Spellbook Page: Gratanter" :		"Pages of Gratanter: ???"
+		"Halloween Spellbook Page: Audere" :		"Pages of Audere: ???"
+		"Halloween Spellbook Page: Congeriae" :		"Pages of Congeriae: ???"
+		"Halloween Spellbook Page: Veteris" :		"Pages of Veteris: ???"
+		"additional halloween response criteria name" :		"additional halloween response criteria name"
+		"loot rarity" :		"loot rarity"
+		"quality text override" :		"quality text override"
+		"item name text override" :		"item name text override"
+		"killstreak tier" :		"Killstreaks Active"
+		"wide item level" :		"wide item level"
+		"is australium item" :		"is australium item"
+		"is marketable" :		"is marketable"
+		"allowed in medieval mode" :		"allowed in medieval mode"
+		"crit on hard hit" :		"crit on hard hit"
+		"kill refills meter" :		"Melee kills refill ??? of your charge meter"
+		"taunt attach particle index" :		"★ Unusual Effect: ???"
+		"upgrade rate decrease" :		"??? slower upgrade rate"
+		"voice pitch scale" :		"??? voice pitch scale"
+		"gunslinger punch combo" :		"+??? gunslinger damage bonus"
+		"quest earned standard points" :		"quest earned standard points"
+		"quest earned bonus points" :		"quest earned bonus points"
+		"item drop wave" :		"item drop wave"
 	]
 
+]
+
+@BaseClass = PBaseVelocity
+[ 
+	basevelocity(angle) : "Entity Base's Velocity" : "0 0 0" : "This Entity will get push to the direction when spawned."
+]
+
+@BaseClass = PAVEVelocity
+[ 
+	avelocity(angle) : "Entity Base's Angle" : "0 0 0" : ""
+]
+
+@BaseClass = PWaterLevel
+[ 
+	waterlevel(choices) : "Water Level" : 0 =
+	[
+		0 : "Not in Water"
+		1 : "Feet"
+		2 : "Waist"
+		3 : "Eyes"
+	]
 ]
 
 @BaseClass base(Targetname) = EnvGlobal : 
@@ -1011,7 +1112,7 @@
 		1 : "On"
 		2 : "Dead"
 	]
-	
+
 	counter(integer) : "Counter" : 0 : "An integer counter value associated with this global."
 
 	spawnflags(flags) =
@@ -1037,20 +1138,36 @@
 	damagetype(choices) : "Damage Type" : 0 : "Damage types can be combined to have more than one effect. Simply add the numeric values for the desired types together and use the resulting number. (16 [train] + 64 [blast] = 80: gibbing train death)" =
 	[
 		0 : "GENERIC"
-		16 : "Train"
-		65536 : "Sawblade"
-		1048576 : "Critical"
-		16777216 : "Ignite (no after-burn damage)"
-		32 : "Fall"
 		1 : "Crush"
 		2 : "Bullet"
 		4 : "Slash"
 		8 : "Burn"
+		16 : "Train"
+		32 : "Fall"
 		64 : "Blast (turn gibs)"
 		128 : "Club"
 		256 : "Shock"
+		512 : "Sonic"
+		1024 : "Energy Beam"
+		2048 : "Physics Force"
+		4096 : "Never Gib"
+		8192 : "Always Gib"
 		16384: "Drown (blue faded)"
+		32768: "Paralyze"
+		65536 : "Sawblade"
+		131072 : "Poison"
+		262144 : "Radiation"
+		524288 : "Drowning recovery"
+		1048576 : "Critical"
+		2097152 : "Slow burning"
 		4194304 : "Slowfreeze"
+		8388608 : "Gravity Gun"
+		16777216 : "Ignite (no after-burn damage)"
+		33554432 : "Airboat"
+		67108864 : "Dissolve"
+		134217728 : "Underwater is Invincible"
+		268435456 : "Being on fire"
+		536870912 : "Shotguns"
 	]
 ]
 
@@ -1071,6 +1188,7 @@
 
 	spawnflags(flags) = 
 	[
+		1 : "Physics Start Constrained" : 0
 		1073741824: "Never Respawn" : 0
 	]
 ]
@@ -1300,6 +1418,16 @@
 		0 : "No"
 		1 : "Yes"
 	]
+
+	StartDisabled(choices) : "Start Disabled" : 0 =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+
+	// Inputs
+	input BlockNav(void) : "Enable"
+	input UnblockNav(void) : "Disable"
 ]
 
 @SolidClass base(Targetname) = func_nav_avoid : "Influence bots to avoid this region by increasing the pathfinding cost within it."
@@ -1322,11 +1450,17 @@
 
 	// Inputs
 	input Enable(void) : "Enable"
+	input Toggle(void) : "Toggle between enabled and disabled."
 	input Disable(void) : "Disable"
 ]
 
 @SolidClass base(Targetname) = func_nav_avoidance_obstacle : "Influence bots to avoid this region by increasing the pathfinding cost within it."
 [
+	StartDisabled(choices) : "Start Disabled" : 0 =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
 ]
 
 @SolidClass base(Targetname) = func_nav_prefer : "Influence bots to prefer this region by decreasing the pathfinding cost within it."
@@ -1349,6 +1483,7 @@
 
 	// Inputs
 	input Enable(void) : "Enable"
+	input Toggle(void) : "Toggle between enabled and disabled."
 	input Disable(void) : "Disable"
 ]
 
@@ -1373,6 +1508,7 @@
 
 	// Inputs
 	input Enable(void) : "Enable"
+	input Toggle(void) : "Toggle between enabled and disabled."
 	input Disable(void) : "Disable"
 ]
 
@@ -1800,6 +1936,8 @@
 
 	round_bluespawn(target_destination) : "Blue spawn for round" : : "Blue spawn point when the associated round is being played."
 	round_redspawn(target_destination) : "Red spawn for round" : : "Red spawn point when the associated round is being played."
+
+	input RoundSpawn(void) : "Re-find control points"
 ]
 
 @PointClass base(Targetname, Angles) studio("models/editor-puddy/hngineer.mdl") = info_player_deathmatch : "info_player_deathmatch entities may be placed in a map."
@@ -2370,6 +2508,7 @@
 	input SetActive( void ) : "Set Active"
 	input SetInactive( void ) : "Set InActive"
 	input ToggleActive( void ) : "Toggle Active"
+	input RoundActivate( void ) : "If we don't have a team find a info_player_teamspawn inside us that we can derive a team from."
 ]
 
 @SolidClass base(Targetname, Parentname, Origin, RenderFields, Global, Inputfilter, EnableDisable, Shadow) = func_respawnroomvisualizer : 
@@ -2402,7 +2541,7 @@
 	]	
 	
 	input SetSolid(bool) : "Set whether this area is solid to enemy players or not. 0 = No, 1 = Yes"
-	input RoundActivate(void) : ""
+	input RoundActivate(void) : "Find func_respawnroom name"
 ]
 
 @SolidClass base(Targetname, PTeamNum, Parentname, Origin, RenderFields, EnableDisable) = func_forcefield : 
@@ -2581,7 +2720,7 @@
 	output OnNotTouching(void) : "Fired when the TestTouch input is not true (nothing is touching the trigger.)"
 ]
 
-@PointClass base(Targetname, Angles) = bot_generator : "Entity spawns <count> TFBots every <interval> seconds, with at most <maxActive> active at once"
+@PointClass base(Targetname, Angles) iconsprite("editor-puddy/bot_generator") = bot_generator : "Entity spawns <count> TFBots every <interval> seconds, with at most <maxActive> active at once"
 [
 	team(choices) : "Team" : "auto" : "Team" =
 	[
@@ -2620,7 +2759,8 @@
 		"attack sentry at next action point" : "Attack sentry gun at next action point"
 		"disguise" : "If Spy, Disguise"
 	]
-
+// more next bot command i found in code..?
+// CTFBot::GotoActionPoint Get the losers! Run away from threat!   In preround Opportunistically using buff item   Acknowledging friendly human attention  Backing off Moving to cover to reload   Grabbing nearby health  Grabbing nearby ammo    Using nearby teleporter Waiting for squadmates to get back into formation   Prerequisite commands me to wait    Prerequisite commands me to move to an entity   goto action point   Received command to go to action point  despawn Received command to go to de-spawn  Received command to taunt   cloak   uncloak disguise    build sentry at nearest sentry hint Building a Sentry at a hint location    attack sentry at next action point  Received command to attack sentry gun at next action point  Taunt finished
 	suppressFire(choices) : "Suppress Fire" : 0 : "Newly generated TFBots will suppress their fire if this is set." =
 	[
 		0 : "No"
@@ -2706,7 +2846,7 @@
 	output OnBotKilled(void) : "Sent when a bot associated with this bot generator is killed"
 ]
 
-@PointClass base(Targetname) = bot_roster : "Entity specifies what classes TFBots can choose"
+@PointClass base(Targetname) iconsprite("editor-puddy/bot_roster") = bot_roster : "Entity specifies what classes TFBots can choose"
 [
 	team(choices) : "Team" : "auto" : "Team" =
 	[
@@ -2779,7 +2919,7 @@
 	input SetAllowEngineer(bool) : "Sets whether TFBots can choose Engineer as a class. 0 = No, 1 = Yes"
 ]
 
-@PointClass base(Targetname) sphere(desired_distance) = bot_action_point : "A potential destination for a bot"
+@PointClass base(Targetname) sphere(desired_distance) iconsprite("editor-puddy/bot_action_point") = bot_action_point : "A potential destination for a bot"
 [
 	next_action_point(target_destination) : "Next Action Point" : : "The next Action Point to approach after performing this one."
 	desired_distance(float) : "Desired Distance" : 5 : "The distance to get within when approaching this Action Point before the bot says it has reached it."
@@ -2799,7 +2939,7 @@
 	output OnBotReached(void) : "A bot has reached this action point"
 ]
 
-@PointClass base(Targetname) = bot_proxy : "An entity that spawns a TFBot and relays events to/from it"
+@PointClass base(Targetname) iconsprite("editor-puddy/bot_proxy") = bot_proxy : "An entity that spawns a TFBot and relays events to/from it"
 [
 	bot_name(string) : "Bot Name" : "TFBot" : "The bot's player name" 
 
@@ -2994,6 +3134,19 @@
 [
 ]
 
+@FilterClass base(PTeamNum, PBaseFilter) iconsprite("editor/filter_team") = filter_activator_tfteam :
+	"A filter that filters by the team of the activator.  The team number to filter by. " +
+	"If the filter mode is Allow, only entities whose team number matches the given team will " +
+	"pass the filter. If the filter mode is Disallow, all entities EXCEPT those whose team number " +
+	"matches the given team will pass the filter." 
+[
+	controlpoint(target_destination) : "Associated Control Point" : "" : "The team_control_point associated with this filter. The filter does NOT need an associated control point to function properly, but ownership of the control point will control the team number the filter uses (setup during each round start)."
+	
+	// Inputs
+	input RoundActivate(void) : "Activate the Control Point Finder"
+	input RoundSpawn(void) : "Round Spawn"
+]
+
 @FilterClass base(PBaseFilter,Condition) iconsprite("editor-puddy/filter_tf_condition") = filter_tf_condition :
 	"A filter that filters by conditions on a player"
 [
@@ -3016,7 +3169,7 @@
 	]
 ]
 
-@FilterClass base(PBaseFilter,DamageTypeP) iconsprite("editor/filter_damage_type") = filter_damage_type :
+@FilterClass base(PBaseFilter,DamageTypeP) = filter_damage_type :
 	"A damage filter that filters by the type of damage inflicted. This can only be used as a damage filter, not as an activator filter."
 [
 ]
@@ -3031,7 +3184,7 @@
 	]
 ]
 
-@FilterClass base(BaseFilter) iconsprite("editor/filter_class.vmt") = filter_tf_class :
+@FilterClass base(BaseFilter) iconsprite("editor-puddy/filter_tf_class") = filter_tf_class :
 	"A filter that filters by the class of the activator.  The team number to filter by. " +
 	"If the filter mode is Allow, only entities whose class matches the given class will " +
 	"pass the filter. If the filter mode is Disallow, all entities EXCEPT those whose class " +
@@ -3144,6 +3297,7 @@
 		11 : "Halloween or Full Moon"
 		12 : "Halloween or Full Moon or Valentines Day"
 		13 : "April Fools"
+		14 : "Rick MAY"
 	]
 
 	tauntInHell(choices) : "Taunt In Hell" : 0 : "Should players taunt when teleported to Hell." =
@@ -3192,6 +3346,8 @@
 	output OnCountdown10SecRemain(void) : "Sent when 10 seconds remain."
 	output OnCountdown5SecRemain(void) : "Sent when 5 seconds remain."
 	output OnCountdownEnd(void) : "Sent when the timer expires and the point is not being captured."	
+
+	input RoundSpawn(void) : ""
 ]
 
 @PointClass base(Targetname) iconsprite("editor-puddy/entity_spawn_manager") = entity_spawn_manager : "An entity that spawns stuff at spawn points."
@@ -3285,7 +3441,9 @@
 	input SetReturnTime(integer) : "Set the length of time (in seconds) before dropped flag/intelligence returns to base."
 	input ShowTimer(integer) : "Show a visible timer (in seconds)."
 	input ForceGlowDisabled(integer) : "Forcably block the glow effect for this flag. 1 = glow blocked, 0 = normal behavior"
-		
+
+	input RoundActivate(void) : "Force the flag to be dropped if it's being carried by a player, then reset the flag to its original location AND reset to its Default."
+
 	// Outputs
 	output OnReturn(void)  : "Sent when the flag is returned via timer."
 	output OnPickup(void)  : "Sent when the flag is picked up."
@@ -3380,7 +3538,11 @@
 	input SetBlueTimer(integer)	:	"Set the time remaining for the BLUE timer."
 	input AddRedTimer(integer)	:	"Add time to the RED timer."
 	input AddBlueTimer(integer)	:	"Add time to the BLUE timer."
+
+	input RoundActivate(void)	:	"Find control points and its master."
+	input RoundSpawn(void) : "Create new team_round_timer entities for both team."
 ]
+
 
 @PointClass base(Targetname, PTeamNum, EnableDisable) iconsprite("editor-puddy/team_train_watcher") = team_train_watcher :
 	"Entity that tracks the train progress through train escort maps"
@@ -3441,7 +3603,9 @@
 	input SetTrainRecedeTime(integer) : "Set the number of seconds before the train starts to recede."
 	input SetTrainCanRecede(bool) : "Determines whether or not the train can recede."
 	input SetTrainRecedeTimeAndUpdate(integer) : "Set the number of seconds before the train starts to recede and update the current recede time."
-	
+
+	input RoundActivate(void) : "Stop final alarm AND reactivate watcher"
+
 	// Outputs
 	output OnTrainStartRecede(void)   : "Sent when the train should start receding"
 ]
@@ -3560,6 +3724,11 @@
 ]
 
 @PointClass base(Targetname, Angles, RenderFields) studio("models/bots/boss_bot/boss_tank_part1_destruction.mdl") = tank_destruction : "Tank Boss Destruction Animation"
+[
+	modelscale(float) : "Model Scale" : "1.0" : "A multiplier for the size of the model."
+]
+
+@PointClass base(Targetname, Angles, RenderFields) studio("models/bots/merasmus/merasmus.mdl") = merasmus_dancer : "Dancing Merasmus Animation"
 [
 	modelscale(float) : "Model Scale" : "1.0" : "A multiplier for the size of the model."
 ]
@@ -3825,10 +3994,7 @@
 	filename(string)    : "Lookup Table Filename" : ""     : "This is the lookup table filename"
 ]
 
-
-@PointClass base(Targetname,EnableDisable) = tf_populator : "MvM Populator" []
-
-@PointClass base(Targetname, BaseNPC, Parentname, Angles, EnableDisable, PTeamNum) studio("models/props_halloween/ghost.mdl") = ghost : "Ghost" []
+@PointClass base(Targetname, Parentname, BaseNPC, Angles, EnableDisable, PTeamNum) studio("models/props_halloween/ghost.mdl") = ghost : "Ghost" []
 
 @PointClass base(Targetname, Parentname, BaseNPC, Angles, EnableDisable, PTeamNum) studio("models/bots/headless_hatman.mdl") = headless_hatman : "Horseless Headless Horsemann" []
 
@@ -3838,9 +4004,11 @@
 
 @PointClass base(Targetname, Parentname, BaseNPC, Angles, EnableDisable, PTeamNum) studio("models/bots/skeleton_sniper/skeleton_sniper.mdl") = tf_zombie : "Skeleton" []
 
-@PointClass base(Targetname, Parentname, BaseNPC, Angles, EnableDisable, PTeamNum) studio("models/player/sniper.mdl") = bot_npc_archer : "Shitty Sniper Bot" []
+@PointClass base(Targetname, Parentname, BaseNPC, Angles, EnableDisable, PTeamNum) studio("models/player/sniper.mdl") = bot_npc_archer : "Huntsman Sniper NextBot" []
 
-@PointClass base(Targetname, Parentname, BaseNPC, Angles, EnableDisable, PTeamNum) studio("models/player/sniper.mdl") = bot_npc_decoy : "Shitty Spy Bot" []
+@PointClass base(Targetname, Parentname, BaseNPC, Angles, EnableDisable, PTeamNum) studio("models/humans/group01/female_01.mdl") = simple_bot : "Simple NextBot" []
+
+@PointClass base(Targetname, Parentname, BaseNPC, Angles, EnableDisable, PTeamNum) studio("models/player/sniper.mdl") = bot_npc_decoy : "Shitty Spy NextBot" []
 
 @PointClass base(Targetname) studio("models/items/ammopack_medium.mdl") = tf_ammo_pack : "Dropped AmmoPack"
 [
@@ -3898,27 +4066,17 @@
 ]
 
 
-@PointClass base(PItem) studio("models/items/currencypack_large.mdl") = item_currencypack_large : "Large Credits Pickup"
-[
-]
+@PointClass base(PItem) studio("models/items/currencypack_large.mdl") = item_currencypack_large : "Large Credits Pickup" []
 
-@PointClass base(PItem) studio("models/items/currencypack_medium.mdl") = item_currencypack_medium : "Medium Credits Pickup"
-[
-]
+@PointClass base(PItem) studio("models/items/currencypack_medium.mdl") = item_currencypack_medium : "Medium Credits Pickup" []
 
-@PointClass base(PItem) studio("models/items/currencypack_small.mdl") = item_currencypack_small : "Small Credits Pickup"
-[
-]
+@PointClass base(PItem) studio("models/items/currencypack_small.mdl") = item_currencypack_small : "Small Credits Pickup" []
 
-@PointClass base(PItem) studio("models/items/currencypack_small.mdl") = item_currencypack_custom : "Custom Credits Pickup"
-[
-	spawnflags(flags) = 
-	[
-		1073741824: "Never Respawn" : 1
-	]
-]
+@PointClass base(PItem) studio("models/items/currencypack_small.mdl") = item_currencypack_custom : "Custom Credits Pickup" []
 
 @PointClass base(PItem) studio("models/items/medkit_medium.mdl") = item_healthammokit : "Small AmmoHealthPack Pickup" []
+
+@PointClass base(PItem) studio("models/items/car_battery01.mdl") = item_armor : "Unused Armor" []
 
 @PointClass base(PItem) studio("models/workshop/player/items/pyro/eotl_ducky/eotl_bonus_duck.mdl") = tf_bonus_duck_pickup : "EOTL Bonus Ducks"
 [
@@ -4006,6 +4164,8 @@
 	input SetMaxTime(integer) : "Set the max timer length to this value (in seconds). The timer's time will never excede this value."
 	input AutoCountdown(integer) : "Turn off/on the auto countdown feature (0 no, 1 Yes)."
 	input SetSetupTime(integer) : "Set the setup time length to this value (in seconds)."
+
+	input RoundSpawn(void) : "Get remaining time AND Resume timer"
 		
 	// Outputs
 	output On5MinRemain(void) : "Sent when 5 minutes remain."
@@ -4028,6 +4188,105 @@
 	output OnSetupFinished(void) : "Sent when the setup time is finished."
 ]
 
+//====================================================================================================================
+// CAPTURE POINT HANDLING
+//====================================================================================================================
+@PointClass base(Targetname, EnableDisable, Angles, Parentname) studio("models/effects/cappoint_hologram.mdl") = team_control_point :
+	"Control Point"
+[
+	spawnflags(flags) =
+	[
+		1: "Hide Control Point on HUD" : 0
+		2: "Start with model hidden" : 0
+		4: "Disable shadow" : 0
+		8: "Disable sounds" : 0
+		16: "Bots should ignore" : 0
+	]
+	
+	point_start_locked(choices) : "Start locked" : 0 : "Locked means the point will not be available for capture until it is unlocked via its input."  =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+
+	point_printname(string) : "Print Name" : "TODO: Set Name" : "LOCALIZED name to print on the HUD." 
+	point_group(integer) : "Group Index" : 0 : "Used for grouping points together under a team_control_point_master (not using control point rounds)."
+	point_default_owner(choices) : "Default Owner" : 0 : "Default Owner of the control point."  =
+	[
+		0 : "Neither"
+		2 : "Red"
+		3 : "Blue"
+	]
+	point_index(integer) : "Index" : 0 : "Index of this point (must be unique)."
+	
+	point_warn_on_cap(choices) : "Warning Type" : 0 : "Type of warning to issue to the team that owns the control point when the opposing team starts to capture it."  =
+	[
+		0 : "Normal Announcements"
+		1 : "Final Capture Point Warning"
+		2 : "No Announcements"
+	]
+	
+	point_warn_sound(string) : "Warning sound" : "ControlPoint.CaptureWarn" : "Sound to be played when this point is being captured (if warn on capture is set)." 
+	
+	random_owner_on_restart(choices) : "Randomly set the owner on restart" : 0 : "Randomly set the owner of this point during a full restart of the map. The ratio of default owners among the points with this flag will be kept when selecting random owners."  =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+	
+	// Per team data
+	team_timedpoints_2(integer) : "Time-based point value for RED." : 0
+	team_timedpoints_3(integer) : "Time-based point value for BLUE." : 0
+	
+	team_capsound_0(sound) : "Reset Sound" : "" : "Sound made when point resets."
+	team_capsound_2(sound) : "Red Capture Sound" : "" : "Sound made when RED captures."
+	team_capsound_3(sound) : "Blue Capture Sound" : "" : "Sound made when BLUE captures."
+	
+	team_model_0(studio) 	: "Reset Model" : "models/effects/cappoint_hologram.mdl" : "Model when point reset."
+	team_model_2(studio) 	: "RED Model" : "models/effects/cappoint_hologram.mdl" : "Model when RED owns the point."
+	team_model_3(studio) 	: "BLUE Model" : "models/effects/cappoint_hologram.mdl" : "Model when BLUE owns the point."
+	
+	team_bodygroup_0(integer) : "Reset model bodygroup" : 3
+	team_bodygroup_2(integer) : "RED model bodygroup" : 1
+	team_bodygroup_3(integer) : "BLUE model bodygroup" : 1
+
+	team_icon_0(material)	: "HUD icon neutral" : "sprites/obj_icons/icon_obj_neutral" : "HUD icon material when no one owns the point."
+	team_icon_2(material)	: "HUD icon RED" : "sprites/obj_icons/icon_obj_red" : "HUD icon material when RED owns the point."
+	team_icon_3(material)	: "HUD icon BLUE" : "sprites/obj_icons/icon_obj_blu" : "HUD icon material when BLUE owns the point."
+
+	team_overlay_0(material) : "HUD overlay neutral" : "" : "HUD material that will overlay the icon when no one owns the point."
+	team_overlay_2(material) : "HUD overlay RED" : "" : "HUD material that will overlay the icon when RED owns the point."
+	team_overlay_3(material) : "HUD overlay BLUE" : "" : "HUD material that will overlay the icon when BLUE owns the point."
+
+	team_previouspoint_2_0(target_source) : "RED Previous Required Point 1" : "" : "The name of a previous capture point that RED must own to be able to capture this point. If empty, the team must own all points preceding this one. Pointing to itself means no previous point required."
+	team_previouspoint_2_1(target_source) : "RED Previous Required Point 2" : "" : "The name of a second previous capture point that RED must own to be able to capture this point."
+	team_previouspoint_2_2(target_source) : "RED Previous Required Point 3" : "" : "The name of a third previous capture point that RED must own to be able to capture this point."
+	team_previouspoint_3_0(target_source) : "BLUE Previous Required Point 1" : "" : "The name of a previous capture point that BLUE must own to be able to capture this point. If empty, the team must own all points preceding this one. Pointing to itself means no previous point required."
+	team_previouspoint_3_1(target_source) : "BLUE Previous Required Point 2" : "" : "The name of a second previous capture point that BLUE must own to be able to capture this point."
+	team_previouspoint_3_2(target_source) : "BLUE Previous Required Point 3" : "" : "The name of a third previous capture point that BLUE must own to be able to capture this point."
+
+	// Outputs
+	output OnOwnerChangedToTeam1(void) : "Sent when owner is changed to RED."
+	output OnOwnerChangedToTeam2(void) : "Sent when owner is changed to BLUE."
+	output OnCapReset(void) : "Sent when owner is changed to neutral."
+
+	output OnRoundStartOwnedByTeam1(void) : "Sent when a round is starting and the point is owned by RED."
+	output OnRoundStartOwnedByTeam2(void) : "Sent when a round is starting and the point is owned by BLUE."
+	
+	output OnCapTeam1(void) : "Sent when RED capture this point."
+	output OnCapTeam2(void) : "Sent when BLUE capture this point."
+	
+	output OnUnlocked(void) : "Sent when point is unlocked via the SetLocked(0) or SetUnlockTime inputs."
+
+	input SetOwner(integer) : "Set the owner of the point."
+	input HideModel(void) : "Hide the control point model."
+	input ShowModel(void) : "Show the control point model again."
+	
+	input SetLocked(integer) : "Lock the control point. 0 = unlocked, 1 = locked"
+	input SetUnlockTime(integer) : "This will automatically unlock the control point in the specified amound of time (seconds)."
+
+	input RoundActivate(void) : "Return to its original team and locked."
+]
 
 @PointClass base(Targetname, EnableDisable) iconsprite("editor-puddy/team_control_point_round") = team_control_point_round :
 	"Control Point Round (you may have as many of these in the map as you would like)."
@@ -4050,6 +4309,8 @@
 	output OnEnd(void) : "Sent when this round is finished."
 	output OnWonByTeam1(void) : "Sent when RED wins this round."
 	output OnWonByTeam2(void) : "Sent when BLUE wins this round."
+
+	input RoundSpawn(void) : "Clear out old control points AND find the new control points."
 ]
 
 @PointClass base(Targetname,EnableDisable) iconsprite("editor-puddy/team_control_point_master") = team_control_point_master : "Control Point Master"
@@ -4096,6 +4357,113 @@
 	input SetCapLayout(string) : "Set the cap layout string."
 	input SetCapLayoutCustomPositionX(float) : "Set the cap layout custom X position [0,1]"
 	input SetCapLayoutCustomPositionY(float) : "Set the cap layout custom Y position [0,1]"
+
+	input RoundSpawn(void) : "Clear out old control points,round AND find the new control points,round and if successful, do CPMThink AND also tell  the resource to ResetControlPoints."
+	input RoundActivate(void) : "if we're using mini-rounds and haven't picked one yet, find one to play OR Tell the objective resource what control points are in use in the selected mini-round."
+]
+
+@SolidClass base(Targetname, EnableDisable, Parentname) = trigger_capture_area : "Capture Area"
+[
+	area_cap_point(target_source) : "Control point" : "" : "Name of the control point this area is linked to."
+
+	team_cancap_2(choices) : "Can RED Cap?" : 1 = 
+	[
+		1 : "Yes"
+		0 : "No"
+	]
+	team_cancap_3(choices) : "Can BLUE Cap?" : 1 = 
+	[
+		1 : "Yes"
+		0 : "No"
+	]
+	
+	team_startcap_2(integer) : "Number of RED players to start capping" : 1 
+	team_startcap_3(integer) : "Number of BLUE players to start capping" : 1 
+
+	team_numcap_2(integer) : "Number of RED players to cap" : 1 
+	team_numcap_3(integer) : "Number of BLUE players to cap" : 1 
+	
+	team_spawn_2(integer) : "Red Spawn Adjust" : 0 : "Adjust the minimum respawn time for the red team by this amount (in seconds) when red captures this point. If the red team owns this point when blue captures it, this adjustment is reversed."
+	team_spawn_3(integer) : "Blue Spawn Adjust" : 0 : "Adjust the minimum respawn time for the blue team by this amount (in seconds) when blue captures this point. If the blue team owns this point when red captures it, this adjustment is reversed."
+	
+	area_time_to_cap(integer) : "Time to cap (sec)" : 5 
+
+	// Outputs
+	output OnStartTeam1(void) : "Sent when RED start capture."
+	output OnBreakTeam1(void) : "Sent when a RED capture is broken."
+	output OnCapTeam1(void)   : "Sent when RED end capture."
+
+	output OnStartTeam2(void) : "Sent when BLUE start capture."
+	output OnBreakTeam2(void) : "Sent when a BLUE capture is broken."
+	output OnCapTeam2(void)   : "Sent when BLUE end capture."
+
+	output OnStartCap(void) : "Sent when either team starts capture."
+	output OnBreakCap(void) : "Sent when either team break capture."
+	output OnEndCap(void)   : "Sent when either team end capture."
+	
+	output OnNumCappersChanged(integer) : "Sent when the number of cappers changes, passes the value in int."
+	output OnNumCappersChanged2(integer) : "Sent when the number of cappers changes, passes the value in int (-1 for capture blocked)."
+
+	// Inputs
+	input SetTeamCanCap(string) : "Set whether a specific team is allowed to capture this point. Format is: <team number> <(0/1)>. i.e. '2 0' would prevent RED from capturing this point, whereas '3 1' would allow BLUE to cap it."
+	
+	input SetControlPoint(string) : "Assign area capture to the passed control point."
+	input CaptureCurrentCP(string) : "If we're being capped, forces the current point to capture."
+	input RoundSpawn(void) : "Find our control point"
+]
+
+@SolidClass base(Trigger) = trigger_timer_door :
+	"A trigger that will open/close the door base filtered objects."
+[
+	door_name(string) : "Door Name" : "" : "Name of the door entity the trigger is attaching to."
+
+	area_cap_point(target_source) : "Control point" : "" : "Name of the control point this area is linked to."
+
+	team_cancap_2(choices) : "Can RED Cap?" : 1 = 
+	[
+		1 : "Yes"
+		0 : "No"
+	]
+	team_cancap_3(choices) : "Can BLUE Cap?" : 1 = 
+	[
+		1 : "Yes"
+		0 : "No"
+	]
+	
+	team_startcap_2(integer) : "Number of RED players to start capping" : 1 
+	team_startcap_3(integer) : "Number of BLUE players to start capping" : 1 
+
+	team_numcap_2(integer) : "Number of RED players to cap" : 1 
+	team_numcap_3(integer) : "Number of BLUE players to cap" : 1 
+	
+	team_spawn_2(integer) : "Red Spawn Adjust" : 0 : "Adjust the minimum respawn time for the red team by this amount (in seconds) when red captures this point. If the red team owns this point when blue captures it, this adjustment is reversed."
+	team_spawn_3(integer) : "Blue Spawn Adjust" : 0 : "Adjust the minimum respawn time for the blue team by this amount (in seconds) when blue captures this point. If the blue team owns this point when red captures it, this adjustment is reversed."
+	
+	area_time_to_cap(integer) : "Time to cap (sec)" : 5 
+
+	// Outputs
+	output OnStartTeam1(void) : "Sent when RED start capture."
+	output OnBreakTeam1(void) : "Sent when a RED capture is broken."
+	output OnCapTeam1(void)   : "Sent when RED end capture."
+
+	output OnStartTeam2(void) : "Sent when BLUE start capture."
+	output OnBreakTeam2(void) : "Sent when a BLUE capture is broken."
+	output OnCapTeam2(void)   : "Sent when BLUE end capture."
+
+	output OnStartCap(void) : "Sent when either team starts capture."
+	output OnBreakCap(void) : "Sent when either team break capture."
+	output OnEndCap(void)   : "Sent when either team end capture."
+	
+	output OnNumCappersChanged(integer) : "Sent when the number of cappers changes, passes the value in int."
+	output OnNumCappersChanged2(integer) : "Sent when the number of cappers changes, passes the value in int (-1 for capture blocked)."
+
+	// Inputs
+	input SetTeamCanCap(string) : "Set whether a specific team is allowed to capture this point. Format is: <team number> <(0/1)>. i.e. '2 0' would prevent RED from capturing this point, whereas '3 1' would allow BLUE to cap it."
+	
+	input SetControlPoint(string) : "Assign area capture to the passed control point."
+	input CaptureCurrentCP(string) : "If we're being capped, forces the current point to capture."
+
+	input RoundSpawn(void) : "Find our control point"
 ]
 
 @PointClass base(Targetname) iconsprite("editor-puddy/point_template") = point_template : 
@@ -5156,6 +5524,15 @@
 	prop_model_name(studio) : "Beer Model" : "models/flag/flag.mdl" : "model of prop that drops from player on death"
 	prop_drop_sound(sound) : "Beer Drop Sound" : "" : "sound when player drops prop"
 	prop_pickup_sound(sound) : "Beer Pickup Sound" : "" : "sound when player picks up prop"
+	loser_respawn_bonus_per_bot(float) : "Loser Respawn Bonus Per Bot (percentage)" : 0 : "How much faster the losing team will respawn per bot difference."
+	score_interval(float) : "Robot Scoring Interval (in seconds)" : 1 : "How often a robot should score a point while hacking."
+
+	red_respawn_time(float) : "Red Respawn Time (in seconds)" : 10 : "Respawn times for Red"
+	blue_respawn_time(float) : "Blue Respawn Time (in seconds)" : 10 : "Respawn times for Blue"
+	max_points(integer) : "Max Points" : 200 : "The number of points a team must get to unlock their win condition."
+	finale_length(float) : "Finale Length" : 30 : "The amount of time from after max score is reached a team will win."
+	res_file(string) : "HUD Res File" : "resource/UI/HudObjectiveRobotDestruction.res" : "What res file to use for the HUD"
+
 	input ScoreRedPoints(void) : "Score points for red."
 	input ScoreBluePoints(void) : "Score points for blue."
 	input EnableMaxScoreUpdating(void) : "Allow the max score to update based on player count."
@@ -5197,6 +5574,8 @@
 	output OnBlueScoreChanged(float) : "Send when score changes, and is a value representing total progress from [0..1]."
 
 	output OnCountdownTimerExpired(void) : "Sent when the countdown timer expires."
+
+	input RoundActivate(void)	:	"Reactivate."
 ]
 
 @PointClass base(Targetname, RobotDestruction) iconsprite("editor-puddy/tf_logic_robot_destruction") = tf_logic_robot_destruction : "Activates Robots Destruction Modes."
@@ -5228,6 +5607,8 @@
 	output OnBlueFirstFlagStolen(void) : "Sent when blue's first flag gets stolen."
 	output OnBlueFlagStolen(void) : "Sent when a flag gets stolen from blue."
 	output OnBlueLastFlagReturned(void) : "Sent when blue's last stolen flag gets returned."
+
+	input RoundActivate(void)	:	"Reactivate."
 ]
 
 
@@ -5254,7 +5635,7 @@
 
 ]
 
-@PointClass iconsprite("editor-puddy/tf_logic_multiple_escort") = tf_logic_multiple_escort : "Activates Payload Race Mode."
+@PointClass base(Targetname) iconsprite("editor-puddy/tf_logic_multiple_escort") = tf_logic_multiple_escort : "Activates Payload Race Mode."
 [
 ]
 
@@ -5388,7 +5769,7 @@
 	output OnPlayerDetonateBuilding(void) : "Sent when the player manually detonates one of their buildings."
 ]
 
-@PointClass base(Targetname) = bot_controller :
+@PointClass base(Targetname) iconsprite("editor-puddy/bot_controller") = bot_controller :
 	"An entity used to create a bot, and then issue commands to it."
 [
 	TeamNum(choices) : "Team" : 2 : "Team" =
@@ -5431,42 +5812,129 @@
 
 @PointClass base(Targetname) = tf_logic_bonusround : "Bonus Round Logic" []
 
-@PointClass base(Targetname,PTeamNum) = tf_projectile_spellmeteorshower : "Meteor Spell Particle" []
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_spellmeteorshower : "Meteor Spell Particle" []
 
-@PointClass base(Targetname,PTeamNum) = tf_projectile_spellfireball : "FireBall Spell Particle" []
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_spellfireball : "FireBall Spell Particle" []
 
-@PointClass base(Targetname,PTeamNum) = tf_projectile_spellspawnzombie : "Skeleton Spell" []
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_spellspawnzombie : "Skeleton Spell" []
 
-@PointClass base(Targetname,PTeamNum) = tf_projectile_lightningorb : "Lightning orb Spell" []
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_lightningorb : "Lightning orb Spell" []
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_mechanicalarmorb : "Short Circuit orb" []
 
-@PointClass base(Targetname,PTeamNum) = item_sodacan : "soda can from hl1s" []
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/weapons/w_models/w_arrow.mdl") = tf_projectile_arrow : "" []
 
-@PointClass base(Targetname,PTeamNum) = halloween_souls_pack : "GARGOYLE SOUL" []
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/weapons/c_models/c_xms_festive_ornament.mdl") = tf_projectile_ball_ornament : "" []
 
-@PointClass base(Targetname,Studiomodel) studio("models/props_skybox/skybox_carrier.mdl" = entity_carrier : "Skybox Robot Carrier"
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_balloffire : "Dragon's Fury's Flame" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/weapons/c_models/c_sd_cleaver/c_sd_cleaver.mdl") = tf_projectile_cleaver : "" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_energy_ball : "Cow Mangler 5000 Projectile" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_energy_ring : "Righteous Bison Projectile" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/weapons/w_models/w_flaregun_shell.mdl") = tf_projectile_flare : "Flare Projectile" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/weapons/c_models/c_grappling_hook/c_grappling_hook.mdl") = tf_projectile_grapplinghook : "Grappling Hook Projectile" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/weapons/w_models/w_repair_claw.mdl") = tf_projectile_healing_bolt : "Rescue Ranger Arrow" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/weapons/c_models/urinejar.mdl") = tf_projectile_jar : "Jarate" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/weapons/c_models/c_gascan/c_gascan.mdl") = tf_projectile_jar_gas : "Gas Passer Projectile" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/weapons/c_models/c_madmilk/c_madmilk.mdl") = tf_projectile_jar_milk : "Mad Milk Projectile" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/weapons/w_models/w_grenade_grenadelauncher.mdl") = tf_projectile_pipe : "Pipe Bomb" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/weapons/w_models/w_stickybomb.mdl") = tf_projectile_pipe_remote : "Sticky Bomb" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/weapons/w_models/w_rocket.mdl") = tf_projectile_rocket : "Rocket" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/buildables/sentry3_rockets.mdl") = tf_projectile_sentryrocket : "Sentry Level 3 Rockets" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_spellbats : "Bats spell" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_spellkartbats : "Bumper Car's Bats spell" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_spellkartorb : "" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_spellmirv : "" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_spellpumpkin : "" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/props_mvm/mvm_human_skull_collide.mdl") = tf_projectile_spellspawnboss : "" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/props_mvm/mvm_human_skull_collide.mdl") = tf_projectile_spellspawnhorde : "" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/props_mvm/mvm_human_skull_collide.mdl") = tf_projectile_spellspawnzombie : "" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_spelltransposeteleport : "" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/weapons/w_models/w_baseball.mdl") = tf_projectile_stun_ball : "" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) studio("models/weapons/w_models/w_syringe_proj.mdl") = tf_projectile_syringe : "" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_throwable : "" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_throwable_breadmonster : "Self-Aware Beauty Mark" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_throwable_brick : "Bread that hurts people" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_throwable_repel : "Unused Balloon with no model" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = tf_projectile_mechanicalarmorb : "Short Circult Enegry Ball" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) = item_sodacan : "soda can from hl1s" []
+
+@PointClass base(Targetname,PTeamNum,PBaseVelocity) iconsprite("editor-puddy/halloween_souls_pack") = halloween_souls_pack : "GARGOYLE SOUL" []
+
+@PointClass base(Targetname, Studiomodel, RenderFields) studio("models/props_skybox/skybox_carrier.mdl" = entity_carrier : "Skybox Robot Carrier"
 [
 	model(studio) : "Model" : "models/props_skybox/skybox_carrier.mdl" : "Change the model to something other than the default model." 
 ]
 
-@PointClass base(Targetname,Studiomodel) studio("models/props_skybox/grocket_001.mdl" = entity_rocket : "Skybox Grocket" 
+@PointClass base(Targetname, Studiomodel, RenderFields) studio("models/props_skybox/grocket_001.mdl" = entity_rocket : "Skybox Grocket" 
 [
 	model(studio) : "Model" : "models/props_skybox/grocket_001.mdl" : "Change the model to something other than the default model." 
 ]
-@PointClass base(Targetname,Studiomodel) studio("models/props_teaser/saucer.mdl") = entity_saucer : "Skybox Saucer"
+@PointClass base(Targetname, Studiomodel, RenderFields) studio("models/props_teaser/saucer.mdl") = entity_saucer : "Skybox Saucer"
 [
 	model(studio) : "Model" : "models/props_teaser/saucer.mdl" : "Change the model to something other than the default model." 
 ]
 
-@PointClass base(Targetname,Studiomodel) studio("models/props_teaser/update_invasion_poster001.mdl") = entity_sign : "Invaison Sign" 
+@PointClass base(Targetname, Studiomodel, RenderFields) studio("models/props_teaser/update_invasion_poster001.mdl") = entity_sign : "Invaison Sign" 
 [
 	model(studio) : "Model" : "models/props_teaser/update_invasion_poster001.mdl" : "Change the model to something other than the default model." 
 ]
 
-@PointClass base(Targetname,PTeamNum) studio("models/weapons/w_models/w_arrow.mdl") = archer_proxy : "INSANE AUTOMATIC SHOOTIN ARROWS" []
+@PointClass base(Targetname, Parentname, Angles, RenderFields) studio("models/soldier_statue/soldier_statue.mdl") = entity_soldier_statue : "Rick May Soldier Statue" 
+[
+	skin(integer) : "Skin" : 0 : "Some models have multiple versions of their textures, called skins. Set this to a number other than 0 to use that skin instead of the default."
+	modelscale(float) : "Model Scale" : "1.0" : "A multiplier for the size of the model."
 
-@PointClass base(Targetname) = env_movieexplosion : "cartoonic bubbles explosion" []
+	disableshadows(choices) : "Disable Shadows" : 0 : "Used to disable dynamic shadows on this entity." =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
 
-@PointClass base(Targetname) = env_rockettrail : "HL2 Rocket Muzzle Flash" []
+	// Inputs
+	input Skin(integer) : "Changes the model skin to the specified number."
+	input DisableShadow(void) : "Turn shadow off."
+	input EnableShadow(void) : "Turn shadow on."
+	input AlternativeSorting(bool) : "Used to attempt to fix sorting problems when rendering. True activates, false deactivates"
+	input SetModelScale(string) : "Takes two values separated by a space. The first is the target model scale. The second value is the number of seconds the change in scale will be spread over."
+
+	// Outputs
+	output OnIgnite(void) : "Fired when this object catches fire."
+]
+
+@PointClass base(Targetname, Parentname, Angles, PTeamNum) studio("models/weapons/w_models/w_arrow.mdl") = archer_proxy : "INSANE AUTOMATIC SHOOTIN ARROWS" []
+
+@PointClass base(Targetname, Parentname, Angles) = env_movieexplosion : "cartoonic bubbles explosion" []
+
+@PointClass base(Targetname, Parentname, Angles) = env_rockettrail : "HL2 Rocket Muzzle Flash" []
 
 // AI 'n' hl2
 
@@ -6208,6 +6676,10 @@
 @SolidClass base(Targetname, PTeamNum, EnableDisable) = func_croc : "Crocodiles live here!"
 [
 	filtername(filterclass) : "Filter Name" : : "Filter to use to see if activator triggers me. See filter_activator_name for more explanation."
+	// Outputs
+	output OnEat(void) : "Sent when the crocs eat a player."
+	output OnEatRed(void) : "Sent when the crocs eat a player on team RED."
+	output OnEatBlue(void) : "Sent when the crocs eat a player on team BLU."
 ]
 
 @PointClass base(Targetname,Studiomodel) studio("models/props_island/crocodile/crocodile.mdl") = entity_croc : "Crocodile" 
@@ -6236,4 +6708,146 @@
 
 	// Outputs
 	output OnBeginFade(void) : "Fired when the fade has begun."
+]
+
+@PointClass base(Targetname, Parentname, Targetname, EnableDisable) = env_gunfire : "Gunfire Effect"
+[
+	target(target_destination) : "Target" : "" : "Shoot at this target. REMEMBER - this is an effect only! It does not do damage!"
+
+	minburstsize(integer) : "Min Burst Size" : 2 : "Minimum number of rounds in a burst."
+	maxburstsize(integer) : "Max Burst Size" : 7 : "Maximum number of rounds in a burst."
+
+	minburstdelay(float) : "Min Delay Between Bursts" : 2 : "Minimum delay between bursts. (seconds)"
+	maxburstdelay(float) : "Max Delay Between Bursts" : 5 : "Maximum delay between bursts. (seconds)"
+
+	rateoffire(float) : "Rate of fire" : 10 : "Expressed as rounds per second"
+
+	spread(choices) : "Bullet spread" : 5 : "The 'cone of inaccuracy' of the shots fired by this entity." =
+	[
+		1 : "1 Degree"
+		5 : "5 Degrees"
+		10 : "10 Degrees"
+		15 : "15 Degrees"
+	]
+
+	bias(choices) : "Bullet distribution should be..." : 1 : "How to distribute bullets within the spread. Even distribution is a true scatter throughout the spread. Biased towards the outside makes the shots 'miss' the target by tending towards the outside of the spread." =
+	[
+		1 : "Evenly distributed"
+		-1 : "Biased towards the outside"
+	]
+
+	collisions(choices) : "Collision detection" : 0 : "Whether/how to handle bullet collision detection. NOTE: If you select NONE, this entity will be very cheap to use, but all bullets will stop short at their target's position in space and there will be no impact effects. Normal collision detection does the same things NPCs do when they fire their guns (except harm anything)." =
+	[
+		0 : "None. Cheap for performance."
+		1 : "Normal collision detection."
+	]
+
+	shootsound(choices) : "Shoot Sound" : "Weapon_AR2.NPC_Single" : "Gunfire sound to make" = 
+	[
+		"Weapon_AR2.NPC_Single" : "AR2"
+		"Weapon_SMG1.NPC_Single" : "SMG1"
+	]
+
+	tracertype(choices) : "Tracer" : "AR2TRACER" : "Type of tracer to display" = 
+	[
+		"Tracer" : "Default"
+		"AR2TRACER" : "AR2"
+	]
+]
+
+@PointClass base(Targetname) studio("models/weapons/w_grenade.mdl") = npc_handgrenade : "Grenade that explodes immediately after it is spawned"
+[
+]
+
+@PointClass base(Targetname) studio("models/weapons/w_grenade.mdl") = npc_concussiongrenade : "Grenade that explodes on contract"
+[
+]
+
+@PointClass base(Targetname) = target_changegravity : "Changes the gravity of the player who activates this entity"
+[
+	gravity(integer) : "Gravity" : 1 : "Gravity."
+
+	// Inputs
+	input ChangeGrav(void) : "Change the activator's gravity."
+	input ResetGrav(void) : "Reset the activator's gravity."
+]
+
+@SolidClass base(Targetname) = func_weight_button : "A button which activates after a specified amount of weight is applied"
+[
+	WeightToActivate(float) 	: "Amount of weight required before this button activates."
+
+	//Outputs
+	output OnPressed(void)		: "Fired when the button is touching enough weight."
+	output OnReleased(void)		: "Fired when the button was pressed, but weight was removed."
+]
+
+@SolidClass base(Door, Origin) = func_water : 
+	"A brush entity for use as a player-useable door."
+[
+	movedir(angle) : "Move Direction (Pitch Yaw Roll)" : "0 0 0" : "The direction the door will move, when it opens."
+
+	filtername(filterclass) : "Block Filter Name" : : "Filter to use to determine entities that block the door. ( Half-Life: Source port only )"
+]
+
+//-------------------------------------------------------------------------
+//
+// Vehicles.
+//
+//-------------------------------------------------------------------------
+@BaseClass base(Targetname, Origin, Global, Pprop_static_base) = BaseVehicle
+[
+	vehiclescript(string) : "Vehicle Script File" : "scripts/vehicles/jeep_test.txt"
+	actionScale(float) : "Scale of action input / framerate" : "1"
+
+	// Inputs
+	input Action(float) : "Set the speed of the action animation"
+
+	input TurnOn(void) : "Turn on: Start engine & enable throttle"
+	input TurnOff(void) : "Turn off: Stop engine, disable throttle, engage brakes."
+
+	input Lock(void) : "Prevent the player from entering or exiting the vehicle."
+	input Unlock(void) : "Re-allow the player to enter or exit the vehicle."
+]
+
+
+@BaseClass base(BaseVehicle) = BaseDriveableVehicle
+[
+	VehicleLocked(choices) : "Start locked" : 0 =
+	[
+		0 : "No"
+		1 : "Yes"
+	]	
+
+	// Outputs
+	output PlayerOn(void) : "Player entered the vehicle"
+	output PlayerOff(void) : "Player exited the vehicle"
+	
+	output PressedAttack(void) : "Player Pressed attack key"
+	output PressedAttack2(void) : "Player Pressed attack2 key"
+
+	output AttackAxis(string) : "State of attack button [0,1]"
+	output Attack2Axis(string) : "State of attack2 button [0,1]"
+	
+	// Inputs
+	input HandBrakeOn(void) : "Turns the handbrake on"
+	input HandBrakeOff(void): "Releases the handbrake"
+]
+
+@PointClass base(BaseVehicle) studioprop() = prop_vehicle :
+	"Studiomodel vehicle that can be driven via inputs."
+[
+	// Inputs
+	input Steer(float) : "Steer the vehicle +/-1"
+	input Throttle(float) : "Throttle +/-1"
+
+	spawnflags(flags) =
+	[
+		1 : "Always Think (Run physics every frame)" : 0
+	]
+]
+
+
+@PointClass base(BaseDriveableVehicle) studioprop() = prop_vehicle_driveable :
+	"Generic driveable studiomodel vehicle."
+[
 ]

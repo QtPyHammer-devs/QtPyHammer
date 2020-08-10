@@ -44,6 +44,8 @@ if sys.platform == "win32":
         
 # load all entities from the .fgd
 fgd_file = app.game_config.value("Hammer/GameData0") # the .fgd
+##if fgd_file.startswith("./"): # relative file_path
+##    fgd_file = os.path.realpath(fgd_file)
 app.fgd = fgdtools.parser.FgdParse(fgd_file)
 
 # check gameinfo.txt for extra content paths
