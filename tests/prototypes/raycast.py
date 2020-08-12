@@ -43,7 +43,8 @@ def main(width, height):
     SDL_GL_SetSwapInterval(0)
     glClearColor(0, 0, 0, 0)
     glEnable(GL_DEPTH_TEST)
-    gluPerspective(90, 1, 0.001, 1024)
+    aspect_ratio = width / height
+    gluPerspective(90, aspect_ratio, 0.001, 1024)
 ##    glOrtho(-2, 2, -2, 2, 0.001, 1024)
     glTranslate(0, 0, -2)
     glPointSize(4)
@@ -112,8 +113,9 @@ def main(width, height):
                 camera_forward = vector(0, 0, -1)
                 camera_up = vector(0, 1, 0)
                 camera_right = vector(1, 0, 0)
-                x_offset = camera_right * ((mouse.x - width / 2) / width) * 2
-                y_offset = -camera_up * ((mouse.y - height / 2) / height) * 2
+                x_offset = camera_right * ((mouse.x * 2 - width) / width)
+                x_offset *= aspect_ratio
+                y_offset = -camera_up * ((mouse.y * 2 - height) / height)
                 # ^ probably some redundunt bits in this calculation
                 ray_direction = camera_forward + x_offset + y_offset
                 ray_direction *= 768
@@ -161,8 +163,8 @@ if __name__ == '__main__':
     import getopt
     import sys
     options = getopt.getopt(sys.argv[1:], 'w:h:')
-    width = 512
-    height = 512
+    width = 640
+    height = 480
     for option in options:
         for key, value in option:
             if key == '-w':
