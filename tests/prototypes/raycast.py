@@ -1,10 +1,4 @@
-﻿# CONTORLS:
-# LEFT MOUSE - cast ray
-# RIGHT MOUSE - rotate camera
-# O - orthographic projection
-# P - perspective projection
-
-import ctypes
+﻿import ctypes
 import math
 import re
 import time
@@ -38,6 +32,11 @@ class vector:
         return f"vector({self.x}, {self.y}, {self.z})"
 
 
+# CONTROLS:
+# LEFT MOUSE - cast ray
+# RIGHT MOUSE - rotate camera
+# O - orthographic projection
+# P - perspective projection
 def main(width, height):
     SDL_Init(SDL_INIT_VIDEO)
     window = SDL_CreateWindow(b"SDL2 OpenGL", SDL_WINDOWPOS_CENTERED,  SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS)
@@ -62,6 +61,14 @@ def main(width, height):
     dragging = False
     camera_moving = False
     ortho_mode = False
+
+    def reset_view():
+        glLoadIdentity()
+        if ortho_mode:
+            glOrtho(-2 * aspect_ratio, 2 * aspect_ratio, -2, 2, 0.001, 1024)
+        else:
+            gluPerspective(fov, aspect_ratio, 0.001, 1024)
+        glTranslate(0, 0, -2)
     
     tickrate = 1 / 0.015
     tick_number = 0
@@ -94,26 +101,18 @@ def main(width, height):
                     print()
                 elif event.button.button == SDL_BUTTON_RIGHT:
                     camera_moving = False
-                    glLoadIdentity()
-                    if ortho_mode:
-                        glOrtho(-2 * aspect_ratio, 2 * aspect_ratio, -2, 2, 0.001, 1024)
-                    else:
-                        gluPerspective(fov, aspect_ratio, 0.001, 1024)
-                    glTranslate(0, 0, -2)
+                    reset_view()
             elif event.type == SDL_KEYUP:
                 key = event.key.keysym.sym
                 if key in (SDLK_o, SDLK_p):
-                    glLoadIdentity()
-                    if key == SDLK_o:
-                        glOrtho(-2 * aspect_ratio, 2 * aspect_ratio, -2, 2, 0.001, 1024)
-                        ortho_mode = True
-                    elif key == SDLK_p:
-                        gluPerspective(fov, aspect_ratio, 0.001, 1024)
-                    glTranslate(0, 0, -2)
+                    ortho_mode = True if key == SDLK_o else False
+                    reset_view()
                 elif key == SDLK_UP:
                     fov += 1
+                    reset_view()
                 elif key == SDLK_DOWN:
                     fov -= 1
+                    reset_view()
 
         dt = time.time() - old_time
         while dt >= 1 / tickrate:
@@ -127,7 +126,7 @@ def main(width, height):
                 x_offset *= aspect_ratio
                 y_offset = -camera_up * ((mouse.y * 2 - height) / height)
                 # unsure how fov works
-                fov_scalar = -math.tan(fov / 2)
+                fov_scalar = math.tan(math.radians(fov / 2))
                 x_offset *= fov_scalar
                 y_offset *= fov_scalar
                 # ^ only works at 90 degrees
