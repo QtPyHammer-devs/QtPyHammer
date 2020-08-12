@@ -44,7 +44,7 @@ def main(width, height):
     glClearColor(0, 0, 0, 0)
     glEnable(GL_DEPTH_TEST)
     gluPerspective(90, 1, 0.001, 1024)
-##    glOrtho(-1, 1, -1, 1, 0.001, 1024)
+##    glOrtho(-2, 2, -2, 2, 0.001, 1024)
     glTranslate(0, 0, -2)
     glPointSize(4)
 
@@ -72,7 +72,7 @@ def main(width, height):
             elif event.type == SDL_MOUSEMOTION:
                 mouse = vector(event.motion.x, event.motion.y)
                 if camera_moving:
-                    glRotate(1, -event.motion.yrel, event.motion.xrel, 0)
+                    glRotate(5, -event.motion.yrel, event.motion.xrel, 0)
             elif event.type == SDL_MOUSEBUTTONDOWN:
                 if event.button.button == SDL_BUTTON_LEFT:
                     dragging = True
@@ -89,7 +89,7 @@ def main(width, height):
                     camera_moving = False
                     glLoadIdentity()
                     if ortho_mode:
-                        glOrtho(-1, 1, -1, 1, 0.001, 1024)
+                        glOrtho(-2, 2, -2, 2, 0.001, 1024)
                     else:
                         gluPerspective(90, 1, 0.001, 1024)
                     glTranslate(0, 0, -2)
@@ -98,7 +98,7 @@ def main(width, height):
                 if key in (SDLK_o, SDLK_p):
                     glLoadIdentity()
                     if key == SDLK_o:
-                        glOrtho(-1, 1, -1, 1, 0.001, 1024)
+                        glOrtho(-2, 2, -2, 2, 0.001, 1024)
                         ortho_mode = True
                     elif key == SDLK_p:
                         gluPerspective(90, 1, 0.001, 1024)
@@ -115,10 +115,8 @@ def main(width, height):
                 x_offset = camera_right * ((mouse.x - width / 2) / width) * 2
                 y_offset = -camera_up * ((mouse.y - height / 2) / height) * 2
                 # ^ probably some redundunt bits in this calculation
-                ray_origin = camera_position + x_offset + y_offset
-                ray_direction = camera_forward
-                # ^ taper towards the center proportional to the distance from the center
-                #-- math.tan(fov) ?
+                ray_direction = camera_forward + x_offset + y_offset
+                ray_direction *= 768
             dt -= 1 / tickrate
             old_time = time.time()
             
