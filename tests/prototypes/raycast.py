@@ -125,11 +125,9 @@ def main(width, height):
                 x_offset = camera_right * ((mouse.x * 2 - width) / width)
                 x_offset *= aspect_ratio
                 y_offset = -camera_up * ((mouse.y * 2 - height) / height)
-                # unsure how fov works
                 fov_scalar = math.tan(math.radians(fov / 2))
                 x_offset *= fov_scalar
                 y_offset *= fov_scalar
-                # ^ only works at 90 degrees
                 ray_direction = camera_forward + x_offset + y_offset
                 ray_direction *= 768
             dt -= 1 / tickrate

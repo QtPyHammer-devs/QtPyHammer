@@ -5,9 +5,15 @@ from OpenGL.GLU import *
 
 from . import vector
 
-keybinds = {"FORWARD": [], "BACK": [],
-            "LEFT": [], "RIGHT": [],
-            "UP": [], "DOWN": []}
+FORWARD = 0x00
+BACK = 0x01
+LEFT = 0x02
+RIGHT = 0x03
+UP = 0x04
+DOWN = 0x05
+keybinds = {FORWARD: [], BACK: [],
+            LEFT: [], RIGHT: [],
+            UP: [], DOWN: []}
 sensitivity = 2
 
 
@@ -33,10 +39,10 @@ class freecam:
         # KEYBOARD
 ##        self.last_position = self.next_position
         local_move = vector.vec3()
-        pressed = lambda d: any((k in keys) for k in keybinds[d])
-        local_move.x = (pressed("LEFT") - pressed("RIGHT"))
-        local_move.y = (pressed("BACK") - pressed("FORWARD"))
-        local_move.z = (pressed("DOWN") - pressed("UP"))
+        pressed = lambda direction: any((k in keys) for k in keybinds[direction])
+        local_move.x = -(pressed(LEFT) - pressed(RIGHT))
+        local_move.y = -(pressed(BACK) - pressed(FORWARD))
+        local_move.z = -(pressed(DOWN) - pressed(UP))
         global_move = local_move.rotate(*-self.rotation)
         self.position += global_move * self.speed * dt
 
@@ -45,7 +51,7 @@ class freecam:
         glRotate(self.rotation.x, 1, 0, 0)
         glRotate(self.rotation.z, 0, 0, 1)
 ##        current_position = vector.lerp(self.last_position, self.next_position, lerp_factor)
-        glTranslate(*self.position)
+        glTranslate(*-self.position)
 
     def __repr__(self):
         pos = [round(x, 2) for x in self.last_position]
