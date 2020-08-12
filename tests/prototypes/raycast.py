@@ -127,7 +127,7 @@ def main(width, height):
                 x_offset *= aspect_ratio
                 y_offset = -camera_up * ((mouse.y * 2 - height) / height)
                 # unsure how fov works
-                fov_scalar = -math.tan(fov) / 2
+                fov_scalar = -math.tan(fov / 2)
                 x_offset *= fov_scalar
                 y_offset *= fov_scalar
                 # ^ only works at 90 degrees

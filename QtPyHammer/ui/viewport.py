@@ -29,7 +29,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         # RENDERING
         self.render_manager = render.manager()
         # model draw distance (defined in settings)
-        self.ray = [] # origin, dir (for debug rendering)
+        self.ray = (vector.vec3(), vector.vec3()) # origin, dir (for debug rendering)
         # INPUT HANDLING
         self.camera = camera.freecam(None, None, 16)
         self.camera_moving = False
@@ -100,7 +100,16 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.camera.set()
         # ^ cannot call gluPerspective in render.manager.draw
         # -- this order of operations must be preserved
+        # if rendering a skybox, it must be rendering after camera rotation & before camera position
+        # -- may also want to stencil render skybox brushes
         self.render_manager.draw()
+        glUseProgram(0)
+        glBegin(GL_LINES)
+        glColor(1, 0.5, 0.25)
+        ray_origin, ray_direction = self.ray
+        glVertex(*ray_origin)
+        glVertex(*(ray_origin + ray_direction * draw_distance))
+        glEnd()
         super(MapViewport3D, self).paintGL()
 
     def resizeGL(self, width, height):
@@ -110,19 +119,18 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
     ### Qt Signals ###
     ##################
 
-    def do_raycast(self, x, y): # pixel offsets are wrong
-        # en.wikipedia.org/wiki/Ray_tracing_(graphics)#Calculate_rays_for_rectangular_viewport
-        h = vector.vec3(x=1).rotate(*-self.camera.rotation) # camera local X
-        v = vector.vec3(z=1).rotate(*-self.camera.rotation) # camera local Y
-        d = vector.vec3(y=1).rotate(*-self.camera.rotation) # camera local Z
-        hx = math.tan(self.render_manager.fov/2) # viewport range projected out 1 unit
-        hy = hx * (self.height() / self.width()) # scale by aspect ratio
-        px = (2 * hx) / (self.width() - 1) * h # projected pixel width
-        py = (2 * hy) / (self.height() - 1) * v # projected pixel height
-        top_left_pixel = d - (hx * px) - (hy * py)
+    def do_raycast(self, click_x, click_y):
+        camera_right = vector.vec3(x=1).rotate(*-self.camera.rotation)
+        camera_up = vector.vec3(y=1).rotate(*-self.camera.rotation)
+        camera_forward = vector.vec3(z=1).rotate(*-self.camera.rotation)
+        width, height = self.width(), self.height()
+        aspect_ratio = height / width
+        x_offset = camera_right * ((click_x * 2 - width) / width)
+        x_offset *= aspect_ratio
+        y_offset = -camera_up * ((click_y * 2 - height) / height)
         ray_origin = self.camera.position
-        ray_direction = (top_left_pixel + px * (x - 1) + py * (y - 1)).normalise()
-        self.ray = [ray_origin, ray_direction] # DEBUG rendering
+        ray_direction = camera_forward + x_offset + y_offset
+        self.ray = (ray_origin, ray_direction) # <-- for debug render
         return ray_origin, ray_direction
 
     ##########################
@@ -201,6 +209,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
             ray_origin, ray_direction = self.do_raycast(x, self.height() - y)
             self.raycast.emit(ray_origin, ray_direction)
         super(MapViewport3D, self).mouseReleaseEvent(event)
+
 
 
 class MapViewport2D(QtWidgets.QOpenGLWidget): # QtWidgets.QGraphicsView ?
