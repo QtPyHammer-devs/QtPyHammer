@@ -1,6 +1,8 @@
 ﻿# CONTORLS:
-# LEFT MOUSE - cast Ray
+# LEFT MOUSE - cast ray
 # RIGHT MOUSE - rotate camera
+# O - orthographic projection
+# P - perspective projection
 
 import ctypes
 import math
@@ -44,8 +46,9 @@ def main(width, height):
     glClearColor(0, 0, 0, 0)
     glEnable(GL_DEPTH_TEST)
     aspect_ratio = width / height
-    gluPerspective(90, aspect_ratio, 0.001, 1024)
-##    glOrtho(-2, 2, -2, 2, 0.001, 1024)
+    fov = 90
+    gluPerspective(fov, aspect_ratio, 0.001, 1024)
+##    glOrtho(-2 * aspect_ratio, 2 * aspect_ratio, -2, 2, 0.001, 1024)
     glTranslate(0, 0, -2)
     glPointSize(4)
 
@@ -53,6 +56,7 @@ def main(width, height):
     ray_direction = vector(0, 0, 1)
 
     x_offset, y_offset = vector(), vector()
+    fov_scalar = 1
 
     mouse = vector(0, 0)
     dragging = False
@@ -82,6 +86,8 @@ def main(width, height):
             elif event.type == SDL_MOUSEBUTTONUP:
                 if event.button.button == SDL_BUTTON_LEFT:
                     dragging = False
+                    print(f"{fov = }")
+                    print(f"{fov_scalar = }")
                     print(f"ray released @ {mouse.x} {mouse.y}")
                     print(f"{ray_origin = }")
                     print(f"{ray_direction = }")
@@ -90,25 +96,29 @@ def main(width, height):
                     camera_moving = False
                     glLoadIdentity()
                     if ortho_mode:
-                        glOrtho(-2, 2, -2, 2, 0.001, 1024)
+                        glOrtho(-2 * aspect_ratio, 2 * aspect_ratio, -2, 2, 0.001, 1024)
                     else:
-                        gluPerspective(90, 1, 0.001, 1024)
+                        gluPerspective(fov, aspect_ratio, 0.001, 1024)
                     glTranslate(0, 0, -2)
             elif event.type == SDL_KEYUP:
                 key = event.key.keysym.sym
                 if key in (SDLK_o, SDLK_p):
                     glLoadIdentity()
                     if key == SDLK_o:
-                        glOrtho(-2, 2, -2, 2, 0.001, 1024)
+                        glOrtho(-2 * aspect_ratio, 2 * aspect_ratio, -2, 2, 0.001, 1024)
                         ortho_mode = True
                     elif key == SDLK_p:
-                        gluPerspective(90, 1, 0.001, 1024)
+                        gluPerspective(fov, aspect_ratio, 0.001, 1024)
                     glTranslate(0, 0, -2)
+                elif key == SDLK_UP:
+                    fov += 1
+                elif key == SDLK_DOWN:
+                    fov -= 1
 
         dt = time.time() - old_time
         while dt >= 1 / tickrate:
-            # do logic for frame
             if dragging:
+                # CALCULATE RAY
                 camera_position = vector(0, 0, 2)
                 camera_forward = vector(0, 0, -1)
                 camera_up = vector(0, 1, 0)
@@ -116,7 +126,11 @@ def main(width, height):
                 x_offset = camera_right * ((mouse.x * 2 - width) / width)
                 x_offset *= aspect_ratio
                 y_offset = -camera_up * ((mouse.y * 2 - height) / height)
-                # ^ probably some redundunt bits in this calculation
+                # unsure how fov works
+                fov_scalar = -math.tan(fov) / 2
+                x_offset *= fov_scalar
+                y_offset *= fov_scalar
+                # ^ only works at 90 degrees
                 ray_direction = camera_forward + x_offset + y_offset
                 ray_direction *= 768
             dt -= 1 / tickrate
