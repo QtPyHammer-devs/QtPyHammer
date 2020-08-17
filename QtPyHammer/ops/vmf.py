@@ -36,7 +36,7 @@ class VmfInterface:
             elif hasattr(entity, "solids"): # multi-brush entity
                 if hasattr(entity.solids[0], "id"):
                     # ^ some entities may have both a "solid" flag & an embedded brush
-                    # -- not checking this here, may be an issue later
+                    # -- not checking for this yet, but it may be an issue later
                     source_brushes.extend(entity.solids)
                     for s in entity.solids:
                         tag = (entity.classname, int(entity.id), int(s.id))
