@@ -47,21 +47,34 @@ class VmfTab(QtWidgets.QWidget):
 
     def raycast(self, ray_origin, ray_direction):
         """Get the object hit by ray"""
-        # test ray against selectable objects
-##        print("calcualting raycast")
-        ray_end = ray_origin + ray_direction
+        ray_length = self.viewport.render_manager.draw_distance
+        ray_end = ray_origin + ray_direction * ray_length
+        print("+" * 20)
         for brush in self.vmf.brushes:
+            print("=" * 20)
+            print(f"{brush.id = }")
             states = set()
             for face in brush.faces:
                 normal, distance = face.plane
                 starts_behind = vector.dot(ray_origin, normal) > distance
                 ends_behind = vector.dot(ray_end, normal) >= distance
-                states.add(starts_behind + ends_behind) # orderless encoding 012
-##            if (True + False) in states:
-##                print(brush.id, sep="\t")
-        # modify Workspace.selection based on result
-##        if ctrl in self.viewport.keys: # add selection key (defined in settings)
-##            self.selection[hit_type].add(hit_object)
+                # ^ are we interpretting negative distances wrong?
+                v = lambda **kwargs: tuple(vector.vec3(**kwargs))
+                nickname = {v(x=1): "X+", v(x=-1): "X-",
+                            v(y=1): "Y+", v(y=-1): "Y-",
+                            v(z=1): "Z+", v(z=-1): "Z-",}
+                print(nickname[tuple(normal)], distance)
+                print(f"{starts_behind} {ends_behind}")
+                print("-" * 15)
+                states.add(starts_behind + ends_behind)
+                # state == 0: perpindicular in front
+                # state == 1: passes through
+                # state == 2: perpindicular behind
+            if 0 not in states:
+                print(f"Intersects! {brush.id = } {states}")
+                # get intersection's depth along ray
+        # self.selection["brushes"] = {brush.id}
+        # - if CRTL is held, add / subtract if already selected
 
     def close(self):
         # release used memory eg. self.viewport.render_manager buffers
