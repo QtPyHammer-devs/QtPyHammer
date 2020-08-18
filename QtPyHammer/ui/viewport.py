@@ -27,6 +27,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         super(MapViewport3D, self).__init__(parent=parent)
         preferences = QtWidgets.QApplication.instance().preferences
         camera.sensitivity = float(preferences.value("Input/MouseSensitivity", "2.0"))
+        # ^ this shouldn't be here, but it has to be set once the app is active
         # RENDERING
         self.render_manager = render.manager()
         # model draw distance (defined in settings)
@@ -38,6 +39,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.moved_last_tick = False
         self.keys = set() # currently held keyboard keys
         self.current_mouse_position = vector.vec2()
+        self.last_mouse_position = vector.vec2()
         self.mouse_vector = vector.vec2()
         self.setFocusPolicy(QtCore.Qt.ClickFocus)
         # ^ to get mouse inputs, user must click on the viewport
@@ -83,6 +85,17 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.doneCurrent()
 
     def paintGL(self):
+        mouse = QtGui.QCursor.pos()
+        self.current_mouse_position = vector.vec2(mouse.x(), mouse.y())
+        self.mouse_vector = self.current_mouse_position - self.last_mouse_position
+        if self.camera_moving:
+            self.setMouseTracking(False)
+            center = self.mapToGlobal(QtCore.QPoint(self.width() / 2, self.height() / 2))
+            QtGui.QCursor.setPos(center)
+            self.setMouseTracking(True)
+            self.last_mouse_position = vector.vec2(center.x(), center.y())
+        self.moved_last_tick = True
+        # ^ get accurate mouse input for frame
         glLoadIdentity()
         fov = self.render_manager.fov
         aspect = self.render_manager.aspect
@@ -141,48 +154,28 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
     ### Rebound Qt Methods ###
     ##########################
     
-    def keyPressEvent(self, event):
-        # arrow keys aren't registering? why?
-        # do they got to a different method?
+    def keyPressEvent(self, event): # not registering arrow keys?
         self.keys.add(event.key())
+        def free_mouse():
+            self.setMouseTracking(False)
+            QtGui.QCursor.setPos(self.cursor_start)
+            self.unsetCursor()
+            self.releaseMouse()
         if event.key() == QtCore.Qt.Key_Z:
-            self.camera_moving = False if self.camera_moving else True
-            if self.camera_moving: # start tracking cursor
+            self.camera_moving = False if self.camera_moving else True # toggle
+            if self.camera_moving:
                 self.setMouseTracking(True)
                 self.cursor_start = QtGui.QCursor.pos()
                 self.last_mouse_position = vector.vec2(self.cursor_start.x(), self.cursor_start.y())
-                center = QtCore.QPoint(self.width() / 2, self.height() / 2)
-                QtGui.QCursor.setPos(self.mapToGlobal(center))
                 self.grabMouse()
                 self.setCursor(QtCore.Qt.BlankCursor)
-            else: # free the mouse
-                self.setMouseTracking(False)
-                QtGui.QCursor.setPos(self.cursor_start)
-                self.unsetCursor()
-                self.releaseMouse()
-        if self.camera_moving and event.key() == QtCore.Qt.Key_Escape:
-            self.setMouseTracking(False)
-            self.unsetCursor()
-            self.releaseMouse()
+            else:
+                free_mouse()
+        elif event.key() == QtCore.Qt.Key_Escape and self.camera_moving:
+            free_mouse()
 
     def keyReleaseEvent(self, event):
         self.keys.discard(event.key())
-
-    def mousePressEvent(self, event):
-        button = event.button()
-        position = event.pos()
-        # tell mouseMoveEvent to record position until mouseReleaseEvent
-        # mouseReleaseEvent will then call a function if hotkeys were pressed
-        # but only if they were pressed here in mousePressEvent
-        # (at the start of the mouse action)
-        ...
-        # self.do_raycast
-        # emit the ray to ui/tabs.py:Workspace
-        # or save the result of the raycast and return with the mouse action
-        ...
-        # if button == middle mouse:
-        #     do: blender camera
-        super(MapViewport3D, self).mousePressEvent(event)
 
     def mouseReleaseEvent(self, event):
         if event.button() == QtCore.Qt.LeftButton: # defined in settings
@@ -193,15 +186,6 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
             ray_origin, ray_direction = self.do_raycast(x, self.height() - y)
             self.raycast.emit(ray_origin, ray_direction)
         super(MapViewport3D, self).mouseReleaseEvent(event)
-
-    def mouseMoveEvent(self, event):
-        # TODO: use blender camera controls when not self.camera_moving
-        if self.camera_moving:
-            self.current_mouse_position = vector.vec2(event.pos().x(), event.pos().y())
-            self.mouse_vector = self.current_mouse_position - self.last_mouse_position
-            self.last_mouse_position = self.current_mouse_position
-            self.moved_last_tick = True
-        super(MapViewport3D, self).mouseMoveEvent(event)
 
     def wheelEvent(self, event):
         if self.camera_moving:
