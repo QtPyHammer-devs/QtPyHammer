@@ -471,7 +471,7 @@ def yield_grid(limit, step): # "step" = Grid Scale (MainWindow action)
     yield -limit, 0
     yield limit, 0 # +EW
     # concentric squares stepping out from center (0, 0) to limit
-    for i in range(1, limit + 1, step):
+    for i in range(0, limit + 1, step):
         yield i, -limit
         yield i, limit # +NS
         yield -limit, i
