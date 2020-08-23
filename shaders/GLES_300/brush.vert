@@ -20,7 +20,7 @@ void main()
     uv = vec2(vertex_uv.x, -vertex_uv.y);
     colour = editor_colour;
 
-    Kd = abs(normal.z / 3.0 + 1.0/3.0 * normal.y / 3.0 + 2.0/3.0 * normal.x / 3.0);
+    Kd = dot(normal, vec3(.05, .35, .60)) / 3.0 + 0.5;
 
     gl_Position = MVP_matrix * vec4(vertex_position, 1);
 }

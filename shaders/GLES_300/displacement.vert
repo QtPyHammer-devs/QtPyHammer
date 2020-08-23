@@ -22,7 +22,7 @@ void main()
     blend = blend_alpha;
 
     colour = mix(vec3(.0, .4, .75), vec3(.65, .0, .45), blend_alpha);
-    Kd = abs(normal.z / 3.0 + 1.0/3.0 * normal.y / 3.0 + 2.0/3.0 * normal.x / 3.0);
+    Kd = dot(normal, vec3(.05, .35, .60)) / 3.0 + 0.5;
 
     gl_Position = MVP_matrix * vec4(vertex_position, 1);
 }

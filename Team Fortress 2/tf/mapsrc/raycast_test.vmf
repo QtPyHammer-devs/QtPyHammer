@@ -2,18 +2,12 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "8610"
-	"mapversion" "2"
+	"mapversion" "4"
 	"formatversion" "100"
 	"prefab" "0"
 }
 visgroups
 {
-	visgroup
-	{
-		"name" "Z"
-		"visgroupid" "3"
-		"color" "0 0 255"
-	}
 }
 viewsettings
 {
@@ -26,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "2"
+	"mapversion" "4"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -180,7 +174,6 @@ world
 		editor
 		{
 			"color" "0 0 255"
-			"visgroupid" "3"
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
