@@ -179,7 +179,7 @@ world
 		}
 		editor
 		{
-			"color" "255 0 255"
+			"color" "0 0 255"
 			"visgroupid" "3"
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
@@ -560,7 +560,7 @@ world
 		}
 		editor
 		{
-			"color" "255 0 255"
+			"color" "0 127 0"
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
@@ -636,7 +636,7 @@ world
 		}
 		editor
 		{
-			"color" "255 0 255"
+			"color" "127 255 255"
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
@@ -712,7 +712,7 @@ world
 		}
 		editor
 		{
-			"color" "255 0 255"
+			"color" "127 255 127"
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
@@ -788,7 +788,7 @@ world
 		}
 		editor
 		{
-			"color" "255 0 255"
+			"color" "255 255 127"
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
@@ -864,7 +864,7 @@ world
 		}
 		editor
 		{
-			"color" "255 0 255"
+			"color" "255 255 255"
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
@@ -940,7 +940,7 @@ world
 		}
 		editor
 		{
-			"color" "255 0 255"
+			"color" "127 127 255"
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
@@ -1016,7 +1016,7 @@ world
 		}
 		editor
 		{
-			"color" "255 0 255"
+			"color" "127 127 127"
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
@@ -1092,7 +1092,7 @@ world
 		}
 		editor
 		{
-			"color" "255 0 255"
+			"color" "255 127 127"
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
@@ -1168,7 +1168,7 @@ world
 		}
 		editor
 		{
-			"color" "255 0 255"
+			"color" "255 127 255"
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
