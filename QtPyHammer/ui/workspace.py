@@ -49,30 +49,63 @@ class VmfTab(QtWidgets.QWidget):
         """Get the object hit by ray"""
         ray_length = self.viewport.render_manager.draw_distance
         ray_end = ray_origin + ray_direction * ray_length
+        # DEBUG
         print("+" * 20)
+        def decode_colour(c):
+            r, g, b = [int(255) * i for i in c]
+            if (r, g, b) == (255, 0, 255):
+                return "Center"
+            out = ""
+            out += "+X " if r == 255 else "-X "
+            out += "+Y " if g == 255 else "-Y "
+            out += "+Z " if b == 255 else "-Z "
+            return out
+        # ^ DEBUG
+        intersection = dict()
+        # ^ distance: ("brush", brush.id, brush.face.id)
+        # -- distance: (type, major_id, minor_id)
+        # if distance is already in intersection:
+        # -- z-fighting, special case!
         for brush in self.vmf.brushes:
+            # DEBUG
             print("=" * 20)
-            print(f"{brush.id = }")
-            states = set()
+            brush_tag = decode_colour(brush.colour)
+            print(f"brush_tag = {brush_tag}")
+            # ^ DEBUG
             for face in brush.faces:
                 normal, distance = face.plane
+                # DEBUG
+                n = lambda **kwargs: tuple(vector.vec3(**kwargs))
+                nickname = {n(x=1): "+X", n(x=-1): "-X",
+                            n(y=1): "+Y", n(y=-1): "-Y",
+                            n(z=1): "+Z", n(z=-1): "-Z"}
+                print(nickname[tuple(normal)], distance)
+                # ^ DEBUG
+                alignment = vector.dot(normal, ray_direction)
+                print(f"{alignment = :0.5f}")
+                if alignment > 0: # -1 == ray is opposite of normal
+                    # ignoring backfaces
+                    print(f"skipping {nickname[tuple(normal)]}")
+                    print("-" * 15)
+                    continue
                 starts_behind = vector.dot(ray_origin, normal) > distance
                 ends_behind = vector.dot(ray_end, normal) >= distance
-                # ^ are we interpretting negative distances wrong?
-                v = lambda **kwargs: tuple(vector.vec3(**kwargs))
-                nickname = {v(x=1): "X+", v(x=-1): "X-",
-                            v(y=1): "Y+", v(y=-1): "Y-",
-                            v(z=1): "Z+", v(z=-1): "Z-",}
-                print(nickname[tuple(normal)], distance)
                 print(f"{starts_behind} {ends_behind}")
+                if not starts_behind and not ends_behind:
+                    break # the ray cannot intersect this brush
+                elif starts_behind and not ends_behind:
+                    ... # CLIP!
+                    # this intersection's distance along ray
+            # check each potential intersection touches the solid
+            # (clipping test against other faces)
+            # can we get away with just the planes aligned with the camera?
+                # get intersection's distance along the ray
+                # distance = ...
+                # intersection[distance] = ("brush", brush.id, face.id)
                 print("-" * 15)
-                states.add(starts_behind + ends_behind)
-                # state == 0: perpindicular in front
-                # state == 1: passes through
-                # state == 2: perpindicular behind
-            if 0 not in states:
-                print(f"Intersects! {brush.id = } {states}")
-                # get intersection's depth along ray
+        # closest = min(intersection.keys())
+        # selected = intersection[closest]
+        ## special cases for very close intersections (z-fighting)
         # self.selection["brushes"] = {brush.id}
         # - if CRTL is held, add / subtract if already selected
 
