@@ -18,6 +18,7 @@ class selection_mode(Enum):
     brush_entitiy = 1
     group = 2
     face = 3
+    # ^ tie to a viewport widget
 
 
 class VmfTab(QtWidgets.QWidget):
@@ -34,7 +35,9 @@ class VmfTab(QtWidgets.QWidget):
         self.viewport.setFocus() # not working
         self.viewport.raycast.connect(self.raycast) # get 3D ray from viewport
         self.selection_mode = selection_mode.group
-        self.selection = {"brushes": set(), "faces": set(), "entities": set()}
+        self.selection = set()
+        # ^ ("type", major_id, minor_id)
+        # - ("brush", brush.id, face.id)
         # self.timeline = ops.timeline.edit_history() # also handles multiplayer
         ### EDIT TIMELINE NOTES ###
         # what happens when a user brings "logs in" and pushes all their changes to the shared state?
@@ -49,65 +52,46 @@ class VmfTab(QtWidgets.QWidget):
         """Get the object hit by ray"""
         ray_length = self.viewport.render_manager.draw_distance
         ray_end = ray_origin + ray_direction * ray_length
-        # DEBUG
-        print("+" * 20)
-        def decode_colour(c):
-            r, g, b = [int(255) * i for i in c]
-            if (r, g, b) == (255, 0, 255):
-                return "Center"
-            out = ""
-            out += "+X " if r == 255 else "-X "
-            out += "+Y " if g == 255 else "-Y "
-            out += "+Z " if b == 255 else "-Z "
-            return out
-        # ^ DEBUG
         intersection = dict()
         # ^ distance: ("brush", brush.id, brush.face.id)
         # -- distance: (type, major_id, minor_id)
         # if distance is already in intersection:
         # -- z-fighting, special case!
         for brush in self.vmf.brushes:
-            # DEBUG
-            print("=" * 20)
-            brush_tag = decode_colour(brush.colour)
-            print(f"brush_tag = {brush_tag}")
-            # ^ DEBUG
+            probable_intersections = dict()
+            # ^ distance(t): face.id
             for face in brush.faces:
                 normal, distance = face.plane
-                # DEBUG
-                n = lambda **kwargs: tuple(vector.vec3(**kwargs))
-                nickname = {n(x=1): "+X", n(x=-1): "-X",
-                            n(y=1): "+Y", n(y=-1): "-Y",
-                            n(z=1): "+Z", n(z=-1): "-Z"}
-                print(nickname[tuple(normal)], distance)
-                # ^ DEBUG
                 alignment = vector.dot(normal, ray_direction)
-                print(f"{alignment = :0.5f}")
-                if alignment > 0: # -1 == ray is opposite of normal
-                    # ignoring backfaces
-                    print(f"skipping {nickname[tuple(normal)]}")
-                    print("-" * 15)
+                if alignment > 0: # skip backfaces
                     continue
-                starts_behind = vector.dot(ray_origin, normal) > distance
-                ends_behind = vector.dot(ray_end, normal) >= distance
-                print(f"{starts_behind} {ends_behind}")
-                if not starts_behind and not ends_behind:
-                    break # the ray cannot intersect this brush
-                elif starts_behind and not ends_behind:
-                    ... # CLIP!
-                    # this intersection's distance along ray
-            # check each potential intersection touches the solid
-            # (clipping test against other faces)
-            # can we get away with just the planes aligned with the camera?
-                # get intersection's distance along the ray
-                # distance = ...
-                # intersection[distance] = ("brush", brush.id, face.id)
-                print("-" * 15)
-        # closest = min(intersection.keys())
-        # selected = intersection[closest]
-        ## special cases for very close intersections (z-fighting)
-        # self.selection["brushes"] = {brush.id}
-        # - if CRTL is held, add / subtract if already selected
+                # similar method to utilities.solid.clip
+                origin_distance = vector.dot(normal, ray_origin) - distance
+                end_distance = vector.dot(normal, ray_end) - distance
+                origin_is_behind = bool(origin_distance < 0.01)
+                end_is_behind = bool(end_distance < 0.01)
+                if not origin_is_behind and end_is_behind:
+                    t = origin_distance / (origin_distance - end_distance)
+                    probable_intersections[t] = face.id
+            # check if any probable intersection actually touches the solid
+            for t, face_id in probable_intersections.items():
+                P = vector.lerp(ray_origin, ray_end, t)
+                valid = True
+                for face in brush.faces:
+                    if face.id == face_id:
+                        continue
+                    normal, distance = face.plane
+                    if (vector.dot(normal, P) - distance) > -0.01:
+                        valid = False # P is floating outside the brush
+                if valid:
+                    intersection[t] = ("brush", brush.id, face_id)
+        closest = min(intersection.keys())
+        # if other distances are close, give a pop-up like blender alt+select
+        selected = intersection[closest]
+        # look at selection mode, do we want groups?, only the selected face?
+        # - if CRTL is held, add to selection OR subtract if already in selection
+        self.selection = {selected}
+        
 
     def close(self):
         # release used memory eg. self.viewport.render_manager buffers

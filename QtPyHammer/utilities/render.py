@@ -492,7 +492,7 @@ def draw_grid(limit=2048, grid_scale=64, colour=(.5, .5, .5)):
         glVertex(x, y)
     glEnd()
 
-def draw_origin(scale=64):
+def draw_origin(scale=128):
     glLineWidth(2)
     glBegin(GL_LINES)
     glColor(1, 0, 0)
