@@ -85,6 +85,8 @@ class VmfTab(QtWidgets.QWidget):
                         valid = False # P is floating outside the brush
                 if valid:
                     intersection[t] = ("brush", brush.id, face_id)
+        if len(intersections) == 0:
+            return # no intersections, move on
         closest = min(intersection.keys())
         # if other distances are close, give a pop-up like blender alt+select
         selected = intersection[closest]
