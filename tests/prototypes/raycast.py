@@ -1,5 +1,4 @@
-﻿#!/usr/bin/python3
-import ctypes
+﻿import ctypes
 import math
 import re
 import time
