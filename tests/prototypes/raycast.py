@@ -1,4 +1,5 @@
-﻿import ctypes
+﻿"""Raycast projection prototype"""
+import ctypes
 import math
 import re
 import time
