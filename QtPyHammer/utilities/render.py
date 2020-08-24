@@ -108,7 +108,8 @@ class manager:
 
     def draw(self):
         glUseProgram(0)
-        draw_grid()
+        # draw_grid()
+        draw_dot_grid(-2048, 2048, -2048, 2048, 64)
         draw_origin()
         draw_ray(vector.vec3(), vector.vec3(), 0)
         # TODO: dither transparency for tooltextures (skip, hint, trigger, clip)
@@ -461,7 +462,7 @@ def remove_span(span_list, span):
     return out
 
 # DRAWING FUNCTIONS
-def yield_grid(limit, step): # "step" = Grid Scale (MainWindow action)
+def yield_grid(limit, scale): # grid scale selected by ui
     """ yields lines on a grid (one vertex at a time) centered on [0, 0]
     limit: int, half the width of grid
     step: int, gap between edges"""
@@ -471,7 +472,7 @@ def yield_grid(limit, step): # "step" = Grid Scale (MainWindow action)
     yield -limit, 0
     yield limit, 0 # +EW
     # concentric squares stepping out from center (0, 0) to limit
-    for i in range(0, limit + 1, step):
+    for i in range(0, limit + 1, scale):
         yield i, -limit
         yield i, limit # +NS
         yield -limit, i
@@ -489,6 +490,26 @@ def draw_grid(limit=2048, grid_scale=64, colour=(.5, .5, .5)):
     glBegin(GL_LINES)
     glColor(*colour)
     for x, y in yield_grid(limit, grid_scale):
+        # you don't have to generate the grid every frame by the way
+        glVertex(x, y)
+    glEnd()
+
+def yield_dot_grid(min_x, min_y, max_x, max_y, scale):
+    """Takes a x,y boiunds so only the visible points are rendered"""
+    snap = lambda x: x // scale * scale
+    min_x = snap(min_x)
+    max_x = snap(max_x)
+    min_y = snap(min_y)
+    max_y = snap(max_y)
+    for x in range(min_x, min_y + 1, scale):
+        for y in range(min_x, min_y + 1, scale):
+            yield x, y
+
+def draw_dot_grid(min_x, min_y, max_x, max_y, scale=64, colour=(.5, .5, .5)):
+    glBegin(GL_POINTS)
+    glColor(*colour)
+    for x, y in yield_dot_grid(min_x, min_y, max_x, max_y, scale):
+        # you don't have to generate the grid every frame by the way
         glVertex(x, y)
     glEnd()
 
