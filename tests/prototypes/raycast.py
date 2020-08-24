@@ -1,4 +1,4 @@
-﻿"""Raycast projection prototype"""
+﻿"""Raycast projection prototype""" # noqa: E999
 import ctypes
 import math
 import re
