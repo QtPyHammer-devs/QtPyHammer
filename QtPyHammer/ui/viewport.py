@@ -114,17 +114,6 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         # if rendering a skybox, it must be rendering after camera rotation & before camera position
         # -- may also want to stencil render skybox brushes
         self.render_manager.draw()
-        glUseProgram(0)
-        glBegin(GL_LINES)
-        glColor(1, 0.5, 0.25)
-        ray_origin, ray_direction = self.ray
-        glVertex(*ray_origin)
-        glVertex(*(ray_origin + ray_direction * draw_distance))
-        glEnd()
-        glPointSize(4)
-        glBegin(GL_POINTS)
-        glVertex(*(ray_origin + ray_direction))
-        glEnd()
         super(MapViewport3D, self).paintGL()
 
     def resizeGL(self, width, height):
