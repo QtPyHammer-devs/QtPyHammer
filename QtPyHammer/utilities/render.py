@@ -430,7 +430,7 @@ def remove_span(span_list, span):
     for S, L in span_list:
         print("\t", end="")
         E = S + L
-        # specials
+        # special cases
         if start <= S < E <= end: # span ecclipses (S, L)
             print(f"{(start, end)} ecclipses {(S, E)}")
             continue
@@ -439,7 +439,7 @@ def remove_span(span_list, span):
             out.append((S, start - S))
             out.append((end, E - end))
             continue
-        # basics
+        # simple cases
         if end < S: # span leads (S, L)
             print(f"{(start, end)} leads {(S, E)}")
             out.append((S, L))

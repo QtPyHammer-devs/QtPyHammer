@@ -57,7 +57,7 @@ class VmfTab(QtWidgets.QWidget):
         # -- distance: (type, major_id, minor_id)
         # if distance is already in intersection:
         # -- z-fighting, special case!
-        for brush in self.vmf.brushes:
+        for brush in self.vmf.brushes: # <- filter to visible brushes only
             probable_intersections = dict()
             # ^ distance(t): face.id
             for face in brush.faces:
@@ -93,7 +93,8 @@ class VmfTab(QtWidgets.QWidget):
         # look at selection mode, do we want groups?, only the selected face?
         # - if CRTL is held, add to selection OR subtract if already in selection
         self.selection = {selected}
-        
+
+        self.viewport.render_manager.hide(selected[:2])
 
     def close(self):
         # release used memory eg. self.viewport.render_manager buffers

@@ -11,11 +11,12 @@ def except_hook(cls, exception, traceback): # for debugging Qt slots
 sys.excepthook = except_hook
 
 app = QtWidgets.QApplication([])
+app.preferences = QtCore.QSettings("configs/preferences.ini", QtCore.QSettings.IniFormat)
 
 window = QtWidgets.QMainWindow()
 window.setLayout(QtWidgets.QHBoxLayout())
 
-workspace = VmfTab("../../test_maps/test2.vmf")
+workspace = VmfTab("../../Team Fortress 2/tf/mapsrc/test2.vmf")
 workspace.setMinimumSize(512, 512)
 window.setCentralWidget(workspace)
 
@@ -125,14 +126,14 @@ class auto_visgroup_manager(QtWidgets.QTreeWidget):
     # dynamic user collections / visgroups; filtered by region, material & classname
     # have an edit dialog for selected user visgroup
 
-visgroup_widget = QtWidgets.QDockWidget()
+master_widget = QtWidgets.QDockWidget()
 tab_manager = QtWidgets.QTabWidget()
 tab_manager.addTab(auto_visgroup_manager(), "Auto")
 tab_manager.addTab(QtWidgets.QWidget(), "User")
-visgroup_widget.layout().setContentsMargins(0, 0, 0, 0)
-visgroup_widget.layout().addWidget(tab_manager)
-visgroup_widget.setMinimumSize(192, 256)
-window.addDockWidget(QtCore.Qt.RightDockWidgetArea, visgroup_widget)
+master_widget.layout().setContentsMargins(0, 0, 0, 0)
+master_widget.layout().addWidget(tab_manager)
+master_widget.setMinimumSize(192, 256)
+window.addDockWidget(QtCore.Qt.RightDockWidgetArea, master_widget)
 
 window.show()
 app.exec_()
