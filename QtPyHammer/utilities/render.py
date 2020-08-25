@@ -139,7 +139,7 @@ class manager:
 
     def untrack_span(self, buffer, renderable_type, span_to_untrack):
         target = self.buffer_allocation_map[buffer][renderable_type]
-        updated_map = remove_span(target, span_to_track)
+        updated_map = remove_span(target, span_to_untrack)
         self.buffer_allocation_map[buffer][renderable_type] = updated_map
 
     def update_mapping(self, buffer, renderable_type, start, ids, lengths):
