@@ -1,9 +1,10 @@
 from PyQt5 import QtCore, QtWidgets
 
-import sys
-sys.path.append("../../")
+# running via $ python tests/prototypes/visgroups.py
 from QtPyHammer.ui.workspace import VmfTab
 from QtPyHammer.utilities import render
+# ^ working directory must be the top level of the repo
+# otherwise shaders will not be found
 
 
 def except_hook(cls, exception, traceback): # for debugging Qt slots
