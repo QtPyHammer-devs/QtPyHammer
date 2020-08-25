@@ -111,7 +111,6 @@ class manager:
         # draw_grid()
         draw_dot_grid(-2048, 2048, -2048, 2048, 64)
         draw_origin()
-        draw_ray(vector.vec3(), vector.vec3(), 0)
         # TODO: dither transparency for tooltextures (skip, hint, trigger, clip)
         for renderable_type, spans in self.draw_calls.items():
             glUseProgram(self.shader[self.render_mode][renderable_type])
