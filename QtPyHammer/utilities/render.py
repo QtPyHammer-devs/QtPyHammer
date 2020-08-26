@@ -275,12 +275,15 @@ class manager:
             self.update_mapping("index", renderable_type, start, ids, lengths)
 
     def hide(self, renderable):
+        print(f"Hiding {renderable}")
+        self.hidden.add(renderable)
         renderable_type = renderable[0]
         span = self.buffer_location[renderable]["index"]
         span_list = self.draw_calls[renderable_type]
         self.draw_calls[renderable_type] = remove_span(span_list, span)
 
     def show(self, renderable):
+        self.hidden.discard(renderable)
         renderable_type = renderable[0]
         span = self.buffer_location[renderable]["index"]
         span_list = self.draw_calls[renderable_type]

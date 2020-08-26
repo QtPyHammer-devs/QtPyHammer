@@ -58,6 +58,9 @@ class VmfTab(QtWidgets.QWidget):
         # if distance is already in intersection:
         # -- z-fighting, special case!
         for brush in self.vmf.brushes: # <- filter to visible brushes only
+            if ("brush", brush.id) in self.viewport.render_manager.hidden:
+                continue # can't see it, can't select it
+            # ^ does not check displacement visibility mode
             probable_intersections = dict()
             # ^ distance(t): face.id
             for face in brush.faces:
