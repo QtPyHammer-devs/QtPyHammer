@@ -1,12 +1,10 @@
 import itertools
 import math
-import os
-import sys
 
 import numpy as np
 from OpenGL.GL import *
 from OpenGL.GL.shaders import compileShader, compileProgram
-from PyQt5 import QtGui
+from PyQt5 import QtWidgets
 
 from . import vector
 
@@ -62,7 +60,9 @@ class manager:
             self.shader_version = "GLSL_450"
         elif major >= 3 and minor >= 0:
             self.shader_version = "GLES_300"
-        shader_folder = f"shaders/{self.shader_version}/"
+        app = QtWidgets.QApplication.instance()
+        shader_dir = app.preferences.value("Shaders", "shaders/default")
+        shader_folder = f"{shader_dir}/{self.shader_version}/"
         compile_shader = lambda f, t: compileShader(open(shader_folder + f, "rb"), t)
         vert_brush = compile_shader("brush.vert", GL_VERTEX_SHADER)
         vert_displacement = compile_shader("displacement.vert", GL_VERTEX_SHADER)
