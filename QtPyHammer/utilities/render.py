@@ -447,11 +447,11 @@ def remove_span(span_list, span):
             print(f"{(start, end)} leads {(S, E)}")
             out.append((S, L))
             continue
-        if start < S < end < E: # span overlaps start of (S, L)
+        if start <= S < end < E: # span overlaps start of (S, L)
             print(f"{(start, end)} overlap start {(S, E)}")
             out.append((end, E - end))
             continue
-        if S < start < E < end: # span overlaps tail of (S, L)
+        if S < start < E <= end: # span overlaps tail of (S, L)
             print(f"{(start, end)} overlaps tail {(S, E)}")
             out.append((S, start - S))
             continue
