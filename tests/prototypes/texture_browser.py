@@ -1,11 +1,18 @@
 import os # for searching / cataloging folders
 import sys
+import vpk
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-sys.path.insert(0, "../../QtPyHammer")
-from utilities import vtf
+current_dir = os.path.dirname(os.path.realpath(__file__))
 
+mapsrc_dir = os.path.join(current_dir, "../../QtPyHammer")
+
+sys.path.insert(0, mapsrc_dir)
+print(os.listdir(mapsrc_dir))
+
+#sys.path.append("../../")
+from utilities import vtf
 
 def except_hook(cls, exception, traceback):
     sys.__excepthook__(cls, exception, traceback)
@@ -15,32 +22,46 @@ app = QtWidgets.QApplication(sys.argv)
 
 class texture_browser(QtWidgets.QDialog):
     # https://doc.qt.io/qt-5/qdialog.html
+
     def __init__(self):
         super(texture_browser, self).__init__(parent=None)
         # pick a layout for the core widget
         # top has a scrolling page of texture thumbnails
         # bottom has filters, searchbar, OK & Cancel buttons
         layout = QtWidgets.QVBoxLayout()
-        filenames = []
-        filenames.append("customdev/dev_measuregeneric01green.vtf")
-        filenames.append("customdev/dev_measurewall01green.vtf")
-        materials = "../../test_materials"
-        textures = [(f, vtf.vtf(f"{materials}/{f}")) for f in filenames]
-        texture_previews = QtWidgets.QListWidget() # could also be QListView
-        texture_previews.setViewMode(QtWidgets.QListWidget.IconMode)
-        texture_previews.setIconSize(QtCore.QSize(128, 128))
-        texture_previews.setResizeMode(QtWidgets.QListWidget.Adjust)
-        for texture_name, texture_vtf in textures:
-            width = texture_vtf.thumbnail_width
-            height = texture_vtf.thumbnail_height
-            image = QtGui.QImage(texture_vtf.thumbnail, width, height,
-                                 QtGui.QImage.Format_RGB888)
-            image = image.scaled(128, 128) # must upscale for QIcon manually
-            icon = QtGui.QIcon(QtGui.QPixmap.fromImage(image))
-            item = QtWidgets.QListWidgetItem(icon, texture_name)
-            texture_previews.addItem(item)
-        layout.addWidget(texture_previews)
+        scroll_area = QtWidgets.QScrollArea()
+        page = QtWidgets.QWidget()
+        page.setLayout(QtWidgets.QGridLayout())
+        for y in range(22):
+            for x in range(8):
+                label = QtWidgets.QLabel()
+                # Placeholder Image
+                magenta = b"\xFF\x00\xFF"
+                black = b"\x00\x00\x00"
+                data = magenta + black + black + magenta
+
+                # Parse data into image
+                image = QtGui.QImage(data, 2, 2, QtGui.QImage.Format_RGB888)
+                image.setDevicePixelRatio(1 / 32) # scale *32
+                label.setPixmap(QtGui.QPixmap.fromImage(image))
+                page.layout().addWidget(label, x, y)
+        scroll_area.setWidget(page)
+        scroll_area.setHorizontalScrollBarPolicy(1) # Always Off
+        scroll_area.setVerticalScrollBarPolicy(2) # Always On
+        layout.addWidget(scroll_area)
         layout.addWidget(QtWidgets.QLabel("Search Options")) # placeholder
+        
+        searchbar = QtWidgets.QLineEdit()
+        layout.addWidget(searchbar)
+        
+        passSearchVar = lambda : self.search(searchbar.text())
+        searchbar.returnPressed.connect(passSearchVar) 
+
+        searchButton = QtWidgets.QPushButton("Search")
+        searchButton.clicked.connect(passSearchVar)
+        searchButton.setDefault(1)
+        layout.addWidget(searchButton)
+
         # ^ https://doc.qt.io/qt-5/qlabel.html
         # -- QLabels can hold text or images, great for markers
         buttonbox = QtWidgets.QDialogButtonBox
@@ -49,6 +70,9 @@ class texture_browser(QtWidgets.QDialog):
         buttons.rejected.connect(self.reject)
         layout.addWidget(buttons)
         self.setLayout(layout)
+
+    def search(self, keyword):
+        print(f"Trying to Search {keyword}!")
 
 window = texture_browser()
 # ^ make a subclass 
