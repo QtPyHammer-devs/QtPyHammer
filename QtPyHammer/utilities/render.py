@@ -1,5 +1,6 @@
 import itertools
 import math
+import os
 
 import numpy as np
 from OpenGL.GL import *
@@ -61,8 +62,7 @@ class manager:
         elif major >= 3 and minor >= 0:
             self.shader_version = "GLES_300"
         app = QtWidgets.QApplication.instance()
-        shader_dir = app.preferences.value("Shaders", "shaders/default")
-        shader_folder = f"{shader_dir}/{self.shader_version}/"
+        shader_folder = os.path.join(app.folder, f"shaders/{self.shader_version}/")
         compile_shader = lambda f, t: compileShader(open(shader_folder + f, "rb"), t)
         vert_brush = compile_shader("brush.vert", GL_VERTEX_SHADER)
         vert_displacement = compile_shader("displacement.vert", GL_VERTEX_SHADER)
@@ -283,6 +283,7 @@ class manager:
         self.draw_calls[renderable_type] = remove_span(span_list, span)
 
     def show(self, renderable):
+        print(f"Showing {renderable}")
         self.hidden.discard(renderable)
         renderable_type = renderable[0]
         span = self.buffer_location[renderable]["index"]
@@ -403,25 +404,34 @@ def square_neighbours(x, y, edge_length): # edge_length = (2^power) + 1
                         yield i * edge_length + j
 
 def add_span(span_list, span):
+    rep = lambda s: (s[0], s[0] + s[1]) 
+    print(f"{list(map(rep, span_list))} + {rep(span)} = ")
     if len(span_list) == 0:
         return [span]
     start, length = span
     end = start + length
     for i, span in enumerate(span_list):
+        print("\t", end="")
         S, L = span
         E = S + L
         if S < end and E < start:
+            print(f"{start, end} ecclipses {S, E}")
             continue # (S, L) is before span_to_track and doesn't touch it
         elif end < S: # span leads (S, L) without touching it
+            print(f"{start, end} leads {S, E}")
             span_list.insert(i, (start, length))
             break
         elif S == end or E == start: # span leads (S, L) or span tails (S, L)
+            print(f"{start, end} touches {S, E}")
             span_list.pop(i)
             new_start = min(start, S)
             span_list.insert(i, (new_start, L + length))
             break
     else: # span tails the final (S, L) without touching it
+        print(f"{start, end}")
         span_list.append((start, length))
+    print(list(map(rep, span_list)))
+    print()
     return span_list
 
 def remove_span(span_list, span):
