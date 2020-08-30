@@ -90,11 +90,11 @@ class VPKSearchable(vpk.VPK):
         """Returns VPKFile array"""
         foundnames = []
         for filename in self:
-            if (filename[-3:] in filefilter) and (keyword in filename):
+            if (filename[-3:] in self.filefilter) and (keyword in filename):
                 foundnames.append(filename)
 
         outputarray = []
-        if hasFilter():
+        if self.hasFilter():
             pass
 
         for path in foundnames:
@@ -107,11 +107,22 @@ class VPKSearchable(vpk.VPK):
         self.shaderfilter = []
         self.shaderfilter.append(kwargs.get("shaders", None))
 
-class MDLSimple:
+class PropSimple:
     #Simple MDL parser just to check which type of prop it can be
-    def __init__(self, vpkfile):
+    def __init__(self, pak, internalPath):
+
+        try:
         #takes VPKFile class as parameter
-        self.vpkfile = vpkfile
+            self.mdlfile = pak[internalPath]
+        except FileNotFoundError:
+            self.mdlfile = None
+
+        internalPhypath = internalPath[0:-3] + "phy"
+        # phyfile. also VPKFile
+        try:
+            self.phyfile = pak[internalPhypath]
+        except FileNotFoundError:
+            self.phyfile = None
     
     def isStaticProp(self):
     # model flag byte location
@@ -123,28 +134,45 @@ class MDLSimple:
         pass
 
     def isPropData(self):
-        pass
+        #Does the model have prop data
+        if self.phyfile is None:
+            # No Collision Model, No Prop Data
+            return False
+        else:
+            pass
 
     def isCollisionJoints(self):
         #Does ragdollconstraint in .phy define collision joint?
-        pass
+        if self.phyfile is None:
+            # No Collision Model, No Collision Joints
+            return False
+        else:
+            pass
 
     def isCollisionModel(self):
         #does the model have .phy?
-        #should this be determined here???
-        pass
+        if self.phyfile is None:
+            # No Collision Model, No Collision Model
+            return False
+        else:
+            return True
 
     def propTypes(self):
+        isStaticProp = self.isStaticProp()
+        isPropData = self.isPropData()
+        isCollisionJoints = self.isCollisionJoints()
+        isCollisionModel = self.isCollisionModel()
+
         propTypeList = []
-        if self.isStaticProp() and not self.isPropData() and not self.isCollisionJoints() and not self.isCollisionModel():
+        if isStaticProp and not isPropData and not isCollisionJoints and not isCollisionModel:
             propTypeList.append("prop_detail")
-        if not self.isStaticProp() and self.isPropData() and self.isCollisionJoints() and not self.isCollisionModel():
+        if not isStaticProp and isPropData and isCollisionJoints and not isCollisionModel:
             propTypeList.append("prop_ragdoll")
-        if self.isStaticProp() and not self.isPropData() and not self.isCollisionJoints():
+        if isStaticProp and not isPropData and not isCollisionJoints:
             propTypeList.append("prop_static")
-        if self.isPropData() and not self.isCollisionJoints() and self.isCollisionModel():
+        if isPropData and not isCollisionJoints and isCollisionModel:
             propTypeList.append("prop_physics")
-        if not self.isPropData():
+        if not isPropData:
             propTypeList.append("prop_dynamic")
 
 
