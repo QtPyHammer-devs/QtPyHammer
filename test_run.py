@@ -14,7 +14,7 @@ sys.excepthook = except_hook
 
 app = QtWidgets.QApplication([])
 # ^ app can be accessed from anywhere with QtWidgets.QApplication.instance()
-
+app.folder = os.path.dirname(__file__)
 # load all config files
 app.preferences = QtCore.QSettings("configs/preferences.ini", QtCore.QSettings.IniFormat)
 game = app.preferences.value("Game", "Team Fortress 2")

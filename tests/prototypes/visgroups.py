@@ -4,7 +4,7 @@ from PyQt5 import QtCore, QtWidgets
 
 sys.path.append("../../")
 from QtPyHammer.ui.workspace import VmfTab
-from QtPyHammer.utilities import render
+##from QtPyHammer.utilities import render
 
 
 def except_hook(cls, exception, traceback): # for debugging Qt slots
@@ -12,9 +12,8 @@ def except_hook(cls, exception, traceback): # for debugging Qt slots
 sys.excepthook = except_hook
 
 app = QtWidgets.QApplication([])
+app.folder = "../../"
 app.preferences = QtCore.QSettings("../../configs/preferences.ini", QtCore.QSettings.IniFormat)
-shader_dir = app.preferences.value('Shaders')
-app.preferences.setValue("Shaders", f"../../{app.preferences.value('Shaders')}")
 
 window = QtWidgets.QMainWindow()
 window.setLayout(QtWidgets.QHBoxLayout())
@@ -139,6 +138,4 @@ master_widget.setMinimumSize(192, 256)
 window.addDockWidget(QtCore.Qt.RightDockWidgetArea, master_widget)
 
 window.show()
-app.preferences.setValue("Shaders", shader_dir)
-# ^ Reset the value! QSettings modifies the .ini!
 app.exec_()
