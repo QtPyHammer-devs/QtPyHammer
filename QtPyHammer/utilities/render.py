@@ -275,7 +275,7 @@ class manager:
             self.update_mapping("index", renderable_type, start, ids, lengths)
 
     def hide(self, renderable):
-        print(f"Hiding {renderable}")
+        # print(f"Hiding {renderable}")
         self.hidden.add(renderable)
         renderable_type = renderable[0]
         span = self.buffer_location[renderable]["index"]
@@ -283,7 +283,7 @@ class manager:
         self.draw_calls[renderable_type] = remove_span(span_list, span)
 
     def show(self, renderable):
-        print(f"Showing {renderable}")
+        # print(f"Showing {renderable}")
         self.hidden.discard(renderable)
         renderable_type = renderable[0]
         span = self.buffer_location[renderable]["index"]
@@ -405,72 +405,72 @@ def square_neighbours(x, y, edge_length): # edge_length = (2^power) + 1
 
 def add_span(span_list, span):
     rep = lambda s: (s[0], s[0] + s[1]) 
-    print(f"{list(map(rep, span_list))} + {rep(span)} = ")
+    # print(f"{list(map(rep, span_list))} + {rep(span)} = ")
     if len(span_list) == 0:
         return [span]
     start, length = span
     end = start + length
     for i, span in enumerate(span_list):
-        print("\t", end="")
+        # print("\t", end="")
         S, L = span
         E = S + L
         if S < end and E < start:
-            print(f"{start, end} ecclipses {S, E}")
+            # print(f"{start, end} ecclipses {S, E}")
             continue # (S, L) is before span_to_track and doesn't touch it
         elif end < S: # span leads (S, L) without touching it
-            print(f"{start, end} leads {S, E}")
+            # print(f"{start, end} leads {S, E}")
             span_list.insert(i, (start, length))
             break
         elif S == end or E == start: # span leads (S, L) or span tails (S, L)
-            print(f"{start, end} touches {S, E}")
+            # print(f"{start, end} touches {S, E}")
             span_list.pop(i)
             new_start = min(start, S)
             span_list.insert(i, (new_start, L + length))
             break
     else: # span tails the final (S, L) without touching it
-        print(f"{start, end}")
+        # print(f"{start, end}")
         span_list.append((start, length))
-    print(list(map(rep, span_list)))
-    print()
+    # print(list(map(rep, span_list)))
+    # print()
     return span_list
 
 def remove_span(span_list, span):
     rep = lambda s: (s[0], s[0] + s[1]) 
-    print(f"{list(map(rep, span_list))} - {rep(span)} = ")
+    # print(f"{list(map(rep, span_list))} - {rep(span)} = ")
     start, length = span
     end = start + length
     out = []
     for S, L in span_list:
-        print("\t", end="")
+        # print("\t", end="")
         E = S + L
         # special cases
         if start <= S < E <= end: # span ecclipses (S, L)
-            print(f"{(start, end)} ecclipses {(S, E)}")
+            # print(f"{(start, end)} ecclipses {(S, E)}")
             continue
         if S < start < end < E: # (S, L) ecclipses span
-            print(f"{(start, end)} overlap center {(S, E)}")
+            # print(f"{(start, end)} overlap center {(S, E)}")
             out.append((S, start - S))
             out.append((end, E - end))
             continue
         # simple cases
         if end < S: # span leads (S, L)
-            print(f"{(start, end)} leads {(S, E)}")
+            # print(f"{(start, end)} leads {(S, E)}")
             out.append((S, L))
             continue
         if start <= S < end < E: # span overlaps start of (S, L)
-            print(f"{(start, end)} overlap start {(S, E)}")
+            # print(f"{(start, end)} overlap start {(S, E)}")
             out.append((end, E - end))
             continue
         if S < start < E <= end: # span overlaps tail of (S, L)
-            print(f"{(start, end)} overlaps tail {(S, E)}")
+            # print(f"{(start, end)} overlaps tail {(S, E)}")
             out.append((S, start - S))
             continue
         if E <= start: # span tails (S, L)
-            print(f"{(start, end)} tails {(S, E)}")
+            # print(f"{(start, end)} tails {(S, E)}")
             out.append((S, L))
             continue
-    print(list(map(rep, out)))
-    print()
+    # print(list(map(rep, out)))
+    # print()
     return out
 
 # DRAWING FUNCTIONS
