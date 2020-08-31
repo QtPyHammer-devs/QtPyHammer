@@ -465,7 +465,7 @@ def remove_span(span_list, span):
             print(f"{(start, end)} overlaps tail {(S, E)}")
             out.append((S, start - S))
             continue
-        if E < start: # span tails (S, L)
+        if E <= start: # span tails (S, L)
             print(f"{(start, end)} tails {(S, E)}")
             out.append((S, L))
             continue
