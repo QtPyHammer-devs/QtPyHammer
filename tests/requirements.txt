@@ -1,2 +1,3 @@
 PySDL2==0.9.6
-pysdl2-dll
+pysdl2-dll==2.0.12
+vpk==1.3.2
