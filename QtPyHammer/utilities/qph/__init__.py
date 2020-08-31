@@ -20,13 +20,13 @@ class qph:
     def load(filename): # File > Open
         """Supports .qph v0 format"""
         qph_file = open(filename, "rb")
-        self = QphInterface(qph_file.name)
+        self = qph(qph_file.name)
         read = lambda x: qph_file.read(x)
         read_struct = lambda f: struct.unpack(f, read(struct.calcsize(f)))
         assert read(4) == b"QTPY"
         self.version, self.revision = read_struct("2I")
         if self.version != 0:
-            raise NotImplementedError(f"Cannot load .qph v{loaded_file.version}")
+            raise NotImplementedError(f"Cannot load .qph v{self.version}")
         self.release = read(4).decode("ascii")
         self._headers = dict()
         header = namedtuple("header", ["name", "start", "length", "special"])

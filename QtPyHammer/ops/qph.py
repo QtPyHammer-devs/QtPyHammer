@@ -3,7 +3,7 @@ from ..utilities.qph import qph
 
 
 class QphInterface:
-    def __init__(self, file=None):
+    def __init__(self, filename=None):
         if file == None: # File > New
             self.qph = qph("untitled")
             self.never_saved = True
