@@ -5,7 +5,7 @@ A Python alternative to Valve's Hammer Editor (4.X in particular)
 It's recommended to use a python virtual environment to preserve the version of dependencies, here's how you do that:
 
 First, open a terminal in the QtPyHammer folder   
-Then, create a new python virtual environment  
+Then, create a new python(3.8+) virtual environment  
 (Linux users may need to install python-venv first)  
 `$ python -m venv venv`   
 Activate your new virtual environment   
