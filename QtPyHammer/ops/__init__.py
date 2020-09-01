@@ -1,9 +1,24 @@
 import os
+import sys
 
-from PyQt5 import QtWidgets
+from PyQt5 import QtCore, QtWidgets
 
 from . import vmf
 from ..ui import workspace
+
+
+class map_file_browser(QtWidgets.QFileDialog):
+    def __init__(self, parent):
+        super(QtWidgets.QFileDialog, self).__init__(parent)
+        if sys.platform == "linux":
+            # GtkDialog mapped without a transient parent. This is discouraged.
+            self.setOption(self.Option.DontUseNativeDialog) # no apparent effect
+        app = QtWidgets.QApplication.instance() 
+        self.setDirectory(app.game_config.value("Hammer/MapDir"))
+        self.setNameFilters(["Valve Map Format (*.vmf)",
+                            "QtPyHammer file (*.qph)",
+                            "All files (*.*)"])
+        self.setDefaultSuffix("vmf")
 
 
 def new_file(main_window):
@@ -11,18 +26,8 @@ def new_file(main_window):
     default_vmf_tab = workspace.VmfTab(filename, new=True, parent=main_window)
     main_window.tabs.addTab(default_vmf_tab, "untitled")
 
-def open_files(main_window):
-    open_dialog = QtWidgets.QFileDialog(main_window)
-    app = QtWidgets.QApplication.instance()
-    open_dialog.setDirectory(app.game_config.value("Hammer/MapDir"))
-    # it may be better if the open_dialog remembered it's location when closed
-    # finding yourself back at the start everytime you open could get frustrating
-    filetype_filters = ["Valve Map Format (*.vmf)",
-                        "QtPyHammer file (*.qph)",
-                        "All files (*.*)"]
-    open_dialog.setDefaultSuffix("vmf")
-    filter_string = ";;".join(filetype_filters)
-    filenames, active_filter = open_dialog.getOpenFileNames(filter=filter_string)
+def open_files(main_window, open_dialog):    
+    filenames, active_filter = open_dialog.getOpenFileNames(parent=main_window, caption="Open...")
     for filename in filenames:
         raw_filename, extension = os.path.splitext(filename)
         short_filename = os.path.basename(filename)
@@ -33,32 +38,26 @@ def open_files(main_window):
             # tab = workspace.QphTab(filename, new=False, parent=main_window)
         main_window.tabs.addTab(tab, short_filename)
 
-def save_file(main_window):
+def save_file(main_window, save_dialog):
     """Save the file that is currently open"""
-    assert main_window.tabs.currentIndex() != -1 # can active_tab be saved?
+    if main_window.tabs.currentIndex() != -1:
+        return # nothing to save
     active_tab = main_window.tabs.currentWidget()
     if active_tab.never_saved is True:
-        save_file_as(main_window)
+        save_file_as(main_window, save_dialog)
     else:
         active_tab.save_to_file()
 
-def save_file_as(main_window):
+def save_file_as(main_window, save_dialog):
     """Open a file browser and choose a location to save, then save"""
-    assert main_window.tabs.currentIndex() != -1 # can active_tab be saved?
+    if main_window.tabs.currentIndex() != -1:
+        return # nothing to save
     active_tab = main_window.tabs.currentWidget()
-    save_dialog = QtWidgets.QFileDialog(main_window)
-    app = QtWidgets.QApplication.instance()
-    save_dialog.setDirectory(app.game_config.value("Hammer/MapDir"))
-    filetype_filters = ["Valve Map Format (*.vmf)",
-                        "QtPyHammer file (*.qph)",
-                        "All files (*.*)"]
-    save_dialog.setDefaultSuffix("vmf")
-    filter_string = ";;".join(filetype_filters)
-    filename, active_filter = save_dialog.getSaveFileName(filter=filter_string)
+    filename, active_filter = save_dialog.getSaveFileName(parent=main_window, caption="Save...")
     # ^ TEST save_dialog handles warnings (file extensions & saving over files)
     if filename == "":
         return # nowhere to save to, cancel saving
-    active_tab.filename = filename # <- where to save
+    active_tab.filename = filename
     active_tab.save_to_file()
     active_tab_index = main_window.tabs.currentIndex()
     raw_filename, extension = os.path.splitext(filename)

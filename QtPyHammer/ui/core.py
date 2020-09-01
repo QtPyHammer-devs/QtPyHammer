@@ -21,24 +21,29 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setWindowTitle("QtPyHammer")
         self.setMinimumSize(640, 480)
 
-        self.actions = {} # {"identifier": action}
-        # list ALL actions so we can rebind EVERYTHING
+        self.setTabPosition(QtCore.Qt.TopDockWidgetArea,
+                            QtWidgets.QTabWidget.North) # ???
+        self.tabs = QtWidgets.QTabWidget()
+        self.tabs.setTabsClosable(True)
+        self.tabs.tabCloseRequested.connect(self.tabs.removeTab)
+        self.setCentralWidget(self.tabs)
 
-        self.setTabPosition(QtCore.Qt.TopDockWidgetArea, QtWidgets.QTabWidget.North) # ???
+        self.actions = {} # {"identifier": action}
+        # list ALL actions so we can bind EVERYTHING to hotkeys
         self.main_menu = QtWidgets.QMenuBar()
         file_menu = self.main_menu.addMenu("&File")
-        # QFileDialog for saving, opening, exporting etc.
+        map_browser = ops.map_file_browser(self)
         self.actions["File>New"] = file_menu.addAction("&New")
         new_file = lambda: ops.new_file(self)
         self.actions["File>New"].triggered.connect(new_file)
         self.actions["File>Open"] = file_menu.addAction("&Open")
-        open_files = lambda: ops.open_files(self)
+        open_files = lambda: ops.open_files(self, map_browser)
         self.actions["File>Open"].triggered.connect(open_files)
         self.actions["File>Save"] = file_menu.addAction("&Save")
-        save_file = lambda: ops.save_file(self)
+        save_file = lambda: ops.save_file(self, map_browser)
         self.actions["File>Save"].triggered.connect(save_file)
         self.actions["File>Save As"] = file_menu.addAction("Save &As")
-        save_file_as = lambda: ops.save_file_as(self)
+        save_file_as = lambda: ops.save_file_as(self, map_browser)
         self.actions["File>Save As"].triggered.connect(save_file_as)
         file_menu.addSeparator()
 ##        self.import_menu = file_menu.addMenu("Import")
@@ -309,17 +314,3 @@ class MainWindow(QtWidgets.QMainWindow):
         # # undo redo | carve | group ungroup ignore | hide unhide alt-hide |
         # # cut copy paste | cordon radius | TL <TL> | DD 3D DW DA |
         # # compile helpers 2D_models fade CM prop_detail NO_DRAW
-
-        self.tabs = QtWidgets.QTabWidget()
-        self.tabs.setTabsClosable(True)
-        self.tabs.tabCloseRequested.connect(self.tabs.removeTab)
-        self.setCentralWidget(self.tabs)
-
-##    def new(self, vmf_path=None):
-##        filename = "untitled"
-##        vmf_path = "configs/blank.vmf"
-##
-##    def open_vmf(self, vmf_path)
-##        filename = os.path.basename(vmf_path)
-##        tab = workspace.VmfTab(vmf_path, parent=self)
-##        self.tab_master.addTab(tab, filename)
