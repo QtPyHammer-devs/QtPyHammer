@@ -57,7 +57,7 @@ def save_file_as(main_window, save_dialog):
     active_tab = main_window.tabs.currentWidget()
     kwargs = {"parent": main_window, "caption": "Save..."}
     if sys.platform == "linux":
-        kwargs["options"] = open_dialog.Option.DontUseNativeDialog
+        kwargs["options"] = save_dialog.Option.DontUseNativeDialog
     filename, active_filter = save_dialog.getSaveFileName(**kwargs)
     # ^ TEST save_dialog handles warnings (file extensions & saving over files)
     if filename == "":
