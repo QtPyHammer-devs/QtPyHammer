@@ -8,10 +8,10 @@ from OpenGL.GL import *
 from OpenGL.GL.shaders import compileShader, compileProgram
 from OpenGL.GLU import *
 
+from .. import ops
 from ..ui import entity
 from ..ui import viewport
 from ..ui import workspace
-from .. import ops
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -27,23 +27,25 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setTabPosition(QtCore.Qt.TopDockWidgetArea, QtWidgets.QTabWidget.North) # ???
         self.main_menu = QtWidgets.QMenuBar()
         file_menu = self.main_menu.addMenu("&File")
+        # QFileDialog for saving, opening, exporting etc.
         self.actions["File>New"] = file_menu.addAction("&New")
-        self.actions["File>New"].triggered.connect(lambda: self.new_tab(None))
+        new_file = lambda: ops.new_file(self)
+        self.actions["File>New"].triggered.connect(new_file)
         self.actions["File>Open"] = file_menu.addAction("&Open")
-        open_vmf = lambda: self.new_tab(ops.open_vmf())
-        self.actions["File>Open"].triggered.connect(open_vmf)
+        open_files = lambda: ops.open_files(self)
+        self.actions["File>Open"].triggered.connect(open_files)
         self.actions["File>Save"] = file_menu.addAction("&Save")
-        self.actions["File>Save"].setEnabled(False)
-        # opens browser on first save / save_as & otherwise is silent
-##        self.actions["File>Save"].triggered.connect(ops.core.save_file)
+        save_file = lambda: ops.save_file(self)
+        self.actions["File>Save"].triggered.connect(save_file)
         self.actions["File>Save As"] = file_menu.addAction("Save &As")
-        self.actions["File>Save As"].setEnabled(False)
-        # change args so save_file asks for a new location
-##        self.actions["File>Save As"].triggered.connect(ops.core.save_file)
+        save_file_as = lambda: ops.save_file_as(self)
+        self.actions["File>Save As"].triggered.connect(save_file_as)
         file_menu.addSeparator()
 ##        self.import_menu = file_menu.addMenu("Import")
 ##        self.import_menu.addAction(".obj")
 ##        export_menu = file_menu.addMenu("Export")
+##        export_menu.addAction("Prefab")
+##        export_menu.addAction(".qph") # grayed out if active tab is a .qph
 ##        export_menu.addAction(".obj")
 ##        export_menu.addAction(".smd")
 ##        file_menu.addSeparator()
@@ -308,18 +310,16 @@ class MainWindow(QtWidgets.QMainWindow):
         # # cut copy paste | cordon radius | TL <TL> | DD 3D DW DA |
         # # compile helpers 2D_models fade CM prop_detail NO_DRAW
 
-        self.tab_master = QtWidgets.QTabWidget()
-        self.tab_master.setTabsClosable(True)
-        self.tab_master.tabCloseRequested.connect(self.tab_master.removeTab)
-        self.setCentralWidget(self.tab_master)
+        self.tabs = QtWidgets.QTabWidget()
+        self.tabs.setTabsClosable(True)
+        self.tabs.tabCloseRequested.connect(self.tabs.removeTab)
+        self.setCentralWidget(self.tabs)
 
-    def new_tab(self, vmf_path=None):
-        if vmf_path == False: # file browser was opened but no file was selected
-            return
-        elif vmf_path == None: # new file
-            filename = "untitled"
-            vmf_path = "configs/blank.vmf"
-        else: # load the requested file (vmf_path) into a new tab
-            filename = os.path.basename(vmf_path)
-        tab = workspace.VmfTab(vmf_path, parent=self)
-        self.tab_master.addTab(tab, filename)
+##    def new(self, vmf_path=None):
+##        filename = "untitled"
+##        vmf_path = "configs/blank.vmf"
+##
+##    def open_vmf(self, vmf_path)
+##        filename = os.path.basename(vmf_path)
+##        tab = workspace.VmfTab(vmf_path, parent=self)
+##        self.tab_master.addTab(tab, filename)
