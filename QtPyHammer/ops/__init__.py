@@ -17,10 +17,12 @@ class map_file_browser(QtWidgets.QFileDialog):
                             "All files (*.*)"])
         self.setDefaultSuffix("vmf")
 
+
 def new_file(main_window):
     filename = "configs/blank.vmf"
     default_vmf_tab = workspace.VmfTab(filename, new=True, parent=main_window)
     main_window.tabs.addTab(default_vmf_tab, "untitled")
+    main_window.tabs.setCurrentIndex(main_window.tabs.count() - 1)
 
 def open_files(main_window, open_dialog):
     kwargs = {"parent": main_window, "caption": "Open..."}
@@ -36,6 +38,7 @@ def open_files(main_window, open_dialog):
             raise NotImplementedError("No .qph viewport tabs yet")
             # tab = workspace.QphTab(filename, new=False, parent=main_window)
         main_window.tabs.addTab(tab, short_filename)
+        main_window.tabs.setCurrentIndex(main_window.tabs.count() - 1)
 
 def save_file(main_window, save_dialog):
     """Save the file that is currently open"""
