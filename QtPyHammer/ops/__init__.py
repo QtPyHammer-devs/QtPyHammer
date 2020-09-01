@@ -10,9 +10,6 @@ from ..ui import workspace
 class map_file_browser(QtWidgets.QFileDialog):
     def __init__(self, parent):
         super(QtWidgets.QFileDialog, self).__init__(parent)
-        if sys.platform == "linux":
-            # GtkDialog mapped without a transient parent. This is discouraged.
-            self.setOption(self.Option.DontUseNativeDialog) # no apparent effect
         app = QtWidgets.QApplication.instance() 
         self.setDirectory(app.game_config.value("Hammer/MapDir"))
         self.setNameFilters(["Valve Map Format (*.vmf)",
@@ -20,14 +17,16 @@ class map_file_browser(QtWidgets.QFileDialog):
                             "All files (*.*)"])
         self.setDefaultSuffix("vmf")
 
-
 def new_file(main_window):
     filename = "configs/blank.vmf"
     default_vmf_tab = workspace.VmfTab(filename, new=True, parent=main_window)
     main_window.tabs.addTab(default_vmf_tab, "untitled")
 
-def open_files(main_window, open_dialog):    
-    filenames, active_filter = open_dialog.getOpenFileNames(parent=main_window, caption="Open...")
+def open_files(main_window, open_dialog):
+    kwargs = {"parent": main_window, "caption": "Open..."}
+    if sys.platform == "linux":
+        kwargs["options"] = open_dialog.Option.DontUseNativeDialog
+    filenames, active_filter = open_dialog.getOpenFileNames(**kwargs)
     for filename in filenames:
         raw_filename, extension = os.path.splitext(filename)
         short_filename = os.path.basename(filename)
@@ -53,7 +52,10 @@ def save_file_as(main_window, save_dialog):
     if main_window.tabs.currentIndex() != -1:
         return # nothing to save
     active_tab = main_window.tabs.currentWidget()
-    filename, active_filter = save_dialog.getSaveFileName(parent=main_window, caption="Save...")
+    kwargs = {"parent": main_window, "caption": "Save..."}
+    if sys.platform == "linux":
+        kwargs["options"] = open_dialog.Option.DontUseNativeDialog
+    filename, active_filter = save_dialog.getSaveFileName(**kwargs)
     # ^ TEST save_dialog handles warnings (file extensions & saving over files)
     if filename == "":
         return # nowhere to save to, cancel saving
