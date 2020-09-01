@@ -7,8 +7,8 @@ from ..utilities.vmf import parse_lines, lines_from
 
 class VmfInterface:
     def __init__(self, parent, vmf_file):
-        self.parent = parent # to update the MapTab's render manager
-        self.log = []
+        self.parent = parent # conection to parent.viewport.render_manager
+        self.error_log = []
         self.source_vmf = parse_lines(vmf_file.readlines())
         # self.edit_timeline = timeline()
         # the following should be editable from a QDialog
@@ -47,13 +47,13 @@ class VmfInterface:
                 qph_brush = solid(source_brush)
                 qph_brushes.append(qph_brush)
             except Exception as exc:
-                self.log.append(f"Solid #{i} id: {source_brush.id} is invalid.\n{exc}")
+                self.error_log.append(f"Solid #{i} id: {source_brush.id} is invalid.\n{exc}")
                 raise exc
         self.brushes = []
         self.add_brushes(*qph_brushes)
         # self.add_entities(*entities)
-        if len(self.log) > 0:
-            print(*self.log, sep="\n")
+        if len(self.error_log) > 0:
+            print(*self.error_log, sep="\n")
 
     # the following methods need to be attached to QActions
     def add_brushes(self, *brushes):
