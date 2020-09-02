@@ -37,12 +37,12 @@ class vmf:
                 if not isinstance(entity, str):
                     entity.solids = [entity.solid]
             if hasattr(entity, "solids"):
-                brush_entities[entity.id] = set()
+                self.brush_entities[entity.id] = set()
                 for brush in entity.solids:
                     if not isinstance(entity, str):
                         brush_id = int(entity.solid.id)
                         self._brushes[brush_id] = entity.solid
-                        brush_entities[entity_id].add(brush_id)
+                        self.brush_entities[entity_id].add(brush_id)
         self.import_errors = []
         self.brushes = dict()
         # ^ brush.id: brush
@@ -50,7 +50,7 @@ class vmf:
             try:
                 brush = solid(self._brushes[brush_id])
             except Exception as exc:
-                self.import_errors.append("\n",join(
+                self.import_errors.append("\n".join(
                     [f"Solid #{i} id: {brush_id} is invalid.",
                     "{exc.__class__.__name__}: {exc}"]))
             else:

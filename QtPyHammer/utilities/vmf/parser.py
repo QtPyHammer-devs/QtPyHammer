@@ -101,8 +101,8 @@ class scope:
         self.tiers.append(tier)
 
     def increment(self):
-        if not isinstance(tiers[-1], int):
-            raise RuntimeError(f'"{tiers[-1]}" is not an integer')
+        if not isinstance(self.tiers[-1], int):
+            raise RuntimeError(f'"{self.tiers[-1]}" is not an integer')
         self.tiers[-1] += 1
 
     def get_from(self, nest):
