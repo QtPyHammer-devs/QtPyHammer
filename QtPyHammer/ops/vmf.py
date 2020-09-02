@@ -17,6 +17,9 @@ class VmfInterface:
         # self.edit_timeline = timeline()
         # self.add_entities(*entities)
 
+    def save(self, filename):
+        self._vmf.save_to_file(filename)
+
     def add_brushes(self, *brushes):
         # self.parent.edit_timeline.add(timeline.op.BRUSH_ADD, brushes)
         self._vmf.brushes.update({b.id: b for b in brushes})

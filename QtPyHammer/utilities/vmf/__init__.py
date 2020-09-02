@@ -59,9 +59,11 @@ class vmf:
         # user visgroups (& handler methods)
         # worldspawn data
 
-    def save_to_file(self):
+    def save_to_file(self, filename=None):
         # requires that the namespace be updated with every change
         # also requires undo / redo affects the namespace
         # tl;dr make the namespace up to date with user changes
-        with open(self.filename, "w") as file:
+        if filename == None:
+            filename = self.filename
+        with open(filename, "w") as file:
             file.write(text_from(self._namespace))

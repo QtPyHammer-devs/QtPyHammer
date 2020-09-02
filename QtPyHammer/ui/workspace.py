@@ -47,7 +47,7 @@ class VmfTab(QtWidgets.QWidget):
         ### END EDIT TIMELINE NOTES ###
         # TODO: viewport splitter(s), toolbar (grid controls etc.),
         # selection mode widget, hotkeys (defined in settings)
-        self.vmf = VmfInterface(self, self.filename)
+        self.map_file = VmfInterface(self, self.filename)
         # ^ define the VmfInterface last so it can connect to everything
 
     def raycast(self, ray_origin, ray_direction):
@@ -59,10 +59,10 @@ class VmfTab(QtWidgets.QWidget):
         # -- distance: (type, major_id, minor_id)
         # if distance is already in intersection:
         # -- z-fighting, special case!
-        for brush in self.vmf.brushes: # <- filter to visible brushes only
+        for brush in self.map_file.brushes:
             if ("brush", brush.id) in self.viewport.render_manager.hidden:
-                continue # can't see it, can't select it
-            # ^ does not check displacement visibility mode
+                # ^ not taking the displacement draw mode into account
+                continue
             probable_intersections = dict()
             # ^ distance(t): face.id
             for face in brush.faces:
@@ -105,7 +105,7 @@ class VmfTab(QtWidgets.QWidget):
         print(f"(not) Saving {self.filename}... ", end="")
         # store the camera's location
         # store what is and isn't hidden (visgroups included)
-        # self.vmf.save(self.filename)
+        self.map_file.save(self.filename)
         print("(not) Saved!")
         self.never_saved = False
 
