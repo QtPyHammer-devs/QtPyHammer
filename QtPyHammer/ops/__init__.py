@@ -3,7 +3,7 @@ import sys
 
 from PyQt5 import QtCore, QtWidgets
 
-from . import vmf
+# from .map_file import MapInterface
 from ..ui import workspace
 
 
@@ -30,15 +30,7 @@ def open_files(main_window, open_dialog):
         kwargs["options"] = open_dialog.Option.DontUseNativeDialog
     filenames, active_filter = open_dialog.getOpenFileNames(**kwargs)
     for filename in filenames:
-        raw_filename, extension = os.path.splitext(filename)
-        short_filename = os.path.basename(filename)
-        if extension == ".vmf":
-            tab = workspace.VmfTab(filename, new=False, parent=main_window)
-        elif extension == ".qph":
-            raise NotImplementedError("No .qph viewport tabs yet")
-            # tab = workspace.QphTab(filename, new=False, parent=main_window)
-        main_window.tabs.addTab(tab, short_filename)
-        main_window.tabs.setCurrentIndex(main_window.tabs.count() - 1)
+        main_window.open(filename)
 
 def save_file(main_window, save_dialog):
     """Save the file that is currently open"""

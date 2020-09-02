@@ -47,7 +47,7 @@ class VmfTab(QtWidgets.QWidget):
         ### END EDIT TIMELINE NOTES ###
         # TODO: viewport splitter(s), toolbar (grid controls etc.),
         # selection mode widget, hotkeys (defined in settings)
-        self.vmf = VmfInterface(self, open(self.filename, "r"))
+        self.vmf = VmfInterface(self, self.filename)
         # ^ define the VmfInterface last so it can connect to everything
 
     def raycast(self, ray_origin, ray_direction):

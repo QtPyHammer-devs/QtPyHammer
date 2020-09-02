@@ -2,7 +2,6 @@ import itertools
 import re
 
 from . import vector
-from . import vmf
 
 
 def triangle_of(string):
@@ -98,7 +97,7 @@ class displacement:
 class solid:
     __slots__ = ("colour", "id", "is_displacement", "faces", "face_ids", "source")
 
-    def __init__(self, namespace): # takes a namespace solid (imported from a .vmf)
+    def __init__(self, namespace):
         """Initialise from namespace (vmf import)"""
         self.source = namespace # preserved for debugging
         self.id = int(self.source.id)
