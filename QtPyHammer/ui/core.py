@@ -25,12 +25,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tabs.setTabsClosable(True)
         self.tabs.tabCloseRequested.connect(self.tabs.removeTab)
         self.setCentralWidget(self.tabs)
+        # NOTE: some actions should be disabled when no maptabs are open
 
         # Child dialogs
         self.map_browser = ops.map_file_browser(self)
 
         self.actions = {} # {"identifier": action}
-        # list ALL actions so we can bind EVERYTHING to hotkeys
         self.main_menu = QtWidgets.QMenuBar()
         file_menu = self.main_menu.addMenu("&File")
         self.actions["File>New"] = file_menu.addAction("&New")
@@ -40,10 +40,10 @@ class MainWindow(QtWidgets.QMainWindow):
         open_files = lambda: ops.open_files(self, self.map_browser)
         self.actions["File>Open"].triggered.connect(open_files)
         self.actions["File>Save"] = file_menu.addAction("&Save")
-        save_file = lambda: ops.save_file(self, map_browser)
+        save_file = lambda: ops.save_file(self, self.map_browser)
         self.actions["File>Save"].triggered.connect(save_file)
         self.actions["File>Save As"] = file_menu.addAction("Save &As")
-        save_file_as = lambda: ops.save_file_as(self, map_browser)
+        save_file_as = lambda: ops.save_file_as(self, self.map_browser)
         self.actions["File>Save As"].triggered.connect(save_file_as)
         file_menu.addSeparator()
 ##        self.import_menu = file_menu.addMenu("Import")

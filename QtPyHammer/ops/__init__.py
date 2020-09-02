@@ -7,14 +7,17 @@ from PyQt5 import QtCore, QtWidgets
 from ..ui import workspace
 
 
+filename_filters = ["Valve Map Format (*.vmf)",
+                    "QtPyHammer file (*.qph)",
+                    "All files (*.*)"]
+
 class map_file_browser(QtWidgets.QFileDialog):
     def __init__(self, parent):
         super(QtWidgets.QFileDialog, self).__init__(parent)
         app = QtWidgets.QApplication.instance() 
         self.setDirectory(app.game_config.value("Hammer/MapDir"))
-        self.setNameFilters(["Valve Map Format (*.vmf)",
-                            "QtPyHammer file (*.qph)",
-                            "All files (*.*)"])
+        self.setNameFilters(filename_filters)
+        # ^ is ignored by methods?
         self.setDefaultSuffix("vmf")
 
 
@@ -25,7 +28,8 @@ def new_file(main_window):
     main_window.tabs.setCurrentIndex(main_window.tabs.count() - 1)
 
 def open_files(main_window, open_dialog):
-    kwargs = {"parent": main_window, "caption": "Open..."}
+    kwargs = {"parent": main_window, "caption": "Open...",
+              "filter": ";;".join(filename_filters)}
     if sys.platform == "linux":
         kwargs["options"] = open_dialog.Option.DontUseNativeDialog
     filenames, active_filter = open_dialog.getOpenFileNames(**kwargs)
@@ -44,10 +48,11 @@ def save_file(main_window, save_dialog):
 
 def save_file_as(main_window, save_dialog):
     """Open a file browser and choose a location to save, then save"""
-    if main_window.tabs.currentIndex() != -1:
+    if main_window.tabs.currentIndex() == -1:
         return # nothing to save
     active_tab = main_window.tabs.currentWidget()
-    kwargs = {"parent": main_window, "caption": "Save..."}
+    kwargs = {"parent": main_window, "caption": "Save...",
+              "filter": ";;".join(filename_filters)}
     if sys.platform == "linux":
         kwargs["options"] = save_dialog.Option.DontUseNativeDialog
     filename, active_filter = save_dialog.getSaveFileName(**kwargs)
