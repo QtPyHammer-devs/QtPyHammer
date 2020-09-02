@@ -12,7 +12,7 @@ def except_hook(cls, exception, traceback): # for debugging Qt slots
     sys.__excepthook__(cls, exception, traceback)
 sys.excepthook = except_hook
 
-app = QtWidgets.QApplication(sys.argv)
+app = QtWidgets.QApplication([])
 # ^ app can be accessed from anywhere with QtWidgets.QApplication.instance()
 app.folder = os.path.dirname(__file__)
 # load all config files
@@ -54,4 +54,6 @@ app.fgd = fgdtools.parser.FgdParse(fgd_file)
 
 window = MainWindow()
 window.showMaximized()
+for filename in sys.argv[1:]:
+    window.open(filename)
 sys.exit(app.exec_())

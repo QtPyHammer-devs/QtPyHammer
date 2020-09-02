@@ -20,24 +20,24 @@ class MainWindow(QtWidgets.QMainWindow):
         global current_dir
         self.setWindowTitle("QtPyHammer")
         self.setMinimumSize(640, 480)
-
-        self.setTabPosition(QtCore.Qt.TopDockWidgetArea,
-                            QtWidgets.QTabWidget.North) # ???
+        self.setTabPosition(QtCore.Qt.TopDockWidgetArea, QtWidgets.QTabWidget.North)
         self.tabs = QtWidgets.QTabWidget()
         self.tabs.setTabsClosable(True)
         self.tabs.tabCloseRequested.connect(self.tabs.removeTab)
         self.setCentralWidget(self.tabs)
 
+        # Child dialogs
+        self.map_browser = ops.map_file_browser(self)
+
         self.actions = {} # {"identifier": action}
         # list ALL actions so we can bind EVERYTHING to hotkeys
         self.main_menu = QtWidgets.QMenuBar()
         file_menu = self.main_menu.addMenu("&File")
-        map_browser = ops.map_file_browser(self)
         self.actions["File>New"] = file_menu.addAction("&New")
         new_file = lambda: ops.new_file(self)
         self.actions["File>New"].triggered.connect(new_file)
         self.actions["File>Open"] = file_menu.addAction("&Open")
-        open_files = lambda: ops.open_files(self, map_browser)
+        open_files = lambda: ops.open_files(self, self.map_browser)
         self.actions["File>Open"].triggered.connect(open_files)
         self.actions["File>Save"] = file_menu.addAction("&Save")
         save_file = lambda: ops.save_file(self, map_browser)
@@ -284,6 +284,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["Help>TF2Maps"].triggered.connect(
             open_url("https://tf2maps.net"))
 
+        # attach all actions to hotkeys
         app = QtWidgets.QApplication.instance()
         for action in app.hotkeys.allKeys():
             if action not in self.actions:
@@ -314,3 +315,16 @@ class MainWindow(QtWidgets.QMainWindow):
         # # undo redo | carve | group ungroup ignore | hide unhide alt-hide |
         # # cut copy paste | cordon radius | TL <TL> | DD 3D DW DA |
         # # compile helpers 2D_models fade CM prop_detail NO_DRAW
+
+    def open(self, filename): # allows loading via drag & drop
+        raw_filename, extension = os.path.splitext(filename)
+        short_filename = os.path.basename(filename)
+        if extension == ".vmf":
+            tab = workspace.VmfTab(filename, new=False, parent=self)
+        elif extension == ".qph":
+            raise NotImplementedError("No .qph viewport tabs yet")
+            # tab = workspace.QphTab(filename, new=False, parent=self)
+        else:
+            raise RuntimeError(f"{filename} is not a .vmf file")
+        self.tabs.addTab(tab, short_filename)
+        self.tabs.setCurrentIndex(self.tabs.count() - 1)
