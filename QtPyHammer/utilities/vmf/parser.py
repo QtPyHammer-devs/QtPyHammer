@@ -57,10 +57,9 @@ def text_from(_dict, tab_depth=0): # rethink & refactor
     out = []
     tabs = '\t' * tab_depth
     for key, value in _dict.items():
-        if isinstance(value, str):
-            if key == "_line":
-                continue
-            # key-value pair
+        if key == "_line":
+            continue
+        elif isinstance(value, str): # key-value pair
             out.append(f"""{tabs}"{key}" "{value}"\n""")
             continue
         elif isinstance(value, (dict, namespace)): # another nest
@@ -74,7 +73,7 @@ def text_from(_dict, tab_depth=0): # rethink & refactor
             out.append(text_from(item, tab_depth + 1))
     if tab_depth > 0: # close the plural index / namespace
         out.append("\t" * (tab_depth - 1) + "}\n")
-    return "\n".join(out)
+    return "".join(out)
 
 
 class scope:
