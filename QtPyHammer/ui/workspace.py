@@ -102,11 +102,16 @@ class VmfTab(QtWidgets.QWidget):
         self.viewport.render_manager.hide(selected[:2])
 
     def save_to_file(self):
-        print(f"(not) Saving {self.filename}... ", end="")
-        # store the camera's location
-        # store what is and isn't hidden (visgroups included)
-        self.map_file.save(self.filename)
-        print("(not) Saved!")
+        print(f"Saving {self.filename}... ", end="")
+        try:
+            # update self.map_file with:
+            # - the camera's location
+            # - hidden state of objects (visgroups included)
+            self.map_file.save(self.filename)
+        except Exception as exc:
+            print()
+            raise exc
+        print("Saved!")
         self.never_saved = False
 
     def close(self):
