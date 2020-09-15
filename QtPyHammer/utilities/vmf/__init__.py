@@ -52,7 +52,7 @@ class vmf:
             except Exception as exc:
                 self.import_errors.append("\n".join(
                     [f"Solid #{i} id: {brush_id} is invalid.",
-                    "{exc.__class__.__name__}: {exc}"]))
+                     f"{exc.__class__.__name__}: {exc}"]))
             else:
                 self.brushes[brush_id] = brush
         # groups
