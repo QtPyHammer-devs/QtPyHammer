@@ -1,5 +1,5 @@
 """QtPyHammer Workspace that holds and manages an open .vmf file"""
-from enum import Enum
+import enum
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -13,7 +13,7 @@ from ..utilities import vector
 from ..utilities import vmf
 
 
-class selection_mode(Enum):
+class selection_mode(enum.Enum):
     solo = 0
     brush_entitiy = 1
     group = 2
