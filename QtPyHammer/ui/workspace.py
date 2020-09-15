@@ -104,6 +104,8 @@ class VmfTab(QtWidgets.QWidget):
     def save_to_file(self):
         print(f"Saving {self.filename}... ", end="")
         try:
+            # shutil.copy a backup.vmx before saving
+            # but not if saving as another filename
             # update self.map_file with:
             # - the camera's location
             # - hidden state of objects (visgroups included)
