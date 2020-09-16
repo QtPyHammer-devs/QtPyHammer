@@ -1,16 +1,12 @@
 """QtPyHammer Workspace that holds and manages an open .vmf file"""
 import enum
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 
 from . import viewport
 from ..ops.vmf import VmfInterface
 # from ..ops import timeline
-# from ..utilities import entity
-from ..utilities import render
-from ..utilities import solid
 from ..utilities import vector
-from ..utilities import vmf
 
 
 class selection_mode(enum.Enum):
@@ -29,8 +25,8 @@ class VmfTab(QtWidgets.QWidget):
         self.selection_mode = selection_mode.group
         self.selection = set()
         # ^ ("type", major_id, minor_id) e.g. ("brush", brush.id, face.id)
-        ## UI
-        layout = QtWidgets.QVBoxLayout() # holds the viewport
+        # UI
+        layout = QtWidgets.QVBoxLayout()  # holds the viewport
         # ^ 2 QSplitter(s) will be used for quad viewports
         self.viewport = viewport.MapViewport3D(self)
         self.viewport.raycast.connect(self.raycast)
@@ -38,13 +34,11 @@ class VmfTab(QtWidgets.QWidget):
         self.viewport.setFocus() # not working as intended
         layout.addWidget(self.viewport)
         self.setLayout(layout)
-        # self.timeline = ops.timeline.edit_history() # also handles multiplayer
-        ### EDIT TIMELINE NOTES ###
+        # self.timeline = ops.timeline.edit_history()  # also handles multiplayer
         # what happens when a user brings "logs in" and pushes all their changes to the shared state?
         # since we're still saving as .vmf, history is saved as it's own file
         # ? branches and reading timelines efficiently (chronological sorting) ?
         # append mode file writing
-        ### END EDIT TIMELINE NOTES ###
         # TODO: viewport splitter(s), toolbar (grid controls etc.),
         # selection mode widget, hotkeys (defined in settings)
         self.map_file = VmfInterface(self, self.filename)
@@ -68,7 +62,7 @@ class VmfTab(QtWidgets.QWidget):
             for face in brush.faces:
                 normal, distance = face.plane
                 alignment = vector.dot(normal, ray_direction)
-                if alignment > 0: # skip backfaces
+                if alignment > 0:  # skip backfaces
                     continue
                 # similar method to utilities.solid.clip
                 origin_distance = vector.dot(normal, ray_origin) - distance
@@ -87,11 +81,11 @@ class VmfTab(QtWidgets.QWidget):
                         continue
                     normal, distance = face.plane
                     if (vector.dot(normal, P) - distance) > -0.01:
-                        valid = False # P is floating outside the brush
+                        valid = False  # P is floating outside the brush
                 if valid:
                     intersection[t] = ("brush", brush.id, face_id)
         if len(intersection) == 0:
-            return # no intersections, move on
+            return  # no intersections, move on
         closest = min(intersection.keys())
         # if other distances are close, give a pop-up like blender alt+select
         selected = intersection[closest]

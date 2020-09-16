@@ -2,14 +2,16 @@ import os
 import sys
 
 import fgdtools
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 
 from QtPyHammer.ui.core import MainWindow
 from QtPyHammer.ui.user_preferences.theme import load_theme
 
 
-def except_hook(cls, exception, traceback): # for debugging Qt slots
+def except_hook(cls, exception, traceback):  # for debugging Qt slots
     sys.__excepthook__(cls, exception, traceback)
+
+
 sys.excepthook = except_hook
 
 app = QtWidgets.QApplication([])
@@ -23,7 +25,7 @@ app.hotkeys = QtCore.QSettings("configs/hotkeys.ini", QtCore.QSettings.IniFormat
 
 app.themes = dict()
 for filename in os.listdir("configs/themes/"):
-    theme_name = filename.rpartition(".")[0] # filename without extention
+    theme_name = filename.rpartition(".")[0]  # filename without extention
     app.themes[theme_name] = load_theme(f"configs/themes/{filename}")
 theme = app.preferences.value("Theme", "default")
 if theme not in app.themes:
@@ -32,7 +34,8 @@ app.setStyle(QtWidgets.QStyleFactory.create("Fusion"))
 app.setPalette(app.themes[theme])
 
 if sys.platform == "win32":
-    reg = QtCore.QSettings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", QtCore.QSettings.NativeFormat)
+    reg = QtCore.QSettings(r"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize",
+                           QtCore.QSettings.NativeFormat)
     if reg.value("AppsUseLightTheme") == 0:
         dark_theme = f"{theme}_dark"
         if dark_theme not in app.themes:
@@ -41,11 +44,11 @@ if sys.platform == "win32":
         app.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }")
         # ^ allow themes to include .css files
         # -- will need some way to indicate which widgets have them set
-        
+
 # load all entities from the .fgd
-fgd_file = app.game_config.value("Hammer/GameData0") # the .fgd
-##if fgd_file.startswith("./"): # relative file_path
-##    fgd_file = os.path.realpath(fgd_file)
+fgd_file = app.game_config.value("Hammer/GameData0")  # the .fgd
+# if fgd_file.startswith("./"): # relative file_path
+#     fgd_file = os.path.realpath(fgd_file)
 app.fgd = fgdtools.parser.FgdParse(fgd_file)
 
 # check gameinfo.txt for extra content paths
