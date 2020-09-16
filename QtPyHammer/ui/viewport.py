@@ -1,8 +1,7 @@
 import math
 
-import numpy as np
 from OpenGL.GL import *
-from OpenGL.GLU import *
+from OpenGL.GLU import gluPerspective
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from ..utilities import camera
@@ -21,8 +20,8 @@ view_modes = ["flat", "textured", "wireframe"]
 # "silhouette" view mode, lights on flat gray brushwork & props
 
 
-class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
-    raycast = QtCore.pyqtSignal(vector.vec3, vector.vec3) # emits ray
+class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
+    raycast = QtCore.pyqtSignal(vector.vec3, vector.vec3)  # emits ray
     def __init__(self, parent=None, fps=60):
         super(MapViewport3D, self).__init__(parent=parent)
         preferences = QtWidgets.QApplication.instance().preferences
@@ -31,13 +30,13 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         # RENDERING
         self.render_manager = render.manager()
         # model draw distance (defined in settings)
-        self.ray = (vector.vec3(), vector.vec3()) # origin, dir (for debug rendering)
+        self.ray = (vector.vec3(), vector.vec3())  # origin, dir (for debug rendering)
         # INPUT HANDLING
         self.camera = camera.freecam(None, None, 16)
         self.camera_moving = False
         self.cursor_start = QtCore.QPoint()
         self.moved_last_tick = False
-        self.keys = set() # currently held keyboard keys
+        self.keys = set()  # currently held keyboard keys
         self.current_mouse_position = vector.vec2()
         self.last_mouse_position = vector.vec2()
         self.mouse_vector = vector.vec2()
@@ -51,11 +50,11 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         # be aware, the timer does not have an accumulator
         # desynchronisations will occur
 
-    def update(self): # called on timer once initializeGL is run
+    def update(self):  # called on timer once initializeGL is run
         self.makeCurrent()
         self.render_manager.update()
         self.doneCurrent()
-        super(MapViewport3D, self).update() # calls PaintGL
+        super(MapViewport3D, self).update()  # calls PaintGL
 
     ######################
     ### OpenGL Methods ###
@@ -63,13 +62,13 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
 
     def initializeGL(self):
         self.render_manager.init_GL()
-        self.set_view_mode("flat") # sets shaders & GL state
+        self.set_view_mode("flat")  # sets shaders & GL state
         self.timer.start()
 
     # calling the slot by it's name creates a QVariant Error
     # which for some reason does not trace correctly
-    @QtCore.pyqtSlot(str, name="setViewMode") # connected to UI
-    def set_view_mode(self, view_mode): # C++: void setViewMode(QString)
+    @QtCore.pyqtSlot(str, name="setViewMode")  # connected to UI
+    def set_view_mode(self, view_mode):  # C++: void setViewMode(QString)
         self.view_mode = view_mode
         self.makeCurrent()
         if view_mode == "flat":
@@ -103,9 +102,9 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         gluPerspective(fov, aspect, 0.1, draw_distance)
         # UPDATE CAMERA
         ms = self.timer.remainingTime() / self.timer.interval() / 1000
-        if self.camera_moving: # TOGGLED ON: take user inputs
+        if self.camera_moving:  # TOGGLED ON: take user inputs
             self.camera.update(self.mouse_vector, self.keys, self.dt + ms)
-            if self.moved_last_tick == False: # prevent drift
+            if self.moved_last_tick is False:  # prevent drift
                 self.mouse_vector = vector.vec2()
             self.moved_last_tick = False
         self.camera.set()
@@ -129,29 +128,30 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         camera_forward = vector.vec3(y=1).rotate(*-self.camera.rotation)
         width, height = self.width(), self.height()
         x_offset = camera_right * ((click_x * 2 - width) / width)
-        x_offset *= width / height # aspect ratio
+        x_offset *= width / height  # aspect ratio
         y_offset = camera_up * ((click_y * 2 - height) / height)
         fov_scalar = math.tan(math.radians(self.render_manager.fov / 2))
         x_offset *= fov_scalar
         y_offset *= fov_scalar
         ray_origin = self.camera.position
         ray_direction = camera_forward + x_offset + y_offset
-        self.ray = (ray_origin, ray_direction) # <-- for debug render
+        self.ray = (ray_origin, ray_direction)  # <-- for debug render
         return ray_origin, ray_direction
 
     ##########################
     ### Rebound Qt Methods ###
     ##########################
-    
-    def keyPressEvent(self, event): # not registering arrow keys?
+
+    def keyPressEvent(self, event):  # not registering arrow keys?
         self.keys.add(event.key())
+
         def free_mouse():
             self.setMouseTracking(False)
             QtGui.QCursor.setPos(self.cursor_start)
             self.unsetCursor()
             self.releaseMouse()
         if event.key() == QtCore.Qt.Key_Z:
-            self.camera_moving = False if self.camera_moving else True # toggle
+            self.camera_moving = False if self.camera_moving else True
             if self.camera_moving:
                 self.setMouseTracking(True)
                 self.cursor_start = QtGui.QCursor.pos()
@@ -167,7 +167,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.keys.discard(event.key())
 
     def mouseReleaseEvent(self, event):
-        if event.button() == QtCore.Qt.LeftButton: # defined in settings
+        if event.button() == QtCore.Qt.LeftButton:  # defined in settings
             x, y = event.pos().x(), event.pos().y()
             if self.camera_moving:
                 x = self.width() / 2
@@ -180,7 +180,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         if self.camera_moving:
             self.camera.speed = max(self.camera.speed + event.angleDelta().y(), 1)
 
-    def leaveEvent(self, event): # cursor leaves widget
+    def leaveEvent(self, event):  # cursor leaves widget
         if self.camera_moving:
             center = QtCore.QPoint(self.width() / 2, self.height() / 2)
             QtGui.QCursor.setPos(self.mapToGlobal(center))
@@ -195,14 +195,14 @@ class MapViewport3D(QtWidgets.QOpenGLWidget): # initialised in ui/tabs.py
         self.timer.start()
 
 
-class MapViewport2D(QtWidgets.QOpenGLWidget): # QtWidgets.QGraphicsView ?
+class MapViewport2D(QtWidgets.QOpenGLWidget):  # QtWidgets.QGraphicsView ?
     def __init__(self, fps=30, parent=None):
         self.fps = fps
         self.timer = QtCore.QTimer()
         self.timer.setInterval(1000 / fps)
         self.timer.timeout.connect(self.update)
-        self.dt = 1 / fps # time elapsed for update() (camera.velocity *= dt)
+        self.dt = 1 / fps  # time elapsed for update() (camera.velocity *= dt)
         # ^ will desynchronise, use time.time()
         self.camera = camera.freecam(None, None, 128)
         super(MapViewport2D, self).__init__(parent)
-        self.setFocusPolicy(QtCore.Qt.ClickFocus) # get mouse input
+        self.setFocusPolicy(QtCore.Qt.ClickFocus)  # get mouse input

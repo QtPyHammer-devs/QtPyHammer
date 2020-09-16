@@ -10,7 +10,7 @@ class QphInterface:
         # -- can import collections like prefabs
         # -- should make a qph port of the abs pack
         # --- generate thumbnails for prefabs
-        ## editor data
+        # editor data:
         # self.selection
         # self.edit_history
         # - activity heatmap (like github pulse)
@@ -20,4 +20,3 @@ class QphInterface:
         self.qph.add_brushes(*brushes)
         self.parent.viewport.render_manager.add_brushes(*brushes)
         raise NotImplementedError()
-        

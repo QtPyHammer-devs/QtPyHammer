@@ -1,7 +1,7 @@
 import os
 import sys
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtWidgets
 
 # from .map_file import MapInterface
 from ..ui import workspace
@@ -11,10 +11,11 @@ filename_filters = ["Valve Map Format (*.vmf)",
                     "QtPyHammer file (*.qph)",
                     "All files (*.*)"]
 
+
 class map_file_browser(QtWidgets.QFileDialog):
     def __init__(self, parent):
         super(QtWidgets.QFileDialog, self).__init__(parent)
-        app = QtWidgets.QApplication.instance() 
+        app = QtWidgets.QApplication.instance()
         self.setDirectory(app.game_config.value("Hammer/MapDir"))
         self.setNameFilters(filename_filters)
         # ^ is ignored by methods?
@@ -27,6 +28,7 @@ def new_file(main_window):
     main_window.tabs.addTab(default_vmf_tab, "untitled")
     main_window.tabs.setCurrentIndex(main_window.tabs.count() - 1)
 
+
 def open_files(main_window, open_dialog):
     kwargs = {"parent": main_window, "caption": "Open...",
               "filter": ";;".join(filename_filters)}
@@ -36,20 +38,22 @@ def open_files(main_window, open_dialog):
     for filename in filenames:
         main_window.open(filename)
 
+
 def save_file(main_window, save_dialog):
     """Save the file that is currently open"""
     if main_window.tabs.currentIndex() != -1:
-        return # nothing to save
+        return  # nothing to save
     active_tab = main_window.tabs.currentWidget()
     if active_tab.never_saved is True:
         save_file_as(main_window, save_dialog)
     else:
         active_tab.save_to_file()
 
+
 def save_file_as(main_window, save_dialog):
     """Open a file browser and choose a location to save, then save"""
     if main_window.tabs.currentIndex() == -1:
-        return # nothing to save
+        return  # nothing to save
     active_tab = main_window.tabs.currentWidget()
     kwargs = {"parent": main_window, "caption": "Save...",
               "filter": ";;".join(filename_filters)}
@@ -58,7 +62,7 @@ def save_file_as(main_window, save_dialog):
     filename, active_filter = save_dialog.getSaveFileName(**kwargs)
     # ^ TEST save_dialog handles warnings (file extensions & saving over files)
     if filename == "":
-        return # nowhere to save to, cancel saving
+        return  # nowhere to save to, cancel saving
     active_tab.filename = filename
     active_tab.save_to_file()
     active_tab_index = main_window.tabs.currentIndex()
@@ -66,7 +70,7 @@ def save_file_as(main_window, save_dialog):
     short_filename = os.path.basename(filename)
     main_window.tabs.setTabText(active_tab_index, short_filename)
 
-##def export(main_window):
-##    # is the active file a .vmf? export .qph
-##    # is the active file a .qph? export .vmf
-##    # ^ the export action's text should reflect this (ui.core.MainWindow)
+# def export(main_window):
+#     # is the active file a .vmf? export .qph
+#     # is the active file a .qph? export .vmf
+#     # ^ the export action's text should reflect this (ui.core.MainWindow)

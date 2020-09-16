@@ -1,5 +1,3 @@
-import itertools
-import os
 import textwrap
 
 import fgdtools
@@ -14,13 +12,11 @@ class browser(QtWidgets.QDialog):
         self.setWindowTitle("Entity Browser")
         # self.setWindowIcon(parent.entity_icon)
         self.setGeometry(780, 220, 360, 640)
-        # center with:
-        # self.setGeometry(QStyle.alignedRect(QtCore.Qt.LefttoRight,QtCore.Qt.AlignCenter, self.size(), parent.parent.desktop().availableGeometry()))
         app = QtWidgets.QApplication.instance()
         if len(app.fgd.entities) == 0:
             raise RuntimeError("No entites to browse!")
-        point_or_solid = lambda e: e.class_type in ("PointClass", "SolidClass")
-        filtered_entities = list(filter(point_or_solid, app.fgd.entities))
+        def is_point_or_solid(e): return e.class_type in ("PointClass", "SolidClass")
+        filtered_entities = list(filter(is_point_or_solid, app.fgd.entities))
         self.entities = sorted(filtered_entities, key=lambda e: e.name)
         default_entity = app.game_config.value("Hammer/DefaultPointEntity", "prop_static")
         # test prop_dynamic for flags and logic
@@ -59,7 +55,7 @@ class browser(QtWidgets.QDialog):
         self.smart_edit = QtWidgets.QPushButton("SmartEdit")
         self.smart_edit.setCheckable(True)
         self.smart_edit.setChecked(True)
-        self.ent_form_map = {} # row: (name, display_name)
+        self.ent_form_map = {}  # row: (name, display_name)
         def toggle_smart_edit():
             form = self.table.widget().layout()
             smartedit_on = self.smart_edit.isChecked()
@@ -74,7 +70,7 @@ class browser(QtWidgets.QDialog):
         layout.insertLayout(0, ent_select_layout)
         self.desc_label = QtWidgets.QLabel("No Entity Selected")
         self.entity_label = QtWidgets.QLabel(self.current_entity.name)
-        self.desc_label.setWordWrap(True) # have a "Read More..." button (link)
+        self.desc_label.setWordWrap(True)  # have a "Read More..." button (link)
         layout.addWidget(self.desc_label)
         self.table = QtWidgets.QScrollArea()
         layout.addWidget(self.table)
@@ -84,12 +80,12 @@ class browser(QtWidgets.QDialog):
         comments_tab = QtWidgets.QWidget()
         layout = QtWidgets.QVBoxLayout()
         layout.addWidget(self.entity_label)
-        layout.addWidget(QtWidgets.QTextEdit()) # filter for .vmf breaking characters
+        layout.addWidget(QtWidgets.QTextEdit())  # filter for .vmf breaking characters
         comments_tab.setLayout(layout)
         self.base_widget.addTab(comments_tab, "Comments")
         self.load_entity(self.current_index)
 
-    def load_entity(self, index): # ADD SmartEdit toggle & tooltips
+    def load_entity(self, index):  # ADD SmartEdit toggle & tooltips
         entity = self.entities[index]
         self.current_entity = entity
         self.entity_label = QtWidgets.QLabel(self.current_entity.name)
@@ -104,13 +100,13 @@ class browser(QtWidgets.QDialog):
         for i in reversed(tabs_to_delete):
             self.base_widget.removeTab(i)
         # ^ maybe recycle the old tabs?
-        self.desc_label.setText(entity.description.split(".")[0]) # paragraph in fgd amendment
+        self.desc_label.setText(entity.description.split(".")[0])  # paragraph in fgd amendment
         properties = [*filter(lambda p: isinstance(p, fgdtools.parser.FgdEntityProperty), entity.properties)]
         inputs = [*filter(lambda i: isinstance(i, fgdtools.parser.FgdEntityInput), entity.properties)]
         outputs = [*filter(lambda o: isinstance(o, fgdtools.parser.FgdEntityOutput), entity.properties)]
         # split properly in some version of fgdtools (prob 1.0.0 but it's broken?)
-        if len(inputs) > 0 or len(outputs) > 0: # OR ANY inputs recieved
-            logic_widget = QtWidgets.QWidget() # <- make it's own class
+        if len(inputs) > 0 or len(outputs) > 0:  # OR ANY inputs recieved
+            logic_widget = QtWidgets.QWidget()  # <- make it's own class
             logic_widget.setLayout(QtWidgets.QVBoxLayout())
             logic_widget.layout().addWidget(QtWidgets.QLabel("Inputs"))
             logic_widget.layout().addWidget(QtWidgets.QLabel("Outputs"))
@@ -118,7 +114,7 @@ class browser(QtWidgets.QDialog):
         entity_widget = QtWidgets.QWidget()
         form = QtWidgets.QFormLayout()
         form.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
-        for p in [p for p in properties if p.value_type == "flags"]: # loop once and make flags = p
+        for p in [p for p in properties if p.value_type == "flags"]:  # loop once and make flags = p
             # should ask about having this simplified in fgdtools
             flags_tab = QtWidgets.QWidget()
             flags_layout = QtWidgets.QVBoxLayout()
@@ -132,7 +128,7 @@ class browser(QtWidgets.QDialog):
             flags_layout.addWidget(flags_scroll)
             flags_tab.setLayout(flags_layout)
             self.base_widget.addTab(flags_tab, "Flags")
-        self.ent_form_map = {} # row: (name, display_name)
+        self.ent_form_map = {}  # row: (name, display_name)
         # also map property.name to value set in form
         # this will be sent back to the selection and added to the Edit Timeline
         for i, p in enumerate([p for p in properties if p.value_type != "flags"]):
@@ -141,7 +137,7 @@ class browser(QtWidgets.QDialog):
             # Default Animation \/ ref, open, close
             # Skin \/ Red, Blue
             # skin naming will require prop catalogues (.csv ?)
-            if p.value_type == "color255": # need something similar for lights
+            if p.value_type == "color255":  # need something similar for lights
                 selector = colour_picker(default=p.default_value)
             elif p.value_type == "choices":
                 selector = QtWidgets.QComboBox()
@@ -151,9 +147,9 @@ class browser(QtWidgets.QDialog):
             elif p.value_type == "integer":
                 # set "skin" min & max from model (props)
                 selector = QtWidgets.QSpinBox()
-                selector.setMaximum(p.default_value) # fgd doesn't specify a max, a soft / adjustable max like blender would be nice
+                selector.setMaximum(p.default_value)  # fgd doesn't specify a max, a soft / adjustable max like blender would be nice
                 selector.setValue(p.default_value)
-            elif p.value_type == "studio": # model
+            elif p.value_type == "studio":  # model
                 selector = model_picker(default=p.default_value)
             elif p.value_type == "target_destination":
                 selector = QtWidgets.QLineEdit()
@@ -196,8 +192,8 @@ class model_picker(QtWidgets.QHBoxLayout):
         super(QtWidgets.QHBoxLayout, self).__init__(parent)
         self.text_field = QtWidgets.QLineEdit(default)
         self.button = QtWidgets.QPushButton("Browse")
-        self.model_browser = QtWidgets.QFileDialog() # FAKE FOR TESTS
-        def pick_model(): # real deal should search vpks and grab actual mdls
+        self.model_browser = QtWidgets.QFileDialog()  # FAKE FOR TESTS
+        def pick_model():  # real deal should search vpks and grab actual mdls
             address = self.model_browser.getOpenFileName()[0]
             stripped_address = address.split("/")[-1].rpartition(".")[0]
             self.text_field.setText(stripped_address)
@@ -214,17 +210,18 @@ class colour_picker(QtWidgets.QHBoxLayout):
         self.button = QtWidgets.QPushButton("Pick")
         self.text = lambda: self.text_field.text()
         self.setText = lambda t: self.text_field.setText(t)
-        def pick_colour(): # variables must be locked to this row
+        def pick_colour():  # variables must be locked to this row
             current_colour = QtGui.QColor(*map(int, self.text().split()[:3]))
             picker = QtWidgets.QColorDialog(current_colour)
             new_colour = picker.getColor()
-            if new_colour.isValid(): # user did not cancel
+            if new_colour.isValid():  # user did not cancel
                 if default_len == 3:
                     self.setText("{} {} {}".format(*new_colour.getRgb()))
                 elif default_len == 4:
                     try:
                         strength = self.text().split()[3]
-                    except: # cannot get the strength from self.text
+                    except Exception:
+                        # strength not specified, use default
                         strength = default.split()[3]
                     self.setText("{} {} {} {}".format(*new_colour.getRgb()[:3], strength))
             # TODO: preview the colour
