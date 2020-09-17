@@ -1,13 +1,12 @@
-import os # for searching / cataloging folders
+import os  # for searching / cataloging folders
 import sys
-import vpk
+#import vpk
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
 qtpy_dir = os.path.join(current_dir, "../../QtPyHammer")
 sys.path.append(qtpy_dir)
-from utilities import vtf
 
 
 class texture_browser(QtWidgets.QDialog):
@@ -31,20 +30,20 @@ class texture_browser(QtWidgets.QDialog):
 
                 # Parse data into image
                 image = QtGui.QImage(data, 2, 2, QtGui.QImage.Format_RGB888)
-                image.setDevicePixelRatio(1 / 32) # scale *32
+                image.setDevicePixelRatio(1 / 32)  # scale *32
                 label.setPixmap(QtGui.QPixmap.fromImage(image))
                 page.layout().addWidget(label, x, y)
         scroll_area.setWidget(page)
-        scroll_area.setHorizontalScrollBarPolicy(1) # Always Off
-        scroll_area.setVerticalScrollBarPolicy(2) # Always On
+        scroll_area.setHorizontalScrollBarPolicy(1)  # Always Off
+        scroll_area.setVerticalScrollBarPolicy(2)  # Always On
         layout.addWidget(scroll_area)
-        layout.addWidget(QtWidgets.QLabel("Search Options")) # placeholder
-        
+        layout.addWidget(QtWidgets.QLabel("Search Options"))  # placeholder
+
         searchbar = QtWidgets.QLineEdit()
         layout.addWidget(searchbar)
-        
-        passSearchVar = lambda : self.search(searchbar.text())
-        # searchbar.returnPressed.connect(passSearchVar) 
+
+        passSearchVar = lambda: self.search(searchbar.text())
+        # searchbar.returnPressed.connect(passSearchVar)
         searchButton = QtWidgets.QPushButton("Search")
         searchButton.clicked.connect(passSearchVar)
         searchButton.setDefault(1)
@@ -63,7 +62,9 @@ class texture_browser(QtWidgets.QDialog):
 
 def except_hook(cls, exception, traceback):
     sys.__excepthook__(cls, exception, traceback)
-sys.excepthook = except_hook # For debugging python inside Qt Classes
+
+
+sys.excepthook = except_hook  # For debugging python inside Qt Classes
 
 app = QtWidgets.QApplication(sys.argv)
 window = texture_browser()
