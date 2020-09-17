@@ -216,10 +216,13 @@ $ flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --stati
 GitHub also automatically runs these commands every time we push to GitHub.  
 Some warnings you will get are OK to leave in when prototyping. You can ignore:  
 
-| Code | Reason                                              |
-|------|-----------------------------------------------------|
-| C901 | Function is too complex                             |
-| E501 | Line is too long (if it's less than 120 characters) |
+| Code | Reason                                                                   |
+|------|--------------------------------------------------------------------------|
+| C901 | "Complex is better than complicated" - The Zen of Python                 |
+| E266 | `### Important Comments` look pretty so they can stay                    |
+| E501 | Long lines are OK, so long as the line is easy to understand             |
+| F403 | C-based packages are named to avoid namespace collision anyway           |
+| F405 | C-based packages are named to avoid namespace collision anyway           |
 
 If you get a code you don't understand,
 check [flake8rules.com](https://www.flake8rules.com/)
