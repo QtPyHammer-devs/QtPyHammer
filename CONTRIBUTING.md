@@ -123,7 +123,11 @@ Anyone can become a programmer! But you will have to learn
 We appreciate everyone with knowledge who uses it to help those that wish to learn.  
 Experience has value, and we respect our ~~elders~~ veteran programmers.  
 If you're starting out and need help learning, get the attention of a programmer.  
-And please understand that while we appreciate teachers, it's not compulsory.
+And please understand that while we appreciate teachers, it's not compulsory.  
+
+We consider clear documentation to be form of teaching, since it helps newcomers understand the code.
+That said, nagging a programmer to write documentation is only OK in small doses.
+Please don't harass anyone.
 
 If you're not sure who to ask: `@bikkie` on discord, they'll help you get set up  
 TODO: have a list of people who are comfortable to help newcomers in Discord
@@ -166,8 +170,6 @@ If you're planning on making big changes:
  1. Talk to other programmers to see who can help you with your workload  
  2. Make a branch to avoid conflicts with the master branch
  3. Name your branch something short that explains what changes you're making
-
-(Nagging a programmer to write documentation is OK, but only in small doses)
 
 
 
