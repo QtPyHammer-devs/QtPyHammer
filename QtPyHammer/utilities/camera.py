@@ -1,5 +1,4 @@
 """Classes for creating and using cameras in 3D"""
-import math
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
@@ -22,9 +21,9 @@ class freecam:
     __slots__ = ["position", "rotation", "speed"]
 
     def __init__(self, position, rotation, speed=0.75):
-        self.position = vector.vec3(position) if position != None else vector.vec3()
-##        self.next_position = self.last_position
-        self.rotation = vector.vec3(rotation) if rotation != None else vector.vec3()
+        self.position = vector.vec3(position) if position is not None else vector.vec3()
+        # self.next_position = self.last_position
+        self.rotation = vector.vec3(rotation) if rotation is not None else vector.vec3()
         self.speed = speed
 
     def update(self, mousepos, keys, dt):
@@ -37,9 +36,12 @@ class freecam:
         self.rotation.x = clamp(self.rotation.x, -90, 90)
         # ^ clamping to avoid gimball lock
         # KEYBOARD
-##        self.last_position = self.next_position
+        # self.last_position = self.next_position
         local_move = vector.vec3()
-        pressed = lambda direction: any((k in keys) for k in keybinds[direction])
+
+        def pressed(direction):
+            return any((k in keys) for k in keybinds[direction])
+
         local_move.x = -(pressed(LEFT) - pressed(RIGHT))
         local_move.y = -(pressed(BACK) - pressed(FORWARD))
         local_move.z = -(pressed(DOWN) - pressed(UP))
@@ -47,10 +49,10 @@ class freecam:
         self.position += global_move * self.speed * dt
 
     def set(self):
-        glRotate(-90, 1, 0, 0) # make Y+ forward
+        glRotate(-90, 1, 0, 0)  # make Y+ forward
         glRotate(self.rotation.x, 1, 0, 0)
         glRotate(self.rotation.z, 0, 0, 1)
-##        current_position = vector.lerp(self.last_position, self.next_position, lerp_factor)
+        # current_position = vector.lerp(self.last_position, self.next_position, lerp_factor)
         glTranslate(*-self.position)
 
     def __repr__(self):
@@ -68,7 +70,7 @@ class firstperson:
     __slots__ = ["rotation"]
 
     def __init__(self, rotation=None):
-        self.rotation = vector.vec3(rotation) if rotation != None else vector.vec3()
+        self.rotation = vector.vec3(rotation) if rotation is not None else vector.vec3()
 
     def update(self, mouse):
         global sensitivity

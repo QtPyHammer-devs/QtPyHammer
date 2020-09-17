@@ -11,9 +11,11 @@ import math
 
 __doc__ = """2D & 3D vector classes"""
 
+
 class vec2:
     """2D vector class"""
     __slots__ = ["x", "y"]
+
     def __init__(self, x=0, y=0):
         if hasattr(x, "__iter__"):
             self.x, self.y = x[0], x[1]
@@ -87,7 +89,7 @@ class vec2:
     def __sub__(self, other):
         try:
             other = vec2(other)
-        except:
+        except Exception:
             raise TypeError("unsupported operand type(s) for -: 'vec2' and '{}'".format(other.__class__.__name__))
         return vec2(*map(math.fsum, zip(self, -other)))
 
@@ -106,7 +108,7 @@ class vec2:
         """returns unit vector without mutating"""
         m = self.magnitude()
         if m != 0:
-            return vec2(self.x/m, self.y/m)
+            return vec2(self.x / m, self.y / m)
         else:
             return self
 
@@ -127,6 +129,7 @@ class vec2:
 class vec3:
     """3D vector class"""
     __slots__ = ["x", "y", "z"]
+
     def __init__(self, x=0, y=0, z=0):
         if hasattr(x, "__iter__"):
             self.x, self.y, self.z = x[0], x[1], x[2]
@@ -139,7 +142,7 @@ class vec3:
     def __add__(self, other):
         try:
             other = vec3(other)
-        except:
+        except Exception:
             raise TypeError("unsupported operand type(s) for +: 'vec3' and '{}'".format(other.__class__.__name__))
         return vec3(*map(math.fsum, zip(self, other)))
 
@@ -208,7 +211,7 @@ class vec3:
     def __sub__(self, other):
         try:
             other = vec3(other)
-        except:
+        except Exception:
             raise TypeError("unsupported operand type(s) for -: 'vec3' and '{}'".format(other.__class__.__name__))
         return vec3(*map(math.fsum, zip(self, -other)))
 
@@ -227,7 +230,7 @@ class vec3:
         """returns unit vector without mutating"""
         m = self.magnitude()
         if m != 0:
-            return vec3(self.x/m, self.y/m, self.z/m)
+            return vec3(self.x / m, self.y / m, self.z / m)
         else:
             return self
 
@@ -236,7 +239,7 @@ class vec3:
         cos_x, sin_x = math.cos(angles[0]), math.sin(angles[0])
         cos_y, sin_y = math.cos(angles[1]), math.sin(angles[1])
         cos_z, sin_z = math.cos(angles[2]), math.sin(angles[2])
-        out = vec3(self[0], #indices means any iterable can use this function
+        out = vec3(self[0],  # indices means any iterable can use this function
                    math.fsum([self[1] * cos_x, -self[2] * sin_x]),
                    math.fsum([self[1] * sin_x, self[2] * cos_x]))
         out = vec3(math.fsum([out.x * cos_y, out.z * sin_y]),
@@ -260,6 +263,7 @@ def dot(a, b):
     else:
         raise TypeError("Cannot dot {} & {}".format(type(a), type(b)))
 
+
 def lerp(a, b, t):
     """Interpolates between two given points by t"""
     types = (type(a), type(b))
@@ -273,18 +277,23 @@ def lerp(a, b, t):
     else:
         raise TypeError("Cannot lerp {} & {}".format(type(a), type(b)))
 
+
 def angle_between(a, b):
     dot(a, b) / (a.magnitude() * b.magnitude())
 
+
 def sort_clockwise(vec3s, normal):
     C = sum(vec3s, vec3()) / len(vec3s)
-    score = lambda A, B: dot(normal, (A - C) * (B - C))
+
+    def score(A, B):
+        return dot(normal, (A - C) * (B - C))
+
     left = []
     right = []
     for index, point in enumerate(vec3s[1:]):
         (left if score(vec3s[0], point) >= 0 else right).append(index + 1)
-    
-    proximity = dict() # number of points between self and start
+
+    proximity = dict()  # number of points between self and start
     for i, p in enumerate(vec3s[1:]):
         i += 1
         if i in left:
@@ -297,6 +306,6 @@ def sort_clockwise(vec3s, normal):
             for j in right:
                 if score(p, vec3s[j]) >= 0:
                     proximity[i] += 1
-        
+
     sorted_vec3s = [vec3s[0]] + [vec3s[i] for i in sorted(proximity.keys(), key=lambda k: proximity[k])]
     return sorted_vec3s

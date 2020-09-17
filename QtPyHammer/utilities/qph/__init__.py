@@ -1,7 +1,6 @@
 """.qph file handler"""
 from collections import namedtuple
 import io
-import os
 import shutil
 import struct
 
@@ -11,18 +10,23 @@ import struct
 class qph:
     def __init__(self, filename):
         self.filename = filename
-        self.version = 0 # filetype version
-        self.revision = 0 # times saved
+        self.version = 0  # filetype version
+        self.revision = 0  # times saved
         self.release = "a1"
         self.brushes = []
 
     @staticmethod
-    def load(filename): # File > Open
+    def load(filename):  # File > Open
         """Supports .qph v0 format"""
         qph_file = open(filename, "rb")
         self = qph(qph_file.name)
-        read = lambda x: qph_file.read(x)
-        read_struct = lambda f: struct.unpack(f, read(struct.calcsize(f)))
+
+        def read(x):
+            return qph_file.read(x)
+
+        def read_struct(f):
+            return struct.unpack(f, read(struct.calcsize(f)))
+
         assert read(4) == b"QTPY"
         self.version, self.revision = read_struct("2I")
         if self.version != 0:
@@ -35,6 +39,7 @@ class qph:
             name = name.decode("ascii")
             lump_header = header(name, start, length, special)
             self._headers[name] = lump_header
+
         def data_of(lump_name):
             header = self._headers[lump_name]
             qph_file.seek(header.start)
@@ -52,12 +57,19 @@ class qph:
     def load_brushes(self, byte_data):
         """Takes a stream of binary brushes (from a file, or network packets)"""
         data = io.BytesIO(byte_data)
-        read = lambda *args: data.read(*args)
-        read_struct = lambda f: struct.unpack(f, read(struct.calcsize(f)))
-        read_structs = lambda c, f: struct.unpack(f, read(struct.calcsize(f) * c))
+
+        def read(*args):
+            return data.read(*args)
+
+        def read_struct(f):
+            return struct.unpack(f, read(struct.calcsize(f)))
+
+        def read_structs(c, f):
+            return struct.unpack(f, read(struct.calcsize(f) * c))
+
         while True:
             brush_id, side_count = read_struct("2I")
-            sides = read_structs(side_count, "6i32s9f2I")
+            # sides = read_structs(side_count, "6i32s9f2I")
             # ^ use bsp_tool.mod.common.base subclass
             # int[3] plane.origin.xyz
             # int[3] plane.ratio.xyz
@@ -67,7 +79,7 @@ class qph:
             # float rotation
             # uint lightmapscale
             # uint smoothing_groups
-            colour = read_struct("3f")
+            # colour = read_struct("3f")
             # plane.origin & plane.ratio
             # - A = plane.origin + plane.ratio.x
             # - B = plane.origin + plane.ratio.y
@@ -79,25 +91,30 @@ class qph:
             # brush = ...
             # self.brushes.append(brush)
 
-    def save(self, backup=True): # File > Save
+    def save(self, backup=True):  # File > Save
         if backup:
             shutil.copy(self.filename, f"{self.filename}x")
         out_file = open(self.filename)
-        write = lambda d: out_file.write(d)
+
+        def write(d):
+            out_file.write(d)
         ## .qph header
         write(b"QTPY")
-        write_struct = lambda f, d: write(struct.pack(f, d))
+
+        def write_struct(f, d):
+            write(struct.pack(f, d))
+
         version = 0
         self.revision += 1
         write_struct("2I", (version, self.revision))
         write_struct("4s", self.release.encode("ascii"))
         ...
 
-##    def as_vmf(self):
-##        out_vmf = vmf()
-##        ...
-##        base_filename = os.path.splitext(self.filename)
-##        filename = os.path.join(folder, f"{base_filename}_{self.release}.vmf")
-##        out_file = open(filename, "w")
-##        out_file.write("".join(lines_from(out_vmf)))
-##        out_file.close()
+    # def as_vmf(self):
+    #     out_vmf = vmf()
+    #     ...
+    #     base_filename = os.path.splitext(self.filename)
+    #     filename = os.path.join(folder, f"{base_filename}_{self.release}.vmf")
+    #     out_file = open(filename, "w")
+    #     out_file.write("".join(lines_from(out_vmf)))
+    #     out_file.close()

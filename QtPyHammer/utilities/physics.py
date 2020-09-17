@@ -1,5 +1,6 @@
 from . import vector
 
+
 class plane:
     def __init__(self, normal, distance):
         self.normal = normal
@@ -14,7 +15,7 @@ class plane:
 
 
 class aabb:
-    #use origin for octrees / bounding volume heirarchy?
+    # use origin for octrees / bounding volume heirarchy?
     def __init__(self, mins, maxs):
         self.min = vector.vec3(mins)
         self.max = vector.vec3(maxs)
@@ -55,7 +56,7 @@ class aabb:
                     if self.min.z < other.max.z and self.max.z > other.min.z:
                         return True
             return False
-        raise RuntimeError( other.__name__ + ' is not an AABB')
+        raise RuntimeError(other.__name__ + " is not an AABB")
 
     def contains(self, other):
         if isinstance(other, aabb):
@@ -70,7 +71,7 @@ class aabb:
                     if self.min.z < other.z < self.max.z:
                         return True
             return False
-        raise RuntimeError( other.__name__ + ' is not an AABB')
+        raise RuntimeError(other.__name__ + " is not an AABB")
 
     def depth_along_axis(self, axis):
         depth = list(self.max - self.min)
@@ -92,6 +93,7 @@ class aabb:
         z = (self.min.z, self.max.z)
         for i in range(8):
             yield vector.vec3(x[i // 4 % 2], y[i // 2 % 2], z[i % 2])
+
 
 if __name__ == '__main__':
     import unittest

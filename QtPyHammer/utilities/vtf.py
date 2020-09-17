@@ -125,8 +125,11 @@ class vtf:
     """Read-only importer for Valve Texture File Format"""
     def __init__(self, filename):
         self.file = open(filename, "rb")
-        def unpack(f): return struct.unpack(f, self.file.read(struct.calcsize(f)))
-        # ^ always returns a tuple, sometimes of len(1)
+
+        def unpack(f):
+            """always returns a tuple, sometimes of len(1)"""
+            return struct.unpack(f, self.file.read(struct.calcsize(f)))
+
         assert unpack("4s")[0] == b"VTF\x00"
         major_version, minor_version = unpack("2I")
         assert major_version == 7
@@ -145,7 +148,7 @@ class vtf:
         thumbnail_format, self.thumbnail_width, self.thumbnail_height = unpack("I2B")
         assert thumbnail_format == 13  # DXT1
         if minor_version >= 2:  # v7.2+
-            depth = unpack("H")[0]  # Z-slices
+            self.depth = unpack("H")[0]  # Z-slices
         if minor_version >= 3:  # v7.3+
             ...  # NotImplemented
             # until you hit the header size:
@@ -180,11 +183,14 @@ class vtf:
             raise RuntimeError("Invalid mipmap index")
         no_mips = bool(self.flags & 0x100)
         if no_mips and index > 0:
-            raise RuntimeError(f"File only has one mipmap")
+            raise RuntimeError("File only has one mipmap")
         if index > self.mipmap_count - 1:
             raise RuntimeError(f"Mipmap {index} not in file")
         bytes_per_pixel = colour_format_bpp[self.format] // 8
-        def size(w, h): return w * h * bytes_per_pixel
+
+        def size(w, h):
+            return w * h * bytes_per_pixel
+
         offset = 0
         for i in range(self.mipmap_count - 1 - index):
             mipmap_width = self.width >> i

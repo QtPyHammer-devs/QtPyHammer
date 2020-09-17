@@ -1,5 +1,4 @@
 import itertools
-import math
 import os
 
 import numpy as np
@@ -13,13 +12,11 @@ from . import vector
 class manager:
     """Manages OpenGL buffers and gives handles for rendering & hiding objects"""
     def __init__(self):
-        self.draw_distance = 4096 * 4 # defined in settings
-        self.fov = 90 # defined in settings (70 - 120)
-        self.render_mode = "flat" # defined in settings
-        KB = 10 ** 3
+        self.draw_distance = 4096 * 4  # defined in settings
+        self.fov = 90  # defined in settings (70 - 120)
+        self.render_mode = "flat"  # defined in settings
         MB = 10 ** 6
-        GB = 10 ** 9
-        self.memory_limit = 128 * MB # defined in settings
+        self.memory_limit = 128 * MB  # defined in settings
         # ^ can't check the physical device limit until AFTER init_GL is called
         self.buffer_update_queue = []
         # ^ buffer, start, length, data
@@ -43,7 +40,7 @@ class manager:
         # span = (start, length)
         # -- what if key = (renderable_type, [(func, *args)], [(func, *args)])
         # -- ^ namedtuple("key", ["renderable_type", "setup", "tear_down"])
-        self.hidden = set() # hidden by user, not visgroup
+        self.hidden = set()  # hidden by user, not visgroup
         # ^ renderable
 
     def init_GL(self):
@@ -63,7 +60,10 @@ class manager:
             self.shader_version = "GLES_300"
         app = QtWidgets.QApplication.instance()
         shader_folder = os.path.join(app.folder, f"shaders/{self.shader_version}/")
-        compile_shader = lambda f, t: compileShader(open(shader_folder + f, "rb"), t)
+
+        def compile_shader(f, t):
+            return compileShader(open(shader_folder + f, "rb"), t)
+
         vert_brush = compile_shader("brush.vert", GL_VERTEX_SHADER)
         vert_displacement = compile_shader("displacement.vert", GL_VERTEX_SHADER)
         frag_flat_brush = compile_shader("flat_brush.frag", GL_FRAGMENT_SHADER)
@@ -95,15 +95,15 @@ class manager:
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.INDEX_BUFFER)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.index_buffer_size, None, GL_DYNAMIC_DRAW)
         # https://github.com/snake-biscuits/QtPyHammer/wiki/Rendering:-Vertex-Format
-        glEnableVertexAttribArray(0) # vertex_position
+        glEnableVertexAttribArray(0)  # vertex_position
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
-        glEnableVertexAttribArray(1) # vertex_normal (brush only)
+        glEnableVertexAttribArray(1)  # vertex_normal (brush only)
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 44, GLvoidp(12))
-        glEnableVertexAttribArray(2) # vertex_uv
+        glEnableVertexAttribArray(2)  # vertex_uv
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
-        glEnableVertexAttribArray(3) # editor_colour
+        glEnableVertexAttribArray(3)  # editor_colour
         glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
-        glEnableVertexAttribArray(4) # blend_alpha (displacement only)
+        glEnableVertexAttribArray(4)  # blend_alpha (displacement only)
         glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
 
     def draw(self):
@@ -130,7 +130,6 @@ class manager:
                 location = self.uniform[self.render_mode][renderable_type]["matrix"]
                 glUniformMatrix4fv(location, 1, GL_FALSE, MV_matrix)
 
-
     def track_span(self, buffer, renderable_type, span_to_track):
         target = self.buffer_allocation_map[buffer][renderable_type]
         updated_map = add_span(target, span_to_track)
@@ -146,7 +145,7 @@ class manager:
         self.track_span(buffer, renderable_type, span)
         if buffer == "index":
             self.draw_calls[renderable_type] = add_span(self.draw_calls[renderable_type], span)
-            if renderable_type == "displacement": # hide displacement brush
+            if renderable_type == "displacement":  # hide displacement brush
                 brush_ids = {brush_id for brush_id, side_id in ids}
                 brush_spans = []
                 for brush_id in brush_ids:
@@ -196,11 +195,11 @@ class manager:
                     yield gap
             prev_span = span
             prev_span_end = span_start + span_length
-        if prev_span_end < limit: # gap at tail of buffer
+        if prev_span_end < limit:  # gap at tail of buffer
             gap_start = prev_span_end
             gap = (gap_start, limit - gap_start)
             if preferred_type in (None, span_type[prev_span]):
-                    yield gap
+                yield gap
 
     def add_brushes(self, *brushes):
         brush_data = dict()
@@ -212,7 +211,7 @@ class manager:
                     if not hasattr(face, "displacement"):
                         continue
                     data = displacement_buffer_data(face)
-                    displacement_data[(brush.id, face.id)] = data 
+                    displacement_data[(brush.id, face.id)] = data
         self.add_renderables("brush", brush_data)
         self.add_renderables("displacement", displacement_data)
 
@@ -251,7 +250,7 @@ class manager:
                     break
         for gap in vertex_gaps:
             if vertex_gaps[gap][0] == 0:
-                continue # no data to write in this gap
+                continue  # no data to write in this gap
             start = gap[0]
             used_length = vertex_gaps[gap][0]
             flattened_data = list(itertools.chain(*vertex_gaps[gap][2]))
@@ -263,7 +262,7 @@ class manager:
             self.update_mapping("vertex", renderable_type, start, ids, lengths)
         for gap in index_gaps:
             if index_gaps[gap][0] == 0:
-                continue # no data to write in this gap
+                continue  # no data to write in this gap
             start = gap[0]
             used_length = index_gaps[gap][0]
             flattened_data = list(itertools.chain(*index_gaps[gap][2]))
@@ -290,9 +289,9 @@ class manager:
         span_list = self.draw_calls[renderable_type]
         self.draw_calls[renderable_type] = add_span(span_list, span)
 
-# renderable(s) to vertices & indices
+
 def brush_buffer_data(brush):
-    vertices = [] # [(*position, *normal, *uv, *colour), ...]
+    vertices = []  # [(*position, *normal, *uv, *colour), ...]
     indices = []
     for face in brush.faces:
         polygon_indices = []
@@ -309,11 +308,12 @@ def brush_buffer_data(brush):
     vertices = tuple(itertools.chain(*vertices))
     return vertices, indices
 
+
 def displacement_buffer_data(face):
-    vertices = [] # [(*position, *normal, *uv, blend_alpha, 0, 0), ...]
+    vertices = []  # [(*position, *normal, *uv, blend_alpha, 0, 0), ...]
     quad = tuple(vector.vec3(P) for P in face.polygon)
     start = vector.vec3(face.displacement.start)
-    if start not in quad: # start = closest point on quad to start
+    if start not in quad:  # start = closest point on quad to start
         start = sorted(quad, key=lambda P: (start - P).magnitude())[0]
     starting_index = quad.index(start) - 1
     quad = quad[starting_index:] + quad[:starting_index]
@@ -328,9 +328,9 @@ def displacement_buffer_data(face):
         for j, normal, distance, alpha in zip(itertools.count(), normal_row, distance_row, alpha_row):
             barymetric = vector.lerp(right_vert, left_vert, j / power2)
             position = vector.vec3(barymetric) + (normal * distance)
-##            theta =  math.degrees(math.acos(vector.dot(face.plane[0], (0, 0, 1))))
-##            normal = (normal * distance).normalise()
-##            normal = normal.rotate(*[-theta * x for x in face.plane[0]])
+            # theta =  math.degrees(math.acos(vector.dot(face.plane[0], (0, 0, 1))))
+            # normal = (normal * distance).normalise()
+            # normal = normal.rotate(*[-theta * x for x in face.plane[0]])
             normal = face.plane[0]
             uv = face.uv_at(barymetric)
             alpha = alpha / 255
@@ -339,7 +339,7 @@ def displacement_buffer_data(face):
     indices = disp_indices(displacement.power)
     return vertices, indices
 
-# polygon to triangles
+
 def loop_triangle_fan(vertices):
     "ploygon to triangle fan"
     out = vertices[:3]
@@ -347,7 +347,7 @@ def loop_triangle_fan(vertices):
         out += [out[0], out[-1], vertex]
     return out
 
-# displacement to triangles
+
 def disp_indices(power):
     """output length = ((2 ** power) + 1) ** 2"""
     power2 = 2 ** power
@@ -359,7 +359,7 @@ def disp_indices(power):
         line_offset = power2A * line
         for block in range(2 ** (power - 1)):
             offset = line_offset + 2 * block
-            if line % 2 == 0: # |\|/|
+            if line % 2 == 0:  # |\|/|
                 tris.append(offset + 0)
                 tris.append(offset + power2A)
                 tris.append(offset + 1)
@@ -375,7 +375,7 @@ def disp_indices(power):
                 tris.append(offset + power2C)
                 tris.append(offset + 2)
                 tris.append(offset + 1)
-            else: # |/|\|
+            else:  # |/|\|
                 tris.append(offset + 0)
                 tris.append(offset + power2A)
                 tris.append(offset + power2B)
@@ -393,9 +393,10 @@ def disp_indices(power):
                 tris.append(offset + power2B)
     return tris
 
-# displacement smooth normal calculation (get index of neighbour in list)
-def square_neighbours(x, y, edge_length): # edge_length = (2^power) + 1
+
+def square_neighbours(x, y, edge_length):  # edge_length = (2^power) + 1
     """yields the indicies of neighbouring points in a displacement"""
+    # for displacement smooth normal calculation (get index of neighbour in list)
     for i in range(x - 1, x + 2):
         if i >= 0 and i < edge_length:
             for j in range(y - 1, y + 2):
@@ -403,8 +404,10 @@ def square_neighbours(x, y, edge_length): # edge_length = (2^power) + 1
                     if not (i != x and j != y):
                         yield i * edge_length + j
 
+
 def add_span(span_list, span):
-    rep = lambda s: (s[0], s[0] + s[1]) 
+    # def rep(s):
+    #     return(s[0], s[0] + s[1])
     # print(f"{list(map(rep, span_list))} + {rep(span)} = ")
     if len(span_list) == 0:
         return [span]
@@ -416,26 +419,28 @@ def add_span(span_list, span):
         E = S + L
         if S < end and E < start:
             # print(f"{start, end} ecclipses {S, E}")
-            continue # (S, L) is before span_to_track and doesn't touch it
-        elif end < S: # span leads (S, L) without touching it
+            continue  # (S, L) is before span_to_track and doesn't touch it
+        elif end < S:  # span leads (S, L) without touching it
             # print(f"{start, end} leads {S, E}")
             span_list.insert(i, (start, length))
             break
-        elif S == end or E == start: # span leads (S, L) or span tails (S, L)
+        elif S == end or E == start:  # span leads (S, L) or span tails (S, L)
             # print(f"{start, end} touches {S, E}")
             span_list.pop(i)
             new_start = min(start, S)
             span_list.insert(i, (new_start, L + length))
             break
-    else: # span tails the final (S, L) without touching it
+    else:  # span tails the final (S, L) without touching it
         # print(f"{start, end}")
         span_list.append((start, length))
     # print(list(map(rep, span_list)))
     # print()
     return span_list
 
+
 def remove_span(span_list, span):
-    rep = lambda s: (s[0], s[0] + s[1]) 
+    # def rep(s):
+    #     return(s[0], s[0] + s[1])
     # print(f"{list(map(rep, span_list))} - {rep(span)} = ")
     start, length = span
     end = start + length
@@ -444,28 +449,28 @@ def remove_span(span_list, span):
         # print("\t", end="")
         E = S + L
         # special cases
-        if start <= S < E <= end: # span ecclipses (S, L)
+        if start <= S < E <= end:  # span ecclipses (S, L)
             # print(f"{(start, end)} ecclipses {(S, E)}")
             continue
-        if S < start < end < E: # (S, L) ecclipses span
+        if S < start < end < E:  # (S, L) ecclipses span
             # print(f"{(start, end)} overlap center {(S, E)}")
             out.append((S, start - S))
             out.append((end, E - end))
             continue
         # simple cases
-        if end < S: # span leads (S, L)
+        if end < S:  # span leads (S, L)
             # print(f"{(start, end)} leads {(S, E)}")
             out.append((S, L))
             continue
-        if start <= S < end < E: # span overlaps start of (S, L)
+        if start <= S < end < E:  # span overlaps start of (S, L)
             # print(f"{(start, end)} overlap start {(S, E)}")
             out.append((end, E - end))
             continue
-        if S < start < E <= end: # span overlaps tail of (S, L)
+        if S < start < E <= end:  # span overlaps tail of (S, L)
             # print(f"{(start, end)} overlaps tail {(S, E)}")
             out.append((S, start - S))
             continue
-        if E <= start: # span tails (S, L)
+        if E <= start:  # span tails (S, L)
             # print(f"{(start, end)} tails {(S, E)}")
             out.append((S, L))
             continue
@@ -473,29 +478,30 @@ def remove_span(span_list, span):
     # print()
     return out
 
-# DRAWING FUNCTIONS
-def yield_grid(limit, scale): # grid scale selected by ui
+
+def yield_grid(limit, scale):  # grid scale selected via the UI
     """ yields lines on a grid (one vertex at a time) centered on [0, 0]
     limit: int, half the width of grid
     step: int, gap between edges"""
     # center axes
     yield 0, -limit
-    yield 0, limit # +NS
+    yield 0, limit  # +NS
     yield -limit, 0
-    yield limit, 0 # +EW
+    yield limit, 0  # +EW
     # concentric squares stepping out from center (0, 0) to limit
     for i in range(0, limit + 1, scale):
         yield i, -limit
-        yield i, limit # +NS
+        yield i, limit  # +NS
         yield -limit, i
-        yield limit, i # +EW
+        yield limit, i  # +EW
         yield limit, -i
-        yield -limit, -i # -WE
+        yield -limit, -i  # -WE
         yield -i, limit
-        yield -i, -limit # -SN
+        yield -i, -limit  # -SN
     # ^ the above function is optimised for a line grid
     # another function would be required for a dot grid
     # it's also worth considering adding an offset / origin point
+
 
 def draw_grid(limit=2048, grid_scale=64, colour=(.5, .5, .5)):
     glLineWidth(1)
@@ -506,9 +512,11 @@ def draw_grid(limit=2048, grid_scale=64, colour=(.5, .5, .5)):
         glVertex(x, y)
     glEnd()
 
+
 def yield_dot_grid(min_x, min_y, max_x, max_y, scale):
     """Takes a x,y boiunds so only the visible points are rendered"""
-    snap = lambda x: x // scale * scale
+    def snap(x):
+        return x // scale * scale
     min_x = snap(min_x)
     max_x = snap(max_x)
     min_y = snap(min_y)
@@ -517,6 +525,7 @@ def yield_dot_grid(min_x, min_y, max_x, max_y, scale):
         for y in range(min_x, min_y + 1, scale):
             yield x, y
 
+
 def draw_dot_grid(min_x, min_y, max_x, max_y, scale=64, colour=(.5, .5, .5)):
     glBegin(GL_POINTS)
     glColor(*colour)
@@ -524,6 +533,7 @@ def draw_dot_grid(min_x, min_y, max_x, max_y, scale=64, colour=(.5, .5, .5)):
         # you don't have to generate the grid every frame by the way
         glVertex(x, y)
     glEnd()
+
 
 def draw_origin(scale=128):
     glLineWidth(2)
@@ -538,6 +548,7 @@ def draw_origin(scale=128):
     glVertex(0, 0, 0)
     glVertex(0, 0, scale)
     glEnd()
+
 
 def draw_ray(origin, direction, distance=4096):
     glLineWidth(2)

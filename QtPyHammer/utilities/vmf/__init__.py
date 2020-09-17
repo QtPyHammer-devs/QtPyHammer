@@ -63,7 +63,7 @@ class vmf:
         # requires that the namespace be updated with every change
         # also requires undo / redo affects the namespace
         # tl;dr make the namespace up to date with user changes
-        if filename == None:
+        if filename is None:
             filename = self.filename
         with open(filename, "w") as file:
             file.write(text_from(self._namespace))
