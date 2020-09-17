@@ -1,32 +1,11 @@
-http://zetcode.com/gui/pyqt5/layout/ # <- Handy UI programming guide
-https://www.learnpyqt.com/courses/packaging-and-distribution/packaging-pyqt5-apps-fbs/
-https://github.com/pyinstaller/pyinstaller/wiki/If-Things-Go-Wrong
-https://build-system.fman.io/troubleshooting
+Package list for developing on linux
 https://doc.qt.io/qt-5/linux-requirements.html
-https://github.com/pyinstaller/pyinstaller/issues/1930
-https://github.com/pyinstaller/pyinstaller/pull/3233
-https://github.com/pyinstaller/pyinstaller/wiki/How-to-Report-Bugs#make-sure-everything-is-packaged-correctly
-https://github.com/pyinstaller/pyinstaller/pull/3620
-https://github.com/pyinstaller/pyinstaller/pull/3568
+
+Handy UI programming guide
+http://zetcode.com/gui/pyqt5/layout/
 
 GDC 2016: High-performance, Low-Overhead Rendering with OpenGL and Vulkan
-https://www.youtube.com/watch?v=PPWysKFHq9c 
+https://www.youtube.com/watch?v=PPWysKFHq9c
 
 Bringing Fortnite to Mobile with Vulkan and OpenGL ES - GDC 2019
 https://www.youtube.com/watch?v=XCUfk5vRblo
-
-https://en.wikipedia.org/wiki/Ray_tracing_(graphics)#Calculate_rays_for_rectangular_viewport
-
-PyInstaller
-Hooks: Include OpenGL fallback DLLs for PyQt5. Fixes #3458. #3568
-https://github.com/pyinstaller/pyinstaller/pull/3568
-Merged Jun 16, 2018. Listed in 3.4 feature list
-v3.4 released Sep 10, 2018
-v3.5 released Jul 10, 2019
-
-PySide2 missing ./plugins/xcbglintegrations/libqxcb-glx-integration.so in linux. #3620
-https://github.com/pyinstaller/pyinstaller/pull/3620
-
-# where is this .so and how do we link it to compile on linux?
-
-https://readthedocs.org/projects/pyinstaller/downloads/pdf/stable/
