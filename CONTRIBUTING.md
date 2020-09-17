@@ -186,9 +186,6 @@ TODO: @asd, what works for you? please describe your approach / experience here.
 We use [PEP8](https://www.python.org/dev/peps/pep-0008/) around here  
 It's not very fun but it keeps the code neat & tidy  
 And who doesn't like tidy code? (bikkie, the answer is bikkie)  
-Some warnings are OK to leave in when prototyping  
-Such as:
-
 
 
 ### Linter
@@ -217,8 +214,17 @@ $ flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
 $ flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 ```
 GitHub also automatically runs these commands every time we push to GitHub.  
-You may have another programmer ping you with a polite request to look at these warnings.  
-It's OK to ask someone else to help clean up your formatting, but we prefer you do it yourself.  
+Some warnings you will get are OK to leave in when prototyping. You can ignore:  
+
+| Code | Reason                                              |
+|------|-----------------------------------------------------|
+| C901 | Function is too complex                             |
+| E501 | Line is too long (if it's less than 120 characters) |
+
+If you get a code you don't understand,
+check [flake8rules.com](https://www.flake8rules.com/)
+to get more details.  
+You can ask someone else to help clean up your formatting, **but we prefer you do it yourself.**  
 
 
 ### Documentation
