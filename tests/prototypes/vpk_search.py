@@ -4,6 +4,11 @@ import fnmatch
 import re
 import sys
 import struct
+import vmtlib
+from queue import Queue
+import threading
+import time
+from vmtlib.vmt_file import VmtFile
 
 class VPKSearchable(vpk.VPK):
     def __init__(self, vpk_path, read_header_only=True, path_enc='utf-8', fopen=fopen):
@@ -84,8 +89,8 @@ class VPKSearchable(vpk.VPK):
 
         # or just use https://github.com/maxdup/mdl-tools 
 
-    def hasFilter(self):
-        if (len(self.shaderfilter) == 0) and ():
+    def hasShaderFilter(self):
+        if (len(self.shaderfilter) == 0):
             return False
         else:
             return True
@@ -98,21 +103,45 @@ class VPKSearchable(vpk.VPK):
             if (filename[-3:] in self.filefilter) and (fnmatch.fnmatch(filename, f'*{keyword}*')):
                 foundnames.append(filename)
 
-        #additional filter
-        outputarray = []
-        if self.hasFilter():
-            pass
-
-        for path in foundnames:
-            outputarray.append(self.get_file(path))
         return foundnames
 
-    def setShaderFilter(self, *kwargs):
-        """Sets filters for Material Searching"""
-        self.filefilter = []
-        self.filefilter.append(kwargs.get("types", None))
-        self.shaderfilter = []
-        self.shaderfilter.append(kwargs.get("shaders", None))
+    def modelSearch(self,keyword,propsearchflag):
+        orgfilefilter = self.filefilter
+        self.filefilter = ["mdl"]
+        pathlist = self.search(keyword)
+        filearray = []
+        for path in pathlist:
+            filearray.append(PropSimple(self,path))
+        
+        outputarray = []
+        for prop in filearray:
+            if prop.propTypeflag & propsearchflag == propsearchflag:
+                print(f'{prop.internalPath} has flag {prop.propTypeflag}')
+                outputarray.append(prop.internalPath)
+        
+        return outputarray
+
+    #def setShaderFilter(self, *kwargs):
+        #"""Sets filters for Material Searching"""
+        #self.filefilter = []
+        #self.filefilter.append(kwargs.get("types", None))
+        #self.shaderfilter = []
+        #self.shaderfilter.append(kwargs.get("shaders", None))
+
+    def textureSearch(self, keyword):
+        # get paths, creates VMTFile class for each names, returns an array of VMTFiles.
+        # this should allow easier iteration
+        orgfilefilter = self.filefilter
+        self.filefilter = ["vmt"]
+        pathlist = self.search(keyword)
+        #filearray = []
+        #for path in pathlist:
+            #filearray.append(vmtlib.VmtObject(self,path))
+        
+        #revert to original file filter
+        self.filefilter = orgfilefilter
+
+        return pathlist
 
 class PropSimple:
     #Simple MDL parser just to check which type of prop it can be
@@ -123,14 +152,14 @@ class PropSimple:
         #takes path as parameter
         try:
             self.mdlfile = pak[internalPath]
-        except FileNotFoundError:
+        except KeyError:
             self.mdlfile = None
 
         internalPhypath = internalPath[0:-3] + "phy"
         # phyfile. also path
         try:
             self.phyfile = pak[internalPhypath]
-        except FileNotFoundError:
+        except KeyError:
             self.phyfile = None
 
         if self.mdlfile != None:
@@ -143,7 +172,6 @@ class PropSimple:
             # 4th position in bits is 16
             self.mdlfile.seek(152)
             spflag = self.mdlfile.read(4)
-            print(f"prop flags: {int.from_bytes(spflag,sys.byteorder)}")
             if int.from_bytes(spflag,sys.byteorder) & 16 == 16:
                 self.staticprop = True
             else:
@@ -156,6 +184,7 @@ class PropSimple:
                 self.prop_data = False
         
         if self.phyfile != None:
+            self.collisionmodel = True
             #Does ragdollconstraint in .phy define collision joint?
             self.phyfile.seek(0)
             lines = self.phyfile.read()
@@ -163,6 +192,15 @@ class PropSimple:
                 self.collisionjoints = True
             else:
                 self.collisionjoints = False
+        else:
+            self.collisionmodel = False
+            self.collisionjoints = False
+
+        self.writePropTypes()
+
+        del self.mdlfile
+        del self.phyfile
+
 
     def __str__(self):
         if self.mdlfile == None:
@@ -173,60 +211,40 @@ class PropSimple:
             m2 = "no PHY associated"
         else:
             m2 = "found PHY"
-
         return f"PropSimple Object for path {self.internalPath}: {m1} and {m2}"
-    
-    def isStaticProp(self):
-        return self.staticprop
-
-    def isPropData(self):
-        return self.prop_data
-
-    def isCollisionJoints(self):
-        return self.collisionjoints
-
-    def isCollisionModel(self):
-        #does the model have .phy?
-        if self.phyfile is None:
-            # No Collision Model, No Collision Model
-            return False
-        else:
-            return True
 
     def writePropTypes(self):
-        isStaticProp = self.isStaticProp()
-        isPropData = self.isPropData()
-        isCollisionJoints = self.isCollisionJoints()
-        isCollisionModel = self.isCollisionModel()
-
-        if isStaticProp and not isPropData and not isCollisionJoints and not isCollisionModel: # prop_detail
+        if self.staticprop and not self.prop_data and not self.collisionjoints and not self.collisionmodel: # prop_detail
             self.propTypeflag = self.propTypeflag | 8
-        if not isStaticProp and isPropData and isCollisionJoints and not isCollisionModel: # prop_ragdoll
+        if not self.staticprop and self.prop_data and self.collisionjoints and not self.collisionmodel: # prop_ragdoll
             self.propTypeflag = self.propTypeflag | 16
-        if isStaticProp and not isPropData and not isCollisionJoints: #prop_static
+        if self.staticprop and not self.prop_data and not self.collisionjoints: #prop_static
             self.propTypeflag = self.propTypeflag | 1
-        if isPropData and not isCollisionJoints and isCollisionModel: #prop_physics
+        if self.prop_data and not self.collisionjoints and self.collisionmodel: #prop_physics
             self.propTypeflag = self.propTypeflag | 2
-        if not isPropData: #prop_dynamic
+        if not self.prop_data: #prop_dynamic
             self.propTypeflag = self.propTypeflag | 4
 
 def main():
     path = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Team Fortress 2\\tf\\tf2_misc_dir.vpk"
     #path = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Portal 2\\portal2\\pak01_dir.vpk"
     pak = VPKSearchable(path)
-    pak.filefilter = ["mdl", "vtx"]
 
     #tf2 props
     #name = pak.search("player/scout.mdl")
-    name = pak.search("props_trainyard/beer_keg001.mdl")
+    #name = pak.search("props_trainyard/beer_keg001.mdl")
+    #paths = pak.modelSearch("",4)
+    paths = pak.textureSearch("concrete")
+    for path in paths:
+        print(path)
 
     #p2 prop
     #name = pak.search("props/lab_chair/lab_chair.mdl")
 
-    path = name[0]
-    propsimple = PropSimple(pak,path)
-    print(propsimple)
-    print(f"propsimple propdata? {propsimple.isPropData()}")
+    #path = name[0]
+    #propsimple = PropSimple(pak,path)
+    #print(propsimple)
+    #print(f"propsimple propdata? {propsimple.isPropData()}")
 
 if __name__ == "__main__":
     main()
