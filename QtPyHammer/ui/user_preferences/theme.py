@@ -4,6 +4,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 def load_theme(filename):
     palette_ini = QtCore.QSettings(filename, QtCore.QSettings.IniFormat)
     palette = QtGui.QPalette()
+
     def read(ini_key, colour_group, colour_role):
         string = palette_ini.value(ini_key)
         colour = QtGui.QColor(*map(int, string.split(" ")))
@@ -34,8 +35,10 @@ def load_theme(filename):
         palette_ini.endGroup()
     return palette
 
+
 def save_theme(palette, filename):
     palette_ini = QtCore.QSettings(filename, QtCore.QSettings.IniFormat)
+
     def write(ini_key, colour_group, colour_role):
         colour = palette.color(colour_group, colour_role)
         ini_value = f"{colour.red()} {colour.blue()} {colour.green()}"
@@ -71,12 +74,13 @@ class theme_editor(QtWidgets.QWidget):
         super(theme_editor, self).__init__(parent)
         # preview panel
         layout = QtWidgets.QHBoxLayout()
-        form = QtWidgets.QFormLayout() # editor form
+        form = QtWidgets.QFormLayout()  # editor form
         form.addRow("role", QtWidgets.QWidget())
         # ^ coloured label that opens a colour wheel
-        # layout.addWidget(editor_form)
+        layout.addWidget(form)
         # ...
         # layout.addWidget(preview_widget)
+
 
 class colour_picker:
     pass

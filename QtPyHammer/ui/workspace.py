@@ -31,7 +31,7 @@ class VmfTab(QtWidgets.QWidget):
         self.viewport = viewport.MapViewport3D(self)
         self.viewport.raycast.connect(self.raycast)
         # self.viewport.setViewMode.connect(...)
-        self.viewport.setFocus() # not working as intended
+        self.viewport.setFocus()  # not working as intended
         layout.addWidget(self.viewport)
         self.setLayout(layout)
         # self.timeline = ops.timeline.edit_history()  # also handles multiplayer

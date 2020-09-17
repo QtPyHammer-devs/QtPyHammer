@@ -171,12 +171,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["Map>Entity Report"] = map_menu.addAction("&Entity Report")
         self.actions["Map>Entity Report"].setEnabled(False)
         # self.actions["Map>Entity Report"].triggered.connect(ui.entity_report)
-        #self.actions["Map>Zooify"] map_menu.addAction("&Zooify")
+        # self.actions["Map>Zooify"] map_menu.addAction("&Zooify")
         # make an asset zoo / texture pallets from the currently open vmf
         self.actions["Map>Debug"] = map_menu.addAction("&Check for Problems")
         self.actions["Map>Debug"].setEnabled(False)
         # self.actions["Map>Debug"].triggered.connect(ui.map.debug)
-        #map_menu.addAction("&Diff Map File")
+        # map_menu.addAction("&Diff Map File")
         map_menu.addSeparator()
         self.actions["Map>Pointfile"] = map_menu.addAction("Pointfile / Find Leak (.lin)")
         self.actions["Map>Pointfile"].setEnabled(False)
@@ -185,7 +185,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["Map>Portal File"].setEnabled(False)
         # self.actions["Map>Portal File"].triggered.connect(
         map_menu.addSeparator()
-        #map_menu.addAction("Show &Information")
+        # map_menu.addAction("Show &Information")
         self.actions["Map>Properties"] = map_menu.addAction("&Map Properties")
         self.actions["Map>Properties"].setEnabled(False)
         # self.actions["Map>Properties"].triggered.connect(ui.map.properties)
@@ -311,7 +311,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # cut copy paste | cordon radius | TL <TL> | DD 3D DW DA |
         # compile helpers 2D_models fade CM prop_detail NO_DRAW
 
-    def open(self, filename): # allows loading via drag & drop
+    def open(self, filename):  # allows loading via drag & drop
         raw_filename, extension = os.path.splitext(filename)
         short_filename = os.path.basename(filename)
         if extension == ".vmf":

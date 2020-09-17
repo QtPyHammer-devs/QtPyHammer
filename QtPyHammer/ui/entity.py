@@ -15,6 +15,7 @@ class browser(QtWidgets.QDialog):
         app = QtWidgets.QApplication.instance()
         if len(app.fgd.entities) == 0:
             raise RuntimeError("No entites to browse!")
+
         def is_point_or_solid(e): return e.class_type in ("PointClass", "SolidClass")
         filtered_entities = list(filter(is_point_or_solid, app.fgd.entities))
         self.entities = sorted(filtered_entities, key=lambda e: e.name)
@@ -56,6 +57,7 @@ class browser(QtWidgets.QDialog):
         self.smart_edit.setCheckable(True)
         self.smart_edit.setChecked(True)
         self.ent_form_map = {}  # row: (name, display_name)
+
         def toggle_smart_edit():
             form = self.table.widget().layout()
             smartedit_on = self.smart_edit.isChecked()
@@ -90,7 +92,7 @@ class browser(QtWidgets.QDialog):
         self.current_entity = entity
         self.entity_label = QtWidgets.QLabel(self.current_entity.name)
         # ^ f"{entitiy.name} {'- ' + selection's targetname (if != '')}"
-##        self.widget(1).layout().itemAt(0).setText(self.current_entity.name)
+        # self.widget(1).layout().itemAt(0).setText(self.current_entity.name)
         # TODO: change comments tab's label to ^ (breaks atm)
         tabs_to_delete = []
         for i in range(self.base_widget.count()):
@@ -147,7 +149,8 @@ class browser(QtWidgets.QDialog):
             elif p.value_type == "integer":
                 # set "skin" min & max from model (props)
                 selector = QtWidgets.QSpinBox()
-                selector.setMaximum(p.default_value)  # fgd doesn't specify a max, a soft / adjustable max like blender would be nice
+                selector.setMaximum(p.default_value)
+                # ^ fgd doesn't specify a max, a soft / adjustable max like blender would be nice
                 selector.setValue(p.default_value)
             elif p.value_type == "studio":  # model
                 selector = model_picker(default=p.default_value)
@@ -193,6 +196,7 @@ class model_picker(QtWidgets.QHBoxLayout):
         self.text_field = QtWidgets.QLineEdit(default)
         self.button = QtWidgets.QPushButton("Browse")
         self.model_browser = QtWidgets.QFileDialog()  # FAKE FOR TESTS
+
         def pick_model():  # real deal should search vpks and grab actual mdls
             address = self.model_browser.getOpenFileName()[0]
             stripped_address = address.split("/")[-1].rpartition(".")[0]
@@ -210,6 +214,7 @@ class colour_picker(QtWidgets.QHBoxLayout):
         self.button = QtWidgets.QPushButton("Pick")
         self.text = lambda: self.text_field.text()
         self.setText = lambda t: self.text_field.setText(t)
+
         def pick_colour():  # variables must be locked to this row
             current_colour = QtGui.QColor(*map(int, self.text().split()[:3]))
             picker = QtWidgets.QColorDialog(current_colour)
@@ -231,10 +236,10 @@ class colour_picker(QtWidgets.QHBoxLayout):
         self.addWidget(self.button)
 
     # TODO: utilities.entity: make a class from a FgdEntity object
-##class BasicEntitiy:
-##    def __init__(self, base):
-##        for property in base.properties:
+# class BasicEntitiy:
+#    def __init__(self, base):
+#        for property in base.properties:
     # consider type
     # property subclasses from BaseClass?
-##            setattr(self, property.name, property.default_value)
+    # setattr(self, property.name, property.default_value)
     # need to be able to create / edit an entity with the browser

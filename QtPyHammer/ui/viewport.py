@@ -22,6 +22,7 @@ view_modes = ["flat", "textured", "wireframe"]
 
 class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
     raycast = QtCore.pyqtSignal(vector.vec3, vector.vec3)  # emits ray
+
     def __init__(self, parent=None, fps=60):
         super(MapViewport3D, self).__init__(parent=parent)
         preferences = QtWidgets.QApplication.instance().preferences
