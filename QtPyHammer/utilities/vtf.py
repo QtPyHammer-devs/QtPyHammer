@@ -10,7 +10,7 @@ colour_format = {
     4: "RGB_565",
     5: "I_8",
     6: "IA_88",
-    7: "P_8", # 8-bit paletted colour
+    7: "P_8",  # 8-bit paletted colour
     8: "A_8",
     9: "RGB_888_BLUESCREEN",
     10: "BGR_888_BLUESCREEN",
@@ -35,18 +35,18 @@ colour_format_bpp = {0: 32, 1: 32,
                      5: 8, 6: 16, 7: 8, 8: 8,
                      9: 24, 10: 24,
                      11: 32, 12: 32,
-                     13: 8, 14: 16, 15: 16, # DXTs
+                     13: 8, 14: 16, 15: 16,  # DXTs
                      16: 32, 17: 16, 18: 16,
                      19: 8, 20: 16, 21: 16, 22: 32,
                      23: 64, 24: 64, 25: 32}
 
 flags = {
-    0x00000001: "point_sample", # GL_NEAREST, pixelate
+    0x00000001: "point_sample",  # GL_NEAREST, pixelate
     0x00000002: "trilinear",
     0x00000004: "clamp_s",
     0x00000008: "clamp_t",
     0x00000010: "anisotropic",
-    0x00000020: "hint_dxt5", # for seamless skybox edges
+    0x00000020: "hint_dxt5",  # for seamless skybox edges
     0x00000040: "pwl_corrected",
     0x00000080: "normal",
     0x00000100: "no_mip",
@@ -75,6 +75,7 @@ def rgb_565_to_888(colour):
     B = colour % 32
     return bytes((R << 3, G << 2, B << 3))
 
+
 def rgb_888_to_565(colour):
     # colour is a 16-bit integer
     R, G, B = colour
@@ -83,11 +84,12 @@ def rgb_888_to_565(colour):
     B = B >> 3
     return ((R << 11) + (G << 5) + B).to_bytes(2, "little")
 
+
 def DXT1_decode(bytestream, width, height):
     """returns a RGB_888 bytestring of length 12 * width, height"""
-    if width % 4 != 0 or height % 4 != 0: # input doesn't split into 4x4 tiles
+    if width % 4 != 0 or height % 4 != 0:  # input doesn't split into 4x4 tiles
         raise RuntimeError(f"Cannot decode into {width}x{height} size image")
-    if len(bytestream) < width * height: # not enough data to decode it all
+    if len(bytestream) < width * height:  # not enough data to decode it all
         missing = (width * height) - len(bytestream)
         raise RuntimeError(f"Input is {missing} bytes short")
     out = [b""] * height
@@ -95,18 +97,18 @@ def DXT1_decode(bytestream, width, height):
     for y in range(0, height, 4):
         for x in range(0, width, 4):
             # RGB_565 palette (2x 16-bit colours)
-            palette = bytestream[start : start + 4]
+            palette = bytestream[start:start + 4]
             c0, c1 = [rgb_565_to_888(c) for c in struct.unpack("2H", palette)]
             if c0 > c1:
                 c2 = bytes([a * 2 // 3 + b // 3 for a, b in zip(c0, c1)])
                 c3 = bytes([a // 3 + b * 2 // 3 for a, b in zip(c0, c1)])
-            else: # c0 <= c1
+            else:  # c0 <= c1
                 c2 = bytes([a // 2 + b // 2 for a, b in zip(c0, c1)])
                 c3 = b"\x00\x00\x00"
             c = (c0, c1, c2, c3)
             # 4x4px indexed tile
-            tile = bytestream[start + 4 : start + 8]
-            for row_index, byte in enumerate(tile): # 1 row of 2bpp colour indices
+            tile = bytestream[start + 4:start + 8]
+            for row_index, byte in enumerate(tile):  # 1 row of 2bpp colour indices
                 A = byte % 4
                 B = (byte >> 2) % 4
                 C = (byte >> 4) % 4
@@ -118,11 +120,12 @@ def DXT1_decode(bytestream, width, height):
     out = b"".join(out)
     return out
 
+
 class vtf:
     """Read-only importer for Valve Texture File Format"""
     def __init__(self, filename):
         self.file = open(filename, "rb")
-        unpack = lambda f: struct.unpack(f, self.file.read(struct.calcsize(f)))
+        def unpack(f): return struct.unpack(f, self.file.read(struct.calcsize(f)))
         # ^ always returns a tuple, sometimes of len(1)
         assert unpack("4s")[0] == b"VTF\x00"
         major_version, minor_version = unpack("2I")
@@ -140,11 +143,11 @@ class vtf:
         # format name = colour_format[high_res_format]
         self.mipmap_count = unpack("B")[0]
         thumbnail_format, self.thumbnail_width, self.thumbnail_height = unpack("I2B")
-        assert thumbnail_format == 13 # DXT1
-        if minor_version >= 2: # v7.2+
-            depth = unpack("H")[0] # Z-slices
-        if minor_version >= 3: # v7.3+
-            ... # NotImplemented
+        assert thumbnail_format == 13  # DXT1
+        if minor_version >= 2:  # v7.2+
+            depth = unpack("H")[0]  # Z-slices
+        if minor_version >= 3:  # v7.3+
+            ...  # NotImplemented
             # until you hit the header size:
             # resource entries [unpack("3sBI")]
             # -- 3s = tag; e.g. b"\x01\x00\x00" or b"CRC"
@@ -159,15 +162,14 @@ class vtf:
     @property
     def thumbnail(self):
         """returns the decoded thumbnail"""
-        self.file.seek(self.header_size) # maybe elsewhere if v7.3+
+        self.file.seek(self.header_size)  # maybe elsewhere if v7.3+
         width, height = self.thumbnail_width, self.thumbnail_height
         thumb = self.file.read(width * height)
         return DXT1_decode(thumb, width, height)
 
     def load_thumbnail(self):
         width, height = self.thumbnail_width, self.thumbnail_height
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
-                     GL_UNSIGNED_BYTE, self.thumbnail)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, self.thumbnail)
         # ^ target, mipmap, gpu_format, width, height, border, data_format
         # -- data_size, data
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
@@ -182,7 +184,7 @@ class vtf:
         if index > self.mipmap_count - 1:
             raise RuntimeError(f"Mipmap {index} not in file")
         bytes_per_pixel = colour_format_bpp[self.format] // 8
-        size = lambda w, h: w * h * bytes_per_pixel
+        def size(w, h): return w * h * bytes_per_pixel
         offset = 0
         for i in range(self.mipmap_count - 1 - index):
             mipmap_width = self.width >> i
@@ -191,7 +193,7 @@ class vtf:
             offset += size(mipmap_width, mipmap_height)
         thumbnail_size = self.thumbnail_width * self.thumbnail_height
         thumbnail_end = 80 + thumbnail_size
-        self.file.seek(end_of_thumbnail + offset)
+        self.file.seek(thumbnail_end + offset)
         mipmap_width = self.width >> index
         mipmap_height = self.height >> index
         data = self.file.read(size(mipmap_width, mipmap_height))
@@ -206,26 +208,25 @@ class vtf:
         self.file.seek(end_of_thumbnail)
         # for each...
         # mipmaps: smallest to largest
-        #-- frames: first to last
-        #---- faces: first to last (???)
-        #------ slices: min to max (range(depth))
+        # -- frames: first to last
+        # ---- faces: first to last (???)
+        # ------ slices: min to max (range(depth))
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, self.mipmap_count - 1)
-        for i in range(self.mipmap_count - 1, 0, -1): # SMALLEST TO LARGEST
+        for i in range(self.mipmap_count - 1, 0, -1):  # SMALLEST TO LARGEST
             # ^ stops at 256x256px, not 512x512?
             width = self.width >> i
             height = self.height >> i
             if width < 4:
                 data = self.file.read(16)
-                pixels = DXT1_decode(data, 4, 4) # RGB_888
-##                pixel = bytes([int(255 * x) for x in self.reflectivity])
-##                pixels = pixel * width * height
+                pixels = DXT1_decode(data, 4, 4)  # RGB_888
+                # pixel = bytes([int(255 * x) for x in self.reflectivity])
+                # pixels = pixel * width * height
             else:
                 data = self.file.read(width * height)
-                pixels = DXT1_decode(data, width, height) # RGB_888
+                pixels = DXT1_decode(data, width, height)  # RGB_888
             if i == 0:
                 print(pixels)
-            glTexImage2D(GL_TEXTURE_2D, i, GL_RGB, width, height, 0, GL_RGB,
-                         GL_UNSIGNED_BYTE, pixels)
+            glTexImage2D(GL_TEXTURE_2D, i, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, pixels)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
             # ^ forces texture to use base mipmap
@@ -239,6 +240,7 @@ class vtf:
         true_end = self.file.tell()
         print(true_end - end, "bytes left")
 
+
 if __name__ == "__main__":
     import sys
 
@@ -246,18 +248,17 @@ if __name__ == "__main__":
     from OpenGL.GL.shaders import compileShader, compileProgram
     from PyQt5 import QtCore, QtWidgets
 
-
     def except_hook(cls, exception, traceback):
         sys.__excepthook__(cls, exception, traceback)
-    sys.excepthook = except_hook # Python Qt Debug
+    sys.excepthook = except_hook  # Python Qt Debug
 
     app = QtWidgets.QApplication([])
 
     materials = "../../test_materials"
     test_vtf = vtf(f"{materials}/test.vtf")
-##    test_vtf = vtf(f"{materials}/customdev/dev_measuregeneric01green.vtf")
-##    test_vtf = vtf(f"{materials}/test_materials/customdev/dev_measurewall01green.vtf")
-    
+    # test_vtf = vtf(f"{materials}/customdev/dev_measuregeneric01green.vtf")
+    # test_vtf = vtf(f"{materials}/test_materials/customdev/dev_measurewall01green.vtf")
+
     class viewport(QtWidgets.QOpenGLWidget):
         def __init__(self):
             super(viewport, self).__init__(parent=None)
@@ -271,23 +272,23 @@ if __name__ == "__main__":
                 self.mipmap = min(self.mipmap + 1, test_vtf.mipmap_count - 1)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, self.mipmap)
             # no visible changes occur /;
-        
+
         def initializeGL(self):
             glClearColor(.25, .25, .25, 1.0)
             # test_vtf.load_thumbnail() # <-- TESTED
             # test_vtf.load_mipmaps()
-##            width, height, data = test_vtf.mipmap(8)
+            # width, height, data = test_vtf.mipmap(8)
             thumb_size = test_vtf.thumbnail_width * test_vtf.thumbnail_height
             thumb_end = 80 + thumb_size
             test_vtf.file.seek(thumb_end)
-            width, height = 8, 5 # why does this look close to right?
+            width, height = 8, 5  # why does this look close to right?
             data = test_vtf.file.read()
             print(colour_format[test_vtf.format], f"{width}x{height}")
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
                          GL_UNSIGNED_BYTE, data)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-            
+
             vertex_source = """#version 450 core
 layout(location = 0) in vec3 vertexPosition;
 out vec3 position;
@@ -305,7 +306,7 @@ void main() {
             shader = compileProgram(vertex, fragment)
             glLinkProgram(shader)
             glUseProgram(shader)
-            
+
         def paintGL(self):
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             glBegin(GL_QUADS)
@@ -315,7 +316,6 @@ void main() {
             glVertex(0, 0)
             glEnd()
 
-            
     window = viewport()
     window.setGeometry(128, 64, 576, 576)
     window.show()
