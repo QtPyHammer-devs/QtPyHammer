@@ -6,13 +6,10 @@ And please, don't forget to read the [Code of Conduct](CODE_OF_CONDUCT.md)
 
 > Come on in! The ~~spaghetti~~ code's warm!
 
-NOTE: [GitHub Community Standards](https://opensource.guide/)  
-NOTE: [Building Community](https://opensource.guide/building-community/)
-
 #### Table of Contents
 [Code of Conduct](#code-of-conduct)
 
-[Do I Need Experience?](#do-i-need-experience?)
+[Do I Need Experience?](#do-i-need-experience)
 
 [How Can I Contribute?](#how-can-i-contribute)
  * [Feature Requests](#feature-requests)
@@ -36,8 +33,9 @@ NOTE: [Building Community](https://opensource.guide/building-community/)
  * [Further Reading](#further-reading)
 
 [Frequently Asked Questions](#frequently-asked-questions)
- * [Are we an Organisation?](#are-we-an-organisation?)
- * [Are we Really Democratic?](#are-we-really-democratic?)
+ * [What is QtPyHammer?](#what-is-qtpyhammer)
+ * [Who are the QtPyHammer Team?](#who-are-the-qtpyhammer-team)
+ * [Who's in Charge of the Project?](#who's-in-charge-of-the-project)
 
 
 
@@ -54,7 +52,7 @@ Casual contributions are what we're all about.
 That's why QtPyHammer is made with Python.  
 We're making an editor that puts users first.  
 
-Our aim is to have an editor than anyone can use, and code anyone can edit.  
+Our aim is to have an editor anyone can use, and code anyone can edit.  
 We aim to have anyone that wants a feature added or bug fixed to have the tools to do so.  
 
 There's no pressure to keep contributing either, no contribution is too small.  
@@ -115,36 +113,41 @@ That's a contribution too!
 
 
 ## Contributing Code
-QtPyHammer gets it's name from being written (mostly) in Python
+QtPyHammer gets it's name from being written (mostly) in Python.  
 If you don't have it installed, get [python 3.8](https://www.python.org/downloads/release/python-385/)
 
 ### Joining the Crew
 Programmers make the code, so they get to decide what they make  
-Anyone can become a programmer! But, you will have to learn  
+Anyone can become a programmer! But you will have to learn  
 
-Veteran programmers have a responsibility to help anyone that wishes to learn
-Experience has value, we respect our ~~elders~~ veteran programmers
+We appreciate everyone with knowledge who uses it to help those that wish to learn.  
+Experience has value, and we respect our ~~elders~~ veteran programmers.  
+If you're starting out and need help learning, get the attention of a programmer.  
+And please understand that while we appreciate teachers, it's not compulsory.
 
-ping bikkie on discord, they'll help you get set up
+If you're not sure who to ask: `@bikkie` on discord, they'll help you get set up  
+TODO: have a list of people who are comfortable to help newcomers in Discord
 
 
 ### Setting up a Virtual Environment
 We recommend using a python virtual environment.
 They make life easier for all programmers working on QtPyHammer by ensuring everyone is working with the same code.
 When everyone working on the code is using the same versions of each dependency, tracking down bugs becomes waaay easier than it would be otherwise
-Be sure to check the #announcements channel in the discord for any changes to `requirements.txt`
+Be sure to check the `#announcements` channel in the discord for any changes to `requirements.txt`
 If you have changed `requirements.txt`, make sure an announcement gets sent out!
 
-So, setting up that virtual environment:
-First, open a terminal at the top level (usually QtPyHammer-master)
-Then, run this: `$ python -m venv venv`
+So, setting up that virtual environment:  
+First, open a terminal at the top level (usually QtPyHammer-master)  
+Then, run this: `$ python -m venv venv`  
 (Linux users may need to install python-venv first)
 
 Activate your new virtual environment:  
-| Operating System | Command |
-| Windows | `$ call venv/scripts/activate` |  
-| Mac OS | `$ source venv/bin/activate` |
-| Linux | `$ source venv/bin/activate` |  
+
+| Operating System | Command                        |  
+|------------------|--------------------------------|  
+| Windows          | `$ call venv/scripts/activate` |  
+| Mac OS           | `$ source venv/bin/activate`   |  
+| Linux            | `$ source venv/bin/activate`   |  
 
 Finally, install all dependencies with pip  
 `$ python -m pip install -r requirements.txt`  
@@ -154,20 +157,26 @@ You can now run QtPyHammer from the terminal
 
 
 ### Working with GitHub
-Check out [Atlassian's Guide](https://www.atlassian.com/git/tutorials/what-is-version-control)
-Make sure to pull the latest version before you commit!  
-Communicate with other [contributors](https://github.com/snake-biscuits/QtPyHammer/graphs/contributors) to avoid code conflicts!  
+TODO: GitHub is hard for beginners, @asd can you think of anything I've missed?
+ * Check out [Atlassian's Guide](https://www.atlassian.com/git/tutorials/what-is-version-control)
+ * Make sure to pull the latest version before you commit!  
+ * Communicate with other [contributors](https://github.com/snake-biscuits/QtPyHammer/graphs/contributors) to avoid code conflicts!  
 
 If you're planning on making big changes:  
-Make a branch to avoid conflicts with the master branch
-Name your branch something short that explains what changes you're making
-Talk to other programmers to see who can help you with your workload  
+ 1. Talk to other programmers to see who can help you with your workload  
+ 2. Make a branch to avoid conflicts with the master branch
+ 3. Name your branch something short that explains what changes you're making
+
 (Nagging a programmer to write documentation is OK, but only in small doses)
-TODO: this is hard for beginners, @asd can you think of anything I've missed here?
+
 
 
 ### Coding Prototypes
-TODO: @asd, what works for you? describe your approach & experience here.
+When adding code for the first time, understanding how the program fits together can be confusing  
+That's why we have the `prototypes\` folder!  
+It's a space where you can experiment without getting tangled up in the rest of QPH
+
+TODO: @asd, what works for you? please describe your approach / experience here.
 
 
 
@@ -176,7 +185,8 @@ We use [PEP8](https://www.python.org/dev/peps/pep-0008/) around here
 It's not very fun but it keeps the code neat & tidy  
 And who doesn't like tidy code? (bikkie, the answer is bikkie)  
 Some warnings are OK to leave in when prototyping  
-TODO: list warnings you can ignore
+Such as:
+
 
 
 ### Linter
@@ -191,10 +201,10 @@ $ pip install flake8
 ```
 Most of us use these linter plugins
 
-| IDE                 | Plugin                                                  |
-|---------------------|---------------------------------------------------------|
-| Atom                | [linter-flake8](https://atom.io/packages/linter-flake8) |
-| Visual Studio Code  | TODO: find a vscode PEP8 linter                         |
+| IDE                 | Plugin                                                  |  
+|---------------------|---------------------------------------------------------|  
+| Atom                | [linter-flake8](https://atom.io/packages/linter-flake8) |  
+| Visual Studio Code  | TODO: find a vscode PEP8 linter                         |  
 
 If you don't use an IDE that's OK.  IDEs have their benefits but some of us prefer notepad.  
 Notepad++ if you're fancy.
@@ -226,27 +236,40 @@ Write tests! Run tests! Found a bug you can't fix? Ask for help!
 
 
 ## Frequently Asked Questions
-### Are we an organisation?
-While we aim be democratic in our work, we aren't explicitly an organisation.  
-Our democracy has layers  
+### What is QtPyHammer?
+QtPyHammer is an alternative to Valve's Hammer World Editor,
+written from scratch, in Python.  
 
-### Are we Really democratic?  
-Kind of.  
-There are many ways to contribute, and each role holds a certain level of power:
+### Who are the QtPyHammer Team?
+The QtPyHammer Team is mostly made up of [TF2Maps](https://tf2maps.net/) members.  
+Some of us are programmers, most of us are Hammer users.  
+We're here to make a Hammer for the users, a Hammer that anyone can repair when it breaks.  
 
-| Role                | Power                   |  
-|---------------------|-------------------------|  
-| Veteran Programmers | Teach newer programmers |
-| Programmers         | Write the code          |
-| Paper protoypers    | Shapes ideas into plans |   
-| Feature requesters  | Sends in new ideas      |
-| Testers             | Gives feedback          |
-| Users               | Also gives feedback     |
+We decide what we make democratically, asking users what they want.
+Though some decisions, like large code refactors, are decided by Veteran Programmers.
 
-Programmers, prototypers & requesters make stuff, that means they get to decide what they make.
-Anyone is free to make what they want,
-but sometimes there are jobs that must be done.
+
+### Who's in Charge of the Project?  
+QtPyHammer is managed democratically, kind of.  
+
+In practice, the team functions as a sort of casual Oligarchy.  
+There are many roles within the team, and each holds a certain level of power:
+
+| Role                | Power                                     |
+|---------------------|-------------------------------------------|
+| Veteran Programmers | Control the overall structure of the code |
+| Programmers         | Make prototypes & write the code          |
+| Paper protoypers    | Workshop ideas & design user interfaces   |
+| Feature requesters  | Send in, workshop & refine ideas          |
+| Testers             | Give feedback & help identify bugs        |
+| Users               | Give feedback & request features          |
+
+Programmers & prototypers make stuff, that means they get to decide what they make.  
+Anyone is free to make what they want, but sometimes there are jobs that must be done.
 
 While we make decisions democratically, we don't hold explicitly hold anyone to finishing what they start.
-While pressure can be good, remember that contributors are not paid.
+Pressure can be good, but remember that contributors are not paid.
 We contribute out of our free time.
+
+Veterans are well experienced in their skillsets and have spent a long time with the project.  
+As a general rule, veterans get more of a say, since we expect they know what they're talking about.

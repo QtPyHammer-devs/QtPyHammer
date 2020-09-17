@@ -15,6 +15,7 @@ even when you feel they don't respect you
  * Be nice
  * Be kind
  * Be [responsible](#responsibilities)
+ * Be a role model, not everyone here is an adult
  * Apologise if you make a mistake; we live, we learn
  * Keep it PG  
  * Have fun!
@@ -26,7 +27,6 @@ even when you feel they don't respect you
  * ~~No swearing in my Christian Discord Server!~~
  * Don't have fun at the expense of others
  * Don't repeat offend
- * Not everyone here is an adult, be a role model
 
 
 ## Responsibilities
