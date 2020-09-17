@@ -6,6 +6,8 @@ And please, don't forget to read the [Code of Conduct](CODE_OF_CONDUCT.md)
 
 > Come on in! The ~~spaghetti~~ code's warm!
 
+NOTE: https://opensource.guide/building-community/
+
 #### Table of Contents
 [Code of Conduct](#code-of-conduct)
 
