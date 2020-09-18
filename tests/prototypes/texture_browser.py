@@ -4,12 +4,7 @@ import sys
 
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSignal, QPoint, QRect, QSize, Qt
-from PyQt5.QtWidgets import (QApplication, QLayout, QPushButton, QSizePolicy, QSpacerItem,
-        QWidget)
-
-current_dir = os.path.dirname(os.path.realpath(__file__))
-qtpy_dir = os.path.join(current_dir, "../../QtPyHammer")
-sys.path.append(qtpy_dir)
+from PyQt5.QtWidgets import (QApplication, QLayout, QPushButton, QSizePolicy, QSpacerItem, QWidget, QScrollArea, QGroupBox)
 
 
 class texture_browser(QtWidgets.QDialog):
@@ -22,30 +17,35 @@ class texture_browser(QtWidgets.QDialog):
 
         outerQV = QtWidgets.QVBoxLayout()
 
-        # idk what the fuck this code does and why it doesnt have scrollbar
-        container = QtWidgets.QWidget()
+        # now this has scroll bar but it doesnt have flow layout
+        scroll = QScrollArea()
+        groupbox = QGroupBox('Textures')
+        flow_layout = FlowLayout(margin=10)
+
+        container = QWidget()
         container_layout = QtWidgets.QVBoxLayout()
 
-        scrollgroup_box = QtWidgets.QGroupBox(f'Group')
-        flow_layout = FlowLayout(margin=10)
-        flow_layout.heightChanged.connect(container.setMinimumHeight)
-        scrollgroup_box.setLayout(flow_layout)
+        # configure flow layout 
+        flow_layout.heightChanged.connect(groupbox.setMinimumHeight)
         for i in range(40):
             self.addTextureSquare(flow_layout)
 
-        container_layout.addWidget(scrollgroup_box)
+        # set configured layout to the groupbox
+        groupbox.setLayout(flow_layout)
 
+        container_layout.addWidget(groupbox)
         container_layout.addStretch()
         container.setLayout(container_layout)
 
-        # fuck this. It sort of works. Hope Bikkie knows how to fix
-        scroll_area = QtWidgets.QScrollArea()
-        scroll_area.setWindowTitle('Flow Layout')
-        scroll_area.setWidgetResizable(True)
-        scroll_area.setWidget(container)
-        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        # configure scrollarea
+        scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
 
-        outerQV.addWidget(scroll_area)
+        # set configured groupbox as widget of the scrollarea
+        scroll.setWidget(container)
+        scroll.setWidgetResizable(True)
+
+        # finally add scrollarea widget to the outer QVBoxLayout
+        outerQV.addWidget(scroll)
         outerQV.addWidget(QtWidgets.QLabel("Search Options"))  # placeholder
 
         searchbar = QtWidgets.QLineEdit()
@@ -56,14 +56,15 @@ class texture_browser(QtWidgets.QDialog):
         searchButton = QtWidgets.QPushButton("Search")
         searchButton.clicked.connect(passSearchVar)
         searchButton.setDefault(1)
-        container_layout.addWidget(searchButton)
+
+        outerQV.addWidget(searchButton)
 
         buttonbox = QtWidgets.QDialogButtonBox
         buttons = buttonbox(buttonbox.Ok | buttonbox.Cancel)
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
-        container_layout.addWidget(buttons)
-        self.setLayout(container_layout)
+        outerQV.addWidget(buttons)
+        self.setLayout(outerQV)
 
     def addTextureSquare(self, layout):
         imagelabel = QtWidgets.QLabel()
