@@ -202,8 +202,8 @@ Most of us use these linter plugins
 
 | IDE                 | Plugin                                                  |  
 |---------------------|---------------------------------------------------------|  
-| Atom                | [linter-flake8](https://atom.io/packages/linter-flake8) |  
-| Visual Studio Code  | TODO: find a vscode PEP8 linter                         |  
+| Atom                | [linter-flake8](https://atom.io/packages/linter-flake8) |
+| Visual Studio Code  | [ms-python.python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) |  
 
 If you don't use an IDE that's OK.  IDEs have their benefits but some of us prefer notepad.  
 Notepad++ if you're fancy.
