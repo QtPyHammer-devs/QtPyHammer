@@ -26,8 +26,8 @@ class texture_browser(QtWidgets.QDialog):
         container_layout = QtWidgets.QVBoxLayout()
 
         # configure flow layout 
-        flow_layout.heightChanged.connect(groupbox.setMinimumHeight)
-        for i in range(40):
+        flow_layout.heightChanged.connect(container.setMinimumHeight)
+        for i in range(400):
             self.addTextureSquare(flow_layout)
 
         # set configured layout to the groupbox
