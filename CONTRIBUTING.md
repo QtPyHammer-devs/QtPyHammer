@@ -161,10 +161,11 @@ You can now run QtPyHammer from the terminal
 
 
 ### Working with GitHub
-TODO: GitHub is hard for beginners, @asd can you think of anything I've missed?
+TODO: GitHub is hard for beginners, @asd can you think of anything I've missed? - Added the last line. seems about fine now
  * Check out [Atlassian's Guide](https://www.atlassian.com/git/tutorials/what-is-version-control)
  * Make sure to pull the latest version before you commit!  
  * Communicate with other [contributors](https://github.com/snake-biscuits/QtPyHammer/graphs/contributors) to avoid code conflicts!  
+ * If you are working on a prototype script of your own, it's ok to push to the main branch.
 
 If you're planning on making big changes:  
  1. Talk to other programmers to see who can help you with your workload  
@@ -179,6 +180,8 @@ That's why we have the `prototypes\` folder!
 It's a space where you can experiment without getting tangled up in the rest of QPH
 
 TODO: @asd, what works for you? please describe your approach / experience here.
+I use VS Code for prototyping and it's definitely easier to just install all the modules you need in the `prototype\venv` folder and opening vs code in `prototype\`
+This removes the need to put in weird directory modifier for all the imports
 
 
 
