@@ -70,7 +70,7 @@ class qph:
         while True:
             brush_id, side_count = read_struct("2I")
             # sides = read_structs(side_count, "6i32s9f2I")
-            # ^ use bsp_tool.mod.common.base subclass
+            # ^ use bsp_tool.mods.common.Base subclasses
             # int[3] plane.origin.xyz
             # int[3] plane.ratio.xyz
             # char[32] material
