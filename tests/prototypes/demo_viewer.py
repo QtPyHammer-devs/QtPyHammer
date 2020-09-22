@@ -1,6 +1,6 @@
-import shlex
 import subprocess
 import sys
+import time
 
 from PyQt5 import QtCore, QtWidgets
 
@@ -50,7 +50,7 @@ window.setCentralWidget(main_widget)
 viewport = MapViewport3D()
 viewport.setMinimumSize(512, 512)
 # we need to update the render manager
-# viewport.render_manager.add_renderable("obj". scoutane_model)
+# viewport.render_manager.add_renderable("obj". scout_model)
 main_widget.layout().addWidget(viewport)
 
 # terminal interface
@@ -62,23 +62,25 @@ console_out.setReadOnly(True)
 console_out.append("This is a terminal.  Please type a command:")
 console_widget.layout().addWidget(console_out)
 console_in = QtWidgets.QLineEdit()
-demo_REPL = subprocess.Popen("python", stdin=subprocess.PIPE,
+demo_REPL = subprocess.Popen("Tails_demo_reader.exe", stdin=subprocess.PIPE,
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                              text=True)
 
 
-def send_to_console():
-    command = console_in.text()
+def send_command(process, command):  # This function by Tails8521
     console_out.append(command)
     console_in.clear()
-    demo_REPL.stdin.write(command)
-    # FREEZES AFTER THIS POINT
-    console_out.append(demo_REPL.stdout.read())  # stdout is locked?
-    console_out.append(demo_REPL.stderr.read())
+    # by Tails8521:
+    process.stdin.write(command + '\n')
+    process.stdin.flush()
+    time_before = time.perf_counter()
+    output = process.stdout.readline()
+    time_after = time.perf_counter()
+    return output, time_after - time_before
     # process stdout with .json, give data to viewport
 
 
-console_in.returnPressed.connect(send_to_console)
+console_in.returnPressed.connect(lambda: send_command(demo_REPL, console_in.text()))
 console_widget.layout().addWidget(console_in)
 # PIPE a virtual terminal in here
 # stdin_widget.add(console_widget)
