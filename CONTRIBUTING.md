@@ -27,7 +27,9 @@ And please, don't forget to read the [Code of Conduct](CODE_OF_CONDUCT.md)
  * [Coding Prototypes](#coding-prototypes)
 
 [Style Guide](#style-guide)
- * [IDE Linters](#ide-linters)
+ * [PEP 8](#pep-8httpswwwpythonorgdevpepspep-0008)
+ * [Type Hints](#type-hints)
+ * [Naming Conventions](#naming-conventions)
  * [Documentation](#documentation)
  * [Testing](#testing)
  * [Further Reading](#further-reading)
@@ -186,14 +188,15 @@ This removes the need to put in weird directory modifier for all the imports
 
 
 ## Style Guide
-We use [PEP8](https://www.python.org/dev/peps/pep-0008/) around here  
+We use [PEP 8](https://www.python.org/dev/peps/pep-0008/) around here  
 It's not very fun but it keeps the code neat & tidy  
 And who doesn't like tidy code? (bikkie, the answer is bikkie)  
+You can ask someone else to help you meet the requirements of the style guide, **but we prefer you do it yourself.**  
 
 
-### Linter
-If you're using an IDE we recommend getting a linter plugin.  
-Every time a commit is pushed to `master`, GitHub checks all python scripts meet PEP8 standards.  
+### [PEP 8](https://www.python.org/dev/peps/pep-0008/)
+If you're using an IDE we recommend getting a PEP 8 linter plugin.  
+Every time a commit is pushed to `master`, GitHub checks all python scripts meet PEP 8 standards.  
 Having a linter plugin in your IDE helps you catch warnings before you push.   
 You will probably need to install `flake8` to use these plugins.  
 Add it to your virtual environment like so:
@@ -230,8 +233,44 @@ Some warnings you will get are OK to leave in when prototyping. You can ignore:
 If you get a code you don't understand,
 check [flake8rules.com](https://www.flake8rules.com/)
 to get more details.  
-You can ask someone else to help clean up your formatting, **but we prefer you do it yourself.**  
 
+
+### Type Hints
+Type hints are a feature officially added to Python in version 3.7  
+With type hints code can become much more readable and easier to use  
+Check out these links for pointers:
+ * [PEP 484](https://www.python.org/dev/peps/pep-0484/): which details a standard which we follow
+ * [PEP 563](https://www.python.org/dev/peps/pep-0563/): explains why we should import `annotations` from `__future__`
+ * [mypy](http://mypy-lang.org/): the type checker on which PEP 484 is based
+ * [typing](https://docs.python.org/3/library/typing.html): official python module for making broad type hints
+
+### Naming Conventions
+A linter will not give warning for naming conventions, so we define our own.  
+PEP 8 recommends using descriptive, lowercase variable & function names, spaced with underscores.  
+For class names, CamelCase is preferred, since it tells you at a glance that an object is a class
+```python
+from __future__ import annotations
+from typing import List
+
+
+def flipped_selection(axis: str) -> List[PointEntity]:
+    flip_along = {"x": flip_x, "y": flip_y, "z": flip_z}
+    # ^ {"axis": function}
+    flip_function = flip_along[axis]
+    global selection: List[PointEntity]
+    return list(map(flip_function, selection))
+
+
+class PointEntity:
+    classname: str
+    def __init__(self, classname: str):
+        self.classname = classname
+
+
+draw_distance = 4096  # Hammer Units
+some_point_entity = PointEntity("info_teamspawn")
+```
+Note that we don't hint the return type when functions return nothing.
 
 ### Documentation
 Please use comments in your code to help explain how it all works.
@@ -239,7 +278,9 @@ Be sure to use docstrings too. Consider writing a wiki page or two
 Your future self will thank you, trust me
 
 ### Testing
-Write tests! Run tests! Found a bug you can't fix? Ask for help!
+Write tests! Run tests! Found a bug you can't fix? Ask for help!  
+Tests are particularly handy for checking what you may have broken before pushing a commit  
+
 
 ### Further Reading
 [The Zen of Python](https://www.python.org/dev/peps/pep-0020/#the-zen-of-python)  
