@@ -252,16 +252,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["View>Settings"] = view_menu.addAction("&OpenGL Settings")
         self.actions["View>Settings"].setEnabled(False)
         # self.actions["View>Settings"].triggered.connect(ui.
-
-        def open_url(url): QtGui.QDesktopServices.openUrl(QtCore.QUrl(url))
+        open_url = QtGui.QDesktopServices.openUrl
         help_menu = self.main_menu.addMenu("&Help")
         self.actions["Help>Offline"] = help_menu.addAction("Offline Help")
         self.actions["Help>Offline"].setEnabled(False)
         # self.actions["Help>Offline"].triggered.connect(ui.
         help_menu.addSeparator()
         self.actions["Help>About QPH"] = help_menu.addAction("About QtPyHammer")
-        self.actions["Help>About QPH"].triggered.connect(
-            open_url("https://github.com/snake-biscuits/QtPyHammer/wiki"))
+        self.actions["Help>About QPH"].triggered.connect(lambda: open_url(QtCore.QUrl(
+                                "https://github.com/snake-biscuits/QtPyHammer/wiki")))
         self.actions["Help>About Qt"] = help_menu.addAction("About Qt")
         self.actions["Help>About Qt"].setEnabled(False)
         # self.actions["Help>About Qt"].triggered.connect(ui. #QDialog
@@ -273,11 +272,10 @@ class MainWindow(QtWidgets.QMainWindow):
         # self.actions["Help>Contributors"].triggered.connect(ui. #QDialog
         help_menu.addSeparator()
         self.actions["Help>VDC"] = help_menu.addAction("Valve Developer Community")
-        self.actions["Help>VDC"].triggered.connect(
-            open_url("https://developer.valvesoftware.com/wiki/Main_Page"))
+        self.actions["Help>VDC"].triggered.connect(lambda: open_url(QtCore.QUrl(
+                            "https://developer.valvesoftware.com/wiki/Main_Page")))
         self.actions["Help>TF2Maps"] = help_menu.addAction("TF2Maps.net")
-        self.actions["Help>TF2Maps"].triggered.connect(
-            open_url("https://tf2maps.net"))
+        self.actions["Help>TF2Maps"].triggered.connect(lambda: open_url(QtCore.QUrl("https://tf2maps.net")))
 
         # attach all actions to hotkeys
         app = QtWidgets.QApplication.instance()
