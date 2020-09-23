@@ -2,11 +2,12 @@ import itertools
 import os
 
 import numpy as np
-from OpenGL.GL import *
+import OpenGL.GL as gl  # imagine a python binding with gl.Begin not gl.glBegin
 from OpenGL.GL.shaders import compileShader, compileProgram
 from PyQt5 import QtWidgets
 
-from . import vector
+from .. import vector
+from . import draw
 
 
 class manager:
@@ -44,16 +45,16 @@ class manager:
         # ^ renderable
 
     def init_GL(self):
-        glClearColor(0.0, 0.0, 0.0, 0.0)
-        glEnable(GL_CULL_FACE)
-        glEnable(GL_DEPTH_TEST)
-        glFrontFace(GL_CW)
-        glCullFace(GL_BACK)
-        glPointSize(4)
-        glPolygonMode(GL_BACK, GL_LINE)
+        gl.glClearColor(0.0, 0.0, 0.0, 0.0)
+        gl.glEnable(gl.GL_CULL_FACE)
+        gl.glEnable(gl.GL_DEPTH_TEST)
+        gl.glFrontFace(gl.GL_CW)
+        gl.glCullFace(gl.GL_BACK)
+        gl.glPointSize(4)
+        gl.glPolygonMode(gl.GL_BACK, gl.GL_LINE)
         # SHADERS
-        major = glGetIntegerv(GL_MAJOR_VERSION)
-        minor = glGetIntegerv(GL_MINOR_VERSION)
+        major = gl.glGetIntegerv(gl.GL_MAJOR_VERSION)
+        minor = gl.glGetIntegerv(gl.GL_MINOR_VERSION)
         if major >= 4 and minor >= 5:
             self.shader_version = "GLSL_450"
         elif major >= 3 and minor >= 0:
@@ -64,11 +65,14 @@ class manager:
         def compile_shader(f, t):
             return compileShader(open(shader_folder + f, "rb"), t)
 
-        vert_brush = compile_shader("brush.vert", GL_VERTEX_SHADER)
-        vert_displacement = compile_shader("displacement.vert", GL_VERTEX_SHADER)
-        frag_flat_brush = compile_shader("flat_brush.frag", GL_FRAGMENT_SHADER)
-        frag_flat_displacement = compile_shader("flat_displacement.frag", GL_FRAGMENT_SHADER)
-        frag_stripey_brush = compile_shader("stripey_brush.frag", GL_FRAGMENT_SHADER)
+        # shader construction could be automated some
+        # the shader names have a clear format: f"{renderable}.vert", f"{style}_{renderable}.frag"
+        # use os.listdir to assemble all shaders?
+        vert_brush = compile_shader("brush.vert", gl.GL_VERTEX_SHADER)
+        vert_displacement = compile_shader("displacement.vert", gl.GL_VERTEX_SHADER)
+        frag_flat_brush = compile_shader("flat_brush.frag", gl.GL_FRAGMENT_SHADER)
+        frag_flat_displacement = compile_shader("flat_displacement.frag", gl.GL_FRAGMENT_SHADER)
+        frag_stripey_brush = compile_shader("stripey_brush.frag", gl.GL_FRAGMENT_SHADER)
         self.shader = {"flat": {}, "stripey": {}, "textured": {}, "shaded": {}}
         # ^ style: {target: program}
         self.shader["flat"]["brush"] = compileProgram(vert_brush, frag_flat_brush)
@@ -76,7 +80,7 @@ class manager:
         self.shader["stripey"]["brush"] = compileProgram(vert_brush, frag_stripey_brush)
         for style_dict in self.shader.values():
             for program in style_dict.values():
-                glLinkProgram(program)
+                gl.glLinkProgram(program)
         self.uniform = {"flat": {"brush": {}, "displacement": {}},
                         "stripey": {"brush": {}},
                         "textured": {},
@@ -85,50 +89,49 @@ class manager:
         for style, targets in self.uniform.items():
             for target in targets:
                 shader = self.shader[style][target]
-                glUseProgram(shader)
-                self.uniform[style][target]["matrix"] = glGetUniformLocation(shader, "MVP_matrix")
-        glUseProgram(0)
+                gl.glUseProgram(shader)
+                self.uniform[style][target]["matrix"] = gl.glGetUniformLocation(shader, "MVP_matrix")
+        gl.glUseProgram(0)
         # Buffers
-        self.VERTEX_BUFFER, self.INDEX_BUFFER = glGenBuffers(2)
-        glBindBuffer(GL_ARRAY_BUFFER, self.VERTEX_BUFFER)
-        glBufferData(GL_ARRAY_BUFFER, self.vertex_buffer_size, None, GL_DYNAMIC_DRAW)
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.INDEX_BUFFER)
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, self.index_buffer_size, None, GL_DYNAMIC_DRAW)
+        self.VERTEX_BUFFER, self.INDEX_BUFFER = gl.glGenBuffers(2)
+        gl.glBindBuffer(gl.GL_ARRAY_BUFFER, self.VERTEX_BUFFER)
+        gl.glBufferData(gl.GL_ARRAY_BUFFER, self.vertex_buffer_size, None, gl.GL_DYNAMIC_DRAW)
+        gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, self.INDEX_BUFFER)
+        gl.glBufferData(gl.GL_ELEMENT_ARRAY_BUFFER, self.index_buffer_size, None, gl.GL_DYNAMIC_DRAW)
         # https://github.com/snake-biscuits/QtPyHammer/wiki/Rendering:-Vertex-Format
-        glEnableVertexAttribArray(0)  # vertex_position
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(0))
-        glEnableVertexAttribArray(1)  # vertex_normal (brush only)
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 44, GLvoidp(12))
-        glEnableVertexAttribArray(2)  # vertex_uv
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 44, GLvoidp(24))
-        glEnableVertexAttribArray(3)  # editor_colour
-        glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
-        glEnableVertexAttribArray(4)  # blend_alpha (displacement only)
-        glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 44, GLvoidp(32))
+        gl.glEnableVertexAttribArray(0)  # vertex_position
+        gl.glVertexAttribPointer(0, 3, gl.GL_FLOAT, gl.GL_FALSE, 44, gl.GLvoidp(0))
+        gl.glEnableVertexAttribArray(1)  # vertex_normal (brush only)
+        gl.glVertexAttribPointer(1, 3, gl.GL_FLOAT, gl.GL_TRUE, 44, gl.GLvoidp(12))
+        gl.glEnableVertexAttribArray(2)  # vertex_uv
+        gl.glVertexAttribPointer(2, 2, gl.GL_FLOAT, gl.GL_FALSE, 44, gl.GLvoidp(24))
+        gl.glEnableVertexAttribArray(3)  # editor_colour
+        gl.glVertexAttribPointer(3, 3, gl.GL_FLOAT, gl.GL_FALSE, 44, gl.GLvoidp(32))
+        gl.glEnableVertexAttribArray(4)  # blend_alpha (displacement only)
+        gl.glVertexAttribPointer(4, 1, gl.GL_FLOAT, gl.GL_FALSE, 44, gl.GLvoidp(32))
 
     def draw(self):
-        glUseProgram(0)
-        # draw_grid()
-        draw_dot_grid(-2048, 2048, -2048, 2048, 64)
-        draw_origin()
+        gl.glUseProgram(0)
+        draw.dot_grid(-2048, 2048, -2048, 2048, 64)
+        draw.origin_marker()
         # TODO: dither transparency for tooltextures (skip, hint, trigger, clip)
         for renderable_type, spans in self.draw_calls.items():
-            glUseProgram(self.shader[self.render_mode][renderable_type])
+            gl.glUseProgram(self.shader[self.render_mode][renderable_type])
             for start, length in spans:
                 count = length // 4
-                glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, GLvoidp(start))
+                gl.glDrawElements(gl.GL_TRIANGLES, count, gl.GL_UNSIGNED_INT, gl.GLvoidp(start))
 
     def update(self):
         if len(self.buffer_update_queue) > 0:
             update = self.buffer_update_queue.pop(0)
             buffer, start, length, data = update
-            glBufferSubData(buffer, start, length, data)
-        MV_matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
+            gl.glBufferSubData(buffer, start, length, data)
+        MV_matrix = gl.glGetFloatv(gl.GL_MODELVIEW_MATRIX)
         for renderable_type in self.shader[self.render_mode]:
-            glUseProgram(self.shader[self.render_mode][renderable_type])
+            gl.glUseProgram(self.shader[self.render_mode][renderable_type])
             if "matrix" in self.uniform[self.render_mode][renderable_type]:
                 location = self.uniform[self.render_mode][renderable_type]["matrix"]
-                glUniformMatrix4fv(location, 1, GL_FALSE, MV_matrix)
+                gl.glUniformMatrix4fv(location, 1, gl.GL_FALSE, MV_matrix)
 
     def track_span(self, buffer, renderable_type, span_to_track):
         target = self.buffer_allocation_map[buffer][renderable_type]
@@ -255,7 +258,7 @@ class manager:
             used_length = vertex_gaps[gap][0]
             flattened_data = list(itertools.chain(*vertex_gaps[gap][2]))
             vertex_data = np.array(flattened_data, dtype=np.float32)
-            update = (GL_ARRAY_BUFFER, start, used_length, vertex_data)
+            update = (gl.GL_ARRAY_BUFFER, start, used_length, vertex_data)
             self.buffer_update_queue.append(update)
             ids = vertex_gaps[gap][1]
             lengths = [len(d) * 4 for d in vertex_gaps[gap][2]]
@@ -267,7 +270,7 @@ class manager:
             used_length = index_gaps[gap][0]
             flattened_data = list(itertools.chain(*index_gaps[gap][2]))
             index_data = np.array(flattened_data, dtype=np.uint32)
-            update = (GL_ELEMENT_ARRAY_BUFFER, start, used_length, index_data)
+            update = (gl.GL_ELEMENT_ARRAY_BUFFER, start, used_length, index_data)
             self.buffer_update_queue.append(update)
             ids = index_gaps[gap][1]
             lengths = [len(d) * 4 for d in index_gaps[gap][2]]
@@ -310,7 +313,8 @@ def brush_buffer_data(brush):
 
 
 def displacement_buffer_data(face):
-    vertices = []  # [(*position, *normal, *uv, blend_alpha, 0, 0), ...]
+    vertices = []
+    # ^ [(*position, *normal, *uv, blend_alpha, 0, 0), ...]
     quad = tuple(vector.vec3(P) for P in face.polygon)
     start = vector.vec3(face.displacement.start)
     if start not in quad:  # start = closest point on quad to start
@@ -322,11 +326,14 @@ def displacement_buffer_data(face):
     CB = C - B
     displacement = face.displacement
     power2 = 2 ** displacement.power
-    for i, normal_row, distance_row, alpha_row in zip(itertools.count(), displacement.normals, displacement.distances, displacement.alphas):
+    for i, normal_row, distance_row, alpha_row in zip(itertools.count(), displacement.normals,
+                                                      displacement.distances, displacement.alphas):
         left_vert = A + (DA * i / power2)
         right_vert = B + (CB * i / power2)
-        for j, normal, distance, alpha in zip(itertools.count(), normal_row, distance_row, alpha_row):
+        for j, normal, distance, alpha in zip(itertools.count(), normal_row,
+                                              distance_row, alpha_row):
             barymetric = vector.lerp(right_vert, left_vert, j / power2)
+            # check: do we need to apply subdivision too?
             position = vector.vec3(barymetric) + (normal * distance)
             # theta =  math.degrees(math.acos(vector.dot(face.plane[0], (0, 0, 1))))
             # normal = (normal * distance).normalise()
@@ -477,83 +484,3 @@ def remove_span(span_list, span):
     # print(list(map(rep, out)))
     # print()
     return out
-
-
-def yield_grid(limit, scale):  # grid scale selected via the UI
-    """ yields lines on a grid (one vertex at a time) centered on [0, 0]
-    limit: int, half the width of grid
-    step: int, gap between edges"""
-    # center axes
-    yield 0, -limit
-    yield 0, limit  # +NS
-    yield -limit, 0
-    yield limit, 0  # +EW
-    # concentric squares stepping out from center (0, 0) to limit
-    for i in range(0, limit + 1, scale):
-        yield i, -limit
-        yield i, limit  # +NS
-        yield -limit, i
-        yield limit, i  # +EW
-        yield limit, -i
-        yield -limit, -i  # -WE
-        yield -i, limit
-        yield -i, -limit  # -SN
-    # ^ the above function is optimised for a line grid
-    # another function would be required for a dot grid
-    # it's also worth considering adding an offset / origin point
-
-
-def draw_grid(limit=2048, grid_scale=64, colour=(.5, .5, .5)):
-    glLineWidth(1)
-    glBegin(GL_LINES)
-    glColor(*colour)
-    for x, y in yield_grid(limit, grid_scale):
-        # you don't have to generate the grid every frame by the way
-        glVertex(x, y)
-    glEnd()
-
-
-def yield_dot_grid(min_x, min_y, max_x, max_y, scale):
-    """Takes a x,y boiunds so only the visible points are rendered"""
-    def snap(x):
-        return x // scale * scale
-    min_x = snap(min_x)
-    max_x = snap(max_x)
-    min_y = snap(min_y)
-    max_y = snap(max_y)
-    for x in range(min_x, min_y + 1, scale):
-        for y in range(min_x, min_y + 1, scale):
-            yield x, y
-
-
-def draw_dot_grid(min_x, min_y, max_x, max_y, scale=64, colour=(.5, .5, .5)):
-    glBegin(GL_POINTS)
-    glColor(*colour)
-    for x, y in yield_dot_grid(min_x, min_y, max_x, max_y, scale):
-        # you don't have to generate the grid every frame by the way
-        glVertex(x, y)
-    glEnd()
-
-
-def draw_origin(scale=128):
-    glLineWidth(2)
-    glBegin(GL_LINES)
-    glColor(1, 0, 0)
-    glVertex(0, 0, 0)
-    glVertex(scale, 0, 0)
-    glColor(0, 1, 0)
-    glVertex(0, 0, 0)
-    glVertex(0, scale, 0)
-    glColor(0, 0, 1)
-    glVertex(0, 0, 0)
-    glVertex(0, 0, scale)
-    glEnd()
-
-
-def draw_ray(origin, direction, distance=4096):
-    glLineWidth(2)
-    glBegin(GL_LINES)
-    glColor(1, .75, .25)
-    glVertex(*origin)
-    glVertex(*(origin + direction * distance))
-    glEnd()
