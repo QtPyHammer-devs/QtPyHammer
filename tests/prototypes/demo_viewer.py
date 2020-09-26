@@ -110,6 +110,8 @@ def send_command(process, command):  # This function by Tails8521
     console_out.append(output)
     if command.startswith("frame "):
         update_player_models(output)
+    elif command.startswith("load "):
+        get_tickrate(output)
     return output
     # process stdout with .json, give data to viewport
 
@@ -126,6 +128,12 @@ def update_player_models(json_text):
     position = frame["result"]["player_entities"][0]["position"]
     x, y, z = position["x"], position["y"], position["z"]
     viewport.render_manager.dynamics[("obj_model", "scout.obj")]["position"] = [x, y, z]
+
+
+def get_tickrate(json_text):
+    demo_header = json.load(io.StringIO(json_text))["result"]
+    frame_time = demo_header["duration"] / demo_header["frames"]
+    timer.setInterval(int(1000 * frame_time))
 
 
 # run the app
