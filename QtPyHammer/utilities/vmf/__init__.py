@@ -24,25 +24,25 @@ class vmf:
                 self._brushes[int(brush.id)] = brush
         self.entities = dict()
         # ^ id: entity
-        if hasattr(self._namespace.world, "entity"):
-            entity = self._namespace.world.entity
+        if hasattr(self._namespace, "entity"):
+            entity = self._namespace.entity
             self.entities[int(entity.id)] = entity
-        elif hasattr(self._namespace.world, "entities"):
-            for entity in self._namespace.world.entities:
+        elif hasattr(self._namespace, "entities"):
+            for entity in self._namespace.entities:
                 self.entities[int(entity.id)] = entity
         self.brush_entities = dict()
         # ^ entity.id: {brush.id, brush.id, ...}
         for entity_id, entity in self.entities.items():
             if hasattr(entity, "solid"):
-                if not isinstance(entity, str):
+                if not isinstance(entity.solid, str):
                     entity.solids = [entity.solid]
             if hasattr(entity, "solids"):
-                self.brush_entities[entity.id] = set()
+                self.brush_entities[entity.id] = set()  # why not default dict?
                 for brush in entity.solids:
-                    if not isinstance(entity, str):
-                        brush_id = int(entity.solid.id)
-                        self._brushes[brush_id] = entity.solid
-                        self.brush_entities[entity_id].add(brush_id)
+                    if not isinstance(brush, str):
+                        brush_id = int(brush.id)
+                        self._brushes[brush_id] = brush
+                        self.brush_entities[entity.id].add(brush_id)
         self.import_errors = []
         self.brushes = dict()
         # ^ brush.id: brush
