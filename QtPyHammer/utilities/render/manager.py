@@ -53,7 +53,7 @@ class manager:
         self.hidden = set()  # hidden by user, not visgroup
         # ^ {renderable}
 
-        self.dynamic_draws = dict()
+        self.dynamics = dict()
         # {renderable: {"position": [x, y, z]}}
 
     def init_GL(self):
@@ -96,7 +96,8 @@ class manager:
         for render_mode_dict in self.shader.values():
             for program in render_mode_dict.values():
                 gl.glLinkProgram(program)
-        self.uniform = {"flat": {"brush": {}, "displacement": {}, "obj_model": {}},
+        self.uniform = {"flat": {"brush": {}, "displacement": {},
+                                 "obj_model": {"location": None}},
                         "stripey": {"brush": {}},
                         "textured": {},
                         "shaded": {}}
@@ -105,6 +106,8 @@ class manager:
             for target in targets:
                 shader = self.shader[style][target]
                 gl.glUseProgram(shader)
+                for uniform in self.uniform[style][target]:
+                    self.uniform[style][target][uniform] = gl.glGetUniformLocation(shader, uniform)
                 self.uniform[style][target]["matrix"] = gl.glGetUniformLocation(shader, "MVP_matrix")
         gl.glUseProgram(0)
         # Buffers
@@ -135,8 +138,17 @@ class manager:
             for start, length in spans:
                 count = length // 4
                 gl.glDrawElements(gl.GL_TRIANGLES, count, gl.GL_UNSIGNED_INT, gl.GLvoidp(start))
-        # render models, since they are instanced
-        # self.dynamics[("obj_model", "scout.obj"), (...)]
+        # render models separately, since they are instanced
+        for renderable in self.dynamics:
+            # translate with shader uniforms
+            renderable_type, _id = renderable
+            location_uniform = self.uniform[self.render_mode][renderable_type]["location"]
+            position = self.dynamics[renderable]["position"]
+            gl.glUniform3f(location_uniform, *position)
+            gl.glUseProgram(self.shader[self.render_mode][renderable[0]])
+            start, length = self.buffer_location[renderable]["index"]
+            count = length // 4
+            gl.glDrawElements(gl.GL_TRIANGLES, count, gl.GL_UNSIGNED_INT, gl.GLvoidp(start))
 
     def update(self):
         """Updates buffers & shader uniforms"""

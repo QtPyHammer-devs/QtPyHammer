@@ -15,6 +15,7 @@ from QtPyHammer.utilities.vmf import vmf  # noqa: E402
 # without this your python code will break silently, with no errors to trace
 def except_hook(cls, exception, traceback):
     sys.__excepthook__(cls, exception, traceback)
+    sys.exit()
 sys.excepthook = except_hook  # noqa: E305
 
 
@@ -44,6 +45,30 @@ def open_stv_demo():  # noqa: E302
 
 
 open_file = file_menu.addAction("&Open", open_stv_demo, "Ctrl+O")
+playback_menu = menu.addMenu("&Playback")
+current_frame = 0
+timer = QtCore.QTimer()
+timer.setInterval(15)
+
+
+def next_frame():
+    global current_frame
+    console_in.setText(f"frame {current_frame}")
+    console_in.returnPressed.emit()
+    current_frame += 1
+
+
+timer.timeout.connect(next_frame)
+
+
+def play_pause():
+    if timer.isActive():
+        timer.stop()
+    else:
+        timer.start()
+
+
+playback_menu.addAction("&Play", play_pause, "Space")
 window.setMenuBar(menu)
 
 # main_widget
@@ -55,6 +80,8 @@ viewport.setMinimumSize(512, 512)
 # we need to update the render manager
 tf2_scout = Obj.load_from_file("scout.obj")
 viewport.render_manager.add_obj_models(tf2_scout)
+viewport.render_manager.dynamics[("obj_model", "scout.obj")] = {"position": [0, 128, -64]}
+viewport.render_manager.draw_calls["obj_model"] = []
 test2_vmf = vmf("../../Team Fortress 2/tf/mapsrc/test2.vmf")
 viewport.render_manager.add_brushes(*test2_vmf.brushes.values())
 splitter.addWidget(viewport)
@@ -96,8 +123,9 @@ splitter.addWidget(console_widget)
 
 def update_player_models(json_text):
     frame = json.load(io.StringIO(json_text))
-    print(frame["result"])
-    # viewport.render_manager.dynamic_draws["scout.obj"]["position"] = [x, y, z]
+    position = frame["result"]["player_entities"][0]["position"]
+    x, y, z = position["x"], position["y"], position["z"]
+    viewport.render_manager.dynamics[("obj_model", "scout.obj")]["position"] = [x, y, z]
 
 
 # run the app
