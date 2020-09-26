@@ -57,7 +57,7 @@ def displacement(face):
     return vertices, indices
 
 
-def obj(obj_model):
+def obj_model(obj_model):
     # obj_model is expected to be an Obj object (utilities/obj.py)
     vertex_data = []  # [(*position, *normal, *uv, *colour)]
     index_data = []

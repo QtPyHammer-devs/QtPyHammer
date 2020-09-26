@@ -18,6 +18,7 @@ void main()
     position = vertex_position;
     normal = vertex_normal;
     uv = vec2(vertex_uv.x, -vertex_uv.y);
+    colour = vertex_colour;
 
     Kd = dot(normal, vec3(.05, .35, .60)) / 3.0 + 0.5;
 

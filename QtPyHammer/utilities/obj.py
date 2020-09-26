@@ -1,9 +1,11 @@
 from __future__ import annotations
+import os
 import re
 from typing import Dict, List
 
 
 class Obj:
+    name: str
     vertices: List[List[float]]  # [(x, y, z)]
     normals: List[List[float]]  # [(x, y, z)]
     uvs: List[List[float]]  # [(u, v)]
@@ -11,7 +13,8 @@ class Obj:
     objects: Dict[str, List[int]]  # {"object_name": (faces_start, faces_length)}
     groups: Dict[str, List[int]]  # {"group_name": (faces_start, faces_length)}
 
-    def __init__(self, v=[], vn=[], vt=[], f=[], o={}, g={}):
+    def __init__(self, name, v=[], vn=[], vt=[], f=[], o={}, g={}):
+        self.name = name
         self.vertices = v  # vertex positions
         self.normals = vn  # vertex normals
         self.uvs = vt  # vertex texture coordinates
@@ -58,7 +61,7 @@ class Obj:
                 line_type = line[0]
                 line_data = line[1:]
                 if line_type in ("v", "vn", "vt"):
-                    vertex_data[line_type].append(map(float, line_data))
+                    vertex_data[line_type].append(list(map(float, line_data)))
                 elif line_type == "f":
                     face = decode_face(line_data)
                     faces.append(face)
@@ -80,13 +83,14 @@ class Obj:
             objects.pop(None)
         if groups[None] == [0, 0]:
             groups.pop(None)
-        return Obj(**vertex_data, f=faces, o=objects, g=groups)
+        name = os.path.basename(filename)
+        return Obj(name, **vertex_data, f=faces, o=objects, g=groups)
 
 
 def decode_face(index_strings: List[str]) -> List[List[int]]:
     face = []
     # ^ [(v_index, vn_index, vt_index)]
-    for definition in index_strings:
+    for definition in reversed(index_strings):
         v_index, vn_index, vt_index = None, None, None
         definition.replace("\\", "/")
         if re.match(r"^[0-9]+$", definition):

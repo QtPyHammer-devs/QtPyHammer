@@ -40,10 +40,10 @@ class manager:
         # not to mention .smd, brush & displacement
         self.buffer_allocation_map = {"vertex": {"brush": [],
                                                  "displacement": [],
-                                                 "model": []},
+                                                 "obj_model": []},
                                       "index": {"brush": [],
                                                 "displacement": [],
-                                                "model": []}}
+                                                "obj_model": []}}
         # ^ buffer: {type: [(start, length)]}
         self.draw_calls = {"brush": [], "displacement": [], "obj_model": []}
         # ^ {renderable_type: [span, ...]}
@@ -88,13 +88,13 @@ class manager:
         frag_flat_obj_model = compile_shader("flat_obj_model.frag", gl.GL_FRAGMENT_SHADER)
         frag_stripey_brush = compile_shader("stripey_brush.frag", gl.GL_FRAGMENT_SHADER)
         self.shader = {"flat": {}, "stripey": {}, "textured": {}, "shaded": {}}
-        # ^ style: {target: program}
+        # ^ {"render_mode": {"target": program}}
         self.shader["flat"]["brush"] = compileProgram(vert_brush, frag_flat_brush)
         self.shader["flat"]["displacement"] = compileProgram(vert_displacement, frag_flat_displacement)
         self.shader["flat"]["obj_model"] = compileProgram(vert_obj_model, frag_flat_obj_model)
         self.shader["stripey"]["brush"] = compileProgram(vert_brush, frag_stripey_brush)
-        for style_dict in self.shader.values():
-            for program in style_dict.values():
+        for render_mode_dict in self.shader.values():
+            for program in render_mode_dict.values():
                 gl.glLinkProgram(program)
         self.uniform = {"flat": {"brush": {}, "displacement": {}, "obj_model": {}},
                         "stripey": {"brush": {}},
@@ -248,11 +248,10 @@ class manager:
 
     def add_obj_models(self, *obj_models):
         obj_model_data = dict()
+        # ^ {_id: (vertex_data, index_data)}
         for obj_model in obj_models:
-            for group in obj_model:
-                _id = (obj_model.name, obj_model.group)
-                obj_model_data[_id] = bufferize.obj_model(obj_model)
-        self.add_renderables("obj_models", obj_model_data)
+            obj_model_data[obj_model.name] = bufferize.obj_model(obj_model)
+        self.add_renderables("obj_model", obj_model_data)
 
     def add_renderables(self, renderable_type, renderables):
         """Add data to the appropriate GPU buffers"""
