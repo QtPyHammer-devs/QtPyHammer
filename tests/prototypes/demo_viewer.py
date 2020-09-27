@@ -1,5 +1,6 @@
 import io
 import json
+import os
 import subprocess
 import sys
 
@@ -95,6 +96,7 @@ console_out.setReadOnly(True)
 console_out.append("This is a terminal.  Please type a command:")
 console_widget.layout().addWidget(console_out)
 console_in = QtWidgets.QLineEdit()
+# pointing wine at the coldmaps.exe on linux is hard
 demo_REPL = subprocess.Popen("coldmaps_0.2.2.exe --demoplayer", stdin=subprocess.PIPE,
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                              text=True)
