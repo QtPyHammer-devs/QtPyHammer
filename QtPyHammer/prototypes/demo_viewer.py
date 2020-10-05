@@ -5,11 +5,11 @@ import subprocess
 import sys
 
 from PyQt5 import QtCore, QtWidgets
+import vmf_tool
 
 sys.path.insert(0, "../../")  # run this script from tests/prototypes/
 from QtPyHammer.ui.viewport import MapViewport3D  # noqa: E402
 from QtPyHammer.utilities.obj import Obj  # noqa: E402
-from QtPyHammer.utilities.vmf import vmf  # noqa: E402
 
 
 # Qt needs the system exception handler remapped
@@ -83,7 +83,7 @@ tf2_scout = Obj.load_from_file("scout.obj")
 viewport.render_manager.add_obj_models(tf2_scout)
 viewport.render_manager.dynamics[("obj_model", "scout.obj")] = {"position": [0, 128, -64]}
 viewport.render_manager.draw_calls["obj_model"] = []
-test2_vmf = vmf("../../Team Fortress 2/tf/mapsrc/test2.vmf")
+test2_vmf = vmf_tool.Vmf("../../Team Fortress 2/tf/mapsrc/test2.vmf")
 viewport.render_manager.add_brushes(*test2_vmf.brushes.values())
 splitter.addWidget(viewport)
 

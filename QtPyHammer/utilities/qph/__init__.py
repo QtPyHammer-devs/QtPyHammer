@@ -4,7 +4,7 @@ import io
 import shutil
 import struct
 
-# from ..utilities.vmf import vmf
+# from vmf_tool import Vmf
 
 
 class qph:
@@ -98,7 +98,7 @@ class qph:
 
         def write(d):
             out_file.write(d)
-        ## .qph header
+        # .qph header
         write(b"QTPY")
 
         def write_struct(f, d):
@@ -111,7 +111,9 @@ class qph:
         ...
 
     # def as_vmf(self):
-    #     out_vmf = vmf()
+    #     out_vmf = Vmf()
+    #     ...
+    #     out_vmf.brushes.extend(self.brushes)
     #     ...
     #     base_filename = os.path.splitext(self.filename)
     #     filename = os.path.join(folder, f"{base_filename}_{self.release}.vmf")

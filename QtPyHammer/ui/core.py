@@ -66,17 +66,17 @@ class MainWindow(QtWidgets.QMainWindow):
         # self.actions["Edit>Undo"].triggered.connect( # edit timeline
         self.actions["Edit>Redo"] = edit_menu.addAction("Redo")
         self.actions["Edit>Redo"].setEnabled(False)
-        # self.actions["Edit>Undo"].triggered.connect( # edit timeline
+        # self.actions["Edit>Redo"].triggered.connect( # edit timeline
         self.actions["Edit>History"] = edit_menu.addMenu("&History...")
         self.actions["Edit>History"].setEnabled(False)
         # self.actions["Edit>History"].triggered.connect(ui.edit_timeline)
         edit_menu.addSeparator()
         self.actions["Edit>Find"] = edit_menu.addAction("Find &Entites")
         self.actions["Edit>Find"].setEnabled(False)
-        # self.actions["Edit>Find"].triggered.connect(vmf.search)
+        # self.actions["Edit>Find"].triggered.connect(ops.vmf.search)
         self.actions["Edit>Replace"] = edit_menu.addAction("&Replace")
         self.actions["Edit>Replace"].setEnabled(False)
-        # self.actions["Edit>Replace"].triggered.connect(vmf.replace)
+        # self.actions["Edit>Replace"].triggered.connect(ops.vmf.search_replace)
         edit_menu.addSeparator()
         self.actions["Edit>Cut"] = edit_menu.addAction("Cu&t")
         self.actions["Edit>Cut"].setEnabled(False)

@@ -1,13 +1,15 @@
 """Interface for editing .vmf files and updating the associated edit timeline"""
+from vmf_tool import Vmf
+
 # from ..ops import timeline
 # from ..utilities import entity
-from ..utilities.vmf import vmf
 
 
 class VmfInterface:
+    """Connects vmf to renderer"""
     def __init__(self, parent, vmf_filename):
         self.parent = parent  # conection to parent.viewport.render_manager
-        self._vmf = vmf(vmf_filename)
+        self._vmf = Vmf(vmf_filename)
         if len(self._vmf.import_errors) > 0:
             print(*self._vmf.import_errors, sep="\n")
         self.brushes = self._vmf.brushes.values()
