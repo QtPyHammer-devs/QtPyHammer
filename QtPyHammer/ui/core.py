@@ -229,11 +229,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["View>Entity Names"].setChecked(True)
         self.actions["View>Entity Names"].setEnabled(False)
         # self.actions["View>Entity Names"].triggered.connect(
-        self.actions["View>Radius Culling"] = view_menu.addAction("Radius &Culling")
-        self.actions["View>Radius Culling"].setCheckable(True)
-        self.actions["View>Radius Culling"].setChecked(True)
-        self.actions["View>Radius Culling"].setEnabled(False)
-        # self.actions["View>Radius Culling"].triggered.connect(
         view_menu.addSeparator()
         self.actions["View>Hide"] = view_menu.addAction("&Hide")
         self.actions["View>Hide"].setEnabled(False)
@@ -306,7 +301,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # self.addToolBar(QtCore.Qt.TopToolBarArea, key_tools)
         # undo redo | carve | group ungroup ignore | hide unhide alt-hide |
-        # cut copy paste | cordon radius | TL <TL> | DD 3D DW DA |
+        # cut copy paste | cordon | TL <TL> | DD 3D DW DA |
         # compile helpers 2D_models fade CM prop_detail NO_DRAW
 
     def open(self, filename):  # allows loading via drag & drop
