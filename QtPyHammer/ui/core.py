@@ -111,10 +111,10 @@ class MainWindow(QtWidgets.QMainWindow):
             ent_browser = entity.browser(parent=self)
             self.actions["Tools>Brush to Entity"].triggered.connect(ent_browser.show)
         except Exception as exc:
-            raise exc
             # log the full exception for debug
-            print("Failed to load .fgds!")
+            print("Failed to load .fgds!")  # use the builtin logger module
             self.actions["Tools>Brush to Entity"].setEnabled(False)
+            raise exc
         self.actions["Tools>Entity to Brush"] = tools_menu.addAction("&Move to World")
         self.actions["Tools>Entity to Brush"].setEnabled(False)
         # self.actions["Tools>Entity to Brush"].triggered.connect(
@@ -123,7 +123,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["Tools>Apply Texture"].setEnabled(False)
         # self.actions["Tools>Apply Texture"].triggered.connect(ops.texture.apply)
         self.actions["Tools>Replace Texture"] = tools_menu.addAction("&Replace Textures")
-        # self.actions["Tools>Replace Texture"].setEnabled(False)
+        self.actions["Tools>Replace Texture"].setEnabled(False)
         # self.actions["Tools>Replace Texture"].triggered.connect(ops.texture.replace)
         self.actions["Tools>Texture Lock"] = tools_menu.addAction("Texture &Lock")
         self.actions["Tools>Texture Lock"].setCheckable(True)

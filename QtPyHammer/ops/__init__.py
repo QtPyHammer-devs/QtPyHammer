@@ -3,7 +3,6 @@ import sys
 
 from PyQt5 import QtWidgets
 
-# from .map_file import MapInterface
 from ..ui import workspace
 
 
