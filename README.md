@@ -1,3 +1,8 @@
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=QtPyHammer-devs_QtPyHammer&metric=ncloc)](https://sonarcloud.io/dashboard?id=QtPyHammer-devs_QtPyHammer)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=QtPyHammer-devs_QtPyHammer&metric=code_smells)](https://sonarcloud.io/dashboard?id=QtPyHammer-devs_QtPyHammer)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=QtPyHammer-devs_QtPyHammer&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=QtPyHammer-devs_QtPyHammer)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=QtPyHammer-devs_QtPyHammer&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=QtPyHammer-devs_QtPyHammer)
+
 # QtPyHammer
 A Python alternative to Valve's Hammer Editor (4.X in particular)
 
@@ -16,4 +21,3 @@ Finally, install all dependencies with pip
 
 You can now run QtPyHammer from the terminal  
 `$ python hammer.py`  
-
