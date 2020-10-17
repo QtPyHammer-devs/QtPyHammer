@@ -278,10 +278,6 @@ def lerp(a, b, t):
         raise TypeError("Cannot lerp {} & {}".format(type(a), type(b)))
 
 
-def angle_between(a, b):
-    dot(a, b) / (a.magnitude() * b.magnitude())
-
-
 def sort_clockwise(vec3s, normal):
     C = sum(vec3s, vec3()) / len(vec3s)
 
