@@ -93,20 +93,3 @@ class aabb:
         z = (self.min.z, self.max.z)
         for i in range(8):
             yield vector.vec3(x[i // 4 % 2], y[i // 2 % 2], z[i % 2])
-
-
-if __name__ == '__main__':
-    import unittest
-
-    class aabb_tests(unittest.TestCase):
-        def test_Adding_AABBs(self):
-            aabb1 = aabb((0, 0, 0), (1, 1, 1))
-            aabb2 = aabb((-1, -1, -1), (2, 2, 2))
-            self.assertEqual(aabb1 + aabb2, aabb((-1, -1, -1), (2, 2, 2)))
-
-        def test_AABB_plus_Position(self):
-            aabb1 = aabb((-.5, -.5, 0), (0.5, 0.5, 2))
-            aabb_result = aabb((-.5, -.5, 1), (0.5, 0.5, 3))
-            self.assertEqual(aabb1 + vector.vec3(0, 0, 1), aabb_result)
-
-    unittest.main()
