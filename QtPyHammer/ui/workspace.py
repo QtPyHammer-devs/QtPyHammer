@@ -5,7 +5,6 @@ from PyQt5 import QtWidgets
 
 from . import viewport
 from ..ops.vmf import VmfInterface
-# from ..ops import timeline
 from ..utilities import vector
 
 
@@ -34,29 +33,22 @@ class VmfTab(QtWidgets.QWidget):
         self.viewport.setFocus()  # not working as intended
         layout.addWidget(self.viewport)
         self.setLayout(layout)
-        # self.timeline = ops.timeline.edit_history()  # also handles multiplayer
-        # what happens when a user brings "logs in" and pushes all their changes to the shared state?
-        # since we're still saving as .vmf, history is saved as it's own file
-        # ? branches and reading timelines efficiently (chronological sorting) ?
-        # append mode file writing
         # TODO: viewport splitter(s), toolbar (grid controls etc.),
         # selection mode widget, hotkeys (defined in settings)
         self.map_file = VmfInterface(self, self.filename)
         # ^ define the VmfInterface last so it can connect to everything
+        # undo & redo is tied directly to the VmfInterface
 
     def raycast(self, ray_origin, ray_direction):
         """Get the object hit by ray"""
         ray_length = self.viewport.render_manager.draw_distance
         ray_end = ray_origin + ray_direction * ray_length
-        intersection = dict()
+        intersections = dict()
         # ^ distance: ("brush", brush.id, brush.face.id)
         # -- distance: (type, major_id, minor_id)
         # if distance is already in intersection:
         # -- z-fighting, special case!
-        for brush in self.map_file.brushes:
-            if ("brush", brush.id) in self.viewport.render_manager.hidden:
-                # ^ not taking the displacement draw mode into account
-                continue
+        for brush in self.map_file.brushes:  # filter to visible / selectable only
             probable_intersections = dict()
             # ^ distance(t): face.id
             for face in brush.faces:
@@ -70,30 +62,34 @@ class VmfTab(QtWidgets.QWidget):
                 origin_is_behind = bool(origin_distance < 0.01)
                 end_is_behind = bool(end_distance < 0.01)
                 if not origin_is_behind and end_is_behind:
-                    t = origin_distance / (origin_distance - end_distance)
-                    probable_intersections[t] = face.id
+                    distance = origin_distance / (origin_distance - end_distance)
+                    probable_intersections[distance] = face.id
+
             # check if any probable intersection actually touches the solid
             for t, face_id in probable_intersections.items():
                 P = vector.lerp(ray_origin, ray_end, t)
                 valid = True
                 for face in brush.faces:
                     if face.id == face_id:
-                        continue
+                        continue  # skip yourself, we're checking against all others
                     normal, distance = face.plane
                     if (vector.dot(normal, P) - distance) > -0.01:
                         valid = False  # P is floating outside the brush
                 if valid:
-                    intersection[t] = ("brush", brush.id, face_id)
-        if len(intersection) == 0:
+                    intersections[distance] = ("brush", brush.id, face_id)
+
+        if len(intersections) == 0:
             return  # no intersections, move on
-        closest = min(intersection.keys())
-        # if other distances are close, give a pop-up like blender alt+select
-        selected = intersection[closest]
-        # look at selection mode, do we want groups?, only the selected face?
-        # - if CRTL is held, add to selection OR subtract if already in selection
+
+        closest = min(intersections.keys())
+        # TODO: if other distances are close, give a pop-up like blender alt+select
+        selected = intersections[closest]
+        # TODO: selection mode
+        # -- do we want this object's group?, only the selected face?
+        # TODO: modifier keys, add to selection? subtract? new selection?
         self.selection = {selected}
 
-        self.viewport.render_manager.hide(selected[:2])
+        self.viewport.render_manager.hide(selected[:2])  # hide this brush
 
     def save_to_file(self):
         print(f"Saving {self.filename}... ", end="")
@@ -111,5 +107,6 @@ class VmfTab(QtWidgets.QWidget):
         self.never_saved = False
 
     def close(self):
+        # TODO: ask the user if they want to save first
         # release used memory eg. self.viewport.render_manager buffers
         super(VmfTab, self).close()
