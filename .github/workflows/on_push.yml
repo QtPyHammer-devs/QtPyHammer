@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-  	name: Build, Test & Analyse
+    name: Build, Test & Analyse
 
     runs-on: ubuntu-latest
 
@@ -30,9 +30,9 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest --cov=./ --cov-report=xml --doctest-modules
+        pytest --cov=./ --cov-report=xml
     - name: Analyse with SonarCloud
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
