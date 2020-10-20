@@ -21,7 +21,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install -r prototypes/requirements.txt
-        pip install flake8 pytest
+        pip install flake8 pytest pytest-cov
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -30,7 +30,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest --cov=./ --cov-report=xml --doctest-modules
+        pytest --cov=./ --cov-report=xml
     - name: Analyse with SonarCloud
       uses: SonarSource/sonarcloud-github-action@master
       env:
