@@ -1,6 +1,5 @@
 """Classes for creating and using cameras in 3D"""
-from OpenGL.GL import *
-from OpenGL.GLU import *
+import OpenGL.GL as gl
 
 from . import vector
 
@@ -16,13 +15,22 @@ keybinds = {FORWARD: [], BACK: [],
 sensitivity = 2
 
 
+def clamp(value, minimum, maximum):
+    """clamp range of rotation to avoid gimball lock"""
+    if minimum < value < maximum:
+        return value
+    elif minimum > value:
+        return minimum
+    elif maximum < value:
+        return maximum
+
+
 class freecam:
     """Quake / Source free motion camera"""
     __slots__ = ["position", "rotation", "speed"]
 
     def __init__(self, position, rotation, speed=0.75):
         self.position = vector.vec3(position) if position is not None else vector.vec3()
-        # self.next_position = self.last_position
         self.rotation = vector.vec3(rotation) if rotation is not None else vector.vec3()
         self.speed = speed
 
@@ -31,12 +39,9 @@ class freecam:
         # MOUSE
         global sensitivity
         self.rotation.z += mousepos.x * sensitivity
-        self.rotation.x += mousepos.y * sensitivity
-        clamp = clamp = lambda v, m, M: m if v < m else M if v > M else v
+        self.rotation.x += mousepos.y * sensitivity        
         self.rotation.x = clamp(self.rotation.x, -90, 90)
-        # ^ clamping to avoid gimball lock
         # KEYBOARD
-        # self.last_position = self.next_position
         local_move = vector.vec3()
 
         def pressed(direction):
@@ -49,11 +54,10 @@ class freecam:
         self.position += global_move * self.speed * dt
 
     def set(self):
-        glRotate(-90, 1, 0, 0)  # make Y+ forward
-        glRotate(self.rotation.x, 1, 0, 0)
-        glRotate(self.rotation.z, 0, 0, 1)
-        # current_position = vector.lerp(self.last_position, self.next_position, lerp_factor)
-        glTranslate(*-self.position)
+        gl.glRotate(-90, 1, 0, 0)  # make Y+ forward
+        gl.glRotate(self.rotation.x, 1, 0, 0)
+        gl.glRotate(self.rotation.z, 0, 0, 1)
+        gl.glTranslate(*-self.position)
 
     def __repr__(self):
         pos = [round(x, 2) for x in self.last_position]
@@ -78,9 +82,9 @@ class firstperson:
         self.rotation.x += mouse.y * sensitivity
 
     def set(self, position):
-        glRotate(self.rotation.x - 90, 1, 0, 0)
-        glRotate(self.rotation.z, 0, 0, 1)
-        glTranslate(-position.x, -position.y, -position.z)
+        gl.glRotate(self.rotation.x - 90, 1, 0, 0)
+        gl.glRotate(self.rotation.z, 0, 0, 1)
+        gl.glTranslate(-position.x, -position.y, -position.z)
 
 
 class thirdperson:
@@ -95,12 +99,12 @@ class thirdperson:
 
     def update(self):
         """write your own implementation"""
-        pass
+        raise NotImplementedError("thirdperson is a baseclass, write your own update function")
 
     def set(self):
-        glRotate(self.rotation.x, 1, 0, 0)
-        glRotate(self.rotation.y, 0, 1, 0)
-        glRotate(self.rotation.z, 0, 0, 1)
-        glTranslate(-self.position.x, -self.position.y, -self.position.z)
-        glTranslate(0, 0, -self.radius)
-        glTranslate(self.offset.x, self.offset.y, 0)
+        gl.glRotate(self.rotation.x, 1, 0, 0)
+        gl.glRotate(self.rotation.y, 0, 1, 0)
+        gl.glRotate(self.rotation.z, 0, 0, 1)
+        gl.glTranslate(-self.position.x, -self.position.y, -self.position.z)
+        gl.glTranslate(0, 0, -self.radius)
+        gl.glTranslate(self.offset.x, self.offset.y, 0)

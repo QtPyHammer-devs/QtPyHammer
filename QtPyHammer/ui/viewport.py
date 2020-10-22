@@ -1,6 +1,6 @@
 import math
 
-from OpenGL.GL import *
+import OpenGL.GL as gl
 from OpenGL.GLU import gluPerspective
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -73,15 +73,15 @@ class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
         self.view_mode = view_mode
         self.makeCurrent()
         if view_mode == "flat":
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
-            glDisable(GL_TEXTURE_2D)
+            gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_FILL)
+            gl.glDisable(gl.GL_TEXTURE_2D)
         elif view_mode == "textured":
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
-            glEnable(GL_TEXTURE_2D)
+            gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_FILL)
+            gl.glEnable(gl.GL_TEXTURE_2D)
             # add textures to buffers
         elif view_mode == "wireframe":
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
-            glDisable(GL_TEXTURE_2D)
+            gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_LINE)
+            gl.glDisable(gl.GL_TEXTURE_2D)
         self.doneCurrent()
 
     def paintGL(self):
@@ -96,11 +96,11 @@ class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
             self.last_mouse_position = vector.vec2(center.x(), center.y())
         self.moved_last_tick = True
         # ^ get accurate mouse input for frame
-        glLoadIdentity()
+        gl.glLoadIdentity()
         fov = self.render_manager.fov
         aspect = self.render_manager.aspect
         draw_distance = self.render_manager.draw_distance
-        gluPerspective(fov, aspect, 0.1, draw_distance)
+        gl.gluPerspective(fov, aspect, 0.1, draw_distance)
         # UPDATE CAMERA
         ms = self.timer.remainingTime() / self.timer.interval() / 1000
         if self.camera_moving:  # TOGGLED ON: take user inputs
