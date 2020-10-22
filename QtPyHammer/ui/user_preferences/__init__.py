@@ -6,17 +6,10 @@ from . import theme
 # connect it all to ops
 
 
-class settings_editor(QtWidgets.QTabWidget):
-    def __init__(self, parent):
-        QtWidgets.QDialog.__init__(self, parent)  # become a Dialog
-        self.addTab(theme.theme_editor(self), "Theme")
-
-
-if __name__ == "__main__":
-    app = QtWidgets.QApplication([])
-
-    window = settings_editor(None)
-    window.setGeometry(128, 128, 512, 576)
-    window.show()
-
-    app.exec_()
+class SettingsEditor(QtWidgets.QTabWidget):
+    def __init__(self, parent=None):
+        QtWidgets.QDialog.__init__(self, parent)
+        # ^ initialise as a QDialog, this means we have a floating dialog that tabs can be directly added to
+        # -- maybe there's a better way to do multiple inheritance...
+        self.addTab(theme.ThemeEditor(self), "Theme")
+    

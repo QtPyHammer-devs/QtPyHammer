@@ -69,18 +69,18 @@ def save_theme(palette, filename):
         palette_ini.endGroup()
 
 
-class theme_editor(QtWidgets.QWidget):
-    def __init__(self, parent):
-        super(theme_editor, self).__init__(parent)
-        # preview panel
-        layout = QtWidgets.QHBoxLayout()
-        form = QtWidgets.QFormLayout()  # editor form
-        form.addRow("role", QtWidgets.QWidget())
-        # ^ coloured label that opens a colour wheel
-        layout.addWidget(form)
-        # ...
+class ThemeEditor(QtWidgets.QWidget):  # WIP
+    def __init__(self, parent=None):
+        super(ThemeEditor, self).__init__(parent)
+        # layout = QtWidgets.QHBoxLayout()
+        form = QtWidgets.QFormLayout()
+        form.addRow("role", ColourPicker())
+        self.setLayout(form)  # TEST
+        # layout.addWidget(form_widget)
+        # preview_widget = ...
         # layout.addWidget(preview_widget)
 
 
-class colour_picker:
+class ColourPicker(QtWidgets.QLabel):  # WIP
+    """A coloured label with it's own colour wheel"""
     pass

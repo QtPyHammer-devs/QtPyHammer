@@ -7,7 +7,6 @@ from QtPyHammer.ui.core import MainWindow
 # QtPyHammer app is initialised in conftest.py, just testing the main window opens.
 def test_hammer_main_window(qtbot):
     window = MainWindow()
-    window.show()
     qtbot.addWidget(window)
     assert window.windowTitle() == "QtPyHammer"
 
