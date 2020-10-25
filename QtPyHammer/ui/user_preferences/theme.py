@@ -1,4 +1,4 @@
-from typing
+from typing import List
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -100,5 +100,6 @@ class ColourPicker(QtWidgets.QLabel):
     def setColour(self):
         """sets the label colour to the picker's selected colour"""
         colour = self.picker.selectedColour()
-        QtGui.QImage(bytes(colour), 1, 1, QtGuit.QImage.Format_RGB888)
-        ...
+        image = QtGui.QImage(bytes(colour), 1, 1, QtGui.QImage.Format_RGB888)
+        # need to scale the image up somehow, minimum label size?
+        self.setPixmap(QtGui.QPixmap.fromImage(image))
