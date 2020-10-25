@@ -1,7 +1,9 @@
+from typing
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-def load_theme(filename):
+def load_theme(filename):  # shouldn't this be in ops.theme?
     palette_ini = QtCore.QSettings(filename, QtCore.QSettings.IniFormat)
     palette = QtGui.QPalette()
 
@@ -9,6 +11,7 @@ def load_theme(filename):
         string = palette_ini.value(ini_key)
         colour = QtGui.QColor(*map(int, string.split(" ")))
         palette.setColor(colour_group, colour_role, colour)
+
     for group in ("Active", "Disabled", "Inactive"):
         palette_ini.beginGroup(group)
         group = getattr(palette, group)
@@ -36,13 +39,14 @@ def load_theme(filename):
     return palette
 
 
-def save_theme(palette, filename):
+def save_theme(palette, filename):  # also for ops.theme?
     palette_ini = QtCore.QSettings(filename, QtCore.QSettings.IniFormat)
 
     def write(ini_key, colour_group, colour_role):
         colour = palette.color(colour_group, colour_role)
         ini_value = f"{colour.red()} {colour.blue()} {colour.green()}"
         palette_ini.setValue(ini_key, ini_value)
+
     for group in ("Active", "Disabled", "Inactive"):
         palette_ini.beginGroup(group)
         group = getattr(palette, group)
@@ -69,18 +73,32 @@ def save_theme(palette, filename):
         palette_ini.endGroup()
 
 
-class ThemeEditor(QtWidgets.QWidget):  # WIP
+class ThemeEditor(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super(ThemeEditor, self).__init__(parent)
-        # layout = QtWidgets.QHBoxLayout()
         form = QtWidgets.QFormLayout()
         form.addRow("role", ColourPicker())
-        self.setLayout(form)  # TEST
-        # layout.addWidget(form_widget)
-        # preview_widget = ...
-        # layout.addWidget(preview_widget)
+        self.setLayout(form)
+        # have a preview_widget
+        # apply & cancel buttons
 
 
-class ColourPicker(QtWidgets.QLabel):  # WIP
+class ColourPicker(QtWidgets.QLabel):
     """A coloured label with it's own colour wheel"""
-    pass
+    picker = QtWidgets.QColorDialog()
+
+    def __init__(self, colour: List[int] = (255, 255, 255), parent=None):
+        super(QtWidgets.QLabel, self).__init__(parent)
+        self.picker.setCurrentColour(QtGui.QColor(*colour))
+        self.setColour()
+        self.picker.accepted.connect(self.setColour)
+
+    def mousePressEvent(self, event):
+        super(QtWidgets.QLabel, self).mousePressEvent(self)
+        self.picker.exec()
+
+    def setColour(self):
+        """sets the label colour to the picker's selected colour"""
+        colour = self.picker.selectedColour()
+        QtGui.QImage(bytes(colour), 1, 1, QtGuit.QImage.Format_RGB888)
+        ...
