@@ -1,4 +1,4 @@
-name: Python application
+name: Latest commit tests
 
 on: [push]
 
@@ -18,11 +18,11 @@ jobs:
         python-version: 3.8
     - name: Install dependencies
       run: |
+        sudo apt install -y xvfb x11-utils libxkbcommon-x11-0
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install -r prototypes/requirements.txt
         pip install -r tests/requirements.txt
-        pip install pytest-xvfb
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -31,10 +31,22 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        sudo apt-get install libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0
-        xvfb-run `which pytest` --cov=./ --cov-report=xml
+        ulimit -c unlimited
+        sudo catchsegv xvfb-run --auto-servernum `which pytest` --cov=./ --cov-report=xml
     - name: Analyse with SonarCloud
       uses: SonarSource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    - name: chmod crash logs
+      if: always()
+      run: |
+        if [[ -d "$DIRECTORY" ]]; then
+          sudo chmod -R +rwx /var/crash
+        fi
+    - name: Upload crash logs
+      if: always()
+      uses: actions/upload-artifact@master
+      with:
+        name: crashes
+        path: /var/crash
