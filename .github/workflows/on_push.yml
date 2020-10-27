@@ -41,9 +41,7 @@ jobs:
     - name: chmod crash logs
       if: always()
       run: |
-        if [[ -d "$DIRECTORY" ]]; then
           sudo chmod -R +rwx /var/crash
-        fi
     - name: Upload crash logs
       if: always()
       uses: actions/upload-artifact@master
