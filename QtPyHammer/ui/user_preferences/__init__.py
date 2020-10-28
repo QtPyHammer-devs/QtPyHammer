@@ -12,4 +12,3 @@ class SettingsEditor(QtWidgets.QTabWidget):
         # ^ initialise as a QDialog, this means we have a floating dialog that tabs can be directly added to
         # -- maybe there's a better way to do multiple inheritance...
         self.addTab(theme.ThemeEditor(self), "Theme")
-    

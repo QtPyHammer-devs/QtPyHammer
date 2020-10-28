@@ -1,5 +1,3 @@
-from typing import List
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -85,11 +83,11 @@ class ThemeEditor(QtWidgets.QWidget):
 
 class ColourPicker(QtWidgets.QLabel):
     """A coloured label with it's own colour wheel"""
-    picker = QtWidgets.QColorDialog()
 
-    def __init__(self, colour: List[int] = (255, 255, 255), parent=None):
+    def __init__(self, colour=(255, 255, 255), parent=None):
         super(QtWidgets.QLabel, self).__init__(parent)
-        self.picker.setCurrentColour(QtGui.QColor(*colour))
+        self.picker = QtWidgets.QColorDialog()
+        self.picker.setCurrentColor(QtGui.QColor(*colour))
         self.setColour()
         self.picker.accepted.connect(self.setColour)
 
@@ -99,7 +97,8 @@ class ColourPicker(QtWidgets.QLabel):
 
     def setColour(self):
         """sets the label colour to the picker's selected colour"""
-        colour = self.picker.selectedColour()
-        image = QtGui.QImage(bytes(colour), 1, 1, QtGui.QImage.Format_RGB888)
+        colour = self.picker.selectedColor()
+        pixels = colour.rgb().to_bytes(4, "little")
+        image = QtGui.QImage(pixels, 1, 1, QtGui.QImage.Format_ARGB32)
         # need to scale the image up somehow, minimum label size?
         self.setPixmap(QtGui.QPixmap.fromImage(image))
