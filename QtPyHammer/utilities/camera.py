@@ -9,15 +9,17 @@ LEFT = 0x02
 RIGHT = 0x03
 UP = 0x04
 DOWN = 0x05
+
 keybinds = {FORWARD: [], BACK: [],
             LEFT: [], RIGHT: [],
             UP: [], DOWN: []}
+
 sensitivity = 2
 
 
 def clamp(value, minimum, maximum):
     """clamp range of rotation to avoid gimball lock"""
-    if minimum < value < maximum:
+    if minimum <= value <= maximum:
         return value
     elif minimum > value:
         return minimum
@@ -30,8 +32,8 @@ class freecam:
     __slots__ = ["position", "rotation", "speed"]
 
     def __init__(self, position, rotation, speed=0.75):
-        self.position = vector.vec3(position) if position is not None else vector.vec3()
-        self.rotation = vector.vec3(rotation) if rotation is not None else vector.vec3()
+        self.position = vector.vec3(*position)
+        self.rotation = vector.vec3(*rotation)
         self.speed = speed
 
     def update(self, mousepos, keys, dt):
@@ -39,7 +41,7 @@ class freecam:
         # MOUSE
         global sensitivity
         self.rotation.z += mousepos.x * sensitivity
-        self.rotation.x += mousepos.y * sensitivity        
+        self.rotation.x += mousepos.y * sensitivity
         self.rotation.x = clamp(self.rotation.x, -90, 90)
         # KEYBOARD
         local_move = vector.vec3()
@@ -73,8 +75,8 @@ class firstperson:
     """First-person camera"""
     __slots__ = ["rotation"]
 
-    def __init__(self, rotation=None):
-        self.rotation = vector.vec3(rotation) if rotation is not None else vector.vec3()
+    def __init__(self, rotation=(0, 0, 0)):
+        self.rotation = vector.vec3(*rotation)
 
     def update(self, mouse):
         global sensitivity
@@ -92,8 +94,8 @@ class thirdperson:
     __slots__ = ["position", "rotation", "radius", "offset"]
 
     def __init__(self, position, rotation, radius, offset=(0, 0)):
-        self.position = vector.vec3(position)
-        self.rotation = vector.vec3(rotation)
+        self.position = vector.vec3(*position)
+        self.rotation = vector.vec3(*rotation)
         self.radius = radius
         self.offset = vector.vec2(offset)
 
