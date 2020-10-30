@@ -144,6 +144,8 @@ class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
     ##########################
 
     def keyPressEvent(self, event):  # not registering arrow keys?
+        # BUG? auto repeat can "give the camera velocity" by jamming a key down virtually?
+        # ^ obsered once by @snake-biscuits
         self.keys.add(event.key())
 
         def free_mouse():
