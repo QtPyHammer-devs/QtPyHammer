@@ -33,7 +33,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
         # model draw distance (defined in settings)
         self.ray = (vector.vec3(), vector.vec3())  # origin, dir (for debug rendering)
         # INPUT HANDLING
-        self.camera = camera.freecam(None, None, 16)
+        self.camera = camera.freecam((0, 0, 0), (0, 0, 0), 16)
         self.camera_moving = False
         self.cursor_start = QtCore.QPoint()
         self.moved_last_tick = False
@@ -57,10 +57,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
         self.doneCurrent()
         super(MapViewport3D, self).update()  # calls PaintGL
 
-    ######################
-    ### OpenGL Methods ###
-    ######################
-
+    # OpenGL Methods
     def initializeGL(self):
         self.render_manager.init_GL()
         self.set_view_mode("flat")  # sets shaders & GL state
@@ -119,10 +116,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
     def resizeGL(self, width, height):
         self.render_manager.aspect = width / height
 
-    ##################
-    ### Qt Signals ###
-    ##################
-
+    # Qt Signals
     def do_raycast(self, click_x, click_y):
         camera_right = vector.vec3(x=1).rotate(*-self.camera.rotation)
         camera_up = vector.vec3(z=1).rotate(*-self.camera.rotation)
@@ -139,10 +133,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
         self.ray = (ray_origin, ray_direction)  # <-- for debug render
         return ray_origin, ray_direction
 
-    ##########################
-    ### Rebound Qt Methods ###
-    ##########################
-
+    # Rebound Qt Methods
     def keyPressEvent(self, event):  # not registering arrow keys?
         # BUG? auto repeat can "give the camera velocity" by jamming a key down virtually?
         # ^ obsered once by @snake-biscuits
