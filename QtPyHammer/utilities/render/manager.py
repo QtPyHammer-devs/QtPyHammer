@@ -47,16 +47,14 @@ class manager:
         # ^ buffer: {type: [(start, length)]}
         self.draw_calls = {"brush": [], "displacement": [], "obj_model": []}
         # ^ {renderable_type: [span, ...]}
-        # span = (start, length)
-        # -- what if key = (renderable_type, [(func, *args)], [(func, *args)])
-        # -- ^ namedtuple("key", ["renderable_type", "setup", "tear_down"])
-        self.hidden = set()  # hidden by user, not visgroup
-        # ^ {renderable}
+        # where span = (start, length)
+        self.dont_draw = set()
+        # ^ {renderable, ...}
 
         self.dynamics = dict()
         # {renderable: {"position": [x, y, z]}}
 
-    def init_GL(self):
+    def initialise(self):
         gl.glClearColor(0.0, 0.0, 0.0, 0.0)
         gl.glEnable(gl.GL_CULL_FACE)
         gl.glEnable(gl.GL_DEPTH_TEST)
@@ -158,12 +156,12 @@ class manager:
             buffer, start, length, data = update
             gl.glBufferSubData(buffer, start, length, data)
         # update shader uniforms
-        MV_matrix = gl.glGetFloatv(gl.GL_MODELVIEW_MATRIX)
+        model_view_matrix = gl.glGetFloatv(gl.GL_MODELVIEW_MATRIX)
         for renderable_type in self.shader[self.render_mode]:
             gl.glUseProgram(self.shader[self.render_mode][renderable_type])
             if "matrix" in self.uniform[self.render_mode][renderable_type]:
                 location = self.uniform[self.render_mode][renderable_type]["matrix"]
-                gl.glUniformMatrix4fv(location, 1, gl.GL_FALSE, MV_matrix)
+                gl.glUniformMatrix4fv(location, 1, gl.GL_FALSE, model_view_matrix)
 
     def track_span(self, buffer, renderable_type, span_to_track):
         # adds span_to_track to self.buffer_allocation_map

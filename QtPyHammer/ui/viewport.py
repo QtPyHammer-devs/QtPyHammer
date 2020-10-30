@@ -59,7 +59,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
 
     # OpenGL Methods
     def initializeGL(self):
-        self.render_manager.init_GL()
+        self.render_manager.initialise()
         self.set_view_mode("flat")  # sets shaders & GL state
         self.timer.start()
 
