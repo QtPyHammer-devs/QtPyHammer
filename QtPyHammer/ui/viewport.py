@@ -100,7 +100,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
         fov = self.render_manager.fov
         aspect = self.render_manager.aspect
         draw_distance = self.render_manager.draw_distance
-        gl.gluPerspective(fov, aspect, 0.1, draw_distance)
+        gluPerspective(fov, aspect, 0.1, draw_distance)
         # UPDATE CAMERA
         ms = self.timer.remainingTime() / self.timer.interval() / 1000
         if self.camera_moving:  # TOGGLED ON: take user inputs
