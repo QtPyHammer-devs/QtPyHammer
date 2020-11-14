@@ -230,7 +230,7 @@ def lerp(a: Union[float, Iterable], b: Union[float, Iterable], t: float) -> Unio
 
 
 def angle_between(a: vec3, b: vec3) -> float:
-    dot(a, b) / (a.magnitude() * b.magnitude())
+    return dot(a, b) / (a.magnitude() * b.magnitude())
 
 
 def sort_clockwise(points: vec3, normal: Iterable) -> list:
