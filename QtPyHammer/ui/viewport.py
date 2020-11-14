@@ -1,4 +1,5 @@
 import math
+import os
 
 import OpenGL.GL as gl
 from OpenGL.GLU import gluPerspective
@@ -27,11 +28,12 @@ class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
         super(MapViewport3D, self).__init__(parent=parent)
         preferences = QtWidgets.QApplication.instance().preferences
         camera.sensitivity = float(preferences.value("Input/MouseSensitivity", "2.0"))
-        # ^ this shouldn't be here, but it has to be set once the app is active
-        # RENDERING
-        self.render_manager = render.manager()
-        # model draw distance (defined in settings)
-        self.ray = (vector.vec3(), vector.vec3())  # origin, dir (for debug rendering)
+        # ^ camera sensitivity cannot be set until the app is active
+        draw_distance = preferences.value("Viewports/DrawDistance")
+        field_of_view = preferences.value("Viewports/FieldOfView")
+        memory_limit = preferences.value("Viewports/MemoryLimit")
+        self.render_manager = render.manager(draw_distance, field_of_view, memory_limit)
+        # uniform scaled & tinted cuboids to substitute model bounds at a distance...
         # INPUT HANDLING
         self.camera = camera.freecam((0, 0, 0), (0, 0, 0), 16)
         self.camera_moving = False
@@ -59,7 +61,17 @@ class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
 
     # OpenGL Methods
     def initializeGL(self):
-        self.render_manager.initialise()
+        major = gl.glGetIntegerv(gl.GL_MAJOR_VERSION)
+        minor = gl.glGetIntegerv(gl.GL_MINOR_VERSION)
+        if major >= 4 and minor >= 5:
+            self.shader_version = "GLSL_450"
+        elif major >= 3 and minor >= 0:
+            self.shader_version = "GLES_300"
+        else:
+            raise NotImplementedError(f"OpenGL version ({major}.{minor}) too low!")
+        app = QtWidgets.QApplication.instance()
+        shader_folder = os.path.join(app.folder, f"shaders/{self.shader_version}/")
+        self.render_manager.initialise(shader_folder)
         self.set_view_mode("flat")  # sets shaders & GL state
         self.timer.start()
 
@@ -130,7 +142,6 @@ class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
         y_offset *= fov_scalar
         ray_origin = self.camera.position
         ray_direction = camera_forward + x_offset + y_offset
-        self.ray = (ray_origin, ray_direction)  # <-- for debug render
         return ray_origin, ray_direction
 
     # Rebound Qt Methods

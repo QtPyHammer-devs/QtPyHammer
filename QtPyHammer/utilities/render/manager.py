@@ -4,21 +4,20 @@ import os
 import numpy as np
 import OpenGL.GL as gl  # imagine a python binding with gl.Begin not gl.glBegin
 from OpenGL.GL.shaders import compileShader, compileProgram
-from PyQt5 import QtWidgets
 
 from . import bufferize
 from . import draw
 
 
-class manager:
+class Manager:
     """Manages OpenGL buffers and gives handles for rendering & hiding objects"""
-    def __init__(self):
-        self.draw_distance = 4096 * 4  # defined in settings
-        self.fov = 90  # defined in settings (70 - 120)
-        self.render_mode = "flat"  # defined in settings
-        MB = 10 ** 6
-        self.memory_limit = 128 * MB  # defined in settings
-        # ^ can't check the physical device limit until AFTER init_GL is called
+    def __init__(self, draw_distance, field_of_view, memory_limit):
+        self.draw_distance = draw_distance
+        self.field_of_view = field_of_view
+        MB = 10 ** 6  # ~ 1 Megabyte
+        self.memory_limit = memory_limit * MB
+        # ^ can't check the physical device's limits until AFTER init_GL is called
+        self.render_mode = "flat"  # dominant shader variant, hammer specfic
         self.buffer_update_queue = []
         # ^ [(buffer, start, length, data)]
         # goes directly into glBufferSubData()
@@ -30,14 +29,16 @@ class manager:
         # renderable = ("brush", brush.id)
         # renderable = ("displacement", (brush.id, side.id))
         # renderable = ("obj_model", obj_model.filename)
-        # finding the sub-objects for each renderable will be nessecary
-        # functions used for this should be helpful for renderable updates
-        # preserve unchanged vertex data while changing the index_data component
-        # obj_model.o[], obj_model.g[]  (hiding bodygroups, material groups)
-        # brush.faces  (texture application tint / textured shaders)
-        # displacement.triangle  (is_walkable tint)
-        # saving buffer data to .obj could be very helpful too
-        # not to mention .smd, brush & displacement
+        # SUB-OBJECTS NOTES
+        # for tinting in the editor (selection, displacement draw mode etc.)...
+        # we need to identify the sub-objects of a givern renderable
+        # sub-spans, which would be calculated in a given renderable's bufferize function
+
+        # OBJ MODEL: obj_model.o[], obj_model.g[]
+        # BRUSH: brush.faces
+        # DISPLACEMENT: displacement.triangle  (is_walkable tint)
+
+        # converting buffer data out into other objects could be VERY cool
         self.buffer_allocation_map = {"vertex": {"brush": [],
                                                  "displacement": [],
                                                  "obj_model": []},
@@ -54,7 +55,7 @@ class manager:
         self.dynamics = dict()
         # {renderable: {"position": [x, y, z]}}
 
-    def initialise(self):
+    def initialise(self, shader_folder):
         gl.glClearColor(0.0, 0.0, 0.0, 0.0)
         gl.glEnable(gl.GL_CULL_FACE)
         gl.glEnable(gl.GL_DEPTH_TEST)
@@ -62,29 +63,23 @@ class manager:
         gl.glCullFace(gl.GL_BACK)
         gl.glPointSize(4)
         gl.glPolygonMode(gl.GL_BACK, gl.GL_LINE)
-        # SHADERS
-        major = gl.glGetIntegerv(gl.GL_MAJOR_VERSION)
-        minor = gl.glGetIntegerv(gl.GL_MINOR_VERSION)
-        if major >= 4 and minor >= 5:
-            self.shader_version = "GLSL_450"
-        elif major >= 3 and minor >= 0:
-            self.shader_version = "GLES_300"
-        app = QtWidgets.QApplication.instance()
-        shader_folder = os.path.join(app.folder, f"shaders/{self.shader_version}/")
+        self.compile_shaders(shader_folder)
 
-        def compile_shader(f, t):
-            return compileShader(open(shader_folder + f, "rb"), t)
+    def compile_shaders(self, folder):
+
+        def make_shader(file, shader_type):
+            return compileShader(open(os.path.join(folder, file), "rb"), shader_type)
 
         # shader construction could be automated some
         # the shader names have a clear format: f"{renderable}.vert", f"{style}_{renderable}.frag"
         # use os.listdir to assemble all shaders?
-        vert_brush = compile_shader("brush.vert", gl.GL_VERTEX_SHADER)
-        vert_displacement = compile_shader("displacement.vert", gl.GL_VERTEX_SHADER)
-        vert_obj_model = compile_shader("obj_model.vert", gl.GL_VERTEX_SHADER)
-        frag_flat_brush = compile_shader("flat_brush.frag", gl.GL_FRAGMENT_SHADER)
-        frag_flat_displacement = compile_shader("flat_displacement.frag", gl.GL_FRAGMENT_SHADER)
-        frag_flat_obj_model = compile_shader("flat_obj_model.frag", gl.GL_FRAGMENT_SHADER)
-        frag_stripey_brush = compile_shader("stripey_brush.frag", gl.GL_FRAGMENT_SHADER)
+        vert_brush = make_shader("brush.vert", gl.GL_VERTEX_SHADER)
+        vert_displacement = make_shader("displacement.vert", gl.GL_VERTEX_SHADER)
+        vert_obj_model = make_shader("obj_model.vert", gl.GL_VERTEX_SHADER)
+        frag_flat_brush = make_shader("flat_brush.frag", gl.GL_FRAGMENT_SHADER)
+        frag_flat_displacement = make_shader("flat_displacement.frag", gl.GL_FRAGMENT_SHADER)
+        frag_flat_obj_model = make_shader("flat_obj_model.frag", gl.GL_FRAGMENT_SHADER)
+        frag_stripey_brush = make_shader("stripey_brush.frag", gl.GL_FRAGMENT_SHADER)
         self.shader = {"flat": {}, "stripey": {}, "textured": {}, "shaded": {}}
         # ^ {"render_mode": {"target": program}}
         self.shader["flat"]["brush"] = compileProgram(vert_brush, frag_flat_brush)

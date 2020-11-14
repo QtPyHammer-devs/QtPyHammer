@@ -4,14 +4,14 @@ import struct
 import numpy as np
 from OpenGL.GL import *
 from OpenGL.GL.shaders import compileShader, compileProgram
-from OpenGL.GLU import *
+from OpenGL.GLU import gluPerspective
 from PyQt5 import QtCore, QtWidgets
 
 
 class render_manager:
     def __init__(self):
-        self.update_queue = [] # (vertices, indices)
-    
+        self.update_queue = []  # (vertices, indices)
+
     def init_GL(self):
         glClearColor(0.25, 0.25, 0.5, 0.0)
         glEnable(GL_DEPTH_TEST)
@@ -39,7 +39,7 @@ class render_manager:
         glUseProgram(self.basic_shader)
         self.matrix_location = glGetUniformLocation(self.basic_shader, "MVP")
         self.draw_length = 0
-    
+
     def init_buffers(self, size=256):
         self.VERTEX_BUFFER = glGenBuffers(1)
         glBindBuffer(GL_ARRAY_BUFFER, self.VERTEX_BUFFER)
@@ -89,14 +89,14 @@ class viewport(QtWidgets.QOpenGLWidget):
     def initializeGL(self):
         self.render_manager.init_GL()
         self.render_manager.init_buffers()
-        self.clock.start(15) # tick_length in milliseconds
+        self.clock.start(15)  # tick_length in milliseconds
 
     def update(self, tick_length=0.015):
         self.makeCurrent()
         glRotate(30 * tick_length, 1, 0, 1.25)
         self.render_manager.update()
         self.doneCurrent()
-        super(viewport, self).update() # calls paintGL
+        super(viewport, self).update()  # calls paintGL
 
     def paintGL(self):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -121,8 +121,8 @@ if __name__ == '__main__':
 
         def except_hook(cls, exception, traceback):
             sys.__excepthook__(cls, exception, traceback)
-        sys.excepthook = except_hook # Python Qt Debug
-        
+        sys.excepthook = except_hook  # Python Qt Debug
+
         app = QtWidgets.QApplication(sys.argv)
         window = viewport()
         window.setGeometry(128, 64, 576, 576)
@@ -157,7 +157,7 @@ if __name__ == '__main__':
                         SDL_GL_DeleteContext(glContext)
                         SDL_DestroyWindow(window)
                         SDL_Quit()
-                        return False  
+                        return False
                 dt = time.time() - old_time
                 while dt >= 1 / tickrate:
                     # do logic for frame
@@ -177,4 +177,3 @@ if __name__ == '__main__':
                 SDL_GL_SwapWindow(window)
 
         sdl_window()
-
