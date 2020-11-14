@@ -31,7 +31,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest --cov=./ --cov-report=xml
+        xvfb-run -s "-screen 0 640x480x24" pytest --cov=./ --cov-report=xml
     - name: Analyse with SonarCloud
       uses: SonarSource/sonarcloud-github-action@master
       env:
