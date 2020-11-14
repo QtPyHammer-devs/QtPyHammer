@@ -62,7 +62,7 @@ class vec2:
 
     def __setitem__(self, key: Union[int, slice], value: float):
         if isinstance(key, slice):
-            for k, v in zip(["x", "y", "z"][key], value[key]):
+            for k, v in zip(["x", "y", "z"][key], value):
                 self.__setattr__(k, v)
         elif key == 0:
             self.x = value
@@ -164,7 +164,7 @@ class vec3:
 
     def __setitem__(self, key: Union[int, slice], value: float):
         if isinstance(key, slice):
-            for k, v in zip(["x", "y", "z"][key], value[key]):
+            for k, v in zip(["x", "y", "z"][key], value):
                 self.__setattr__(k, v)
         elif key == 0:
             self.x = value
@@ -234,24 +234,27 @@ def angle_between(a: vec3, b: vec3) -> float:
 
 
 def sort_clockwise(points: vec3, normal: Iterable) -> list:
-    C = sum(points, vec3()) / len(points)
-    def score(A, B): return dot(normal, (A - C) * (B - C))
+    """Sorts a series of point into a clockwise order (first point in sequence remains the same)"""
+    center = sum(points, vec3()) / len(points)
+    def score(a, b): return dot(normal, (a - center) * (b - center))
     left = []
     right = []
-    for index, point in enumerate(points[1:]):
-        (left if score(points[0], point) >= 0 else right).append(index + 1)
+    for i, point in enumerate(points[1:]):
+        i += 1
+        (left if score(points[0], point) >= 0 else right).append(i)
+    # TODO: simplify the proximity calculations
     proximity = dict()  # number of points between self and start
-    for i, p in enumerate(points[1:]):
+    for i, point in enumerate(points[1:]):
         i += 1
         if i in left:
             proximity[i] = len(right)
             for j in left:
-                if score(p, points[j]) >= 0:
+                if score(point, points[j]) >= 0:
                     proximity[i] += 1
         else:
             proximity[i] = 0
             for j in right:
-                if score(p, points[j]) >= 0:
+                if score(point, points[j]) >= 0:
                     proximity[i] += 1
     sorted_vec3s = [points[0]] + [points[i] for i in sorted(proximity.keys(), key=lambda k: proximity[k])]
     return sorted_vec3s
