@@ -21,7 +21,8 @@ class TestVec2:
         assert self.b == 5  # magnitude == float
 
     def test_format(self):
-        assert f"{self.a}" == "[1, 2]"  # __repr__
+    	assert repr(self.a) == "[1, 2]"
+        assert f"{self.b}" == "3 4"
         pie = vector.vec2(3.14159, 2.71828)
         assert f"{pie:.4}" == "3.142 2.718"
 
@@ -50,7 +51,6 @@ class TestVec2:
     def test_magnitude(self):
         assert self.a.magnitude() == math.sqrt(5)
 
-
 class TestVec3:
     a = vector.vec3(1, 4, 5)
     b = vector.vec3(2, 3, 6)  # pythagorean quadruple with 7
@@ -62,14 +62,15 @@ class TestVec3:
         assert self.a + self.b == vector.vec3(3, 7, 11)
         assert self.b - self.a == vector.vec3(1, -1, 1)  # __sub__
 
-    def test_equal(self):
+    def test_equality_checks(self):
         assert self.a == vector.vec3(1, 4, 5)
         assert self.a == [1, 4, 5]
         assert self.b == (2, 3, 6)
         assert self.b == 7  # magnitude == float
 
     def test_format(self):
-        assert f"{self.a}" == "[1, 4, 5]"  # __repr__
+    	assert repr(self.a) == "[1, 4, 5]"
+        assert f"{self.b}" == "2 3 6"
         phipie = vector.vec3(1.61803, 3.14159, 2.71828)
         assert f"{phipie:.4}" == "1.618 3.142 2.718"
 
@@ -94,7 +95,7 @@ class TestVec3:
         # assert vec3 multiplication
 
     def test_negativity(self):
-        assert -self.b == vector.vec2(-2, -3, -6)
+        assert -self.b == vector.vec3(-2, -3, -6)
 
     def test_magnitude(self):
         assert self.a.magnitude() == math.sqrt(42)
