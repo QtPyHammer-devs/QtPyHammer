@@ -1,3 +1,3 @@
-__all__ = ["manager"]
+__all__ = ["Manager"]
 
-from .manager import manager
+from .manager import Manager

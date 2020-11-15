@@ -9,6 +9,9 @@ from QtPyHammer.ui.user_preferences.theme import load_theme
 
 
 def load_ini(ini):
+    # perhaps return an encapsulated QSettings
+    # with more direct access to variables (convert from default string etc.)
+    # it would also be handy to have defaults saved in the code, so we can restore
     return QtCore.QSettings(ini, QtCore.QSettings.IniFormat)
 
 

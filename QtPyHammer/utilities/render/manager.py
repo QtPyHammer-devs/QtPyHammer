@@ -11,13 +11,13 @@ from . import draw
 
 class Manager:
     """Manages OpenGL buffers and gives handles for rendering & hiding objects"""
-    def __init__(self, draw_distance, field_of_view, memory_limit):
+    def __init__(self, draw_distance: float, field_of_view: float, memory_limit: int):
         self.draw_distance = draw_distance
         self.field_of_view = field_of_view
         MB = 10 ** 6  # ~ 1 Megabyte
         self.memory_limit = memory_limit * MB
-        # ^ can't check the physical device's limits until AFTER init_GL is called
-        self.render_mode = "flat"  # dominant shader variant, hammer specfic
+        # ^ can't check against the GPU's limits until AFTER init_GL is called
+        self.render_mode = "flat"
         self.buffer_update_queue = []
         # ^ [(buffer, start, length, data)]
         # goes directly into glBufferSubData()
@@ -320,15 +320,16 @@ class Manager:
 
     def hide(self, renderable):
         # print(f"Hiding {renderable}")
-        self.hidden.add(renderable)
+        self.dont_draw.add(renderable)
         renderable_type = renderable[0]
         span = self.buffer_location[renderable]["index"]
         span_list = self.draw_calls[renderable_type]
         self.draw_calls[renderable_type] = remove_span(span_list, span)
 
     def show(self, renderable):
+        assert renderable in self.dont_draw  # a bug worth checking for
         # print(f"Showing {renderable}")
-        self.hidden.discard(renderable)
+        self.dont_draw.discard(renderable)
         renderable_type = renderable[0]
         span = self.buffer_location[renderable]["index"]
         span_list = self.draw_calls[renderable_type]

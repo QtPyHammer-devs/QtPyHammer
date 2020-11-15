@@ -29,10 +29,10 @@ class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
         preferences = QtWidgets.QApplication.instance().preferences
         camera.sensitivity = float(preferences.value("Input/MouseSensitivity", "2.0"))
         # ^ camera sensitivity cannot be set until the app is active
-        draw_distance = preferences.value("Viewports/DrawDistance")
-        field_of_view = preferences.value("Viewports/FieldOfView")
-        memory_limit = preferences.value("Viewports/MemoryLimit")
-        self.render_manager = render.manager(draw_distance, field_of_view, memory_limit)
+        draw_distance = float(preferences.value("Viewports/DrawDistance", "4096"))
+        field_of_view = float(preferences.value("Viewports/FieldOfView", "90"))
+        memory_limit = int(preferences.value("Viewports/MemoryLimit", "128"))  # Megabytes
+        self.render_manager = render.Manager(draw_distance, field_of_view, memory_limit)
         # uniform scaled & tinted cuboids to substitute model bounds at a distance...
         # INPUT HANDLING
         self.camera = camera.freecam((0, 0, 0), (0, 0, 0), 16)
@@ -106,7 +106,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
         self.moved_last_tick = True
         # ^ get accurate mouse input for frame
         gl.glLoadIdentity()
-        fov = self.render_manager.fov
+        fov = self.render_manager.field_of_view
         aspect = self.render_manager.aspect
         draw_distance = self.render_manager.draw_distance
         gluPerspective(fov, aspect, 0.1, draw_distance)
@@ -137,7 +137,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
         x_offset = camera_right * ((click_x * 2 - width) / width)
         x_offset *= width / height  # aspect ratio
         y_offset = camera_up * ((click_y * 2 - height) / height)
-        fov_scalar = math.tan(math.radians(self.render_manager.fov / 2))
+        fov_scalar = math.tan(math.radians(self.render_manager.field_of_view / 2))
         x_offset *= fov_scalar
         y_offset *= fov_scalar
         ray_origin = self.camera.position
