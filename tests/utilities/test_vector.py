@@ -51,6 +51,7 @@ class TestVec2:
     def test_magnitude(self):
         assert self.a.magnitude() == math.sqrt(5)
 
+
 class TestVec3:
     a = vector.vec3(1, 4, 5)
     b = vector.vec3(2, 3, 6)  # pythagorean quadruple with 7
@@ -69,7 +70,7 @@ class TestVec3:
         assert self.b == 7  # magnitude == float
 
     def test_format(self):
-    	assert repr(self.a) == "[1, 4, 5]"
+        assert repr(self.a) == "[1, 4, 5]"
         assert f"{self.b}" == "2 3 6"
         phipie = vector.vec3(1.61803, 3.14159, 2.71828)
         assert f"{phipie:.4}" == "1.618 3.142 2.718"
