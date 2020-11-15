@@ -106,11 +106,8 @@ class vec3:
     """3D vector class"""
     __slots__ = ["x", "y", "z"]
 
-    def __init__(self, x=0, y=0, z=0):
-        if isinstance(x, Iterable):
-            self.x, self.y, self.z = x[0], x[1], x[2]
-        else:
-            self.x, self.y, self.z = x, y, z
+    def __init__(self, x: float = 0, y: float = 0, z: float = 0):
+        self.x, self.y, self.z = x, y, z
 
     def __abs__(self) -> float:
         return self.magnitude()
@@ -122,7 +119,7 @@ class vec3:
         if isinstance(other, vec2):
             if [*self] == [*other, 0]:
                 return True
-        elif isinstance(other, vec3):
+        elif isinstance(other, (vec3, Iterable)):
             if [*self] == [*other]:
                 return True
         elif isinstance(other, (int, float)):

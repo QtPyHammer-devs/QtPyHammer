@@ -17,8 +17,8 @@ class plane:
 class aabb:
     # use origin for octrees / bounding volume heirarchy?
     def __init__(self, mins, maxs):
-        self.min = vector.vec3(mins)
-        self.max = vector.vec3(maxs)
+        self.min = vector.vec3(*mins)
+        self.max = vector.vec3(*maxs)
 
     def __add__(self, other):
         if isinstance(other, vector.vec3):
