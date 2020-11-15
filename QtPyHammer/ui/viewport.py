@@ -48,7 +48,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
         # REFRESH TIMER
         self.dt = 1 / fps
         self.timer = QtCore.QTimer()
-        self.timer.setInterval(1000 / fps)
+        self.timer.setInterval(1000 // fps)
         self.timer.timeout.connect(self.update)
         # be aware, the timer does not have an accumulator
         # desynchronisations will occur

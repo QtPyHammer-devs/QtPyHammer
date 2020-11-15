@@ -11,7 +11,7 @@ filename_filters = ["Valve Map Format (*.vmf)",
                     "All files (*.*)"]
 
 
-class map_file_browser(QtWidgets.QFileDialog):
+class MapFileBrowser(QtWidgets.QFileDialog):
     def __init__(self, parent):
         super(QtWidgets.QFileDialog, self).__init__(parent)
         app = QtWidgets.QApplication.instance()

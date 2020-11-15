@@ -77,7 +77,7 @@ class AxisAlignedBoundingBox:
         depth = list(self.max - self.min)
         for i in range(3):
             depth[i] *= axis[i]
-        depth = vector.vec3(depth)
+        depth = vector.vec3(*depth)
         return depth.magnitude()
 
     def cull_ray(self, ray):
@@ -85,7 +85,7 @@ class AxisAlignedBoundingBox:
         out = list(self.max - self.min)
         for i in range(3):
             out[i] *= ray[i]
-        return vector.vec3(out)
+        return vector.vec3(*out)
 
     def verts(self):
         x = (self.min.x, self.max.x)

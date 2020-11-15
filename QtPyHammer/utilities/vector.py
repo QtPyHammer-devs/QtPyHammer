@@ -113,7 +113,7 @@ class vec3:
         return self.magnitude()
 
     def __add__(self, other: Iterable) -> vec3:
-        return vec3(*map(math.fsum, itertools.zip_longest(self, other, fillvalue=0)))
+        return vec3(*map(math.fsum, zip(self, other)))
 
     def __eq__(self, other: Union[float, Iterable]) -> bool:
         if isinstance(other, vec2):

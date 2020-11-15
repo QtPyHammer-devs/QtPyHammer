@@ -22,7 +22,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # NOTE: some actions should be disabled when no maptabs are open
 
         # Child dialogs
-        self.map_browser = ops.map_file_browser(self)
+        self.map_browser = ops.MapFileBrowser(self)
 
         self.actions = {}
         # ^ {"identifier": action}

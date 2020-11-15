@@ -85,7 +85,7 @@ def rgb_888_to_565(colour):
     return ((R << 11) + (G << 5) + B).to_bytes(2, "little")
 
 
-def DXT1_decode(bytestream, width, height):
+def decode_dxt1(bytestream, width, height):
     """returns a RGB_888 bytestring of length 12 * width, height"""
     if width % 4 != 0 or height % 4 != 0:  # input doesn't split into 4x4 tiles
         raise RuntimeError(f"Cannot decode into {width}x{height} size image")
@@ -95,7 +95,7 @@ def DXT1_decode(bytestream, width, height):
     out = [b""] * height
     start = 0
     for y in range(0, height, 4):
-        for x in range(0, width, 4):
+        for _ in range(0, width, 4):
             # RGB_565 palette (2x 16-bit colours)
             palette = bytestream[start:start + 4]
             c0, c1 = [rgb_565_to_888(c) for c in struct.unpack("2H", palette)]
@@ -168,7 +168,7 @@ class vtf:
         self.file.seek(self.header_size)  # maybe elsewhere if v7.3+
         width, height = self.thumbnail_width, self.thumbnail_height
         thumb = self.file.read(width * height)
-        return DXT1_decode(thumb, width, height)
+        return decode_dxt1(thumb, width, height)
 
     def load_thumbnail(self):
         width, height = self.thumbnail_width, self.thumbnail_height
@@ -224,12 +224,12 @@ class vtf:
             height = self.height >> i
             if width < 4:
                 data = self.file.read(16)
-                pixels = DXT1_decode(data, 4, 4)  # RGB_888
+                pixels = decode_dxt1(data, 4, 4)  # RGB_888
                 # pixel = bytes([int(255 * x) for x in self.reflectivity])
                 # pixels = pixel * width * height
             else:
                 data = self.file.read(width * height)
-                pixels = DXT1_decode(data, width, height)  # RGB_888
+                pixels = decode_dxt1(data, width, height)  # RGB_888
             if i == 0:
                 print(pixels)
             glTexImage2D(GL_TEXTURE_2D, i, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, pixels)

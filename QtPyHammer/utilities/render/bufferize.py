@@ -25,8 +25,8 @@ def brush(brush):
 def displacement(face):
     vertices = []
     # ^ [(*position, *normal, *uv, blend_alpha, 0, 0), ...]
-    quad = tuple(vector.vec3(P) for P in face.polygon)
-    start = vector.vec3(face.displacement.start)
+    quad = tuple(vector.vec3(*P) for P in face.polygon)
+    start = vector.vec3(*face.displacement.start)
     if start not in quad:  # start = closest point on quad to start
         start = sorted(quad, key=lambda P: (start - P).magnitude())[0]
     starting_index = quad.index(start) - 1
@@ -44,7 +44,7 @@ def displacement(face):
                                               distance_row, alpha_row):
             barymetric = vector.lerp(right_vert, left_vert, j / power2)
             # check: do we need to apply subdivision too?
-            position = vector.vec3(barymetric) + (normal * distance)
+            position = vector.vec3(*barymetric) + (normal * distance)
             # theta =  math.degrees(math.acos(vector.dot(face.plane[0], (0, 0, 1))))
             # normal = (normal * distance).normalise()
             # normal = normal.rotate(*[-theta * x for x in face.plane[0]])
