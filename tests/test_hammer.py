@@ -9,8 +9,6 @@ class TestHammer:
     def load_hammer(self, qtbot):
         self.hammer = MainWindow()
         qtbot.addWidget(self.hammer)
-        self.hammer.show()
-        qtbot.wait_for_window_shown(self.hammer)
 
     def test_initialises(self, qtbot):
         self.load_hammer(qtbot)
@@ -26,7 +24,7 @@ class TestHammer:
     def test_new_file(self, qtbot):
         self.load_hammer(qtbot)
         self.hammer.actions["File>New"].trigger()
-        qtbot.waitUntil(lambda: self.hammer.tabs.currentIndex() == 0, 2000)
+        qtbot.waitUntil(lambda: self.hammer.tabs.currentIndex() == 0)
         assert isinstance(self.hammer.tabs.widget(0), VmfTab)
 
     # def test_open_file(self, qtbot):
