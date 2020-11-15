@@ -1,20 +1,20 @@
 from . import vector
 
 
-class plane:
+class Plane:
     def __init__(self, normal, distance):
         self.normal = normal
         self.distance = distance
 
     def __neg__(self):
-        return plane(-self.normal, self.distance)
+        return Plane(-self.normal, self.distance)
 
     def flip(self):
         self.normal = -self.normal
         self.distance = -self.distance
 
 
-class aabb:
+class AxisAlignedBoundingBox:
     # use origin for octrees / bounding volume heirarchy?
     def __init__(self, mins, maxs):
         self.min = vector.vec3(*mins)
@@ -22,18 +22,18 @@ class aabb:
 
     def __add__(self, other):
         if isinstance(other, vector.vec3):
-            return aabb(self.min + other, self.max + other)
-        if isinstance(other, aabb):
+            return AxisAlignedBoundingBox(self.min + other, self.max + other)
+        if isinstance(other, AxisAlignedBoundingBox):
             min_x = min(self.min.x, other.min.x)
             max_x = max(self.max.x, other.max.x)
             min_y = min(self.min.y, other.min.y)
             max_y = max(self.max.y, other.max.y)
             min_z = min(self.min.z, other.min.z)
             max_z = max(self.max.z, other.max.z)
-            return aabb((min_x, min_y, min_z), (max_x, max_y, max_z))
+            return AxisAlignedBoundingBox((min_x, min_y, min_z), (max_x, max_y, max_z))
 
     def __eq__(self, other):
-        if isinstance(other, aabb):
+        if isinstance(other, AxisAlignedBoundingBox):
             if self.min == other.min and self.max == other.max:
                 return True
             return False
@@ -50,16 +50,16 @@ class aabb:
         return ' '.join(extents)
 
     def intersects(self, other):
-        if isinstance(other, aabb):
+        if isinstance(other, AxisAlignedBoundingBox):
             if self.min.x < other.max.x and self.max.x > other.min.x:
                 if self.min.y < other.max.y and self.max.y > other.min.y:
                     if self.min.z < other.max.z and self.max.z > other.min.z:
                         return True
             return False
-        raise RuntimeError(other.__name__ + " is not an AABB")
+        raise RuntimeError(other.__name__ + " is not an AxisAlignedBoundingBox")
 
     def contains(self, other):
-        if isinstance(other, aabb):
+        if isinstance(other, AxisAlignedBoundingBox):
             if self.min.x < other.min.x and self.max.x > other.max.x:
                 if self.min.y < other.min.y and self.max.y > other.max.y:
                     if self.min.z < other.min.z and self.max.z > other.max.z:
@@ -71,7 +71,7 @@ class aabb:
                     if self.min.z < other.z < self.max.z:
                         return True
             return False
-        raise RuntimeError(other.__name__ + " is not an AABB")
+        raise RuntimeError(other.__name__ + " is not an AxisAlignedBoundingBox")
 
     def depth_along_axis(self, axis):
         depth = list(self.max - self.min)
@@ -81,7 +81,7 @@ class aabb:
         return depth.magnitude()
 
     def cull_ray(self, ray):
-        """takes a ray and clips it to fit inside aabb"""
+        """Takes a ray and clips it to fit inside AxisAlignedBoundingBox"""
         out = list(self.max - self.min)
         for i in range(3):
             out[i] *= ray[i]
