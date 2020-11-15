@@ -21,7 +21,7 @@ class TestVec2:
         assert self.b == 5  # magnitude == float
 
     def test_format(self):
-    	assert repr(self.a) == "[1, 2]"
+        assert repr(self.a) == "[1, 2]"
         assert f"{self.b}" == "3 4"
         pie = vector.vec2(3.14159, 2.71828)
         assert f"{pie:.4}" == "3.142 2.718"
