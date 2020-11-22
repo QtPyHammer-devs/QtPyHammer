@@ -241,7 +241,7 @@ With type hints code can become much more readable and easier to use
 Check out these links for pointers:
  * [PEP 484](https://www.python.org/dev/peps/pep-0484/): which details a standard which we follow
  * [PEP 563](https://www.python.org/dev/peps/pep-0563/): explains why we should import `annotations` from `__future__`
- * [mypy](http://mypy-lang.org/): the type checker on which PEP 484 is based
+ * [mypy](https://mypy-lang.org/): the type checker on which PEP 484 is based
  * [typing](https://docs.python.org/3/library/typing.html): official python module for making broad type hints
 
 ### Naming Conventions

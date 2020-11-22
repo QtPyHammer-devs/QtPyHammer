@@ -2,7 +2,7 @@ Package list for developing on linux
 https://doc.qt.io/qt-5/linux-requirements.html
 
 Handy UI programming guide
-http://zetcode.com/gui/pyqt5/layout/
+https://zetcode.com/gui/pyqt5/layout/
 
 GDC 2016: High-performance, Low-Overhead Rendering with OpenGL and Vulkan
 https://www.youtube.com/watch?v=PPWysKFHq9c
