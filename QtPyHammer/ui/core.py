@@ -148,7 +148,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions["Tools>Flip Vertically"].setEnabled(False)
         # self.actions["Tools>Flip Vertically"].triggered.connect(
         tools_menu.addSeparator()
-        self.actions["Tools>Create Prefab"] = tools_menu.addAction("&Create Prefab")
+        self.actions["Tools>Create Prefab"] = tools_menu.addAction("Create &Prefab")
         self.actions["Tools>Create Prefab"].setEnabled(False)
         # self.actions["Tools>Create Prefab"].triggered.connect(
 
