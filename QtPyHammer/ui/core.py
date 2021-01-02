@@ -20,6 +20,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tabs.tabCloseRequested.connect(self.tabs.removeTab)
         self.setCentralWidget(self.tabs)
         # NOTE: some actions should be disabled when no maptabs are open
+        # TODO: add a method to connect self.actions to the active tab
+        # & connect this method to self.tabs.currentChanged(...)
 
         # Child dialogs
         self.map_browser = ops.MapFileBrowser(self)
