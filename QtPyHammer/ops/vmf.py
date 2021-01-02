@@ -14,6 +14,9 @@ class VmfInterface:
         self.parent.viewport.render_manager.add_brushes(*self.brushes)
         # track changes with CRDT for Undo & Redo
         # add entities
+        self.hidden = self._vmf.hidden
+        # TODO: apply hide to render_manager
+        # TODO: inform hide related UI if anything is hidden
 
     def save(self, filename):
         self._vmf.save_to_file(filename)

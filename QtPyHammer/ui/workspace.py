@@ -5,14 +5,14 @@ from PyQt5 import QtWidgets
 
 from . import viewport
 from ..ops.vmf import VmfInterface
-from ..utilities import vector
+from ..utilities import raycast
 
 
-class selection_mode(enum.Enum):
-    solo = 0
-    brush_entitiy = 1
-    group = 2
-    face = 3
+class SELECTION_MODE(enum.Enum):
+    SOLID = 0
+    OBJECT = 1
+    GROUP = 2
+    FACE = 3
 
 
 class VmfTab(QtWidgets.QWidget):
@@ -21,14 +21,14 @@ class VmfTab(QtWidgets.QWidget):
         super(VmfTab, self).__init__(parent)
         self.filename = vmf_path
         self.never_saved = True if new else False
-        self.selection_mode = selection_mode.group
+        self.selection_mode = SELECTION_MODE.GROUP
         self.selection = set()
         # ^ ("type", major_id, minor_id) e.g. ("brush", brush.id, face.id)
         # UI
         layout = QtWidgets.QVBoxLayout()  # holds the viewport
         # ^ 2 QSplitter(s) will be used for quad viewports
         self.viewport = viewport.MapViewport3D(self)
-        self.viewport.raycast.connect(self.raycast)
+        self.viewport.raycast.connect(self.select)
         # self.viewport.setViewMode.connect(...)
         self.viewport.setFocus()  # not working as intended
         layout.addWidget(self.viewport)
@@ -39,57 +39,13 @@ class VmfTab(QtWidgets.QWidget):
         # ^ define the VmfInterface last so it can connect to everything
         # undo & redo is tied directly to the VmfInterface
 
-    def raycast(self, ray_origin, ray_direction):
+    def select(self, ray_origin, ray_direction):
         """Get the object hit by ray"""
         ray_length = self.viewport.render_manager.draw_distance
-        ray_end = ray_origin + ray_direction * ray_length
-        intersections = dict()
-        # ^ distance: ("brush", brush.id, brush.face.id)
-        # -- distance: (type, major_id, minor_id)
-        # if distance is already in intersection:
-        # -- z-fighting, special case!
-        for brush in self.map_file.brushes:  # filter to visible / selectable only
-            probable_intersections = dict()
-            # ^ distance(t): face.id
-            for face in brush.faces:
-                normal, distance = face.plane
-                alignment = vector.dot(normal, ray_direction)
-                if alignment > 0:  # skip backfaces
-                    continue
-                # similar method to utilities.solid.clip
-                origin_distance = vector.dot(normal, ray_origin) - distance
-                end_distance = vector.dot(normal, ray_end) - distance
-                origin_is_behind = bool(origin_distance < 0.01)
-                end_is_behind = bool(end_distance < 0.01)
-                if not origin_is_behind and end_is_behind:
-                    distance = origin_distance / (origin_distance - end_distance)
-                    probable_intersections[distance] = face.id
-
-            # check if any probable intersection actually touches the solid
-            for t, face_id in probable_intersections.items():
-                P = vector.lerp(ray_origin, ray_end, t)
-                valid = True
-                for face in brush.faces:
-                    if face.id == face_id:
-                        continue  # skip yourself, we're checking against all others
-                    normal, distance = face.plane
-                    if (vector.dot(normal, P) - distance) > -0.01:
-                        valid = False  # P is floating outside the brush
-                if valid:
-                    intersections[distance] = ("brush", brush.id, face_id)
-
-        if len(intersections) == 0:
-            return  # no intersections, move on
-
-        closest = min(intersections.keys())
-        # TODO: if other distances are close, give a pop-up like blender alt+select
-        selected = intersections[closest]
-        # TODO: selection mode
-        # -- do we want this object's group?, only the selected face?
-        # TODO: modifier keys, add to selection? subtract? new selection?
-        self.selection = {selected}
-
-        self.viewport.render_manager.hide(selected[:2])  # hide this brush
+        ray = raycast.Ray(ray_origin, ray_direction, ray_length)
+        selection = raycast.raycast(ray, self.map_file)
+        self.map_file.selection.add(selection)
+        # TODO: highlight selection in renderer
 
     def save_to_file(self):
         print(f"Saving {self.filename}... ", end="")
