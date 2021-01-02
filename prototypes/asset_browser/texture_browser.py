@@ -1,10 +1,8 @@
-import os  # for searching / cataloging folders
 import sys
-#import vpk
 
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSignal, QPoint, QRect, QSize, Qt
-from PyQt5.QtWidgets import (QApplication, QLayout, QPushButton, QSizePolicy, QSpacerItem, QWidget, QScrollArea, QGroupBox)
+from PyQt5.QtWidgets import QLayout, QSizePolicy, QSpacerItem, QWidget, QScrollArea, QGroupBox
 
 
 class texture_browser(QtWidgets.QDialog):
@@ -25,7 +23,7 @@ class texture_browser(QtWidgets.QDialog):
         container = QWidget()
         container_layout = QtWidgets.QVBoxLayout()
 
-        # configure flow layout 
+        # configure flow layout
         flow_layout.heightChanged.connect(container.setMinimumHeight)
         for i in range(400):
             self.addTextureSquare(flow_layout)
@@ -191,7 +189,6 @@ class FlowLayout(QLayout):
         return new_height
 
 
-        
 def except_hook(cls, exception, traceback):
     sys.__excepthook__(cls, exception, traceback)
 
