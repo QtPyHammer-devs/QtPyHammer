@@ -1,15 +1,19 @@
 """An attempt at Firefox style tabs in Qt"""
 import sys
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtWidgets
 
 
 def except_hook(cls, exception, traceback):
     sys.__excepthook__(cls, exception, traceback)
-sys.excepthook = except_hook # Python Debug
+
+
+sys.excepthook = except_hook  # Python Debug
+
 
 class entitiy_node(QtWidgets.QGraphicsItem):
     pass
+
 
 app = QtWidgets.QApplication(sys.argv)
 scene = QtWidgets.QGraphicsScene()
