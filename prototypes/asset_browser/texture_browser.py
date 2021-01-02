@@ -1,14 +1,12 @@
 import sys
 
-from PyQt5 import QtGui, QtWidgets
-from PyQt5.QtCore import pyqtSignal, QPoint, QRect, QSize, Qt
-from PyQt5.QtWidgets import QLayout, QSizePolicy, QSpacerItem, QWidget, QScrollArea, QGroupBox
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class texture_browser(QtWidgets.QDialog):
+class TextureBrowser(QtWidgets.QDialog):
     # https://doc.qt.io/qt-5/qdialog.html
     def __init__(self):
-        super(texture_browser, self).__init__(parent=None)
+        super(TextureBrowser, self).__init__(parent=None)
         # pick a layout for the core widget
         # top has a scrolling page of texture thumbnails
         # bottom has filters, searchbar, OK & Cancel buttons
@@ -16,11 +14,11 @@ class texture_browser(QtWidgets.QDialog):
         outerQV = QtWidgets.QVBoxLayout()
 
         # now this has scroll bar but it doesnt have flow layout
-        scroll = QScrollArea()
-        groupbox = QGroupBox('Textures')
+        scroll = QtWidgets.QScrollArea()
+        groupbox = QtWidgets.QGroupBox("Textures")
         flow_layout = FlowLayout(margin=10)
 
-        container = QWidget()
+        container = QtWidgets.QWidget()
         container_layout = QtWidgets.QVBoxLayout()
 
         # configure flow layout
@@ -36,7 +34,7 @@ class texture_browser(QtWidgets.QDialog):
         container.setLayout(container_layout)
 
         # configure scrollarea
-        scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
 
         # set configured groupbox as widget of the scrollarea
         scroll.setWidget(container)
@@ -49,10 +47,8 @@ class texture_browser(QtWidgets.QDialog):
         searchbar = QtWidgets.QLineEdit()
         outerQV.addWidget(searchbar)
 
-        passSearchVar = lambda: self.search(searchbar.text())
-        # searchbar.returnPressed.connect(passSearchVar)
         searchButton = QtWidgets.QPushButton("Search")
-        searchButton.clicked.connect(passSearchVar)
+        searchButton.clicked.connect(lambda: self.search(searchbar.text()))
         searchButton.setDefault(1)
 
         outerQV.addWidget(searchButton)
@@ -82,16 +78,14 @@ class texture_browser(QtWidgets.QDialog):
         print(f"Trying to Search {keyword}!")
 
 
-class FlowLayout(QLayout):
+class FlowLayout(QtWidgets.QLayout):
     """A ``QLayout`` that aranges its child widgets horizontally and
     vertically.
 
     If enough horizontal space is available, it looks like an ``HBoxLayout``,
     but if enough space is lacking, it automatically wraps its children into
-    multiple rows.
-
-    """
-    heightChanged = pyqtSignal(int)
+    multiple rows."""
+    heightChanged = QtCore.pyqtSignal(int)
 
     def __init__(self, parent=None, margin=0, spacing=-1):
         super().__init__(parent)
@@ -109,7 +103,7 @@ class FlowLayout(QLayout):
         self._item_list.append(item)
 
     def addSpacing(self, size):  # pylint: disable=invalid-name
-        self.addItem(QSpacerItem(size, 0, QSizePolicy.Fixed, QSizePolicy.Minimum))
+        self.addItem(QtWidgets.QSpacerItem(size, 0, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum))
 
     def count(self):
         return len(self._item_list)
@@ -125,13 +119,13 @@ class FlowLayout(QLayout):
         return None
 
     def expandingDirections(self):  # pylint: disable=invalid-name,no-self-use
-        return Qt.Orientations(Qt.Orientation(0))
+        return QtCore.Qt.Orientations(QtCore.Qt.Orientation(0))
 
     def hasHeightForWidth(self):  # pylint: disable=invalid-name,no-self-use
         return True
 
     def heightForWidth(self, width):  # pylint: disable=invalid-name
-        height = self._do_layout(QRect(0, 0, width, 0), True)
+        height = self._do_layout(QtCore.QRect(0, 0, width, 0), True)
         return height
 
     def setGeometry(self, rect):  # pylint: disable=invalid-name
@@ -142,15 +136,15 @@ class FlowLayout(QLayout):
         return self.minimumSize()
 
     def minimumSize(self):  # pylint: disable=invalid-name
-        size = QSize()
+        size = QtCore.QSize()
 
         for item in self._item_list:
             minsize = item.minimumSize()
             extent = item.geometry().bottomRight()
-            size = size.expandedTo(QSize(minsize.width(), extent.y()))
+            size = size.expandedTo(QtCore.QSize(minsize.width(), extent.y()))
 
         margin = self.contentsMargins().left()
-        size += QSize(2 * margin, 2 * margin)
+        size += QtCore.QSize(2 * margin, 2 * margin)
         return size
 
     def _do_layout(self, rect, test_only=False):
@@ -167,9 +161,9 @@ class FlowLayout(QLayout):
             space_y = self.spacing()
             if wid is not None:
                 space_x += wid.style().layoutSpacing(
-                    QSizePolicy.PushButton, QSizePolicy.PushButton, Qt.Horizontal)
+                    QtWidgets.QSizePolicy.PushButton, QtWidgets.QSizePolicy.PushButton, QtCore.Qt.Horizontal)
                 space_y += wid.style().layoutSpacing(
-                    QSizePolicy.PushButton, QSizePolicy.PushButton, Qt.Vertical)
+                    QtWidgets.QSizePolicy.PushButton, QtWidgets.QSizePolicy.PushButton, QtCore.Qt.Vertical)
 
             next_x = x + item.sizeHint().width() + space_x
             if next_x - space_x > effective_rect.right() and line_height > 0:
@@ -179,7 +173,7 @@ class FlowLayout(QLayout):
                 line_height = 0
 
             if not test_only:
-                item.setGeometry(QRect(QPoint(x, y), item.sizeHint()))
+                item.setGeometry(QtCore.QRect(QtCore.QPoint(x, y), item.sizeHint()))
 
             x = next_x
             line_height = max(line_height, item.sizeHint().height())
@@ -196,7 +190,7 @@ def except_hook(cls, exception, traceback):
 sys.excepthook = except_hook  # For debugging python inside Qt Classes
 
 app = QtWidgets.QApplication(sys.argv)
-window = texture_browser()
+window = TextureBrowser()
 window.setGeometry(128, 64, 576, 576)
 window.show()
 
