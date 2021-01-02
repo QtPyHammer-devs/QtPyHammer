@@ -14,7 +14,7 @@ class TestHammer:
         self.load_hammer(qtbot)
         assert self.hammer.windowTitle() == "QtPyHammer"
 
-    # def test_no_fgd(qtbot):
+    # def test_no_fgd(self, qtbot):
     #     # remove the .fgd from the app & test the reaction to it's abscence
     #     with pytest.raises(RuntimeError):
     #         window = MainWindow()
