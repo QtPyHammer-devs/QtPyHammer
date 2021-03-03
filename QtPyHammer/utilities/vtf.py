@@ -121,7 +121,49 @@ def decode_dxt1(bytestream, width, height):
     return out
 
 
-class vtf:
+def decode_dxt5(dxt5_data: bytes) -> bytes:
+    # https://en.wikipedia.org/wiki/S3_Texture_Compression#DXT4_and_DXT5
+    # TODO: decode more than one tile and stitch tiles together
+    # a0, a1: int  # 8bit alpha pallet pixel
+    # alpha_lut: bytes  # 3-bit 4x4 lookup table (6 bytes)
+    # c0, c1: int  # 565RGB pallet pixel
+    # colour_lut: bytes  # 2-bit 4x4 lookup table (4 bytes)
+
+    alpha, colour = struct.unpack("2B6s2H4s", dxt5_data)
+    a0, a1, alpha_lut = alpha
+    c0, c1, colour_lut = colour
+    # calculate a2 - a7 (alpha palette)
+    if a0 > a1:
+        a2, a3, a4, a5, a6, a7 = [((6 - i) * a0 + (1 + i) * a1) // 7 for i in range(6)]
+    else:
+        a2, a3, a4, a5 = [((4 - i) * a0 + (1 + i) * a1) // 5 for i in range(4)]
+        a6 = 0
+        a7 = 255
+    alpha_palette = [a0, a1, a2, a3, a4, a5, a6, a7]
+    # calculate c2 & c3 (colour palette)
+    c0, c1 = map(lambda c: [(c >> 11) << 3, ((c >> 5) % 64) << 2, (c % 32) << 3], [c0, c1])
+    # ^ 565RGB to 888RGB
+    if c0 > c1:
+        c2 = [a * 2 // 3 + b // 3 for a, b in zip(c0, c1)]
+        c3 = [a // 3 + b * 2 // 3 for a, b in zip(c0, c1)]
+    else:  # c0 <= c1
+        c2 = [a // 2 + b // 2 for a, b in zip(c0, c1)]
+        c3 = [0, 0, 0]
+    colour_palette = [c0, c1, c2, c3]
+    # lookup tables --> pixels
+    alpha_lut = int.from_bytes(alpha_lut, "big")
+    colour_lut = int.from_bytes(colour_lut, "big")
+    pixels = []
+    for i in range(16):
+        colour = colour_palette[colour_lut % 4]
+        alpha = alpha_palette[alpha_lut % 8]
+        pixels.append(bytes([*colour, alpha]))
+        colour_lut = colour_lut >> 2
+        alpha_lut = alpha_lut >> 3
+    return b"".join(reversed(pixels))
+
+
+class Vtf:
     """Read-only importer for Valve Texture File Format"""
     def __init__(self, filename):
         self.file = open(filename, "rb")
@@ -261,7 +303,7 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication([])
 
     materials = "../../test_materials"
-    test_vtf = vtf(f"{materials}/test.vtf")
+    test_vtf = Vtf(f"{materials}/test.vtf")
     # test_vtf = vtf(f"{materials}/customdev/dev_measuregeneric01green.vtf")
     # test_vtf = vtf(f"{materials}/test_materials/customdev/dev_measurewall01green.vtf")
 
