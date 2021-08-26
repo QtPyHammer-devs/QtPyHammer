@@ -10,6 +10,10 @@ filename_filters = ["Valve Map Format (*.vmf)",
                     "QtPyHammer file (*.qph)",
                     "All files (*.*)"]
 
+# TODO: write a common function for detecting if files / folders exist
+# - generate folders, with an optional popup
+# - suggest close matches
+
 
 class MapFileBrowser(QtWidgets.QFileDialog):
     def __init__(self, parent):
@@ -69,7 +73,8 @@ def save_file_as(main_window, save_dialog):
     short_filename = os.path.basename(filename)
     main_window.tabs.setTabText(active_tab_index, short_filename)
 
-# def export(main_window):
-#     # is the active file a .vmf? export .qph
-#     # is the active file a .qph? export .vmf
-#     # ^ the export action's text should reflect this (ui.core.MainWindow)
+# TODO: export functions
+# what is being exported? selection or file
+# selection_to_X  (.mdl, .obj, .glTF, .fbx, .blend)
+# map_to_X (.qph, .vmf, .obj, .blend)
+# TODO: determine if a path to blender would be enough to generate .blends

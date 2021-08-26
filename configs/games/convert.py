@@ -21,9 +21,9 @@ for line in config_txt:
         depth -= 1
         if depth == 3:
             active_ini = QtCore.QSettings(f"{context}.ini", QtCore.QSettings.IniFormat)
-    elif line.count('"') == 2: # e.g. "Games"
+    elif line.count('"') == 2:  # e.g. "Games"
         context = re.search('(?<=").*(?=")', line).group(0)
-    elif line.count('"') == 4 and depth >= 3: # Key-Value pair
+    elif line.count('"') == 4 and depth >= 3:  # Key-Value pair
         key, value = re.findall('(?<=")[^"\t]+?(?=")', line)
         value = value.replace("\\", "/")
         active_ini.setValue(key, value)

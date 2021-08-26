@@ -1,95 +1,111 @@
+from __future__ import annotations
+from typing import Union
+
 from . import vector
 
 
 class Plane:
-    def __init__(self, normal, distance):
-        self.normal = normal
+    normal: vector.vec3
+    distance: float
+
+    def __init__(self, normal: vector.vec3, distance: float):
+        self.normal = vector.vec3(*normal)
         self.distance = distance
 
     def __neg__(self):
         return Plane(-self.normal, self.distance)
 
     def flip(self):
+        """Mutates self to face the opposite direction"""
         self.normal = -self.normal
         self.distance = -self.distance
 
 
 class AxisAlignedBoundingBox:
-    # use origin for octrees / bounding volume heirarchy?
-    def __init__(self, mins, maxs):
-        self.min = vector.vec3(*mins)
-        self.max = vector.vec3(*maxs)
+    mins: vector.vec3
+    maxs: vector.vec3
 
-    def __add__(self, other):
-        if isinstance(other, vector.vec3):
-            return AxisAlignedBoundingBox(self.min + other, self.max + other)
+    def __init__(self, mins: vector.vec3, maxs: vector.vec3):
+        self.mins = vector.vec3(*mins)
+        self.maxs = vector.vec3(*maxs)
+
+    def __add__(self, other: Union[AxisAlignedBoundingBox, vector.vec3]) -> AxisAlignedBoundingBox:
+        """Merge bounds with AABB or translate by Vec3"""
         if isinstance(other, AxisAlignedBoundingBox):
-            min_x = min(self.min.x, other.min.x)
-            max_x = max(self.max.x, other.max.x)
-            min_y = min(self.min.y, other.min.y)
-            max_y = max(self.max.y, other.max.y)
-            min_z = min(self.min.z, other.min.z)
-            max_z = max(self.max.z, other.max.z)
+            # merge bounds with other AABB [AABB tree node == sum(node.children)]
+            min_x = min(self.mins.x, other.mins.x)
+            max_x = max(self.maxs.x, other.maxs.x)
+            min_y = min(self.mins.y, other.mins.y)
+            max_y = max(self.maxs.y, other.maxs.y)
+            min_z = min(self.mins.z, other.mins.z)
+            max_z = max(self.maxs.z, other.maxs.z)
             return AxisAlignedBoundingBox((min_x, min_y, min_z), (max_x, max_y, max_z))
+        elif isinstance(other, vector.vec3):
+            # translate by vector
+            return AxisAlignedBoundingBox(self.mins + other, self.maxs + other)
 
     def __eq__(self, other):
-        if isinstance(other, AxisAlignedBoundingBox):
-            if self.min == other.min and self.max == other.max:
-                return True
+        if not isinstance(other, AxisAlignedBoundingBox):
             return False
-        return False
+        if (self.mins == other.mins) and (self.maxs == other.maxs):
+            return True
+        else:
+            return False
 
-    def __getitem(self, index):
-        return [self.min, self.max][index]
+    # NOTE: why? is this really helpful?
+    def __getitem__(self, index):
+        return [self.mins, self.maxs][index]
 
     def __iter__(self):
-        return iter([self.min, self.max])
+        return iter([self.mins, self.maxs])  # would zipping be better?
+    # TODO: check if __getitem__ & __iter__ are used, and if they could be used better
+    # - a good use case should be: intuitive, helpful, performant, simple
 
     def __repr__(self):
-        extents = map(repr, [self.min, self.max])
-        return ' '.join(extents)
+        return f"{self.__class__.__name__}(mins={self.mins}, maxs={self.maxs})"
 
-    def intersects(self, other):
-        if isinstance(other, AxisAlignedBoundingBox):
-            if self.min.x < other.max.x and self.max.x > other.min.x:
-                if self.min.y < other.max.y and self.max.y > other.min.y:
-                    if self.min.z < other.max.z and self.max.z > other.min.z:
-                        return True
+    # NOTE: not very clear, is this even used?
+    # definitely needs a test
+    def intersects(self, other: AxisAlignedBoundingBox) -> bool:
+        if not isinstance(other, AxisAlignedBoundingBox):
+            raise RuntimeError(f"{other.__name__} is not an AxisAlignedBoundingBox")
+        if any([not ((self.min[a] < other.max[a]) and (self.max[a] > other.min[a])) for a in range(3)]):
             return False
-        raise RuntimeError(other.__name__ + " is not an AxisAlignedBoundingBox")
+        else:
+            return True
 
-    def contains(self, other):
+    def contains(self, other: Union[AxisAlignedBoundingBox, vector.vec3]) -> bool:
         if isinstance(other, AxisAlignedBoundingBox):
-            if self.min.x < other.min.x and self.max.x > other.max.x:
-                if self.min.y < other.min.y and self.max.y > other.max.y:
-                    if self.min.z < other.min.z and self.max.z > other.max.z:
-                        return True
-            return False
+            if any([not ((self.min[i] < other.min[i]) and (self.max[i] > other.max[i])) for i in range(3)]):
+                return False
+            else:
+                return True
         elif isinstance(other, vector.vec3):
-            if self.min.x < other.x < self.max.x:
-                if self.min.y < other.y < self.max.y:
-                    if self.min.z < other.z < self.max.z:
-                        return True
-            return False
-        raise RuntimeError(other.__name__ + " is not an AxisAlignedBoundingBox")
+            if any([not (self.min[i] < other[i] < self.max[i]) for i in range(3)]):
+                return False
+            else:
+                return True
+        else:
+            raise TypeError(f"Cannot determine how {type(self)} would contain {type(other)}")
 
-    def depth_along_axis(self, axis):
+    def depth_along_axis(self, axis: vector.vec3) -> float:
         depth = list(self.max - self.min)
         for i in range(3):
             depth[i] *= axis[i]
         depth = vector.vec3(*depth)
         return depth.magnitude()
 
-    def cull_ray(self, ray):
+    def cull_ray(self, ray: vector.vec3) -> vector.vec3:
         """Takes a ray and clips it to fit inside AxisAlignedBoundingBox"""
         out = list(self.max - self.min)
         for i in range(3):
             out[i] *= ray[i]
         return vector.vec3(*out)
 
-    def verts(self):
-        x = (self.min.x, self.max.x)
-        y = (self.min.y, self.max.y)
-        z = (self.min.z, self.max.z)
+    def verts(self) -> vector.vec3:  # generator
+        """Generates out the corners via a 3-bit counter"""
+        x = (self.mins.x, self.maxs.x)
+        y = (self.mins.y, self.maxs.y)
+        z = (self.mins.z, self.maxs.z)
         for i in range(8):
-            yield vector.vec3(x[i // 4 % 2], y[i // 2 % 2], z[i % 2])
+            yield vector.vec3(x[i & 4 >> 2], y[i & 2 >> 1], z[i & 1])
