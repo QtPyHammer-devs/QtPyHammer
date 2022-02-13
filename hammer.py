@@ -1,7 +1,7 @@
 import os
 import sys
 
-import fgdtools
+import valvefgd
 from PyQt5 import QtCore, QtWidgets
 
 from QtPyHammer.ui.core import MainWindow
@@ -47,7 +47,7 @@ class QtPyHammerApp(QtWidgets.QApplication):
                 # ^ TODO: allow themes to include .css files
                 # -- and have them locked to individual widgets?
         fgd_file = self.game_config.value("Hammer/GameData0")
-        self.fgd = fgdtools.parser.FgdParse(fgd_file)
+        self.fgd = valvefgd.parser.FgdParse(fgd_file)
         # TODO: check gameinfo.txt for extra content paths
         # -- allow the user to load custom content from their own folders
         # -- then copy that content to tf/custom/{vmf.filename} on compile

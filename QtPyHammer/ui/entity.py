@@ -1,9 +1,11 @@
 import textwrap
 
-import fgdtools
+import valvefgd
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 # from .. import utilities.entity
+
+# TODO: split each tab into a class
 
 
 class browser(QtWidgets.QDialog):
@@ -16,7 +18,9 @@ class browser(QtWidgets.QDialog):
         if len(app.fgd.entities) == 0:
             raise RuntimeError("No entites to browse!")
 
-        def is_point_or_solid(e): return e.class_type in ("PointClass", "SolidClass")
+        def is_point_or_solid(e):
+            return e.class_type in ("PointClass", "SolidClass")
+
         filtered_entities = list(filter(is_point_or_solid, app.fgd.entities))
         self.entities = sorted(filtered_entities, key=lambda e: e.name)
         default_entity = app.game_config.value("Hammer/DefaultPointEntity", "prop_static")
@@ -103,10 +107,10 @@ class browser(QtWidgets.QDialog):
             self.base_widget.removeTab(i)
         # ^ maybe recycle the old tabs?
         self.desc_label.setText(entity.description.split(".")[0])  # paragraph in fgd amendment
-        properties = [*filter(lambda p: isinstance(p, fgdtools.parser.FgdEntityProperty), entity.properties)]
-        inputs = [*filter(lambda i: isinstance(i, fgdtools.parser.FgdEntityInput), entity.properties)]
-        outputs = [*filter(lambda o: isinstance(o, fgdtools.parser.FgdEntityOutput), entity.properties)]
-        # split properly in some version of fgdtools (prob 1.0.0 but it's broken?)
+        properties = [*filter(lambda p: isinstance(p, valvefgd.parser.FgdEntityProperty), entity.properties)]
+        inputs = [*filter(lambda i: isinstance(i, valvefgd.parser.FgdEntityInput), entity.properties)]
+        outputs = [*filter(lambda o: isinstance(o, valvefgd.parser.FgdEntityOutput), entity.properties)]
+        # split properly in some version of valvefgd (prob 1.0.0 but it's broken?)
         if len(inputs) > 0 or len(outputs) > 0:  # OR ANY inputs recieved
             logic_widget = QtWidgets.QWidget()  # <- make it's own class
             logic_widget.setLayout(QtWidgets.QVBoxLayout())
@@ -117,7 +121,7 @@ class browser(QtWidgets.QDialog):
         form = QtWidgets.QFormLayout()
         form.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
         for p in [p for p in properties if p.value_type == "flags"]:  # loop once and make flags = p
-            # should ask about having this simplified in fgdtools
+            # should ask about having this simplified in valvefgd
             flags_tab = QtWidgets.QWidget()
             flags_layout = QtWidgets.QVBoxLayout()
             flags_scroll = QtWidgets.QScrollArea()
