@@ -8,7 +8,7 @@ def except_hook(cls, exception, traceback):
     sys.__excepthook__(cls, exception, traceback)
 
 
-sys.excepthook = except_hook # Python Debug
+sys.excepthook = except_hook  # Python Debug
 
 
 app = QtWidgets.QApplication(sys.argv)
