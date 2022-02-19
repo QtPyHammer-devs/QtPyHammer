@@ -8,6 +8,8 @@ from QtPyHammer.ui.core import MainWindow
 from QtPyHammer.ui.user_preferences.theme import load_theme
 
 
+# TODO: session restore / shutdown warning (unsaved data will be lost etc.)
+
 def load_ini(ini):
     # perhaps return an encapsulated QSettings
     # with more direct access to variables (convert from default string etc.)
@@ -60,4 +62,4 @@ if __name__ == "__main__":
     window.showMaximized()
     for filename in sys.argv[1:]:
         window.open(filename)
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

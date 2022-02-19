@@ -7,8 +7,8 @@ class VmfInterface:
     def __init__(self, parent, vmf_filename):
         self.parent = parent  # for conection to parent.viewport.render_manager
         self._vmf = Vmf(vmf_filename)  # vmf object we are wrapping (private)
-        if len(self._vmf.import_errors) > 0:
-            print(*self._vmf.import_errors, sep="\n")
+        # if len(self._vmf.import_errors) > 0:
+        #     print(*self._vmf.import_errors, sep="\n")
         self.brushes = self._vmf.brushes.values()
         # ^ exposed directly for ui.workspace.VmfTab.raycast()
         self.parent.viewport.render_manager.add_brushes(*self.brushes)
