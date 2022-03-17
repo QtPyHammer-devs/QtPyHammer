@@ -1,6 +1,10 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Dialogs
 import QtQuick3D
+import QtQuick3D.Helpers
+
+import Vmf
 
 
 ApplicationWindow {
@@ -14,7 +18,7 @@ ApplicationWindow {
         Menu {
             title: "&File"
             Action { text: "&New"; enabled: false }  // TODO: gather shortcuts from QObject <- .ini
-            Action { text: "&Open"; enabled: false }
+            Action { text: "&Open"; onTriggered: openFileDialog.open() }
             Action { text: "&Save"; enabled: false }
             Action { text: "Save &As"; enabled: false}
             MenuSeparator {}
@@ -22,13 +26,50 @@ ApplicationWindow {
         }
     }
 
+    VmfInterface {
+        // NOTE: an external singleton that passes geometry to the rendered scene might be better
+        id: vmf
+    }
+
+    FileDialog {
+        id: openFileDialog
+        // can we reuse this dialog for saving files?
+        title: "select a .vmf file"
+        // currentFolder: ...  // TODO: get mapsrc dir from configs
+        nameFilters: ["Valve Map Files (*.vmf)", "All files (*)"]
+        onAccepted: { console.log("Opening: %1".arg(currentFile)) }
+    }
+
+    // TODO: give the 3D view it's own object in another .qml
+    // -- define relationship to active file
+    // -- connections to key bindings & program state
+    // -- split 3D view into 4 views with view modes etc.
+    // -- link to active .vmf file
     View3D {
         id: view
         anchors.fill: parent
 
-        PerspectiveCamera { z: 500; }
+        environment: SceneEnvironment {
+            backgroundMode: SceneEnvironment.Color  // NOTE: skyboxes are an option
+            clearColor: "black"
+        }
+
+        PerspectiveCamera { z: 500 }
 
         Model {
+            id: testGrid
+            geometry: GridGeometry {
+                horizontalStep: 64
+                verticalStep: 64
+            }
+            materials: DefaultMaterial {
+                    diffuseColor: "#CECECE"
+                    lighting: DefaultMaterial.NoLighting
+            }
+        }
+
+        Model {
+            id: testCube
             source: "#Cube"
 
             NumberAnimation on eulerRotation.x {
