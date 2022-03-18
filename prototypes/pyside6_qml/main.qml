@@ -18,7 +18,7 @@ ApplicationWindow {
         Menu {
             title: "&File"
             Action { text: "&New"; enabled: false }  // TODO: gather shortcuts from QObject <- .ini
-            Action { text: "&Open"; onTriggered: openFileDialog.open() }
+            Action { text: "&Open"; onTriggered: fileDialog.open() }
             Action { text: "&Save"; enabled: false }
             Action { text: "Save &As"; enabled: false}
             MenuSeparator {}
@@ -27,17 +27,20 @@ ApplicationWindow {
     }
 
     VmfInterface {
-        // NOTE: an external singleton that passes geometry to the rendered scene might be better
         id: vmf
+
+        function openFile(filename) {
+            vmf.source = filename
+        }
     }
 
     FileDialog {
-        id: openFileDialog
+        id: fileDialog
         // can we reuse this dialog for saving files?
         title: "select a .vmf file"
         // currentFolder: ...  // TODO: get mapsrc dir from configs
         nameFilters: ["Valve Map Files (*.vmf)", "All files (*)"]
-        onAccepted: { console.log("Opening: %1".arg(currentFile)) }
+        onAccepted: { vmf.openFile(currentFile) }
     }
 
     // TODO: give the 3D view it's own object in another .qml
@@ -55,6 +58,28 @@ ApplicationWindow {
         }
 
         PerspectiveCamera { z: 500 }
+
+        Node {
+            id: brushCollection
+            property var brushes: []
+
+            // TODO: visible state management methods
+
+            // TODO: selection bounds -> Brush.from_bounds -> VmfInterface -> BrushGeometry
+            function addBrush(geometry, colour) {
+                var brushComponent = Qt.createComponent("./BrushModel.qml")
+                if (brushComponent.status == Component.Error)
+                    console.log(brushComponent.errorString())
+                var brush = brushComponent.createObject(brushCollection, {"geometry": geometry, "colour": colour})
+                brushes.push(brush)
+            }
+
+            function loadVmf() {
+                console.log(vmf.BrushCount)
+                for (var i = 0; i < vmf.brushCount; i++)
+                    brushCollection.addBrush(vmf.brushGeometryAt(i), vmf.BrushColourAt(i))
+            }
+        }
 
         Model {
             id: testGrid
