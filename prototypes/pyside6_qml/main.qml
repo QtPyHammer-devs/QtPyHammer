@@ -15,14 +15,15 @@ ApplicationWindow {
     title: "3D View"
 
     menuBar: MenuBar {
+        // TODO: assign shortcuts from Config object
         Menu {
             title: "&File"
-            Action { text: "&New"; enabled: false }  // TODO: gather shortcuts from QObject <- .ini
-            Action { text: "&Open"; onTriggered: fileDialog.open() }
-            Action { text: "&Save"; enabled: false }
-            Action { text: "Save &As"; enabled: false}
+            Action { text: "&New"; shortcut: "Ctrl+N"; enabled: false }
+            Action { text: "&Open"; shortcut: "Ctrl+O"; onTriggered: fileDialog.open() }
+            Action { text: "&Save"; shortcut: "Ctrl+S"; enabled: false }
+            Action { text: "Save &As"; shortcut: "Ctrl+Shift+S"; enabled: false}
             MenuSeparator {}
-            Action { text: "E&xit"; onTriggered: window.close() }
+            Action { text: "E&xit"; shortcut: "Ctrl+Q"; onTriggered: window.close() }
         }
     }
 
@@ -31,6 +32,14 @@ ApplicationWindow {
 
         function openFile(filename) {
             vmf.source = filename
+        }
+
+        onSourceChanged: { console.log("fired?") }
+
+        onStatusChanged: {
+            if (vmf.status = VmfInterface.Status.Loaded) {
+                brushCollection.loadVmf()
+            }
         }
     }
 
@@ -53,7 +62,8 @@ ApplicationWindow {
         anchors.fill: parent
 
         environment: SceneEnvironment {
-            backgroundMode: SceneEnvironment.Color  // NOTE: skyboxes are an option
+            backgroundMode: SceneEnvironment.Color
+            // NOTE: QtQuick3D could handle skyboxes itself
             clearColor: "black"
         }
 
@@ -63,7 +73,9 @@ ApplicationWindow {
             id: brushCollection
             property var brushes: []
 
-            // TODO: visible state management methods
+            // TODO: methods for handling visible state
+            // -- would need to understand groups & selections
+            // -- quickHide, unHide etc.
 
             // TODO: selection bounds -> Brush.from_bounds -> VmfInterface -> BrushGeometry
             function addBrush(geometry, colour) {
@@ -93,26 +105,23 @@ ApplicationWindow {
             }
         }
 
-        Model {
-            id: testCube
-            source: "#Cube"
-
-            NumberAnimation on eulerRotation.x {
-                from: 0; to: 360
-                duration: 5000
-                loops: -1
-            }
-
-            NumberAnimation on eulerRotation.y {
-                from: 0; to: 360
-                duration: 3000
-                loops: -1
-            }
-
-            materials: DefaultMaterial {
-                diffuseColor: "#44EE44"
-                lighting: DefaultMaterial.NoLighting
-            }
-        }
+        // Model {
+        //     id: testCube
+        //     source: "#Cube"
+        //     NumberAnimation on eulerRotation.x {
+        //         from: 0; to: 360
+        //         duration: 5000
+        //         loops: -1
+        //     }
+        //     NumberAnimation on eulerRotation.y {
+        //         from: 0; to: 360
+        //         duration: 3000
+        //         loops: -1
+        //     }
+        //     materials: DefaultMaterial {
+        //         diffuseColor: "#44EE44"
+        //         lighting: DefaultMaterial.NoLighting
+        //     }
+        // }
     }
 }
