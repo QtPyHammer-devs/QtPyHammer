@@ -12,7 +12,7 @@ ApplicationWindow {
     visible: true
     x: 64; y: 64
     width: 960; height: 576
-    title: "3D View"
+    title: "Mjölnir"
 
     menuBar: MenuBar {
         // TODO: assign shortcuts from some Config object
@@ -46,6 +46,9 @@ ApplicationWindow {
         onAccepted: { vmf.openFile(currentFile) }
     }
 
+    // TEST: open .vmf immediately
+    // Component.onCompleted: { vmf.openFile("/home/bikkie/Documents/Code/GitHub/QtPyHammer/Team Fortress 2/tf/mapsrc/raycast_test.vmf") }
+
     // TODO: give the 3D view it's own object in another .qml
     // -- define relationship to active file
     // -- connections to key bindings & program state
@@ -61,7 +64,7 @@ ApplicationWindow {
             clearColor: "black"
         }
 
-        PerspectiveCamera { z: 500 }
+        PerspectiveCamera { z: 500 }  // TODO: camera controls
 
         Node {
             id: brushCollection
@@ -80,10 +83,9 @@ ApplicationWindow {
                 brushes.push(brush)
             }
 
-            function loadVmf() {
-                console.log(vmf.brushCount)
+            function loadVmf() {  // BUG: crashes silently after a few brushes? out of memory?
                 for (var i = 0; i < vmf.brushCount; i++)
-                    brushCollection.addBrush(vmf.brushGeometryAt(i), vmf.BrushColourAt(i))
+                    brushCollection.addBrush(vmf.brushGeometryAt(i), vmf.brushColourAt(i))
             }
         }
 

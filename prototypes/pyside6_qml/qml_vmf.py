@@ -46,30 +46,34 @@ class BrushGeometry(QQuick3DGeometry):
         mins = [math.inf] * 3
         maxs = [-math.inf] * 3
         for face in self._brush.faces:
-            indices.extend(fan_indices(i, len(face.polygon)))
+            if len(face.polygon) == 0:
+                # some brushes are coming out with empty faces, should probably debug this in vmf_tool
+                continue
+            print(face.polygon)
             for vertex in face.polygon:
                 mins = [min(a, b) for a, b in zip(mins, vertex)]
                 maxs = [max(a, b) for a, b in zip(maxs, vertex)]
-                vertices.extend((*vertex, *face.plane[0], face.uaxis.linear_pos(vertex), face.vaxis.linear_pos(vertex)))
+                vertices.append((*vertex, *face.plane[0], face.uaxis.linear_pos(vertex), face.vaxis.linear_pos(vertex)))
+            indices.extend(fan_indices(i, len(face.polygon)))
             i += len(face.polygon)
         self.setBounds(QVector3D(*mins), QVector3D(*maxs))  # needed for raycast picking
         # vertex data
-        vertex_bytes = QByteArray(struct.iter_pack("8f", vertices))
-        self.setVertices(vertex_bytes)
-        self.addAttribute(QQuick3DGeometry.Attribute.PositionSemantic, 0, QQuick3DGeometry.ComponentType.F32Type)
-        self.addAttribute(QQuick3DGeometry.Attribute.NormalSemantic, 3 * 4, QQuick3DGeometry.ComponentType.F32Type)
-        self.addAttribute(QQuick3DGeometry.Attribute.TexCoord0Semantic, 6 * 4, QQuick3DGeometry.ComponentType.F32Type)
+        vertex_bytes = QByteArray(b"".join([struct.pack("8f", *v) for v in vertices]))
+        self.setVertexData(vertex_bytes)
+        self.addAttribute(QQuick3DGeometry.Attribute.PositionSemantic, 0, QQuick3DGeometry.Attribute.F32Type)
+        self.addAttribute(QQuick3DGeometry.Attribute.NormalSemantic, 3 * 4, QQuick3DGeometry.Attribute.F32Type)
+        self.addAttribute(QQuick3DGeometry.Attribute.TexCoord0Semantic, 6 * 4, QQuick3DGeometry.Attribute.F32Type)
         self.setStride(8 * 4)
         # index data
-        index_bytes = QByteArray(struct.iter_pack("H", indices))
-        self.addAttribute(QQuick3DGeometry.Attribute.IndexSemantic, 0, QQuick3DGeometry.ComponentType.U16Type)
-        self.setIndices(index_bytes)
+        index_bytes = QByteArray(b"".join([struct.pack("H", i) for i in indices]))
+        self.addAttribute(QQuick3DGeometry.Attribute.IndexSemantic, 0, QQuick3DGeometry.Attribute.U16Type)
+        self.setIndexData(index_bytes)
 
 
 @QmlElement
 class VmfInterface(QObject):
     _vmf: vmf_tool.Vmf
-    _status: str  # status Property
+    _status: str  # status Property (QEnum would be better but makes a lot of errors atm)
     filename: str  # source Property
     sourceChanged = Signal(str)
     statusChanged = Signal(str)
@@ -90,8 +94,13 @@ class VmfInterface(QObject):
     @Slot(int, result=BrushGeometry)
     def brushGeometryAt(self, index: int) -> BrushGeometry:
         brushes = list(self._vmf.brushes.values())
-        # TODO: link created Geo to brush to pass changes back
-        return BrushGeometry(brushes[index])
+        try:
+            out = BrushGeometry(brushes[index])
+            # TODO: link qml object to self._vmf.brushes to connect interface & object state (saving changes etc.)
+        except Exception as exc:
+            print(f"Brush {index} raised: {exc}")
+            out = None
+        return out
 
     @Slot(int, result=str)
     def brushColourAt(self, index: int) -> str:
@@ -100,12 +109,10 @@ class VmfInterface(QObject):
 
     @Slot(str)
     def loadVmf(self, filename: str):
-        # TODO: let a QRunnable & QThreadPool handle this
+        # TODO: let a QRunnable & QThreadPool handle this on a seperate thread from the GUI
         try:
             self.status = "Loading"
-            print(f"Loading {filename}...")
             self._vmf = vmf_tool.Vmf.from_file(filename)
-            print(f"Loaded {filename}!")
             self.status = "Loaded"
         except Exception:
             # TODO: store some text detailing the error as a property
