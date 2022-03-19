@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import enum
 import math
 import struct
 from typing import List
@@ -81,16 +80,20 @@ class VmfInterface(QObject):
         self._vmf = vmf_tool.Vmf(filename)
         self._status = "Unloaded"
         # internal Signal & Slot connections
-        self.sourceChanged.connect(self.loadVmf)  # setting self.source reads the .vmf file at that location
+        self.sourceChanged.connect(self.loadVmf)
+        # ^ setting self.source reads the .vmf file at that location
 
+    @Property(int)
     def brushCount(self):
         return len(self._vmf.brushes)
 
+    @Slot(int, result=BrushGeometry)
     def brushGeometryAt(self, index: int) -> BrushGeometry:
         brushes = list(self._vmf.brushes.values())
         # TODO: link created Geo to brush to pass changes back
         return BrushGeometry(brushes[index])
 
+    @Slot(int, result=str)
     def brushColourAt(self, index: int) -> str:
         brushes = list(self._vmf.brushes.values())
         return "#" + "".join([f"{int(255*x):02X}" for x in brushes[index].colour])
