@@ -15,7 +15,7 @@ ApplicationWindow {
     title: "3D View"
 
     menuBar: MenuBar {
-        // TODO: assign shortcuts from Config object
+        // TODO: assign shortcuts from some Config object
         Menu {
             title: "&File"
             Action { text: "&New"; shortcut: "Ctrl+N"; enabled: false }
@@ -29,15 +29,9 @@ ApplicationWindow {
 
     VmfInterface {
         id: vmf
-
-        function openFile(filename) {
-            vmf.source = filename
-        }
-
-        onSourceChanged: { console.log("fired?") }
-
+        function openFile(filename) { vmf.source = filename }
         onStatusChanged: {
-            if (vmf.status = VmfInterface.Status.Loaded) {
+            if (vmf.status == "Loaded") {
                 brushCollection.loadVmf()
             }
         }
@@ -87,7 +81,7 @@ ApplicationWindow {
             }
 
             function loadVmf() {
-                console.log(vmf.BrushCount)
+                console.log(vmf.brushCount)
                 for (var i = 0; i < vmf.brushCount; i++)
                     brushCollection.addBrush(vmf.brushGeometryAt(i), vmf.BrushColourAt(i))
             }

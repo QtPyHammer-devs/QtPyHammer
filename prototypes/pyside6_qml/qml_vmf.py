@@ -5,7 +5,7 @@ import math
 import struct
 from typing import List
 
-from PySide6.QtCore import Property, QByteArray, QEnum, QObject, Signal, Slot
+from PySide6.QtCore import Property, QByteArray, QObject, Signal, Slot
 from PySide6.QtGui import QVector3D
 from PySide6.QtQuick3D import QQuick3DGeometry
 from PySide6.QtQml import QmlElement
@@ -69,24 +69,17 @@ class BrushGeometry(QQuick3DGeometry):
 
 @QmlElement
 class VmfInterface(QObject):
-    @QEnum
-    class Status(enum.Enum):
-        Unloaded = 0
-        Loading = 1
-        Loaded = 2
-        Error = 3
-
     _vmf: vmf_tool.Vmf
-    _status: Status  # status Property
+    _status: str  # status Property
     filename: str  # source Property
     sourceChanged = Signal(str)
-    statusChanged = Signal()  # can't emit the Status?
+    statusChanged = Signal(str)
 
     def __init__(self, parent=None, filename: str = ""):
         super().__init__(parent)
         self.filename = filename
         self._vmf = vmf_tool.Vmf(filename)
-        self._status = VmfInterface.Status.Unloaded
+        self._status = "Unloaded"
         # internal Signal & Slot connections
         self.sourceChanged.connect(self.loadVmf)  # setting self.source reads the .vmf file at that location
 
@@ -104,34 +97,37 @@ class VmfInterface(QObject):
 
     @Slot(str)
     def loadVmf(self, filename: str):
+        # TODO: let a QRunnable & QThreadPool handle this
         try:
-            self.status = VmfInterface.Status.Loading
+            self.status = "Loading"
             print(f"Loading {filename}...")
             self._vmf = vmf_tool.Vmf.from_file(filename)
             print(f"Loaded {filename}!")
-            self.status = VmfInterface.Status.Loaded
+            self.status = "Loaded"
         except Exception:
             # TODO: store some text detailing the error as a property
-            self.status = VmfInterface.Status.Error
+            self.status = "Error"
 
     @Property(str)
     def source(self) -> str:
         return self.filename
 
     @source.setter
-    def source(self, filename: str):
-        if filename.startswith("file://"):
-            filename = filename[len("file://"):]
-        if filename != self.filename:
-            self.sourceChanged.emit(filename)
-        self.filename = filename
+    def source(self, new_filename: str):
+        if new_filename.startswith("file://"):
+            new_filename = new_filename[len("file://"):]
+        if new_filename == self.filename:
+            return
+        self.filename = new_filename
+        self.sourceChanged.emit(new_filename)
 
-    @Property(Status)
-    def status(self) -> Status:
+    @Property(str)
+    def status(self) -> str:
         return self._status
 
     @status.setter
-    def status(self, new_status: Status):
-        if new_status != self._status:
-            self.statusChanged.emit()  # can't emit the Status?
+    def status(self, new_status: str):
+        if new_status == self._status:
+            return
         self._status = new_status
+        self.statusChanged.emit(new_status)
