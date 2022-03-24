@@ -3,14 +3,17 @@ import sys
 from PyQt5 import QtCore, QtWidgets
 
 sys.path.append("../../")
-from QtPyHammer.ui.workspace import VmfTab
-##from QtPyHammer.utilities import render
+from QtPyHammer.ui.workspace import VmfTab  # noqa E402
+# from QtPyHammer.utilities import render  # noqa E402
 
 
-def except_hook(cls, exception, traceback): # for debugging Qt slots
+def except_hook(cls, exception, traceback):  # for debugging Qt slots
     sys.__excepthook__(cls, exception, traceback)
+
+
 sys.excepthook = except_hook
 
+# run Qt app
 app = QtWidgets.QApplication([])
 app.folder = "../../"
 app.preferences = QtCore.QSettings("../../configs/preferences.ini", QtCore.QSettings.IniFormat)

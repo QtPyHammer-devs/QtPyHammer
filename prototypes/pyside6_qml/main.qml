@@ -31,9 +31,11 @@ ApplicationWindow {
         id: vmf
         function openFile(filename) { vmf.source = filename }
         onStatusChanged: {
+            console.log("vmf status changed to %1".arg(vmf.status))
             if (vmf.status == "Loaded") {
                 brushCollection.loadVmf()
             }
+            // TODO: communicate loading errors to the user
         }
     }
 
@@ -61,7 +63,7 @@ ApplicationWindow {
         environment: SceneEnvironment {
             backgroundMode: SceneEnvironment.Color
             // NOTE: QtQuick3D could handle skyboxes itself
-            clearColor: "black"
+            clearColor: "#707070"
         }
 
         PerspectiveCamera { z: 500 }  // TODO: camera controls
@@ -84,8 +86,11 @@ ApplicationWindow {
             }
 
             function loadVmf() {  // BUG: crashes silently after a few brushes? out of memory?
-                for (var i = 0; i < vmf.brushCount; i++)
+                console.log("called brushCollection.loadVmf")
+                for (var i = 0; i < vmf.brushCount; i++) {
                     brushCollection.addBrush(vmf.brushGeometryAt(i), vmf.brushColourAt(i))
+                }
+                // TODO: cannot see generated brushes? is this a camera issue or a rendering issue?
             }
         }
 

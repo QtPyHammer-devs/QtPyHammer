@@ -40,6 +40,7 @@ class BrushGeometry(QQuick3DGeometry):
     # TODO: signals & slots for editing geo etc.
 
     def rebuildGeometry(self):
+        self.clear()
         i = 0
         indices = list()
         vertices = list()
@@ -80,9 +81,10 @@ class VmfInterface(QObject):
 
     def __init__(self, parent=None, filename: str = ""):
         super().__init__(parent)
-        self.filename = filename
+        self.filename = filename  # source Property
         self._vmf = vmf_tool.Vmf(filename)
         self._status = "Unloaded"
+        # TODO: Editted & Saved statuses for handling changes (e.g. unsaved changes / no changes)
         # internal Signal & Slot connections
         self.sourceChanged.connect(self.loadVmf)
         # ^ setting self.source reads the .vmf file at that location
@@ -114,7 +116,8 @@ class VmfInterface(QObject):
             self.status = "Loading"
             self._vmf = vmf_tool.Vmf.from_file(filename)
             self.status = "Loaded"
-        except Exception:
+        except Exception as exc:
+            print(f"While loading .vmf encountered: {exc}")
             # TODO: store some text detailing the error as a property
             self.status = "Error"
 
@@ -124,8 +127,11 @@ class VmfInterface(QObject):
 
     @source.setter
     def source(self, new_filename: str):
-        if new_filename.startswith("file://"):
-            new_filename = new_filename[len("file://"):]
+        # TODO: test all target platforms & environments for irregular filenames
+        # -- e.g. os.path.expandhome("~/filename.vmf") (users may enter path as text, if the FileDialog allows)
+        if new_filename.startswith("file:///"):
+            new_filename = new_filename[len("file:///"):]
+        print(new_filename)
         if new_filename == self.filename:
             return
         self.filename = new_filename

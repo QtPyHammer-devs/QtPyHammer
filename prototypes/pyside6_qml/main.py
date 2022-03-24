@@ -9,6 +9,15 @@ import qml_vmf  # noqa F401
 
 
 if __name__ == "__main__":
+    _old_excepthook = sys.excepthook
+
+    def except_hook(cls, exception, traceback):  # for debugging Qt slots
+        """Print all errors, don't allow Qt to silence anything"""
+        sys.__excepthook__(cls, exception, traceback)
+
+    sys.excepthook = except_hook
+
+    # run main.qml
     app = QGuiApplication(sys.argv)
 
     engine = QQmlApplicationEngine()
