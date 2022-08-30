@@ -26,7 +26,7 @@ class QtPyHammerApp(QtWidgets.QApplication):
         self.preferences = load_ini("configs/preferences.ini")
         game = self.preferences.value("Game", "Team Fortress 2")
         self.game_config = load_ini(f"configs/games/{game}.ini")
-        self.hotkeys = load_ini("configs/hotkeys.ini")
+        self.hotkeys = load_ini("configs/controls/hammer.ini")
         self.themes = dict()
         # ^ {theme_name: theme}
         for filename in os.listdir("configs/themes/"):
