@@ -101,11 +101,11 @@ class auto_visgroup_manager(QtWidgets.QTreeWidget):
         renderables = []
         visgroup = item.data(0, 0)
         if visgroup == "func_detail":
-            for classname, ent_id, brush_id in workspace.vmf.brush_entities:
+            for classname, ent_id, brush_id in workspace.vmf.entity_brushes:
                 if classname == "func_detail":
                     renderables.append(("brush", brush_id))
         if visgroup == "Triggers":
-            for classname, ent_id, brush_id in workspace.vmf.brush_entities:
+            for classname, ent_id, brush_id in workspace.vmf.entity_brushes:
                 if classname.startswith("trigger_"):
                     renderables.append(("brush", brush_id))
         elif visgroup == "Displacements":

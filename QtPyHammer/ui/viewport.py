@@ -99,7 +99,7 @@ class MapViewport3D(QtWidgets.QOpenGLWidget):  # initialised in ui/tabs.py
         self.mouse_vector = self.current_mouse_position - self.last_mouse_position
         if self.camera_moving:
             self.setMouseTracking(False)
-            center = self.mapToGlobal(QtCore.QPoint(self.width() / 2, self.height() / 2))
+            center = self.mapToGlobal(QtCore.QPoint(int(self.width() / 2), int(self.height() / 2)))
             QtGui.QCursor.setPos(center)
             self.setMouseTracking(True)
             self.last_mouse_position = vector.vec2(center.x(), center.y())

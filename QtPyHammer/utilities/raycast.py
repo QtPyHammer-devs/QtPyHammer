@@ -14,6 +14,10 @@ class Ray:
         self.direction = direction
         self.length = length
 
+    @property
+    def end(self) -> vector.vec3:
+        return self.origin + (self.direction * self.length)
+
     def plane_intersect(self, plane: physics.Plane):
         alignment = vector.dot(plane.normal, self.direction)
         if alignment > 0:  # skip backfaces
@@ -41,7 +45,7 @@ def raycast_brushes(ray: Ray, brushes: List[object]) -> Dict[int, tuple]:
         # ^ {distance(t): face.id}
         for face in brush.faces:
             plane = physics.Plane(*face.plane)
-            t = Ray.plane_intersect(plane)
+            t = ray.plane_intersect(plane)
             if t is not None:
                 probable_intersections[t] = face.id
 

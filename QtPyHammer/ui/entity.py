@@ -8,13 +8,16 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 # TODO: split each tab into a class
 
 
-class browser(QtWidgets.QDialog):
+class Editor(QtWidgets.QDialog):
+
     def __init__(self, parent):
-        super(browser, self).__init__(parent, QtCore.Qt.Tool)
+        super().__init__(parent, QtCore.Qt.Tool)
+
         self.setWindowTitle("Entity Browser")
         # self.setWindowIcon(parent.entity_icon)
         self.setGeometry(780, 220, 360, 640)
         app = QtWidgets.QApplication.instance()
+
         if len(app.fgd.entities) == 0:
             raise RuntimeError("No entites to browse!")
 
@@ -23,16 +26,20 @@ class browser(QtWidgets.QDialog):
 
         filtered_entities = list(filter(is_point_or_solid, app.fgd.entities))
         self.entities = sorted(filtered_entities, key=lambda e: e.name)
-        default_entity = app.game_config.value("Hammer/DefaultPointEntity", "prop_static")
-        # test prop_dynamic for flags and logic
-        # test team_control_point for more field types
+        default_entity = app.game_config.value(
+            "Hammer/DefaultPointEntity", defaultValue="prop_static")
+        # TODO: test prop_dynamic for flags and logic
+        # TODO: test team_control_point for more field types
+
         entity_names = [e.name for e in self.entities]
         self.current_index = entity_names.index(default_entity)
         self.current_entity = self.entities[self.current_index]
 
         self.base_widget = QtWidgets.QTabWidget()
+
         base_layout = QtWidgets.QVBoxLayout()
         base_layout.addWidget(self.base_widget)
+
         bottom_row = QtWidgets.QHBoxLayout()
         bottom_row.addStretch(1)
         cancel_button = QtWidgets.QPushButton("Cancel")
@@ -70,6 +77,7 @@ class browser(QtWidgets.QDialog):
                 other_name = display_name if smartedit_on else name
                 label = form.itemAt(row_index, QtWidgets.QFormLayout.LabelRole)
                 label.widget().setText(other_name)
+
         self.smart_edit.clicked.connect(toggle_smart_edit)
         ent_select_layout.addWidget(self.smart_edit)
         ent_select_layout.setStretch(0, 2)
@@ -78,16 +86,20 @@ class browser(QtWidgets.QDialog):
         self.entity_label = QtWidgets.QLabel(self.current_entity.name)
         self.desc_label.setWordWrap(True)  # have a "Read More..." button (link)
         layout.addWidget(self.desc_label)
+
         self.table = QtWidgets.QScrollArea()
         layout.addWidget(self.table)
+
         core_tab.setLayout(layout)
         self.base_widget.addTab(core_tab, "Core")
         # A whole tab for comments on the selected entity/entities
+
         comments_tab = QtWidgets.QWidget()
         layout = QtWidgets.QVBoxLayout()
         layout.addWidget(self.entity_label)
         layout.addWidget(QtWidgets.QTextEdit())  # filter for .vmf breaking characters
         comments_tab.setLayout(layout)
+
         self.base_widget.addTab(comments_tab, "Comments")
         self.load_entity(self.current_index)
 
@@ -134,9 +146,13 @@ class browser(QtWidgets.QDialog):
             flags_layout.addWidget(flags_scroll)
             flags_tab.setLayout(flags_layout)
             self.base_widget.addTab(flags_tab, "Flags")
-        self.ent_form_map = {}  # row: (name, display_name)
-        # also map property.name to value set in form
-        # this will be sent back to the selection and added to the Edit Timeline
+
+        self.ent_form_map = dict()
+        # ^ {row: ("name", "display_name")}
+        # TODO: map property.name to value set in form
+        # -- this will be sent back to the selection and added to the Edit Timeline
+        # TODO: classes for each property value_type
+        # -- lookup dict, intialise from fgd property
         for i, p in enumerate([p for p in properties if p.value_type != "flags"]):
             self.ent_form_map[i] = (p.name, p.display_name)
             # use comboboxes informed by model for anims and skins
@@ -144,7 +160,7 @@ class browser(QtWidgets.QDialog):
             # Skin \/ Red, Blue
             # skin naming will require prop catalogues (.csv ?)
             if p.value_type == "color255":  # need something similar for lights
-                selector = colour_picker(default=p.default_value)
+                selector = ColourPicker(default=p.default_value)
             elif p.value_type == "choices":
                 selector = QtWidgets.QComboBox()
                 choices = {i: o.value for i, o in enumerate(p.choices)}
@@ -157,7 +173,7 @@ class browser(QtWidgets.QDialog):
                 # ^ fgd doesn't specify a max, a soft / adjustable max like blender would be nice
                 selector.setValue(p.default_value)
             elif p.value_type == "studio":  # model
-                selector = model_picker(default=p.default_value)
+                selector = ModelPicker(default=p.default_value)
             elif p.value_type == "target_destination":
                 selector = QtWidgets.QLineEdit()
                 # add a 3D / entity picker
@@ -165,7 +181,7 @@ class browser(QtWidgets.QDialog):
             else:
                 selector = QtWidgets.QLineEdit(str(p.default_value))
             field_name = p.display_name if self.smart_edit.isChecked() else p.name
-            field_label = QtWidgets.QLabel("<{}>".format(p.value_type) + field_name)
+            field_label = QtWidgets.QLabel(f"<{p.value_type}> {field_name}")
             if isinstance(p.description, str):
                 description = textwrap.fill(p.description, width=40)
             else:
@@ -194,56 +210,86 @@ class browser(QtWidgets.QDialog):
         # allow re-ordering of properties, with a reset order option
 
 
-class model_picker(QtWidgets.QHBoxLayout):
+class ModelPicker(QtWidgets.QHBoxLayout):
     def __init__(self, parent=None, default=""):
         super(QtWidgets.QHBoxLayout, self).__init__(parent)
         self.text_field = QtWidgets.QLineEdit(default)
         self.button = QtWidgets.QPushButton("Browse")
+        # TODO: have a single QFileDialog for models across the whole app
         self.model_browser = QtWidgets.QFileDialog()  # FAKE FOR TESTS
-
-        def pick_model():  # real deal should search vpks and grab actual mdls
-            address = self.model_browser.getOpenFileName()[0]
-            stripped_address = address.split("/")[-1].rpartition(".")[0]
-            self.text_field.setText(stripped_address)
-        self.button.clicked.connect(pick_model)
+        self.button.clicked.connect(self.pick)
         self.addWidget(self.text_field)
         self.addWidget(self.button)
 
+    def pick(self):
+        # real deal should browse vfs/vpks w/ tags & search
+        address = self.model_browser.getOpenFileName()[0]
+        stripped_address = address.split("/")[-1].rpartition(".")[0]
+        self.text_field.setText(stripped_address)
 
-class colour_picker(QtWidgets.QHBoxLayout):
+
+class ColourPicker(QtWidgets.QHBoxLayout):
+    # NOTE: text is never validated
+
     def __init__(self, parent=None, default=""):
-        super(QtWidgets.QHBoxLayout, self).__init__(parent)
-        default_len = len(default.split())
-        self.text_field = QtWidgets.QLineEdit(default)
+        super().__init__(parent)
+        self.default = default
+        self.text_field = QtWidgets.QLineEdit(self.default)
         self.button = QtWidgets.QPushButton("Pick")
-        self.text = lambda: self.text_field.text()
-        self.setText = lambda t: self.text_field.setText(t)
-
-        def pick_colour():  # variables must be locked to this row
-            current_colour = QtGui.QColor(*map(int, self.text().split()[:3]))
-            picker = QtWidgets.QColorDialog(current_colour)
-            new_colour = picker.getColor()
-            if new_colour.isValid():  # user did not cancel
-                if default_len == 3:
-                    self.setText("{} {} {}".format(*new_colour.getRgb()))
-                elif default_len == 4:
-                    try:
-                        strength = self.text().split()[3]
-                    except Exception:
-                        # strength not specified, use default
-                        strength = default.split()[3]
-                    self.setText("{} {} {} {}".format(*new_colour.getRgb()[:3], strength))
-            # TODO: preview the colour
-            # QLabel with 1px QPixmap in the chosen colour
-        self.button.clicked.connect(pick_colour)
+        self.button.clicked.connect(self.pick)
         self.addWidget(self.text_field)
         self.addWidget(self.button)
+        # TODO: preview the colour
+        # -- QLabel with 1px QPixmap in the chosen colour
 
-    # TODO: utilities.entity: make a class from a FgdEntity object
+    @property
+    def colour(self):
+        r, g, b = map(int, self.text.split(" ")[:3])
+        return QtGui.QColor(r, g, b)
+
+    @colour.setter
+    def colour(self, colour):
+        r, g, b = colour.getRgb()
+        intensity = self.intensity
+        self.text = f"{r} {g} {b}"
+        self.intensity = intensity
+
+    @property
+    def intensity(self):
+        components = self.text.split(" ")
+        if len(components) >= 4:
+            return int(components)[3]
+        else:
+            return None
+
+    @intensity.setter
+    def intensity(self, intensity):
+        r, g, b = self.text.split(" ")[:3]
+        if intensity is None:
+            self.text = f"{r} {g} {b}"
+        else:
+            self.text = f"{r} {g} {b} {intensity}"
+
+    @property
+    def text(self):
+        return self.text_field.text()
+
+    @text.setter
+    def text(self, text):
+        self.text_field.setText(text)
+
+    def pick(self):
+        picker = QtWidgets.QColorDialog(self.colour)
+        new_colour = picker.getColor()
+        if new_colour.isValid():  # user did not cancel
+            self.colour = new_colour.getRgb()
+
+
+# TODO: utilities.entity: make a class from a FgdEntity object
 # class BasicEntitiy:
 #    def __init__(self, base):
 #        for property in base.properties:
-    # consider type
-    # property subclasses from BaseClass?
-    # setattr(self, property.name, property.default_value)
-    # need to be able to create / edit an entity with the browser
+# consider type
+# property subclasses from BaseClass?
+# setattr(self, property.name, property.default_value)
+# need to be able to create / edit an entity with the browser

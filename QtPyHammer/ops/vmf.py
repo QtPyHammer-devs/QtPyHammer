@@ -1,39 +1,65 @@
-"""Interface for editing .vmf files and updating the associated edit timeline"""
+from typing import Set, Tuple
+
 from vmf_tool import Vmf
+
+
+# TODO: Edit History (CRDT) for instance
+# TODO: separate file data from render_manager updates
+
+
+NodeId = Tuple[str, int, int]
+# ^ ("type", major_id, minor_id)
 
 
 class VmfInterface:
     """Connects vmf to renderer"""
-    def __init__(self, parent, vmf_filename):
-        self.parent = parent  # for conection to parent.viewport.render_manager
-        self._vmf = Vmf(vmf_filename)  # vmf object we are wrapping (private)
-        # if len(self._vmf.import_errors) > 0:
-        #     print(*self._vmf.import_errors, sep="\n")
-        self.brushes = self._vmf.brushes.values()
-        # ^ exposed directly for ui.workspace.VmfTab.raycast()
+    _vmf: Vmf
+    # parent: ui.workspace.VmfTab  # connection to render_manager
+    # -- parent.viewport.render_manager
+    brushes: ...
+    # ^ exposed directly for ui.workspace.VmfTab.raycast()
+    hidden: ...
+    # ^ bad implementation idea
+    selection: Set[NodeId]
+    # ^ set of ids?
+
+    def __init__(self, parent, vmf_filepath: str):
+        self.parent = parent
+        self.selection = set()
+
+        # TODO: edit timeline for instance (CRDT; Undo & Redo)
+        # -- app.edit_history[instance_guid]?
+
+        self._init_vmf(vmf_filepath)
+
         self.parent.viewport.render_manager.add_brushes(*self.brushes)
-        # track changes with CRDT for Undo & Redo
-        # add entities
-        self.hidden = self._vmf.hidden
         # TODO: apply hide to render_manager
         # TODO: inform hide related UI if anything is hidden
 
-    def save(self, filename):
-        self._vmf.save_to_file(filename)
+    def _init_vmf(self, vmf_filepath: str):
+        self._vmf = Vmf.from_file(vmf_filepath)
+        # TODO: communicate loading time & errors to user
+        self.brushes = self._vmf.brushes.values()
+        # ^ exposed directly for ui.workspace.VmfTab.raycast()
+        self.hidden = self._vmf.hidden
+
+    def save(self, filepath: str):
+        # TODO: use QtCore.QSaveFile
+        self._vmf.save(filepath)
 
     # brush operations
     def add_brushes(self, *brushes):
-        # inform CRDT of the change
+        # TODO: inform CRDT of the change
         self._vmf.brushes.update({b.id: b for b in brushes})
         self.parent.viewport.render_manager.add_brushes(*brushes)
 
     def delete_brushes(self, *indices):
-        # inform CRDT of the change
+        # TODO: inform CRDT of the change
         indices = sorted(indices)
         for i, index in enumerate(indices):
             self.brushes.pop(index - i)
 
     def modify_brush(self, index, modifier, *args, **kwargs):
         """Modify a brush with modifier"""
-        # inform CRDT of the change
+        # TODO: inform CRDT of the change
         modifier(self.brushes[index], *args, **kwargs)

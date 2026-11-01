@@ -1,0 +1,77 @@
+[project]
+name = "QtPyHammer"
+version = "0.0.6"
+description = "A Python alternative to Valve's 4.X Hammer Editor"
+readme = "README.md"
+requires-python = ">=3.11"  # TODO: confirm
+license = { file = "COPYING" }
+authors = [
+    {name="snake-biscuits", email="bikkie.dev@gmx.com"}
+]
+maintainers = [
+    {name="snake-biscuits", email="bikkie.dev@gmx.com"}
+]
+keywords = []
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+]
+dependencies = [
+    "numpy",  # == 1.22.0
+    "PyOpenGL",  # == 3.1.5
+    "PyQt5",  # >= 5.15.0
+    "valvefgd",  # == 1.0.2
+    "vmf_tool @ https://github.com/QtPyHammer-devs/vmf_tool",
+]
+
+[project.optional-dependencies]
+tests = [
+    "flake8",
+    "pytest",
+    "pytest_cov",
+    "pytest-qt",
+]
+
+# [project.scripts]
+# hammer = "QtPyHammer.main:run"
+
+[project.urls]
+"Repository" = "https://github.com/QtPyHammer-devs/QtPyHammer"
+# "Changelog" = "https://github.com/QtPyHammer-devs/QtPyHammer/blob/main/CHANGELOG.md"
+"Bug Reports" = "https://github.com/QtPyHammer-devs/QtPyHammer/issues"
+# "Funding" = ...
+
+[build-system]
+requires = ["hatchling >= 1.13"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/CODE_OF_CONDUCT.md",
+    "/CONTRIBUTING.md",
+    "/COPYING",
+    "/LICENSE",
+    "/QtPyHammer/**",
+    "/configs/**",
+    "/icons/**",
+    "/shaders/**",
+    "/tests/**",
+]
+exclude = [
+    "/build.log",
+    "/build.py",
+    "/Team Fortress 2/**",
+    "/prototypes/**",
+    "/roadmap.txt",
+    "/test_vmf.bat",
+    "/test_vmf.sh",
+    "/tip_of_the_day.txt",
+    "/useful_webpages.txt",
+]
+
+[tool.hatch.build.targets.wheel]
+only-packages = true
+
+[tool.hatch.metadata]
+allow-direct-references = true

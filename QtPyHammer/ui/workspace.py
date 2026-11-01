@@ -1,5 +1,7 @@
 """QtPyHammer Workspace that holds and manages an open .vmf file"""
+from __future__ import annotations
 import enum
+from typing import Set, Tuple
 
 from PyQt5 import QtWidgets
 
@@ -8,20 +10,27 @@ from ..ops.vmf import VmfInterface
 from ..utilities import raycast
 
 
-class SELECTION_MODE(enum.Enum):
-    SOLID = 0
-    OBJECT = 1
-    GROUP = 2
-    FACE = 3
+class SelectionMode(enum.Enum):
+    Solid = 0
+    Object = 1
+    Group = 2
+    Face = 3
 
 
 class VmfTab(QtWidgets.QWidget):
     """Holds the .vmf data and viewport(s)"""
-    def __init__(self, vmf_path, new=True, parent=None):
+    filename: str
+    never_saved: bool
+    selection_mode: SelectionMode
+    selection: Set[Tuple[str, int, int]]
+    # ^ {("type", major_id, minor_id)}
+    viewport: viewport.MapViewport3D
+
+    def __init__(self, vmf_path: str, new=True, parent=None):
         super(VmfTab, self).__init__(parent)
         self.filename = vmf_path
         self.never_saved = True if new else False
-        self.selection_mode = SELECTION_MODE.GROUP
+        self.selection_mode = SelectionMode.Group
         self.selection = set()
         # ^ ("type", major_id, minor_id) e.g. ("brush", brush.id, face.id)
         # UI
