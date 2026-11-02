@@ -1,5 +1,6 @@
 from __future__ import annotations
 import os  # TODO: use pathlib instead
+import sys
 from typing import Any, Dict, List
 
 import valvefgd
@@ -88,8 +89,6 @@ class QtPyHammerApp(QtWidgets.QApplication):
 
 
 if __name__ == "__main__":
-    import sys
-
     # NOTE: not passing any arguments to the QApplication
     app = QtPyHammerApp([])
 
