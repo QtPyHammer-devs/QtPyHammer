@@ -3,7 +3,7 @@ name = "QtPyHammer"
 version = "0.0.6"
 description = "A Python alternative to Valve's 4.X Hammer Editor"
 readme = "README.md"
-requires-python = ">=3.11"  # TODO: confirm
+requires-python = ">=3.8"
 license = { file = "COPYING" }
 authors = [
     {name="snake-biscuits", email="bikkie.dev@gmx.com"}
@@ -31,6 +31,12 @@ tests = [
     "pytest",
     "pytest_cov",
     "pytest-qt",
+]
+proto = [
+    "PySDL2==0.9.6",
+    "pysdl2-dll==2.0.12",  # for Windows
+    "PySide6",
+    "vpk==1.3.2",  # asset_browser
 ]
 
 # [project.scripts]

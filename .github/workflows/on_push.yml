@@ -4,25 +4,32 @@ on: [push]
 
 jobs:
   build:
-    name: Lint & Test (flake8 & pytest)
-
     runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python-version:
+          - "3.8"
+          - "3.9"
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+          - "3.14"
+          - "3.15"
 
     steps:
     - uses: actions/checkout@v7
 
-    - name: Set up Python 3.8
+    - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v7
       with:
-        python-version: 3.8
+        python-version: ${{ matrix.python-version }}
 
     - name: Install dependencies
       run: |
         python -m pip install -U pip
         python -m pip install -e .
         python -m pip install -e .[tests]
-        pip install -r prototypes/requirements.txt
-        pip install -r tests/requirements.txt
         pip install pytest-xvfb
 
     - name: Lint with flake8
