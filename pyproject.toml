@@ -18,11 +18,11 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
 ]
 dependencies = [
-    "numpy",  # == 1.22.0
-    "PyOpenGL",  # == 3.1.5
-    "PyQt5",  # >= 5.15.0
-    "valvefgd",  # == 1.0.2
-    "vmf_tool @ https://github.com/QtPyHammer-devs/vmf_tool",
+    "numpy",
+    "PyOpenGL",
+    "PyQt5",
+    "valvefgd",
+    "vmf_tool @ git+https://github.com/QtPyHammer-devs/vmf_tool",
 ]
 
 [project.optional-dependencies]
