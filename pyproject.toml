@@ -3,7 +3,7 @@ name = "QtPyHammer"
 version = "0.0.6"
 description = "A Python alternative to Valve's 4.X Hammer Editor"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.11"
 license = { file = "COPYING" }
 authors = [
     {name="snake-biscuits", email="bikkie.dev@gmx.com"}
